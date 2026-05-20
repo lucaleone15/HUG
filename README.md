@@ -53,6 +53,16 @@ Copier le fichier d'environnement :
 cp .env.example .env
 ```
 
+Ouvrir le fichier `.env` et renseigner les identifiants MySQL :
+
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hug
+DB_USERNAME=root
+DB_PASSWORD=ton_mot_de_passe_mysql
+
 ### 4. Créer la base de données MySQL
 
 Si MySQL n'est pas encore installé :
@@ -66,6 +76,16 @@ brew services start mysql
 sudo apt install mysql-server
 sudo systemctl start mysql
 ```
+
+Vérifier que MySQL tourne bien comme service Windows :
+
+```powershell
+Get-Service | Where-Object {$_.Name -like "*mysql*"}
+```
+
+Tu dois voir une ligne avec `Status: Running` (ex. `MySQL80`).
+
+---
 
 Accéder à MySQL selon votre environnement :
 
@@ -118,6 +138,22 @@ php artisan db:seed
 
 ```bash
 composer run dev
+```
+
+### Windows
+
+`composer run dev` ne fonctionne pas tel quel sous Windows. Lancez les processus séparément dans **deux terminaux** :
+
+**Terminal 1 — serveur Laravel :**
+
+```powershell
+php artisan serve
+```
+
+**Terminal 2 — Vite (hot reload front-end) :**
+
+```powershell
+npm run dev
 ```
 
 L'application est disponible sur : **http://127.0.0.1:8000**
