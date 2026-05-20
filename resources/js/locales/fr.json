@@ -1,0 +1,8 @@
+{
+    "welcome": "Bienvenue sur l'app",
+    "items": "Vous avez {count} message(s)",
+    "nav": {
+        "home": "Accueil",
+        "settings": "Paramètres"
+    }
+}
