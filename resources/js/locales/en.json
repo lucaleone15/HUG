@@ -1,0 +1,8 @@
+{
+    "welcome": "Welcome to the app",
+    "items": "You have {count} message(s)",
+    "nav": {
+        "home": "Home",
+        "settings": "Settings"
+    }
+}
