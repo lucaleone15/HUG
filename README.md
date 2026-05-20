@@ -24,7 +24,7 @@ Afin de lancer ce projet, une stack compatible avec Laravel est nécessaire.
 ## 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/kisyaaaa/HUG.git
+git clone https://github.com/lucaleone15/HUG.git
 cd HUG
 ```
 
