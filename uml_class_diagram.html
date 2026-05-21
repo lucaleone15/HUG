@@ -2,149 +2,125 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UML — Don du Sang HUG x CTS</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML — Don du Sang HUG x CTS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: sans-serif;
-      background: #f5f4f0;
-      padding: 32px;
-    }
+        body {
+            font-family: sans-serif;
+            background: #f5f4f0;
+            padding: 32px;
+        }
 
-    .header {
-      margin-bottom: 24px;
-    }
+        .header {
+            margin-bottom: 24px;
+        }
 
-    .header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1e1e1c;
-      margin-bottom: 4px;
-    }
+        .header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e1e1c;
+            margin-bottom: 4px;
+        }
 
-    .header p {
-      font-size: 12px;
-      color: #73726c;
-    }
+        .header p {
+            font-size: 12px;
+            color: #73726c;
+        }
 
-    .note {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #fef9c3;
-      border: 1px solid #d4b800;
-      border-radius: 6px;
-      padding: 8px 14px;
-      font-size: 11px;
-      color: #52524e;
-      margin-bottom: 24px;
-    }
+        .note {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef9c3;
+            border: 1px solid #d4b800;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: #52524e;
+            margin-bottom: 24px;
+        }
 
-    .note strong {
-      color: #1e1e1c;
-    }
+        .note strong {
+            color: #1e1e1c;
+        }
 
-    #uml {
-      background: #fff;
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, .08);
-      overflow-x: auto;
-    }
+        #uml {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, .08);
+            overflow-x: auto;
+        }
 
-    #uml svg {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-
-    #uml svg.classDiagram .divider path {
-      stroke-opacity: 0.4;
-    }
-
-    #uml svg.classDiagram .row-rect-odd path,
-    #uml svg.classDiagram .row-rect-odd rect,
-    #uml svg.classDiagram .row-rect-even path,
-    #uml svg.classDiagram .row-rect-even rect {
-      stroke: none !important;
-    }
-
-    #loading {
-      color: #73726c;
-      font-size: 13px;
-      padding: 40px 0;
-      text-align: center;
-    }
-
-    #error {
-      color: #c0392b;
-      font-size: 13px;
-      margin-top: 12px;
-      display: none;
-    }
-  </style>
+        #uml svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>Diagramme de classes UML — Campagne Don du Sang</h1>
-    <p>HUG x Partenaires CTS · Architecture Laravel · 6 modèles en base de données</p>
-  </div>
+    <div class="header">
+        <h1>Diagramme de classes UML — Campagne Don du Sang</h1>
+        <p>HUG x Partenaires CTS · Architecture Laravel · 5 modèles en base de données</p>
+    </div>
 
-  <div class="note">
-    ⚙️ <span><strong>Quiz, Questions, Options, Conditions</strong> → <code>resources/quiz/quiz.json</code> — aucune
-      table en base de données. Les réponses des participants ne sont pas stockées.</span>
-  </div>
+    <div class="note">
+        ⚙️ <span><strong>Quiz, Questions, Options, Conditions</strong> → <code>resources/quiz/quiz.json</code> — aucune
+            table en base de données. Les réponses des participants ne sont pas stockées.</span>
+    </div>
 
-  <div id="uml">
-    <div id="loading">Génération du diagramme…</div>
-  </div>
-  <div id="error"></div>
+    <div id="uml">
+        <div id="loading" style="color:#73726c;font-size:13px;padding:40px 0;text-align:center">Génération du diagramme…
+        </div>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'base',
-      themeVariables: {
-        fontSize: '13px',
-        primaryColor: '#dbeafe',
-        primaryBorderColor: '#93c5fd',
-        primaryTextColor: '#1e1e1c',
-        lineColor: '#94928a',
-        textColor: '#3d3d3a',
-        secondaryColor: '#dcfce7',
-        tertiaryColor: '#fce7f3',
-        noteBkgColor: '#fef9c3',
-        edgeLabelBackground: '#f5f4f0',
-        classText: '#1e1e1c',
-      }
-    });
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            themeVariables: {
+                fontSize: '13px',
+                primaryColor: '#dbeafe',
+                primaryBorderColor: '#93c5fd',
+                primaryTextColor: '#1e1e1c',
+                lineColor: '#94928a',
+                textColor: '#3d3d3a',
+                secondaryColor: '#dcfce7',
+                tertiaryColor: '#fce7f3',
+                noteBkgColor: '#fef9c3',
+                edgeLabelBackground: '#f5f4f0',
+                classText: '#1e1e1c',
+            }
+        });
 
-    const diagram = `classDiagram
+        const diagram = `classDiagram
   direction TB
 
   class User {
-    +UUID id
+    +BigInt id
     +String name
     +String email
     +String password
+    +DateTime emailVerifiedAt
     +Boolean isAdmin
     +String rememberToken
     +createToken() String
   }
 
   class Entreprise {
-    +UUID id
+    +BigInt id
     +String name
     +String slug
     +String logoUrl
@@ -155,115 +131,104 @@
     +Integer employeeCount
     +Boolean isActive
     +Boolean isLabelled
-    +Integer trophyRank
+    +Boolean isValidated
+    +TinyInt trophyRank
+    +Enum type
     +getRouteKeyName() String
-    +participationRate() Float
+    +participatesInTrophy() Boolean
+    +isLaureat() Boolean
+    +getTrophyNameAttribute() String
   }
 
   class Submission {
-    +UUID id
+    +BigInt id
     +String sessionToken
-    +UUID entrepriseId
+    +BigInt entrepriseId
     +Boolean isEligible
     +DateTime completedAt
-    +calculateEligibility() Boolean
   }
 
   class AnalyticsEvent {
-    +UUID id
+    +BigInt id
     +Enum type
-    +UUID entrepriseId
+    +BigInt entrepriseId
     +String sessionToken
     +JSON metadata
     +DateTime createdAt
   }
 
-  class ContactRequest {
-    +UUID id
-    +Enum type
-    +String name
-    +String email
-    +String companyName
-    +String message
-    +Enum status
-    +UUID processedBy
-    +DateTime processedAt
-  }
-
   class CampaignStats {
-    +UUID id
+    +BigInt id
     +Integer donationsCount
     +Integer livesSaved
     +Integer hugHospitalsCount
-    +UUID updatedBy
+    +BigInt updatedBy
     +DateTime updatedAt
+    +getInstance()$ CampaignStats
   }
 
-  Entreprise "1" --> "0..*" Submission     : receives
-  Entreprise "1" --> "0..*" AnalyticsEvent : tracks
-
-  User "1" --> "0..*" ContactRequest : processes
-  User "1" --> "0..1" CampaignStats  : updates
+  User "1" --> "0..1" CampaignStats   : updates
+  Entreprise "1" --> "0..*" Submission     : hasMany
+  Entreprise "1" --> "0..*" AnalyticsEvent : hasMany
+  Submission "0..*" --> "1" Entreprise     : belongsTo
+  AnalyticsEvent "0..*" --> "0..1" Entreprise : belongsTo
+  CampaignStats "0..1" --> "0..1" User     : updatedBy
 `;
 
-    async function render() {
-      try {
-        const { svg } = await mermaid.render('uml-svg', diagram);
-        document.getElementById('uml').innerHTML = svg;
-
-        // Arrondir les coins des classes
-        document.querySelectorAll('#uml svg .classGroup').forEach(node => {
-          const firstPath = node.querySelector('path[d]');
-          if (!firstPath) return;
-          const d = firstPath.getAttribute('d');
-          const nums = d.match(/-?[\d.]+/g)?.map(Number);
-          if (!nums || nums.length < 8) return;
-          const xs = [nums[0], nums[2], nums[4], nums[6]];
-          const ys = [nums[1], nums[3], nums[5], nums[7]];
-          const x = Math.min(...xs), y = Math.min(...ys);
-          const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
-          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          rect.setAttribute('x', x); rect.setAttribute('y', y);
-          rect.setAttribute('width', w); rect.setAttribute('height', h);
-          rect.setAttribute('rx', '8');
-          for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
-            if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
-          }
-          firstPath.replaceWith(rect);
-        });
-
-        // Colorier les classes par domaine
         const palette = {
-          'User': { bg: '#dbeafe', border: '#93c5fd' },
-          'Entreprise': { bg: '#dcfce7', border: '#86efac' },
-          'Submission': { bg: '#fce7f3', border: '#f9a8d4' },
-          'AnalyticsEvent': { bg: '#fee2e2', border: '#fca5a5' },
-          'ContactRequest': { bg: '#f0efeb', border: '#c4c2ba' },
-          'CampaignStats': { bg: '#fef9c3', border: '#d4b800' },
+            'User': { bg: '#dbeafe', border: '#93c5fd' },
+            'Entreprise': { bg: '#dcfce7', border: '#86efac' },
+            'Submission': { bg: '#fce7f3', border: '#f9a8d4' },
+            'AnalyticsEvent': { bg: '#fee2e2', border: '#fca5a5' },
+            'CampaignStats': { bg: '#fef9c3', border: '#d4b800' },
         };
 
-        document.querySelectorAll('#uml svg .classGroup').forEach(node => {
-          const label = node.querySelector('.classTitle, text')?.textContent?.trim();
-          const match = Object.keys(palette).find(k => label?.includes(k));
-          if (!match) return;
-          const { bg, border } = palette[match];
-          const rect = node.querySelector('rect');
-          if (rect) {
-            rect.setAttribute('fill', bg);
-            rect.setAttribute('stroke', border);
-            rect.setAttribute('stroke-width', '1.5');
-          }
-        });
+        async function render() {
+            try {
+                const { svg } = await mermaid.render('uml-svg', diagram);
+                document.getElementById('uml').innerHTML = svg;
 
-      } catch (e) {
-        document.getElementById('uml').innerHTML =
-          '<p style="color:#c0392b;padding:20px">Erreur : ' + e.message + '</p>';
-        console.error(e);
-      }
-    }
+                document.querySelectorAll('#uml svg .classGroup').forEach(node => {
+                    const firstPath = node.querySelector('path[d]');
+                    if (!firstPath) return;
+                    const d = firstPath.getAttribute('d');
+                    const nums = d.match(/-?[\d.]+/g)?.map(Number);
+                    if (!nums || nums.length < 8) return;
+                    const xs = [nums[0], nums[2], nums[4], nums[6]];
+                    const ys = [nums[1], nums[3], nums[5], nums[7]];
+                    const x = Math.min(...xs), y = Math.min(...ys);
+                    const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', x); rect.setAttribute('y', y);
+                    rect.setAttribute('width', w); rect.setAttribute('height', h);
+                    rect.setAttribute('rx', '8');
+                    for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
+                        if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+                    }
+                    firstPath.replaceWith(rect);
+                });
 
-    render();
-  </script>
+                document.querySelectorAll('#uml svg .classGroup').forEach(node => {
+                    const label = node.querySelector('.classTitle, text')?.textContent?.trim();
+                    const match = Object.keys(palette).find(k => label?.includes(k));
+                    if (!match) return;
+                    const { bg, border } = palette[match];
+                    const rect = node.querySelector('rect');
+                    if (rect) {
+                        rect.setAttribute('fill', bg);
+                        rect.setAttribute('stroke', border);
+                        rect.setAttribute('stroke-width', '1.5');
+                    }
+                });
+
+            } catch (e) {
+                document.getElementById('uml').innerHTML =
+                    '<p style="color:#c0392b;padding:20px">Erreur : ' + e.message + '</p>';
+            }
+        }
+
+        render();
+    </script>
 </body>
 
 </html>
