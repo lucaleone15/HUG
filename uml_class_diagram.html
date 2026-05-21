@@ -1,59 +1,102 @@
-<style>
-#uml svg.classDiagram .divider path { stroke-opacity: 0.5; }
-#uml svg.classDiagram .row-rect-odd path,
-#uml svg.classDiagram .row-rect-odd rect,
-#uml svg.classDiagram .row-rect-even path,
-#uml svg.classDiagram .row-rect-even rect { stroke: none !important; }
-</style>
-<div id="uml"></div>
-<script type="module">
-import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
-const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-await document.fonts.ready;
-mermaid.initialize({
-  startOnLoad: false,
-  theme: 'base',
-  fontFamily: '"Anthropic Sans", sans-serif',
-  themeVariables: {
-    darkMode: dark,
-    fontSize: '13px',
-    fontFamily: '"Anthropic Sans", sans-serif',
-    lineColor: dark ? '#9c9a92' : '#73726c',
-    textColor: dark ? '#c2c0b6' : '#3d3d3a',
-  },
-});
-const { svg } = await mermaid.render('uml-svg', `classDiagram
-  direction TB
+<!DOCTYPE html>
+<html lang="fr">
 
-  class Company {
-    +UUID id
-    +String name
-    +String slug
-    +String logoUrl
-    +String primaryColor
-    +String secondaryColor
-    +Integer employeeCount
-    +Boolean isActive
-    +DateTime createdAt
-    +DateTime updatedAt
-    +getRouteKeyName() String
-    +participationRate() Float
-    +eligibleSubmissionsCount() Integer
-  }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UML — Don du Sang HUG x CTS</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      background: #f5f4f0;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #3d3d3a;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 12px;
+      color: #73726c;
+      margin-bottom: 20px;
+    }
+
+    #uml {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+      overflow-x: auto;
+    }
+
+    #error {
+      color: #c0392b;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Diagramme de classes UML — Campagne Don du Sang</h1>
+  <p>HUG x Partenaires CTS · 12 modèles · Architecture Laravel</p>
+  <div id="uml">
+    <p style="color:#73726c;font-size:13px">Chargement du diagramme…</p>
+  </div>
+  <div id="error"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default',
+      fontSize: 12,
+      classDiagram: { useMaxWidth: false }
+    });
+
+    const diagram = `classDiagram
+  direction TB
 
   class User {
     +UUID id
     +String name
     +String email
     +String password
-    +Date birthDate
-    +BloodType bloodType
     +Boolean isAdmin
-    +DateTime emailVerifiedAt
-    +DateTime createdAt
-    +DateTime updatedAt
-    +createTokens() String
-    +isEligible() Boolean
+    +createToken() String
+  }
+
+  class Entreprise {
+    +UUID id
+    +String name
+    +String slug
+    +String logoUrl
+    +String primaryColor
+    +String contactName
+    +String contactEmail
+    +Integer employeeCount
+    +Boolean isActive
+    +Boolean isLabelled
+    +Integer trophyRank
+    +participationRate() Float
+  }
+
+  class Participant {
+    +UUID id
+    +String firstName
+    +String email
+    +String sessionToken
   }
 
   class Quiz {
@@ -61,19 +104,15 @@ const { svg } = await mermaid.render('uml-svg', `classDiagram
     +String title
     +String description
     +Boolean isActive
-    +DateTime createdAt
-    +DateTime updatedAt
-    +evaluateEligibility(answers) Boolean
+    +evaluateEligibility() Boolean
   }
 
   class Question {
     +UUID id
     +String content
-    +QuestionType type
+    +String type
     +Integer displayOrder
     +Boolean isRequired
-    +DateTime createdAt
-    +DateTime updatedAt
   }
 
   class QuestionOption {
@@ -81,8 +120,13 @@ const { svg } = await mermaid.render('uml-svg', `classDiagram
     +String label
     +Boolean isDisqualifying
     +Integer displayOrder
-    +DateTime createdAt
-    +DateTime updatedAt
+  }
+
+  class QuestionCondition {
+    +UUID id
+    +UUID questionId
+    +UUID dependsOnQuestionId
+    +UUID expectsOptionId
   }
 
   class Submission {
@@ -90,71 +134,99 @@ const { svg } = await mermaid.render('uml-svg', `classDiagram
     +String sessionToken
     +Boolean isEligible
     +DateTime completedAt
-    +DateTime createdAt
-    +DateTime updatedAt
-    +attachToUser(user) void
     +calculateEligibility() Boolean
   }
 
   class SubmissionAnswer {
     +UUID id
+    +UUID optionId
     +String textValue
+  }
+
+  class AnalyticsEvent {
+    +UUID id
+    +String type
+    +String sessionToken
+    +JSON metadata
     +DateTime createdAt
+  }
+
+  class ContactRequest {
+    +UUID id
+    +String type
+    +String name
+    +String email
+    +String companyName
+    +String message
+    +String status
+    +DateTime processedAt
+  }
+
+  class CampaignStats {
+    +UUID id
+    +Integer donationsCount
+    +Integer livesSaved
+    +Integer hugHospitalsCount
     +DateTime updatedAt
   }
 
-  class BloodType {
-    <<enumeration>>
-    A_POSITIVE
-    A_NEGATIVE
-    B_POSITIVE
-    B_NEGATIVE
-    AB_POSITIVE
-    AB_NEGATIVE
-    O_POSITIVE
-    O_NEGATIVE
-  }
+  User "1" --> "0..*" ContactRequest : processes
+  User "1" --> "0..1" CampaignStats : updates
 
-  class QuestionType {
-    <<enumeration>>
-    YES_NO
-    MULTIPLE_CHOICE
-    MULTIPLE_SELECT
-    TEXT
-  }
+  Entreprise "0..1" --> "1" Quiz : uses
+  Entreprise "1" --> "0..*" Participant : employs
+  Entreprise "1" --> "0..*" Submission : receives
+  Entreprise "1" --> "0..*" AnalyticsEvent : tracks
 
-  Company "1" --> "0..*" User : employs
-  Company "0..1" --> "1" Quiz : uses
-  Company "1" --> "0..*" Submission : receives
-  User "0..1" --> "0..*" Submission : submits
+  Participant "1" --> "0..*" Submission : submits
+
   Quiz "1" --> "1..*" Question : contains
-  Question "1" --> "0..*" QuestionOption : proposes
-  Submission "1" --> "1..*" SubmissionAnswer : composes
-  Question "1" --> "0..*" SubmissionAnswer : receives
-  QuestionOption "0..1" --> "0..*" SubmissionAnswer : selected
   Quiz "1" --> "0..*" Submission : passed_for
 
-  User ..> BloodType : uses
-  Question ..> QuestionType : uses`);
-document.getElementById('uml').innerHTML = svg;
+  Question "1" --> "0..*" QuestionOption : proposes
+  Question "1" --> "0..*" SubmissionAnswer : receives
 
-document.querySelectorAll('#uml svg.classDiagram .classGroup').forEach(node => {
-  const firstPath = node.querySelector('path[d]');
-  if (!firstPath) return;
-  const d = firstPath.getAttribute('d');
-  const nums = d.match(/-?[\d.]+/g)?.map(Number);
-  if (!nums || nums.length < 8) return;
-  const xs = [nums[0], nums[2], nums[4], nums[6]];
-  const ys = [nums[1], nums[3], nums[5], nums[7]];
-  const x = Math.min(...xs), y = Math.min(...ys);
-  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
-  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttribute('x', x); rect.setAttribute('y', y);
-  rect.setAttribute('width', w); rect.setAttribute('height', h);
-  rect.setAttribute('rx', '8');
-  for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
-    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
-  }
-  firstPath.replaceWith(rect);
-});
-</script>
+  QuestionCondition --> Question : targets
+  QuestionCondition --> QuestionOption : expects
+
+  QuestionOption "0..1" --> "0..*" SubmissionAnswer : selected_in
+
+  Submission "1" --> "1..*" SubmissionAnswer : composes
+`;
+
+    async function render() {
+      try {
+        const { svg } = await mermaid.render('uml-svg', diagram);
+        document.getElementById('uml').innerHTML = svg;
+
+        // Arrondir les coins
+        document.querySelectorAll('#uml svg .classGroup').forEach(node => {
+          const firstPath = node.querySelector('path[d]');
+          if (!firstPath) return;
+          const d = firstPath.getAttribute('d');
+          const nums = d.match(/-?[\d.]+/g)?.map(Number);
+          if (!nums || nums.length < 8) return;
+          const xs = [nums[0], nums[2], nums[4], nums[6]];
+          const ys = [nums[1], nums[3], nums[5], nums[7]];
+          const x = Math.min(...xs), y = Math.min(...ys);
+          const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', x); rect.setAttribute('y', y);
+          rect.setAttribute('width', w); rect.setAttribute('height', h);
+          rect.setAttribute('rx', '8');
+          for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
+            if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+          }
+          firstPath.replaceWith(rect);
+        });
+      } catch (e) {
+        document.getElementById('uml').innerHTML = '<p style="color:#c0392b;font-size:13px">Erreur de rendu : ' + e.message + '</p>';
+        console.error(e);
+      }
+    }
+
+    render();
+  </script>
+</body>
+
+</html>
