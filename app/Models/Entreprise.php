@@ -21,7 +21,9 @@ class Entreprise extends Model
         'employee_count',
         'is_active',
         'is_labelled',
-        'trophy_rank'
+        'is_validated',
+        'trophy_rank',
+        'type'
     ];
 
     protected $casts = [
@@ -30,8 +32,41 @@ class Entreprise extends Model
         'employee_count' => 'integer',
         'is_active' => 'boolean',
         'is_labelled' => 'boolean',
+        'is_validated' => 'boolean',
         'trophy_rank' => 'integer',
+        'type' => 'string',
     ];
+
+    /**
+     * Vérifie si l'entreprise participe au trophée.
+     * trophy_rank > 0 signifie participante.
+     * trophy_rank <= 0 ou null = ne participe pas.
+     */
+    public function participatesInTrophy(): bool
+    {
+        return $this->trophy_rank !== null && $this->trophy_rank > 0;
+    }
+
+    /**
+     * Vérifie si l'entreprise est un lauréat (top 3).
+     */
+    public function isLauréat(): bool
+    {
+        return in_array($this->trophy_rank, [1, 2, 3]);
+    }
+
+    /**
+     * Récupère le nom du trophée selon le classement.
+     */
+    public function getTrophyNameAttribute(): ?string
+    {
+        return match ($this->trophy_rank) {
+            1 => 'Or',
+            2 => 'Argent',
+            3 => 'Bronze',
+            default => null,
+        };
+    }
 
     public function submissions(): HasMany
     {
