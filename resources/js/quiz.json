@@ -1,0 +1,292 @@
+{
+  "title": "Quiz d'éligibilité don du sang",
+  "version": "1.0.0",
+  "source": "Questionnaire CTS HUG — Transfusion CRS Suisse",
+  "questions": [
+
+    {
+      "id": "q1",
+      "category": "Général",
+      "content": "Avez-vous entre 18 et 75 ans ?",
+      "hint": "Le don de sang est ouvert aux personnes majeures jusqu'à 75 ans en Suisse.",
+      "type": "yes_no",
+      "order": 1,
+      "options": [
+        { "id": "q1_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q1_non", "label": "Non", "is_disqualifying": true }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q2",
+      "category": "Santé générale",
+      "content": "Pesez-vous plus de 50 kg ?",
+      "hint": "Un poids minimum est nécessaire pour assurer votre sécurité pendant le don.",
+      "type": "yes_no",
+      "order": 2,
+      "options": [
+        { "id": "q2_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q2_non", "label": "Non", "is_disqualifying": true }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q3",
+      "category": "Santé générale",
+      "content": "Vous sentez-vous en bonne santé aujourd'hui ?",
+      "hint": "Pas de fatigue inhabituelle, de fièvre ou de malaise ce jour.",
+      "type": "yes_no",
+      "order": 3,
+      "options": [
+        { "id": "q3_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q3_non", "label": "Non", "is_disqualifying": true }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q4",
+      "category": "Don précédent",
+      "content": "Avez-vous déjà donné votre sang ?",
+      "hint": "Cela nous aide à vérifier le délai depuis votre dernier don.",
+      "type": "yes_no",
+      "order": 4,
+      "options": [
+        { "id": "q4_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q4_non", "label": "Non, c'est la première fois", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q5",
+      "category": "Don précédent",
+      "content": "Votre dernier don de sang remonte à plus de 8 semaines (hommes) ou 12 semaines (femmes) ?",
+      "hint": "Un délai minimum est nécessaire entre deux dons pour que votre organisme récupère.",
+      "type": "yes_no",
+      "order": 5,
+      "options": [
+        { "id": "q5_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q5_non", "label": "Non, c'était plus récent", "is_disqualifying": true }
+      ],
+      "conditions": [
+        { "depends_on": "q4", "expects": "q4_oui" }
+      ]
+    },
+
+    {
+      "id": "q6",
+      "category": "Soins récents",
+      "content": "Ces 4 dernières semaines, avez-vous eu de la fièvre au-dessus de 38°C, un rhume, une diarrhée ou une maladie légère ?",
+      "hint": "Un état grippal récent nécessite un délai avant de donner.",
+      "type": "yes_no",
+      "order": 6,
+      "options": [
+        { "id": "q6_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q6_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q7",
+      "category": "Soins récents",
+      "content": "Ces 4 dernières semaines, avez-vous eu un traitement dentaire ou des soins médicaux ?",
+      "hint": "Certains soins nécessitent un délai d'attente avant de donner.",
+      "type": "yes_no",
+      "order": 7,
+      "options": [
+        { "id": "q7_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q7_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q8",
+      "category": "Médicaments spéciaux",
+      "content": "Prenez-vous ou avez-vous pris récemment l'un de ces médicaments : contre l'acné sévère (Roaccutane), la prostate, la dépression/bipolaires, le VIH (PrEP/PEP), une chimiothérapie ou le psoriasis sévère ?",
+      "hint": "Ces traitements entraînent une contre-indication permanente ou temporaire.",
+      "type": "yes_no",
+      "order": 8,
+      "options": [
+        { "id": "q8_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q8_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q9",
+      "category": "Vaccins & immunothérapie",
+      "content": "Avez-vous reçu un vaccin ces 4 dernières semaines, un vaccin rage/tétanos dans l'année, ou une immunothérapie ?",
+      "hint": "Certains vaccins nécessitent un délai avant le don.",
+      "type": "yes_no",
+      "order": 9,
+      "options": [
+        { "id": "q9_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q9_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q10",
+      "category": "Antécédents médicaux graves",
+      "content": "Souffrez-vous ou avez-vous souffert de maladies graves : cœur, poumons, sang, coagulation, diabète, cancer, reins, foie, épilepsie, allergies sévères ou maladies de peau importantes ?",
+      "hint": "Ces antécédents peuvent entraîner une contre-indication.",
+      "type": "yes_no",
+      "order": 10,
+      "options": [
+        { "id": "q10_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q10_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q11",
+      "category": "Hospitalisations & transfusions",
+      "content": "Ces 3 dernières années, avez-vous été hospitalisé(e), opéré(e) ou victime d'un accident ?",
+      "hint": "Une hospitalisation récente nécessite un délai avant de donner.",
+      "type": "yes_no",
+      "order": 11,
+      "options": [
+        { "id": "q11_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q11_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q12",
+      "category": "Hospitalisations & transfusions",
+      "content": "Avez-vous reçu une transfusion sanguine ces 4 derniers mois ?",
+      "hint": "Recevoir du sang d'un autre donneur nécessite un délai d'attente.",
+      "type": "yes_no",
+      "order": 12,
+      "options": [
+        { "id": "q12_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q12_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q13",
+      "category": "Antécédents à risque permanent",
+      "content": "Avez-vous déjà reçu une greffe d'organe ou de tissu, subi une opération du cerveau ou de la moelle épinière à l'étranger, reçu une hormone de croissance avant 1986, ou êtes-vous susceptible d'être atteint(e) de la maladie de Creutzfeldt-Jakob ?",
+      "hint": "Ces antécédents entraînent une contre-indication permanente.",
+      "type": "yes_no",
+      "order": 13,
+      "options": [
+        { "id": "q13_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q13_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q14",
+      "category": "Voyages & origines",
+      "content": "Ces 6 derniers mois, avez-vous voyagé hors d'Europe ?",
+      "hint": "Certaines destinations présentent des risques infectieux nécessitant un délai.",
+      "type": "yes_no",
+      "order": 14,
+      "options": [
+        { "id": "q14_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q14_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q15",
+      "category": "Voyages & origines",
+      "content": "Êtes-vous né(e) hors de Suisse, ou votre mère a-t-elle séjourné plus de 6 mois hors d'Europe ?",
+      "hint": "Certaines origines géographiques impliquent des vérifications complémentaires.",
+      "type": "yes_no",
+      "order": 15,
+      "options": [
+        { "id": "q15_oui", "label": "Oui", "is_disqualifying": false },
+        { "id": "q15_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q16",
+      "category": "Maladies infectieuses",
+      "content": "Avez-vous déjà eu : paludisme, maladie de Chagas, Ebola, toxoplasmose, tuberculose, mononucléose ? Ou avez-vous été piqué(e) par une tique récemment ou en contact avec une personne contagieuse ?",
+      "hint": "Ces maladies ou expositions peuvent temporairement ou définitivement contre-indiquer le don.",
+      "type": "yes_no",
+      "order": 16,
+      "options": [
+        { "id": "q16_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q16_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q17",
+      "category": "Procédures corporelles",
+      "content": "Ces 4 derniers mois, avez-vous eu un tatouage, piercing, acupuncture, maquillage permanent, gastroscopie/coloscopie, ou un contact avec du sang étranger ?",
+      "hint": "Ces procédures présentent un risque de transmission d'agents infectieux.",
+      "type": "yes_no",
+      "order": 17,
+      "options": [
+        { "id": "q17_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q17_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q18",
+      "category": "VIH, hépatites & comportements à risque",
+      "content": "Avez-vous déjà été testé(e) positif/positive au VIH, à l'hépatite B ou C, ou à la syphilis ?",
+      "hint": "Ces maladies entraînent une contre-indication permanente au don.",
+      "type": "yes_no",
+      "order": 18,
+      "options": [
+        { "id": "q18_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q18_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q19",
+      "category": "VIH, hépatites & comportements à risque",
+      "content": "Ces derniers mois, avez-vous eu un nouveau partenaire sexuel, plus de 2 partenaires, consommé des drogues injectables ou de synthèse, ou eu un partenaire porteur d'hépatite, du virus Zika ou venant d'un pays à haute prévalence VIH ?",
+      "hint": "Ces comportements augmentent temporairement le risque de transmission.",
+      "type": "yes_no",
+      "order": 19,
+      "options": [
+        { "id": "q19_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q19_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q20",
+      "category": "Grossesse",
+      "content": "Êtes-vous actuellement enceinte ou l'avez-vous été ces 6 derniers mois ?",
+      "hint": "La grossesse et l'accouchement récent contre-indiquent temporairement le don.",
+      "type": "yes_no",
+      "order": 20,
+      "options": [
+        { "id": "q20_oui", "label": "Oui", "is_disqualifying": true },
+        { "id": "q20_non", "label": "Non", "is_disqualifying": false }
+      ],
+      "conditions": [
+        { "depends_on": "q1", "expects": "q1_oui" }
+      ]
+    }
+
+  ]
+}
