@@ -28,12 +28,15 @@ onMounted(() => {
             :style="`background-color: ${entreprise.primary_color}`"
         >
             <div class="max-w-2xl mx-auto text-center">
-                <img
-                    v-if="entreprise.logo_url"
-                    :src="entreprise.logo_url"
-                    :alt="entreprise.name"
-                    class="h-16 object-contain mx-auto mb-6 brightness-0 invert"
-                >
+                <div v-if="entreprise.logo_url" class="flex justify-center mb-6">
+                    <div class="bg-white rounded-xl p-3 shadow-sm">
+                        <img
+                            :src="entreprise.logo_url"
+                            :alt="entreprise.name"
+                            class="h-14 max-w-[140px] object-contain"
+                        >
+                    </div>
+                </div>
                 <h1 class="text-3xl md:text-4xl font-bold mb-3">{{ entreprise.name }}</h1>
                 <p v-if="entreprise.employee_count" class="text-white/70 mb-6">
                     {{ entreprise.employee_count }} {{ t('entreprise.employees') }}

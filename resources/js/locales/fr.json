@@ -20,7 +20,10 @@
     "trophee": {
         "title": "Palmarès",
         "subtitle": "Les entreprises récompensées pour leur engagement exceptionnel dans la campagne Don du Sang.",
-        "no_winners": "Aucun lauréat pour l'instant."
+        "no_winners": "Aucun lauréat pour l'instant.",
+        "gold": "Or",
+        "silver": "Argent",
+        "bronze": "Bronze"
     },
     "label": {
         "title": "Entreprises labelisées",
@@ -87,6 +90,11 @@
         "employee_count": "Nombre d'employés (approx.)",
         "primary_color": "Couleur principale",
         "color_hint": "Couleur de votre charte graphique",
+        "secondary_color": "Couleur secondaire",
+        "secondary_color_hint": "Optionnel",
+        "logo": "Logo de l'entreprise",
+        "logo_hint": "PNG, JPG ou SVG — 2 Mo max",
+        "logo_url": "Ou URL du logo",
         "contact_name": "Nom du responsable",
         "contact_email": "Email professionnel",
         "pending_note": "Votre demande sera examinée par l'équipe HUG. Vous recevrez une confirmation par email.",

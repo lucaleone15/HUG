@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\Admin\SubmissionController;
 use Illuminate\Support\Facades\Route;
 
 // --- Auth ---
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -30,8 +30,13 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 
     Route::get('dashboard', [DashboardController::class, 'index']);
 
-    Route::apiResource('entreprises', AdminEntrepriseController::class);
-    Route::post('entreprises/{entreprise}/send-kit', [AdminEntrepriseController::class, 'sendKit']);
+    // Entreprises — liaison par ID (pas par slug) pour l'admin
+    Route::get('entreprises',         [AdminEntrepriseController::class, 'index']);
+    Route::post('entreprises',        [AdminEntrepriseController::class, 'store']);
+    Route::get('entreprises/{id}',    [AdminEntrepriseController::class, 'show']);
+    Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);   // POST utilisé pour multipart (logo)
+    Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
+    Route::post('entreprises/{id}/send-kit', [AdminEntrepriseController::class, 'sendKit']);
 
     Route::get('submissions',              [SubmissionController::class, 'index']);
     Route::get('submissions/{submission}', [SubmissionController::class, 'show']);
