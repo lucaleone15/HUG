@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('campaign_stats', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedInteger('donations_count')->default(0);
-        $table->unsignedInteger('lives_saved')->default(0);
-        $table->unsignedInteger('hug_hospitals_count')->default(0);
-        $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-        $table->timestamp('updated_at')->nullable();
-    });
+        Schema::create('campaign_stats', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('donations_count')->default(0);
+            $table->unsignedInteger('lives_saved')->default(0);
+            $table->unsignedInteger('hug_hospitals_count')->default(0);
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**

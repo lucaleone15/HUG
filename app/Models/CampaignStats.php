@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CampaignStats extends Model
 {
-    protected $fillable = ['donations_count', 'lives_saved', 'hug_hospitals_count', 'updated_by', 'updated_at'];
+    protected $fillable = ['donations_count', 'lives_saved', 'hug_hospitals_count', 'updated_by'];
 
     protected $casts = [
         'donations_count' => 'integer',
         'lives_saved' => 'integer',
         'hug_hospitals_count' => 'integer',
-        'updated_at' => 'datetime',
     ];
 
     public function updatedBy(): BelongsTo

@@ -149,7 +149,7 @@ Champs :
 - entreprise_id   foreignId nullable → nullOnDelete
 - session_token   string nullable
 - metadata        json nullable
-- created_at      timestamp only (pas de updated_at)
+- timestamps
 
 Index  : [type, entreprise_id], session_token
 ```
@@ -185,7 +185,7 @@ Champs :
 - lives_saved          unsignedInt default 0
 - hug_hospitals_count  unsignedInt default 0
 - updated_by           foreignId nullable → nullOnDelete (ref users)
-- updated_at           timestamp
+- timestamps
 
 Casts  : donations_count → integer, lives_saved → integer, hug_hospitals_count → integer
 ```
@@ -436,6 +436,5 @@ return response()->json([
 - `QuizController@result` retourne 404 si pas de `session('quiz_token')` valide
 - Vider `session('quiz_token')` après rattachement ou expiration
 - Utiliser `CampaignStats::getInstance()` — jamais `::first()` directement
-- Seeder : 1 User admin (`is_admin = true`), 1 CampaignStats à zéro, 2-3 Entreprises de démo
+- Seeder : 1 User admin (`is_admin = true`), 1 CampaignStats à zéro, 2-3 Entreprises de démo ✅
 - Configurer CORS dans `config/cors.php` pour le domaine Vue admin
-- `resources/js/quiz.json` → déplacer vers `resources/quiz/quiz.json`
