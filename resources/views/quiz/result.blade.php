@@ -1,0 +1,17 @@
+@extends('layouts.base')
+@section('title', 'Résultat — ' . $entreprise->name)
+@section('page', 'QuizResult')
+@php
+$propsJson = json_encode([
+    'entreprise' => [
+        'id'            => $entreprise->id,
+        'name'          => $entreprise->name,
+        'slug'          => $entreprise->slug,
+        'primary_color' => $entreprise->primary_color,
+    ],
+    'submission' => [
+        'is_eligible'  => $submission->is_eligible,
+        'completed_at' => $submission->completed_at?->toIso8601String(),
+    ],
+], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+@endphp
