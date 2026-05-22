@@ -6,12 +6,13 @@ import { useApi } from '../composables/useApi.js'
 const api    = useApi()
 const router = useRouter()
 
-const data    = ref(null)
-const loading = ref(true)
-const error   = ref(null)
-const page    = ref(1)
+const data     = ref(null)
+const loading  = ref(true)
+const error    = ref(null)
+const page     = ref(1)
 const deleting = ref(null)
 const kitSent  = ref(null)
+const accepting = ref(null)
 
 const load = async () => {
     loading.value = true
@@ -30,7 +31,7 @@ const goEdit   = (id) => router.push(`/admin/entreprises/${id}/edit`)
 const goCreate = ()   => router.push('/admin/entreprises/new')
 
 const destroy = async (e) => {
-    if (!confirm(`Supprimer « ${e.name} » ?`)) return
+    if (!confirm(`Supprimer « ${e.name} » ? Cette action est irréversible.`)) return
     deleting.value = e.id
     try {
         await api.del(`/admin/entreprises/${e.id}`)
@@ -39,6 +40,22 @@ const destroy = async (e) => {
         alert(err.message)
     } finally {
         deleting.value = null
+    }
+}
+
+const accept = async (e) => {
+    accepting.value = e.id
+    try {
+        const fd = new FormData()
+        fd.append('is_active',    '1')
+        fd.append('is_validated', '1')
+        fd.append('is_labelled',  '1')
+        await api.upload(`/admin/entreprises/${e.id}`, fd)
+        await load()
+    } catch (err) {
+        alert(err.message)
+    } finally {
+        accepting.value = null
     }
 }
 
@@ -53,9 +70,10 @@ const sendKit = async (e) => {
 }
 
 const statusBadge = (e) => {
-    if (!e.is_active)   return { label: 'En attente',  class: 'badge-warning' }
-    if (e.is_validated) return { label: 'Validée',     class: 'badge-success' }
-    return                     { label: 'Active',      class: 'badge-info' }
+    if (!e.is_active && !e.is_validated) return { label: 'En attente', class: 'badge-warning' }
+    if (e.is_validated && e.is_active)   return { label: 'Active',     class: 'badge-success' }
+    if (e.is_validated && !e.is_active)  return { label: 'Suspendue',  class: 'badge-error' }
+    return                                      { label: 'Brouillon',  class: 'badge-ghost' }
 }
 </script>
 
@@ -82,16 +100,18 @@ const statusBadge = (e) => {
                                 <th>Entreprise</th>
                                 <th>Type</th>
                                 <th>Statut</th>
-                                <th class="text-right">Employés</th>
+                                <th class="text-right">Éligibles</th>
                                 <th class="text-right">Trophée</th>
-                                <th></th>
+                                <th class="text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="e in data.data" :key="e.id" class="hover">
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <div class="w-1.5 h-6 rounded-full" :style="`background:${e.primary_color}`"></div>
+                                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
+                                            class="w-7 h-7 rounded object-contain bg-base-200">
+                                        <div v-else class="w-1.5 h-6 rounded-full" :style="`background:${e.primary_color}`"></div>
                                         <div>
                                             <div class="font-medium text-sm">{{ e.name }}</div>
                                             <div class="text-xs text-base-content/40">{{ e.slug }}</div>
@@ -105,21 +125,43 @@ const statusBadge = (e) => {
                                     </span>
                                     <span v-if="e.is_labelled" class="badge badge-sm badge-ghost ml-1">Label</span>
                                 </td>
-                                <td class="text-right text-sm">{{ e.employee_count?.toLocaleString('fr-CH') ?? '—' }}</td>
+                                <td class="text-right text-sm">
+                                    <span class="text-emerald-600 font-semibold">{{ e.eligible_count ?? '—' }}</span>
+                                    <span v-if="e.submission_count" class="text-base-content/40 text-xs"> / {{ e.submission_count }}</span>
+                                </td>
                                 <td class="text-right text-sm">
                                     <span v-if="e.trophy_rank">🏆 #{{ e.trophy_rank }}</span>
                                     <span v-else class="text-base-content/30">—</span>
                                 </td>
                                 <td>
-                                    <div class="flex gap-1 justify-end">
+                                    <div class="flex gap-1 justify-end flex-wrap">
+                                        <!-- Accepter (seulement si en attente) -->
+                                        <button
+                                            v-if="!e.is_active || !e.is_validated"
+                                            class="btn btn-xs btn-success text-white"
+                                            :disabled="accepting === e.id"
+                                            @click="accept(e)"
+                                            title="Accepter l'entreprise"
+                                        >
+                                            <span v-if="accepting === e.id" class="loading loading-spinner loading-xs"></span>
+                                            <span v-else>✓ Accepter</span>
+                                        </button>
                                         <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" title="Modifier">✏️</button>
-                                        <button class="btn btn-ghost btn-xs" :class="kitSent === e.id ? 'text-success' : ''"
-                                            @click="sendKit(e)" title="Envoyer kit">
+                                        <button
+                                            class="btn btn-ghost btn-xs"
+                                            :class="kitSent === e.id ? 'text-success' : ''"
+                                            :disabled="!e.contact_email"
+                                            @click="sendKit(e)"
+                                            title="Envoyer kit"
+                                        >
                                             {{ kitSent === e.id ? '✅' : '📦' }}
                                         </button>
-                                        <button class="btn btn-ghost btn-xs text-error"
+                                        <button
+                                            class="btn btn-ghost btn-xs text-error"
                                             :disabled="deleting === e.id"
-                                            @click="destroy(e)" title="Supprimer">🗑️</button>
+                                            @click="destroy(e)"
+                                            title="Supprimer"
+                                        >🗑️</button>
                                     </div>
                                 </td>
                             </tr>

@@ -29,11 +29,12 @@ const props = defineProps({
                     class="card bg-base-100 border border-base-200 shadow-sm hover:shadow-md transition-shadow"
                 >
                     <div class="card-body">
-                        <div
-                            class="h-1 rounded-full mb-3"
-                            :style="`background-color: ${e.primary_color}`"
-                        ></div>
-                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name" class="h-8 object-contain mb-2">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-1 self-stretch rounded-full" :style="`background-color: ${e.primary_color}`"></div>
+                            <div v-if="e.logo_url" class="bg-white border border-base-200 rounded-lg p-1.5 w-14 h-10 flex items-center justify-center">
+                                <img :src="e.logo_url" :alt="e.name" class="max-h-7 max-w-full object-contain">
+                            </div>
+                        </div>
                         <h2 class="card-title text-base">{{ e.name }}</h2>
                         <div class="flex gap-2 flex-wrap mt-1">
                             <span v-if="e.type" class="badge badge-ghost badge-sm">{{ e.type }}</span>

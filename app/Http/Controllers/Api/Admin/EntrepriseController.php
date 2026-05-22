@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EntrepriseResource;
+use App\Http\Resources\AdminEntrepriseResource;
 use App\Models\Entreprise;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EntrepriseController extends Controller
@@ -15,14 +16,14 @@ class EntrepriseController extends Controller
     public function index(): JsonResponse
     {
         $entreprises = Entreprise::withCount([
-                'submissions as eligible_count' => fn($q) => $q->where('is_eligible', true),
+                'submissions as eligible_count'  => fn($q) => $q->where('is_eligible', true),
                 'submissions as submission_count',
             ])
             ->latest()
             ->paginate(25);
 
         return response()->json([
-            'data' => EntrepriseResource::collection($entreprises->items()),
+            'data' => AdminEntrepriseResource::collection($entreprises->items()),
             'meta' => [
                 'total'        => $entreprises->total(),
                 'per_page'     => $entreprises->perPage(),
@@ -32,14 +33,15 @@ class EntrepriseController extends Controller
         ]);
     }
 
-    public function show(Entreprise $entreprise): EntrepriseResource
+    public function show(int $id): AdminEntrepriseResource
     {
+        $entreprise = Entreprise::findOrFail($id);
         $entreprise->loadCount([
-            'submissions as eligible_count'   => fn($q) => $q->where('is_eligible', true),
+            'submissions as eligible_count'  => fn($q) => $q->where('is_eligible', true),
             'submissions as submission_count',
         ]);
 
-        return new EntrepriseResource($entreprise);
+        return new AdminEntrepriseResource($entreprise);
     }
 
     public function store(Request $request): JsonResponse
@@ -48,7 +50,8 @@ class EntrepriseController extends Controller
             'name'            => 'required|string|max:255',
             'slug'            => 'nullable|string|max:255|unique:entreprises,slug|regex:/^[a-z0-9-]+$/',
             'type'            => 'required|in:banque,assurance,industrie,commerce,service,technologie,sante,education,autre',
-            'logo_url'        => 'nullable|url',
+            'logo_url'        => 'nullable|string|max:2048',
+            'logo'            => 'nullable|image|max:2048',
             'primary_color'   => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'secondary_color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'employee_count'  => 'nullable|integer|min:1',
@@ -59,21 +62,30 @@ class EntrepriseController extends Controller
             'is_validated'    => 'boolean',
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
         ]);
+
+        if ($request->hasFile('logo')) {
+            $data['logo_url'] = Storage::url(
+                $request->file('logo')->store('logos', 'public')
+            );
+        }
 
         $data['slug'] ??= $this->uniqueSlug(Str::slug($request->name));
 
         $entreprise = Entreprise::create($data);
 
-        return response()->json(new EntrepriseResource($entreprise), 201);
+        return response()->json(new AdminEntrepriseResource($entreprise), 201);
     }
 
-    public function update(Request $request, Entreprise $entreprise): EntrepriseResource
+    public function update(Request $request, int $id): AdminEntrepriseResource
     {
+        $entreprise = Entreprise::findOrFail($id);
+
         $data = $request->validate([
             'name'            => 'sometimes|string|max:255',
-            'slug'            => "sometimes|string|max:255|unique:entreprises,slug,{$entreprise->id}|regex:/^[a-z0-9-]+$/",
+            'slug'            => "sometimes|string|max:255|unique:entreprises,slug,{$id}|regex:/^[a-z0-9-]+$/",
             'type'            => 'sometimes|in:banque,assurance,industrie,commerce,service,technologie,sante,education,autre',
-            'logo_url'        => 'nullable|url',
+            'logo_url'        => 'nullable|string|max:2048',
+            'logo'            => 'nullable|image|max:2048',
             'primary_color'   => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'secondary_color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'employee_count'  => 'nullable|integer|min:1',
@@ -85,22 +97,39 @@ class EntrepriseController extends Controller
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
         ]);
 
+        if ($request->hasFile('logo')) {
+            // Supprimer l'ancien fichier si stocké localement
+            if ($entreprise->logo_url && str_starts_with($entreprise->logo_url, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $entreprise->logo_url));
+            }
+            $data['logo_url'] = Storage::url(
+                $request->file('logo')->store('logos', 'public')
+            );
+        }
+
         $entreprise->update($data);
 
-        return new EntrepriseResource($entreprise);
+        return new AdminEntrepriseResource($entreprise);
     }
 
-    public function destroy(Entreprise $entreprise): Response
+    public function destroy(int $id): Response
     {
+        $entreprise = Entreprise::findOrFail($id);
+
+        if ($entreprise->logo_url && str_starts_with($entreprise->logo_url, '/storage/')) {
+            Storage::disk('public')->delete(str_replace('/storage/', '', $entreprise->logo_url));
+        }
+
         $entreprise->delete();
 
         return response()->noContent();
     }
 
-    public function sendKit(Entreprise $entreprise): JsonResponse
+    public function sendKit(int $id): JsonResponse
     {
-        // TODO: envoyer un email à $entreprise->contact_email avec le lien du kit
-        // Mail::to($entreprise->contact_email)->send(new KitPromoMail($entreprise));
+        $entreprise = Entreprise::findOrFail($id);
+
+        // TODO: Mail::to($entreprise->contact_email)->send(new KitPromoMail($entreprise));
 
         return response()->json([
             'message' => "Kit envoyé à {$entreprise->contact_email}",

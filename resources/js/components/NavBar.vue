@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setLocale } from '../i18n'
 
@@ -20,6 +21,21 @@ const isActive = (href) =>
 const toggleLang = async () => {
     await setLocale(locale.value === 'fr' ? 'en' : 'fr')
 }
+
+// Menu mobile — toggle Vue (le dropdown DaisyUI CSS ne fonctionne pas au toucher)
+const menuOpen  = ref(false)
+const menuRef   = ref(null)
+
+const closeMenu = () => { menuOpen.value = false }
+
+const onClickOutside = (e) => {
+    if (menuRef.value && !menuRef.value.contains(e.target)) {
+        menuOpen.value = false
+    }
+}
+
+onMounted(()        => document.addEventListener('click', onClickOutside))
+onBeforeUnmount(()  => document.removeEventListener('click', onClickOutside))
 </script>
 
 <template>
@@ -54,24 +70,46 @@ const toggleLang = async () => {
             >
                 {{ t('nav.inscription') }}
             </a>
+
             <button class="btn btn-ghost btn-sm text-xs font-mono" @click="toggleLang">
                 {{ t('lang') }}
             </button>
-            <!-- Mobile menu -->
-            <div class="dropdown dropdown-end lg:hidden">
-                <button class="btn btn-ghost btn-square btn-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+            <!-- Burger mobile -->
+            <div class="relative lg:hidden" ref="menuRef">
+                <button
+                    class="btn btn-ghost btn-square btn-sm"
+                    @click.stop="menuOpen = !menuOpen"
+                    aria-label="Menu"
+                >
+                    <svg v-if="!menuOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
-                <ul class="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-lg border border-base-200">
+
+                <ul
+                    v-if="menuOpen"
+                    class="absolute right-0 top-full mt-1 w-52 bg-base-100 rounded-box shadow-lg border border-base-200 p-2 z-50"
+                >
                     <li v-for="link in links" :key="link.href">
-                        <a :href="link.href" :class="isActive(link.href) ? 'font-semibold text-[#E30613]' : ''">
+                        <a
+                            :href="link.href"
+                            class="flex px-3 py-2 rounded-lg text-sm hover:bg-base-200"
+                            :class="isActive(link.href) ? 'font-semibold text-[#E30613]' : 'text-base-content/70'"
+                            @click="closeMenu"
+                        >
                             {{ t(link.key) }}
                         </a>
                     </li>
-                    <li>
-                        <a href="/inscription" class="font-semibold text-[#E30613]">
+                    <li class="mt-1 border-t border-base-200 pt-1">
+                        <a
+                            href="/inscription"
+                            class="flex px-3 py-2 rounded-lg text-sm font-semibold text-[#E30613] hover:bg-red-50"
+                            @click="closeMenu"
+                        >
                             {{ t('nav.inscription') }}
                         </a>
                     </li>

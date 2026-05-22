@@ -20,7 +20,10 @@
     "trophee": {
         "title": "Trophy",
         "subtitle": "Companies recognised for their exceptional commitment to the Blood Donation campaign.",
-        "no_winners": "No winners yet."
+        "no_winners": "No winners yet.",
+        "gold": "Gold",
+        "silver": "Silver",
+        "bronze": "Bronze"
     },
     "label": {
         "title": "Labelled Companies",
@@ -87,6 +90,11 @@
         "employee_count": "Number of employees (approx.)",
         "primary_color": "Brand colour",
         "color_hint": "Your company's primary colour",
+        "secondary_color": "Secondary colour",
+        "secondary_color_hint": "Optional",
+        "logo": "Company logo",
+        "logo_hint": "PNG, JPG or SVG — 2 MB max",
+        "logo_url": "Or logo URL",
         "contact_name": "Contact person",
         "contact_email": "Professional email",
         "pending_note": "Your request will be reviewed by the HUG team. You will receive a confirmation by email.",

@@ -37,7 +37,9 @@ const others = (props.winners ?? []).filter(w => w.trophy_rank > 3)
                 >
                     <div class="card-body items-center">
                         <div class="text-4xl">{{ rankMedal(w.trophy_rank) }}</div>
-                        <img v-if="w.logo_url" :src="w.logo_url" :alt="w.name" class="h-10 object-contain my-2 brightness-0 invert">
+                        <div v-if="w.logo_url" class="bg-white rounded-lg p-2 my-2 w-20 h-14 flex items-center justify-center">
+                            <img :src="w.logo_url" :alt="w.name" class="max-h-10 max-w-full object-contain">
+                        </div>
                         <h2 class="card-title text-base justify-center">{{ w.name }}</h2>
                         <div class="badge badge-outline text-white border-white/50 text-xs">
                             {{ rankLabel(w.trophy_rank) }}

@@ -61,12 +61,15 @@ class QuizController extends Controller
                 ->isNotEmpty();
         });
 
-        Submission::create([
-            'session_token' => $token,
-            'entreprise_id' => $entreprise->id,
-            'is_eligible'   => $isEligible,
-            'completed_at'  => now(),
-        ]);
+        // firstOrCreate évite un crash DB en cas de double-submit (unique constraint session_token)
+        Submission::firstOrCreate(
+            ['session_token' => $token],
+            [
+                'entreprise_id' => $entreprise->id,
+                'is_eligible'   => $isEligible,
+                'completed_at'  => now(),
+            ]
+        );
 
         return redirect()->route('quiz.result', $entreprise);
     }
