@@ -68,6 +68,11 @@ class Entreprise extends Model
         };
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);

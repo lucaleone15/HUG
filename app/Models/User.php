@@ -34,14 +34,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Récupère les demandes de contact traitées par cet administrateur.
-     */
-    public function contactRequests(): HasMany
-    {
-        return $this->hasMany(ContactRequest::class, 'processed_by');
-    }
-
-    /**
      * Récupère les statistiques de campagne mise à jour par cet administrateur.
      */
     public function campaignStats(): HasOne

@@ -21,7 +21,7 @@ class AnalyticsEvent extends Model
     protected $fillable = ['type', 'entreprise_id', 'session_token', 'metadata'];
 
     protected $casts = [
-        'type' => self::TYPES, // Utilise un enum PHP 8.1+ en prod
+        'type' => 'string',
         'metadata' => 'array',
         'created_at' => 'datetime',
     ];
