@@ -37,7 +37,7 @@ class CreateAdminCommand extends Command
         // S'assurer que la ligne CampaignStats existe
         CampaignStats::getInstance();
 
-        $this->info("✅ Admin créé : {$name} <{$email}>");
+        $this->info("Admin créé : {$name} <{$email}>");
         $this->line('Connectez-vous sur /admin/login avec ces identifiants.');
 
         return self::SUCCESS;

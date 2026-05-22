@@ -19,6 +19,6 @@ class ProductionSeeder extends Seeder
         // Ligne unique obligatoire pour /api/stats et le dashboard
         CampaignStats::getInstance();
 
-        $this->command->info('✅ ProductionSeeder : CampaignStats initialisée.');
+        $this->command->info('ProductionSeeder : CampaignStats initialisée.');
     }
 }
