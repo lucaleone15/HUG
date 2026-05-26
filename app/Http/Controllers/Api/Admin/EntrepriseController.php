@@ -116,7 +116,7 @@ class EntrepriseController extends Controller
         $entreprise->update($data);
 
         if ($justValidated && $entreprise->contact_email) {
-            $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
+            $locale = in_array($entreprise->locale, ['fr', 'de', 'it', 'en']) ? $entreprise->locale : 'fr';
             Mail::to($entreprise->contact_email)
                 ->send((new \App\Mail\CompanyConfirmationLink($entreprise))->locale($locale));
         }
@@ -155,7 +155,7 @@ class EntrepriseController extends Controller
         abort_if(! $entreprise->is_active, 422, 'Entreprise non active.');
         abort_if(! $entreprise->contact_email, 422, 'Aucun email de contact défini.');
 
-        $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
+        $locale = in_array($entreprise->locale, ['fr', 'de', 'it', 'en']) ? $entreprise->locale : 'fr';
 
         Mail::to($entreprise->contact_email)
             ->send((new \App\Mail\CompanyConfirmationLink($entreprise))->locale($locale));

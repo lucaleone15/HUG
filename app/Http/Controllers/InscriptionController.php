@@ -40,6 +40,8 @@ class InscriptionController extends Controller
             $logoUrl = $request->logo_url;
         }
 
+        $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
+
         Entreprise::create([
             'name'            => $request->name,
             'slug'            => $this->uniqueSlug(Str::slug($request->name)),
@@ -54,6 +56,7 @@ class InscriptionController extends Controller
             'is_validated'    => false,
             'is_labelled'     => false,
             'wants_trophy'    => $request->boolean('wants_trophy'),
+            'locale'          => $locale,
         ]);
 
         return redirect()->route('inscription')->with('success', true);

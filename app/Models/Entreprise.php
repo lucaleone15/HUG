@@ -26,7 +26,8 @@ class Entreprise extends Model
         'wants_trophy',
         'rdv_url',
         'rdv_date',
-        'type'
+        'type',
+        'locale'
     ];
 
     protected $casts = [
