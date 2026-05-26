@@ -183,6 +183,17 @@ const clearLogo = () => {
                         </div>
                     </label>
 
+                    <!-- Trophée -->
+                    <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
+                        {{ t('inscription.section_trophy') }}
+                    </div>
+
+                    <label class="label gap-3 cursor-pointer justify-start">
+                        <input type="checkbox" name="wants_trophy" value="1" class="checkbox checkbox-sm">
+                        <span class="label-text">{{ t('inscription.wants_trophy') }}</span>
+                    </label>
+                    <p class="text-xs text-base-content/50 -mt-3">{{ t('inscription.wants_trophy_hint') }}</p>
+
                     <div class="alert alert-info text-sm mt-2">
                         <span>{{ t('inscription.pending_note') }}</span>
                     </div>

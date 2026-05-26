@@ -53,7 +53,9 @@
     "entreprise": {
         "quiz_cta": "Vérifier mon éligibilité",
         "employees": "employés",
-        "inactive": "Cette campagne n'est plus active."
+        "inactive": "Cette campagne n'est plus active.",
+        "collect_date": "Date de la collecte",
+        "rdv_cta": "Prendre rendez-vous"
     },
     "quiz": {
         "title": "Quiz d'éligibilité",
@@ -97,6 +99,9 @@
         "logo_url": "Ou URL du logo",
         "contact_name": "Nom du responsable",
         "contact_email": "Email professionnel",
+        "section_trophy": "Trophée des entreprises",
+        "wants_trophy": "Je souhaite que mon entreprise participe au Trophée des entreprises",
+        "wants_trophy_hint": "Le CTS vous contactera pour convenir de la date de collecte et du lien de rendez-vous.",
         "pending_note": "Votre demande sera examinée par l'équipe HUG. Vous recevrez une confirmation par email.",
         "submit": "Envoyer la demande",
         "success_title": "Demande envoyée !",

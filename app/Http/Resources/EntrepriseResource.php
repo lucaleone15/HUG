@@ -22,7 +22,9 @@ class EntrepriseResource extends JsonResource
             'is_active'       => $this->is_active,
             'trophy_rank'     => $this->trophy_rank,
             'type'            => $this->type,
-            // contact_name / contact_email volontairement exclus (données internes)
+            'rdv_url'         => $this->rdv_url,
+            'rdv_date'        => $this->rdv_date?->format('Y-m-d'),
+            // contact_name / contact_email / wants_trophy volontairement exclus (données internes)
         ];
     }
 }

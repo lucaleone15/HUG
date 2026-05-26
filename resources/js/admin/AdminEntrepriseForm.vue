@@ -21,6 +21,9 @@ const form = ref({
     logo_url: '',
     is_active: true, is_labelled: false, is_validated: false,
     trophy_rank: '',
+    wants_trophy: false,
+    rdv_url: '',
+    rdv_date: '',
 })
 
 const logoFile     = ref(null)
@@ -51,6 +54,11 @@ onMounted(async () => {
         form.value.is_active    = !!e.is_active
         form.value.is_labelled  = !!e.is_labelled
         form.value.is_validated = !!e.is_validated
+        form.value.wants_trophy = !!e.wants_trophy
+
+        // CTS
+        form.value.rdv_url  = e.rdv_url  ?? ''
+        form.value.rdv_date = e.rdv_date ?? ''
 
         // Prévisualisation logo
         if (e.logo_url) logoPreview.value = e.logo_url
@@ -84,13 +92,14 @@ const save = async () => {
 
         // Champs texte / bool
         const fields = ['name','slug','type','employee_count','contact_name','contact_email',
-                        'primary_color','secondary_color','logo_url','trophy_rank']
+                        'primary_color','secondary_color','logo_url','trophy_rank','rdv_url','rdv_date']
         fields.forEach(k => {
             if (form.value[k] !== '' && form.value[k] !== null) fd.append(k, form.value[k])
         })
         fd.append('is_active',    form.value.is_active    ? '1' : '0')
         fd.append('is_labelled',  form.value.is_labelled  ? '1' : '0')
         fd.append('is_validated', form.value.is_validated ? '1' : '0')
+        fd.append('wants_trophy', form.value.wants_trophy ? '1' : '0')
 
         // Fichier logo (prioritaire sur logo_url si sélectionné)
         if (logoFile.value) fd.append('logo', logoFile.value)
@@ -254,6 +263,35 @@ const fieldError = (key) => errors.value[key]?.[0]
                     <label class="label gap-2 cursor-pointer">
                         <input type="checkbox" v-model="form.is_labelled" class="checkbox checkbox-sm">
                         <span class="label-text">Labelisée</span>
+                    </label>
+                    <label class="label gap-2 cursor-pointer">
+                        <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">
+                        <span class="label-text">
+                            Souhaite participer au trophée
+                            <span class="text-base-content/40 text-xs ml-1">(déclaré par l'entreprise)</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Section : Collecte CTS -->
+                <div class="divider text-xs text-base-content/40">Collecte CTS</div>
+                <p class="text-xs text-base-content/50 -mt-2">Ces informations sont renseignées par le CTS après concertation avec l'entreprise.</p>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="form-control col-span-2">
+                        <div class="label"><span class="label-text">Lien de prise de rendez-vous</span></div>
+                        <input v-model="form.rdv_url" type="url" class="input input-bordered input-sm"
+                            placeholder="https://calendly.com/... ou Doodle">
+                        <div v-if="fieldError('rdv_url')" class="label">
+                            <span class="label-text-alt text-error">{{ fieldError('rdv_url') }}</span>
+                        </div>
+                    </label>
+                    <label class="form-control">
+                        <div class="label"><span class="label-text">Date de la collecte</span></div>
+                        <input v-model="form.rdv_date" type="date" class="input input-bordered input-sm">
+                        <div v-if="fieldError('rdv_date')" class="label">
+                            <span class="label-text-alt text-error">{{ fieldError('rdv_date') }}</span>
+                        </div>
                     </label>
                 </div>
 

@@ -58,9 +58,9 @@ const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
                         <div class="space-y-2">
                             <div v-for="(val, key) in data.funnel" :key="key" class="flex items-center gap-3">
                                 <span class="text-xs w-36 text-base-content/50 capitalize">{{ key.replace('_', ' ') }}</span>
-                                <div class="flex-1 bg-base-200 rounded-full h-2">
+                                <div class="flex-1 bg-base-200 rounded-full h-2 overflow-hidden">
                                     <div class="bg-[#E30613] h-2 rounded-full transition-all"
-                                        :style="`width:${pct(val, data.funnel.page_viewed)}`"></div>
+                                        :style="`width:${(Math.min(val, maxVal(data.funnel)) / maxVal(data.funnel) * 100).toFixed(1)}%`"></div>
                                 </div>
                                 <span class="text-sm font-medium w-12 text-right">{{ val?.toLocaleString('fr-CH') }}</span>
                             </div>

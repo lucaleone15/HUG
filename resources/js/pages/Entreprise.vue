@@ -53,7 +53,7 @@ onMounted(() => {
 
         <!-- Info section -->
         <main class="max-w-2xl mx-auto px-6 py-12 text-center">
-            <div class="card bg-base-200 shadow-sm">
+            <div class="card bg-base-200 shadow-sm mb-4">
                 <div class="card-body">
                     <p class="text-base-content/70 text-sm leading-relaxed">
                         Participez au quiz d'éligibilité au don du sang proposé par <strong>{{ entreprise.name }}</strong>
@@ -68,6 +68,25 @@ onMounted(() => {
                             {{ t('entreprise.quiz_cta') }}
                         </a>
                     </div>
+                </div>
+            </div>
+
+            <!-- Collecte : date + lien RDV -->
+            <div v-if="entreprise.rdv_date || entreprise.rdv_url" class="card bg-base-100 shadow-sm">
+                <div class="card-body items-center gap-3">
+                    <p v-if="entreprise.rdv_date" class="text-sm text-base-content/70">
+                        {{ t('entreprise.collect_date') }} :
+                        <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
+                    </p>
+                    <a v-if="entreprise.rdv_url"
+                        :href="entreprise.rdv_url"
+                        target="_blank" rel="noopener"
+                        class="btn text-white border-none"
+                        :style="`background-color: ${entreprise.primary_color}`"
+                        @click="sendAnalytics('rdv_clicked', entreprise.id, null, {})"
+                    >
+                        {{ t('entreprise.rdv_cta') }}
+                    </a>
                 </div>
             </div>
         </main>

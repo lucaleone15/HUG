@@ -25,8 +25,10 @@ export async function loadLocaleMessages(locale) {
     }
 }
 
+export const SUPPORTED_LOCALES = ['fr', 'de', 'it', 'en']
+
 export async function setLocale(locale) {
-    if (!['fr', 'en'].includes(locale)) return
+    if (!SUPPORTED_LOCALES.includes(locale)) return
     await loadLocaleMessages(locale)
     i18n.global.locale.value = locale
     localStorage.setItem('locale', locale)

@@ -1,0 +1,111 @@
+{
+    "nav": {
+        "home": "Startseite",
+        "trophee": "Trophäe",
+        "label": "Label",
+        "kit": "Promo-Kit",
+        "contact": "Kontakt",
+        "inscription": "Anmelden"
+    },
+    "home": {
+        "hero_title": "Gemeinsam Leben retten",
+        "hero_subtitle": "Mobilisieren Sie Ihr Unternehmen für die Blutspendeaktion HUG × CTS. Eine einfache Geste, eine enorme Wirkung.",
+        "cta": "Partnerunternehmen entdecken",
+        "stats_donations": "gesammelte Spenden",
+        "stats_lives": "gerettete Leben",
+        "stats_hospitals": "HUG-Spitäler",
+        "stats_eligible": "berechtigte Teilnehmer",
+        "stats_companies": "mobilisierte Unternehmen"
+    },
+    "trophee": {
+        "title": "Siegerliste",
+        "subtitle": "Unternehmen, die für ihr aussergewöhnliches Engagement in der Blutspendeaktion ausgezeichnet wurden.",
+        "no_winners": "Noch keine Gewinner.",
+        "gold": "Gold",
+        "silver": "Silber",
+        "bronze": "Bronze"
+    },
+    "label": {
+        "title": "Ausgezeichnete Unternehmen",
+        "subtitle": "Diese Unternehmen haben sich durch ihr Engagement in der Blutspendeaktion HUG × CTS ausgezeichnet.",
+        "no_label": "Noch keine ausgezeichneten Unternehmen."
+    },
+    "kit": {
+        "title": "Kommunikationskit",
+        "subtitle": "Laden Sie unsere Ressourcen herunter, um die Aktion in Ihrem Unternehmen zu fördern: Plakate, Bilder, E-Mail-Vorlagen.",
+        "download_cta": "Kit herunterladen",
+        "coming_soon": "Das Kit wird in Kürze verfügbar sein."
+    },
+    "contact": {
+        "title": "Kontaktieren Sie uns",
+        "subtitle": "Eine Frage, eine Partnerschaftsanfrage oder ein spezifisches Anliegen? Wir antworten Ihnen schnell.",
+        "name": "Name",
+        "email": "E-Mail-Adresse",
+        "type": "Anfragetyp",
+        "type_general": "Allgemeine Frage",
+        "type_partnership": "Partnerschaft",
+        "type_technical": "Technischer Support",
+        "type_other": "Sonstiges",
+        "message": "Nachricht",
+        "submit": "Senden",
+        "success": "Ihre Nachricht wurde gesendet. Wir werden Ihnen so schnell wie möglich antworten."
+    },
+    "entreprise": {
+        "quiz_cta": "Meine Eignung prüfen",
+        "employees": "Mitarbeitende",
+        "inactive": "Diese Aktion ist nicht mehr aktiv.",
+        "collect_date": "Datum der Blutspende",
+        "rdv_cta": "Termin vereinbaren"
+    },
+    "quiz": {
+        "title": "Eignungsquiz",
+        "back": "← Zurück",
+        "complete_title": "Quiz abgeschlossen!",
+        "complete_subtitle": "Sie haben alle Fragen beantwortet. Entdecken Sie Ihr Ergebnis.",
+        "submit": "Mein Ergebnis sehen"
+    },
+    "result": {
+        "eligible_title": "Sie sind spendeberechtigt!",
+        "eligible_message": "Herzlichen Glückwunsch! Ihr Profil erfüllt die Kriterien für eine Blutspende. Vereinbaren Sie jetzt einen Termin beim CTS.",
+        "eligible_cta": "Termin vereinbaren",
+        "ineligible_title": "Spende momentan nicht möglich",
+        "ineligible_message": "Vielen Dank für Ihr Interesse. Ihr Profil erfüllt derzeit nicht die medizinischen Kriterien für eine Blutspende. Dies kann sich ändern — konsultieren Sie einen Arzt oder wenden Sie sich an den CTS.",
+        "ineligible_cta": "Mehr über Blutspenden erfahren",
+        "back_home": "Zurück zur Startseite"
+    },
+    "inscription": {
+        "title": "Mein Unternehmen anmelden",
+        "subtitle": "Nehmen Sie an der Blutspendeaktion HUG × CTS teil und mobilisieren Sie Ihre Mitarbeitenden.",
+        "section_company": "Ihr Unternehmen",
+        "section_contact": "Kontaktperson",
+        "name": "Unternehmensname",
+        "type": "Branche",
+        "type_banque": "Bankwesen",
+        "type_assurance": "Versicherung",
+        "type_industrie": "Industrie",
+        "type_commerce": "Handel",
+        "type_service": "Dienstleistungen",
+        "type_technologie": "Technologie",
+        "type_sante": "Gesundheit",
+        "type_education": "Bildung",
+        "type_autre": "Sonstiges",
+        "employee_count": "Anzahl Mitarbeitende (ca.)",
+        "primary_color": "Hauptfarbe",
+        "color_hint": "Farbe Ihrer Corporate Identity",
+        "secondary_color": "Sekundärfarbe",
+        "secondary_color_hint": "Optional",
+        "logo": "Unternehmenslogo",
+        "logo_hint": "PNG, JPG oder SVG — max. 2 MB",
+        "logo_url": "Oder Logo-URL",
+        "contact_name": "Kontaktperson",
+        "contact_email": "Geschäftliche E-Mail",
+        "section_trophy": "Unternehmenstrophäe",
+        "wants_trophy": "Ich möchte, dass mein Unternehmen an der Unternehmenstrophäe teilnimmt",
+        "wants_trophy_hint": "Der CTS wird Sie kontaktieren, um das Datum der Blutspende und den Buchungslink zu vereinbaren.",
+        "pending_note": "Ihr Antrag wird vom HUG-Team geprüft. Sie erhalten eine Bestätigung per E-Mail.",
+        "submit": "Anfrage senden",
+        "success_title": "Anfrage gesendet!",
+        "success_message": "Das HUG-Team wird Ihre Bewerbung prüfen und Sie unter der angegebenen Adresse kontaktieren."
+    },
+    "lang": "DE"
+}

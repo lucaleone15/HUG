@@ -28,6 +28,7 @@ class InscriptionController extends Controller
             'secondary_color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'logo'            => 'nullable|image|max:2048',
             'logo_url'        => 'nullable|string|max:2048',
+            'wants_trophy'    => 'boolean',
         ]);
 
         $logoUrl = null;
@@ -52,6 +53,7 @@ class InscriptionController extends Controller
             'is_active'       => false,
             'is_validated'    => false,
             'is_labelled'     => false,
+            'wants_trophy'    => $request->boolean('wants_trophy'),
         ]);
 
         return redirect()->route('inscription')->with('success', true);

@@ -12,6 +12,8 @@ $propsJson = json_encode([
         'secondary_color' => $entreprise->secondary_color,
         'employee_count'  => $entreprise->employee_count,
         'type'            => $entreprise->type,
+        'rdv_url'         => $entreprise->rdv_url,
+        'rdv_date'        => $entreprise->rdv_date?->format('Y-m-d'),
     ],
 ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 @endphp
