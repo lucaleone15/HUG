@@ -52,7 +52,7 @@
     "src": "_instrument-sans-600-normal-DMks36a2.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-8fSerXjB.css",
+    "file": "assets/app-WC3X6Eo7.css",
     "name": "app",
     "names": [
       "app.css"
@@ -61,28 +61,42 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DG-puBam.js",
+    "file": "assets/app-B52njiQC.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
+      "resources/js/locales/de.json",
       "resources/js/locales/en.json",
-      "resources/js/locales/fr.json"
+      "resources/js/locales/fr.json",
+      "resources/js/locales/it.json"
     ],
     "css": [
       "assets/app-BJRjbY4Z.css"
     ]
   },
+  "resources/js/locales/de.json": {
+    "file": "assets/de-CuC7V7eU.js",
+    "name": "de",
+    "src": "resources/js/locales/de.json",
+    "isDynamicEntry": true
+  },
   "resources/js/locales/en.json": {
-    "file": "assets/en-Dj7okxlC.js",
+    "file": "assets/en-CfhZrIBy.js",
     "name": "en",
     "src": "resources/js/locales/en.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/fr.json": {
-    "file": "assets/fr-CJa3vf-S.js",
+    "file": "assets/fr-crfosQ-u.js",
     "name": "fr",
     "src": "resources/js/locales/fr.json",
+    "isDynamicEntry": true
+  },
+  "resources/js/locales/it.json": {
+    "file": "assets/it-BKFJa_Bs.js",
+    "name": "it",
+    "src": "resources/js/locales/it.json",
     "isDynamicEntry": true
   }
 }
