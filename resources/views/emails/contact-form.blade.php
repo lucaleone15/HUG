@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
         <tr>
           <td style="padding:40px 40px 0;">
             <p style="margin:0 0 6px;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:500;">
-              Nouveau message de contact
+              {{ __('mail.contact_new_message') }}
             </p>
             <h1 style="margin:0 0 24px;font-size:20px;font-weight:600;color:#1a1a1a;">
               {{ $type }}
@@ -32,7 +32,7 @@
 
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
               <tr>
-                <td style="font-size:12px;color:#888;padding-bottom:4px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">De</td>
+                <td style="font-size:12px;color:#888;padding-bottom:4px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">{{ __('mail.contact_from') }}</td>
               </tr>
               <tr>
                 <td style="font-size:15px;color:#1a1a1a;font-weight:500;">{{ $senderName }}</td>
@@ -45,7 +45,7 @@
             <table width="100%" cellpadding="0" cellspacing="0"
                    style="background:#f9f9f9;border-radius:8px;padding:20px 24px;">
               <tr>
-                <td style="font-size:12px;color:#888;padding-bottom:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">Message</td>
+                <td style="font-size:12px;color:#888;padding-bottom:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">{{ __('mail.contact_message') }}</td>
               </tr>
               <tr>
                 <td style="font-size:15px;color:#444;line-height:1.65;white-space:pre-wrap;">{{ $userMessage }}</td>
@@ -59,7 +59,7 @@
           <td style="padding:32px 40px;text-align:center;">
             <a href="mailto:{{ $senderEmail }}"
                style="display:inline-block;background:#C41B1B;color:#ffffff;text-decoration:none;padding:13px 32px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
-              Répondre à {{ $senderName }} →
+              {{ __('mail.contact_reply_cta', ['name' => $senderName]) }}
             </a>
           </td>
         </tr>
@@ -70,8 +70,8 @@
             <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#999;">
               <tr>
                 <td>
-                  <p style="margin:0 0 4px;color:#666;font-weight:500;">HUG – Hôpitaux Universitaires de Genève</p>
-                  <p style="margin:0;">Centre de Transfusion Sanguine · Genève</p>
+                  <p style="margin:0 0 4px;color:#666;font-weight:500;">{{ __('mail.footer_org') }}</p>
+                  <p style="margin:0;">{{ __('mail.footer_center') }}</p>
                 </td>
                 <td style="text-align:right;vertical-align:top;">
                   <a href="{{ config('app.url') }}" style="color:#999;text-decoration:none;">donnez-votre-sang.ch</a>

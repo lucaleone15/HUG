@@ -61,7 +61,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-B52njiQC.js",
+    "file": "assets/app-Vos480vI.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -76,25 +76,25 @@
     ]
   },
   "resources/js/locales/de.json": {
-    "file": "assets/de-CuC7V7eU.js",
+    "file": "assets/de-B-TH9NXF.js",
     "name": "de",
     "src": "resources/js/locales/de.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/en.json": {
-    "file": "assets/en-CfhZrIBy.js",
+    "file": "assets/en-CeD4cwRo.js",
     "name": "en",
     "src": "resources/js/locales/en.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/fr.json": {
-    "file": "assets/fr-crfosQ-u.js",
+    "file": "assets/fr-DyOsTscg.js",
     "name": "fr",
     "src": "resources/js/locales/fr.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/it.json": {
-    "file": "assets/it-BKFJa_Bs.js",
+    "file": "assets/it-cbec8WFL.js",
     "name": "it",
     "src": "resources/js/locales/it.json",
     "isDynamicEntry": true

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,18 +24,16 @@
         <tr>
           <td style="padding:40px 40px 0;">
             <p style="margin:0 0 6px;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:500;">
-              Votre espace est activé
+              {{ __('mail.confirmation_activated') }}
             </p>
             <h1 style="margin:0 0 20px;font-size:22px;font-weight:600;color:#1a1a1a;line-height:1.3;">
-              Votre page co-brandée est en ligne
+              {{ __('mail.confirmation_title') }}
             </h1>
             <p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.65;">
-              Bonjour <strong style="color:#1a1a1a;">{{ $entreprise->contact_name }}</strong>,
+              {{ __('mail.confirmation_greeting') }} <strong style="color:#1a1a1a;">{{ $entreprise->contact_name }}</strong>,
             </p>
             <p style="margin:0 0 0;font-size:15px;color:#444;line-height:1.65;">
-              La page de collecte de <strong style="color:#1a1a1a;">{{ $entreprise->name }}</strong>
-              est maintenant active. Partagez ce lien à vos collaborateurs pour qu'ils puissent
-              participer à la campagne.
+              {!! __('mail.confirmation_body', ['name' => $entreprise->name]) !!}
             </p>
           </td>
         </tr>
@@ -47,7 +45,7 @@
                    style="background:#FEF2F2;border-radius:8px;border-left:4px solid #C41B1B;padding:20px 24px;">
               <tr>
                 <td style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;padding-bottom:10px;">
-                  Lien de votre espace entreprise
+                  {{ __('mail.confirmation_link_label') }}
                 </td>
               </tr>
               <tr>
@@ -64,7 +62,7 @@
           <td style="padding:32px 40px;text-align:center;">
             <a href="{{ route('entreprise.show', $entreprise) }}"
                style="display:inline-block;background:#C41B1B;color:#ffffff;text-decoration:none;padding:13px 32px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
-              Accéder à ma page →
+              {{ __('mail.confirmation_cta') }}
             </a>
           </td>
         </tr>
@@ -75,8 +73,8 @@
             <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#999;">
               <tr>
                 <td>
-                  <p style="margin:0 0 4px;color:#666;font-weight:500;">HUG – Hôpitaux Universitaires de Genève</p>
-                  <p style="margin:0;">Centre de Transfusion Sanguine · Genève</p>
+                  <p style="margin:0 0 4px;color:#666;font-weight:500;">{{ __('mail.footer_org') }}</p>
+                  <p style="margin:0;">{{ __('mail.footer_center') }}</p>
                 </td>
                 <td style="text-align:right;vertical-align:top;">
                   <a href="{{ config('app.url') }}" style="color:#999;text-decoration:none;">donnez-votre-sang.ch</a>

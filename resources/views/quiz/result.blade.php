@@ -8,6 +8,8 @@ $propsJson = json_encode([
         'name'          => $entreprise->name,
         'slug'          => $entreprise->slug,
         'primary_color' => $entreprise->primary_color,
+        'rdv_url'       => $entreprise->rdv_url,
+        'rdv_date'      => $entreprise->rdv_date?->format('Y-m-d'),
     ],
     'submission' => [
         'is_eligible'  => $submission->is_eligible,

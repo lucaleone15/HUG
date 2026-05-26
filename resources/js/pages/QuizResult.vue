@@ -46,9 +46,13 @@ const onRdvClick = () => {
                 <p class="text-base-content/70 mb-8 leading-relaxed">
                     {{ t('result.eligible_message') }}
                 </p>
+                <p v-if="entreprise.rdv_date" class="text-sm text-base-content/60 mb-4">
+                    {{ t('entreprise.collect_date') }} :
+                    <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
+                </p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a
-                        href="https://dondesang.cts-ge.ch"
+                    <a v-if="entreprise.rdv_url"
+                        :href="entreprise.rdv_url"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn text-white border-none px-8"
