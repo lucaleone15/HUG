@@ -23,7 +23,7 @@ return [
         'http://localhost:5173',   // Vite dev
         'http://localhost:3000',   // Vue CLI dev
         'http://localhost:8000',   // Laravel serve
-        // TODO: ajouter le domaine admin Vue en production (ex. 'https://admin.don-sang-hug.ch')
+        // Pas de domaine prod à ajouter : l'admin SPA est servi par le même Laravel (same-origin)
     ],
 
     'allowed_origins_patterns' => [],

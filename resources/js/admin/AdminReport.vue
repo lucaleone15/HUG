@@ -1,13 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import { useAuth } from '../composables/useAuth.js'
 
 const api  = useApi()
+const { token } = useAuth()
 const data = ref(null)
-const loading     = ref(false)
-const error       = ref(null)
-const selectedId  = ref('')
-const entreprises = ref([])
+const loading        = ref(false)
+const downloading    = ref(false)
+const error          = ref(null)
+const selectedId     = ref('')
+const entreprises    = ref([])
 
 onMounted(async () => {
     const res = await api.get('/admin/entreprises?per_page=100')
@@ -25,6 +28,31 @@ const generate = async () => {
         error.value = e.message
     } finally {
         loading.value = false
+    }
+}
+
+const downloadPdf = async () => {
+    if (!data.value) return
+    downloading.value = true
+    try {
+        const res = await fetch(`/api/admin/report?entreprise_id=${selectedId.value}&format=pdf`, {
+            headers: {
+                'Authorization': `Bearer ${token.value}`,
+                'Accept': 'application/pdf',
+            },
+        })
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const blob = await res.blob()
+        const url  = URL.createObjectURL(blob)
+        const a    = document.createElement('a')
+        a.href     = url
+        a.download = `rapport-${data.value.entreprise.slug}.pdf`
+        a.click()
+        URL.revokeObjectURL(url)
+    } catch (e) {
+        alert('Erreur lors de la génération du PDF : ' + e.message)
+    } finally {
+        downloading.value = false
     }
 }
 
@@ -142,8 +170,13 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
 
             </div>
 
-            <div class="alert alert-info mt-6 text-sm">
-                📄 Export PDF disponible prochainement (barryvdh/laravel-dompdf).
+            <div class="flex justify-end mt-6">
+                <button class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none gap-2"
+                    :disabled="downloading" @click="downloadPdf">
+                    <span v-if="downloading" class="loading loading-spinner loading-xs"></span>
+                    <span v-else>📄</span>
+                    Télécharger PDF
+                </button>
             </div>
         </template>
     </div>
