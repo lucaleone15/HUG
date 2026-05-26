@@ -77,7 +77,8 @@
       padding-right: 8px;
     }
     .info-value {
-      font-weight: 600;
+      font-family: DejaVu Sans, Arial, sans-serif;
+      font-weight: normal;
       color: #1a1a1a;
     }
 
