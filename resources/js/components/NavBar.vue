@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { setLocale } from '../i18n'
+import { setLocale, SUPPORTED_LOCALES } from '../i18n'
 
 const { t, locale } = useI18n()
 
@@ -15,11 +15,13 @@ const links = [
     { href: '/contact',   key: 'nav.contact' },
 ]
 
+const langLabels = { fr: 'FR', de: 'DE', it: 'IT', en: 'EN' }
+
 const isActive = (href) =>
     href === '/' ? path === '/' : path.startsWith(href)
 
-const toggleLang = async () => {
-    await setLocale(locale.value === 'fr' ? 'en' : 'fr')
+const selectLang = async (lang) => {
+    await setLocale(lang)
 }
 
 // Menu mobile — toggle Vue (le dropdown DaisyUI CSS ne fonctionne pas au toucher)
@@ -71,9 +73,22 @@ onBeforeUnmount(()  => document.removeEventListener('click', onClickOutside))
                 {{ t('nav.inscription') }}
             </a>
 
-            <button class="btn btn-ghost btn-sm text-xs font-mono" @click="toggleLang">
-                {{ t('lang') }}
-            </button>
+            <div class="dropdown dropdown-end">
+                <button tabindex="0" class="btn btn-ghost btn-sm text-xs font-mono">
+                    {{ langLabels[locale] ?? locale.toUpperCase() }}
+                </button>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box shadow-lg border border-base-200 p-1 w-20 z-50">
+                    <li v-for="lang in SUPPORTED_LOCALES" :key="lang">
+                        <button
+                            class="text-xs font-mono justify-center px-2 py-1.5 rounded"
+                            :class="locale === lang ? 'font-bold text-[#E30613]' : 'text-base-content/70'"
+                            @click="selectLang(lang)"
+                        >
+                            {{ langLabels[lang] }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
             <!-- Burger mobile -->
             <div class="relative lg:hidden" ref="menuRef">

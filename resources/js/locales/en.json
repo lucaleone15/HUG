@@ -53,7 +53,9 @@
     "entreprise": {
         "quiz_cta": "Check my eligibility",
         "employees": "employees",
-        "inactive": "This campaign is no longer active."
+        "inactive": "This campaign is no longer active.",
+        "collect_date": "Collection date",
+        "rdv_cta": "Book an appointment"
     },
     "quiz": {
         "title": "Eligibility Quiz",
@@ -97,6 +99,9 @@
         "logo_url": "Or logo URL",
         "contact_name": "Contact person",
         "contact_email": "Professional email",
+        "section_trophy": "Company Trophy",
+        "wants_trophy": "I would like my company to participate in the Company Trophy",
+        "wants_trophy_hint": "The CTS will contact you to agree on a collection date and booking link.",
         "pending_note": "Your request will be reviewed by the HUG team. You will receive a confirmation by email.",
         "submit": "Send request",
         "success_title": "Request sent!",

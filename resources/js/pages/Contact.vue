@@ -27,49 +27,44 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
                 <span>{{ t('contact.success') }}</span>
             </div>
 
-            <form action="/contact" method="POST" class="flex flex-col gap-4">
+            <form v-if="!success" action="/contact" method="POST" class="flex flex-col gap-5">
                 <input type="hidden" name="_token" :value="csrfToken">
 
-                <label class="form-control">
-                    <div class="label"><span class="label-text">{{ t('contact.name') }}</span></div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-medium">{{ t('contact.name') }}</label>
                     <input type="text" name="name" required maxlength="255"
-                        class="input input-bordered"
+                        class="input input-bordered w-full"
                         :class="errors.name ? 'input-error' : ''">
-                    <div v-if="errors.name" class="label">
-                        <span class="label-text-alt text-error">{{ errors.name[0] }}</span>
-                    </div>
-                </label>
+                    <span v-if="errors.name" class="text-error text-xs">{{ errors.name[0] }}</span>
+                </div>
 
-                <label class="form-control">
-                    <div class="label"><span class="label-text">{{ t('contact.email') }}</span></div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-medium">{{ t('contact.email') }}</label>
                     <input type="email" name="email" required maxlength="255"
-                        class="input input-bordered"
+                        class="input input-bordered w-full"
                         :class="errors.email ? 'input-error' : ''">
-                    <div v-if="errors.email" class="label">
-                        <span class="label-text-alt text-error">{{ errors.email[0] }}</span>
-                    </div>
-                </label>
+                    <span v-if="errors.email" class="text-error text-xs">{{ errors.email[0] }}</span>
+                </div>
 
-                <label class="form-control">
-                    <div class="label"><span class="label-text">{{ t('contact.type') }}</span></div>
-                    <select name="type" required class="select select-bordered">
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-medium">{{ t('contact.type') }}</label>
+                    <select name="type" required class="select select-bordered w-full">
+                        <option value="" disabled selected>—</option>
                         <option v-for="type in types" :key="type" :value="type">
                             {{ t(`contact.${type}`) }}
                         </option>
                     </select>
-                </label>
+                </div>
 
-                <label class="form-control">
-                    <div class="label"><span class="label-text">{{ t('contact.message') }}</span></div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-medium">{{ t('contact.message') }}</label>
                     <textarea name="message" required maxlength="5000" rows="5"
-                        class="textarea textarea-bordered resize-none"
+                        class="textarea textarea-bordered resize-none w-full"
                         :class="errors.message ? 'textarea-error' : ''"></textarea>
-                    <div v-if="errors.message" class="label">
-                        <span class="label-text-alt text-error">{{ errors.message[0] }}</span>
-                    </div>
-                </label>
+                    <span v-if="errors.message" class="text-error text-xs">{{ errors.message[0] }}</span>
+                </div>
 
-                <button type="submit" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none">
+                <button type="submit" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none w-full">
                     {{ t('contact.submit') }}
                 </button>
             </form>

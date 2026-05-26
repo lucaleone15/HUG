@@ -23,6 +23,9 @@ class Entreprise extends Model
         'is_labelled',
         'is_validated',
         'trophy_rank',
+        'wants_trophy',
+        'rdv_url',
+        'rdv_date',
         'type'
     ];
 
@@ -34,6 +37,8 @@ class Entreprise extends Model
         'is_labelled' => 'boolean',
         'is_validated' => 'boolean',
         'trophy_rank' => 'integer',
+        'wants_trophy' => 'boolean',
+        'rdv_date' => 'date:Y-m-d',
         'type' => 'string',
     ];
 
