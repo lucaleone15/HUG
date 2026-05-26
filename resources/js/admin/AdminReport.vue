@@ -1,21 +1,22 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
 import { useAuth } from '../composables/useAuth.js'
+import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 
-const api  = useApi()
+const api = useApi()
 const { token } = useAuth()
-const data = ref(null)
-const loading        = ref(false)
-const downloading    = ref(false)
-const error          = ref(null)
-const selectedId     = ref('')
-const entreprises    = ref([])
+const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
 
-onMounted(async () => {
-    const res = await api.get('/admin/entreprises?per_page=100')
-    entreprises.value = res.data.filter(e => e.is_active)
-})
+const activeEntreprises = computed(() => entreprises.value.filter(e => e.is_active))
+
+const data        = ref(null)
+const loading     = ref(false)
+const downloading = ref(false)
+const error       = ref(null)
+const selectedId  = ref('')
+
+onMounted(fetchEntreprises)
 
 const generate = async () => {
     if (!selectedId.value) return
@@ -71,7 +72,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                     <div class="label"><span class="label-text">Choisir une entreprise</span></div>
                     <select v-model="selectedId" class="select select-bordered select-sm">
                         <option value="" disabled>— sélectionner —</option>
-                        <option v-for="e in entreprises" :key="e.id" :value="e.id">{{ e.name }}</option>
+                        <option v-for="e in activeEntreprises" :key="e.id" :value="e.id">{{ e.name }}</option>
                     </select>
                 </label>
                 <button class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none"

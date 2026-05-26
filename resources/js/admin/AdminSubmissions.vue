@@ -1,38 +1,29 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import { usePagination } from '../composables/usePagination.js'
+import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 
 const api = useApi()
+const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
 
-const data        = ref(null)
-const loading     = ref(true)
-const error       = ref(null)
-const page        = ref(1)
 const filterEligible   = ref('')
 const filterEntreprise = ref('')
-const entreprises      = ref([])
 
-const load = async () => {
-    loading.value = true
-    try {
-        const params = new URLSearchParams({ page: page.value })
+const { data, loading, error, page, lastPage, total, isFirst, isLast, load, prev, next, reset } =
+    usePagination((p) => {
+        const params = new URLSearchParams({ page: p })
         if (filterEligible.value !== '')   params.set('is_eligible',   filterEligible.value)
         if (filterEntreprise.value !== '') params.set('entreprise_id', filterEntreprise.value)
-        data.value = await api.get(`/admin/submissions?${params}`)
-    } catch (e) {
-        error.value = e.message
-    } finally {
-        loading.value = false
-    }
-}
+        return api.get(`/admin/submissions?${params}`)
+    })
 
 onMounted(async () => {
-    const res = await api.get('/admin/entreprises?per_page=100')
-    entreprises.value = res.data
+    await fetchEntreprises()
     load()
 })
 
-watch([filterEligible, filterEntreprise], () => { page.value = 1; load() })
+watch([filterEligible, filterEntreprise], reset)
 
 const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 'short', timeStyle: 'short' }) : '—'
 </script>
@@ -59,9 +50,9 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
-        <template v-else>
+        <template v-else-if="data">
             <div class="mb-2 text-sm text-base-content/50">
-                {{ data.meta.total.toLocaleString('fr-CH') }} soumissions
+                {{ total.toLocaleString('fr-CH') }} soumissions
             </div>
             <div class="card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
@@ -75,7 +66,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="s in data.data" :key="s.id" class="hover">
+                            <tr v-for="s in data" :key="s.id" class="hover">
                                 <td class="font-medium text-sm">{{ s.entreprise?.name ?? '—' }}</td>
                                 <td>
                                     <span v-if="s.is_eligible === true"  class="badge badge-success badge-sm">Éligible</span>
@@ -90,10 +81,10 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                 </div>
             </div>
 
-            <div v-if="data.meta.last_page > 1" class="flex justify-center mt-4 gap-2">
-                <button class="btn btn-sm btn-ghost" :disabled="page === 1" @click="page--; load()">←</button>
-                <span class="text-sm self-center">{{ page }} / {{ data.meta.last_page }}</span>
-                <button class="btn btn-sm btn-ghost" :disabled="page === data.meta.last_page" @click="page++; load()">→</button>
+            <div v-if="lastPage > 1" class="flex justify-center mt-4 gap-2">
+                <button class="btn btn-sm btn-ghost" :disabled="isFirst" @click="prev">←</button>
+                <span class="text-sm self-center">{{ page }} / {{ lastPage }}</span>
+                <button class="btn btn-sm btn-ghost" :disabled="isLast" @click="next">→</button>
             </div>
         </template>
     </div>

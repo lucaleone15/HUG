@@ -1,21 +1,12 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import { useAsyncData } from '../composables/useAsyncData.js'
 
-const api  = useApi()
-const data = ref(null)
-const loading = ref(true)
-const error   = ref(null)
+const api = useApi()
+const { data, loading, error, execute } = useAsyncData(() => api.get('/admin/dashboard'))
 
-onMounted(async () => {
-    try {
-        data.value = await api.get('/admin/dashboard')
-    } catch (e) {
-        error.value = e.message
-    } finally {
-        loading.value = false
-    }
-})
+onMounted(execute)
 
 const pct = (a, b) => (b > 0 ? (a / b * 100).toFixed(1) + '%' : '—')
 const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
@@ -31,7 +22,7 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
 
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
-        <template v-else>
+        <template v-else-if="data">
             <!-- Entonnoir KPI -->
             <section class="mb-8">
                 <h2 class="text-sm font-semibold uppercase tracking-widest text-base-content/40 mb-3">Entonnoir</h2>
