@@ -163,7 +163,7 @@
         </tr>
         <tr>
           <td class="info-label">Effectif</td>
-          <td class="info-value">{{ $entreprise['employee_count'] ? number_format($entreprise['employee_count'], 0, '.', ''') . ' employés' : '—' }}</td>
+          <td class="info-value">{{ $entreprise['employee_count'] ? number_format($entreprise['employee_count'], 0, '.', "'") . ' employés' : '—' }}</td>
         </tr>
       </table>
     </div>
@@ -176,19 +176,19 @@
       <table class="kpi-table" cellpadding="0" cellspacing="0">
         <tr>
           <td class="kpi-cell">
-            <span class="kpi-value kpi-started">{{ number_format($participation['quiz_started'], 0, '.', ''') }}</span>
+            <span class="kpi-value kpi-started">{{ number_format($participation['quiz_started'], 0, '.', "'") }}</span>
             <span class="kpi-label">Quiz démarrés</span>
           </td>
           <td class="kpi-cell">
-            <span class="kpi-value kpi-completed">{{ number_format($participation['quiz_completed'], 0, '.', ''') }}</span>
+            <span class="kpi-value kpi-completed">{{ number_format($participation['quiz_completed'], 0, '.', "'") }}</span>
             <span class="kpi-label">Quiz complétés</span>
           </td>
           <td class="kpi-cell">
-            <span class="kpi-value kpi-eligible">{{ number_format($participation['eligible'], 0, '.', ''') }}</span>
+            <span class="kpi-value kpi-eligible">{{ number_format($participation['eligible'], 0, '.', "'") }}</span>
             <span class="kpi-label">Éligibles</span>
           </td>
           <td class="kpi-cell">
-            <span class="kpi-value kpi-rdv">{{ number_format($participation['rdv_clicked'], 0, '.', ''') }}</span>
+            <span class="kpi-value kpi-rdv">{{ number_format($participation['rdv_clicked'], 0, '.', "'") }}</span>
             <span class="kpi-label">RDV cliqués</span>
           </td>
         </tr>
