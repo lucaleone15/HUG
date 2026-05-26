@@ -9,12 +9,21 @@ use Illuminate\Mail\Mailables\Address;
 
 class ContactFormMail extends Mailable
 {
+    private const TYPE_LABELS = [
+        'type_general'     => 'Question générale',
+        'type_partnership' => 'Partenariat',
+        'type_technical'   => 'Support technique',
+        'type_other'       => 'Autre',
+    ];
+
     public function __construct(
         public string $senderName,
         public string $senderEmail,
         public string $type,
         public string $userMessage,
-    ) {}
+    ) {
+        $this->type = self::TYPE_LABELS[$type] ?? $type;
+    }
 
     public function envelope(): Envelope
     {
