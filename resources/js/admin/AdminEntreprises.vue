@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
@@ -8,6 +9,7 @@ import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 const api    = useApi()
 const router = useRouter()
 const store  = useEntreprisesStore()
+const { locale } = useI18n()
 
 const { data, loading, error, page, lastPage, isFirst, isLast, load, prev, next } =
     usePagination((p) => api.get(`/admin/entreprises?page=${p}`))
@@ -42,6 +44,7 @@ const accept = async (e) => {
         fd.append('is_active',    '1')
         fd.append('is_validated', '1')
         fd.append('is_labelled',  '1')
+        fd.append('locale',       locale.value)
         await api.upload(`/admin/entreprises/${e.id}`, fd)
         await load()
         store.refresh()
