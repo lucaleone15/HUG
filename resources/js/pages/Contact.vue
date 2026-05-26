@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/NavBar.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = defineProps({
     success: { type: String, default: null },
@@ -29,6 +29,7 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
 
             <form v-if="!success" action="/contact" method="POST" class="flex flex-col gap-5">
                 <input type="hidden" name="_token" :value="csrfToken">
+                <input type="hidden" name="locale" :value="locale">
 
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium">{{ t('contact.name') }}</label>

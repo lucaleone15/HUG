@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/NavBar.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = defineProps({
     success: { type: Boolean, default: false },
@@ -60,6 +60,7 @@ const clearLogo = () => {
 
                 <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
                     <input type="hidden" name="_token" :value="csrfToken">
+                <input type="hidden" name="locale" :value="locale">
 
                     <!-- Section : Entreprise -->
                     <div class="divider text-xs text-base-content/40 uppercase tracking-widest">

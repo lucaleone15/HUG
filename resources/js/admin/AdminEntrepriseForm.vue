@@ -2,10 +2,12 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
+import { useI18n } from 'vue-i18n'
 
 const route  = useRoute()
 const router = useRouter()
 const api    = useApi()
+const { locale } = useI18n()
 
 const isEdit  = computed(() => !!route.params.id)
 const loading = ref(false)
@@ -100,6 +102,7 @@ const save = async () => {
         fd.append('is_labelled',  form.value.is_labelled  ? '1' : '0')
         fd.append('is_validated', form.value.is_validated ? '1' : '0')
         fd.append('wants_trophy', form.value.wants_trophy ? '1' : '0')
+        fd.append('locale', locale.value)
 
         // Fichier logo (prioritaire sur logo_url si sélectionné)
         if (logoFile.value) fd.append('logo', logoFile.value)

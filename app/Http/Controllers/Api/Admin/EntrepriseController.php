@@ -116,6 +116,8 @@ class EntrepriseController extends Controller
         $entreprise->update($data);
 
         if ($justValidated && $entreprise->contact_email) {
+            $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
+            app()->setLocale($locale);
             Mail::to($entreprise->contact_email)
                 ->send(new \App\Mail\CompanyConfirmationLink($entreprise));
         }
@@ -147,12 +149,15 @@ class EntrepriseController extends Controller
         ]);
     }
 
-    public function sendLink(int $id): JsonResponse
+    public function sendLink(Request $request, int $id): JsonResponse
     {
         $entreprise = Entreprise::findOrFail($id);
 
         abort_if(! $entreprise->is_active, 422, 'Entreprise non active.');
         abort_if(! $entreprise->contact_email, 422, 'Aucun email de contact défini.');
+
+        $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
+        app()->setLocale($locale);
 
         Mail::to($entreprise->contact_email)
             ->send(new \App\Mail\CompanyConfirmationLink($entreprise));

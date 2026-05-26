@@ -24,6 +24,8 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
+        app()->setLocale(in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr');
+
         Mail::to('info@donnez-votre-sang.ch')->send(new ContactFormMail(
             senderName:    $request->name,
             senderEmail:   $request->email,
