@@ -145,7 +145,7 @@ class EntrepriseController extends Controller
         abort_if(! $entreprise->contact_email, 422, 'Aucun email de contact défini.');
 
         Mail::to($entreprise->contact_email)
-            ->queue(new \App\Mail\CompanyConfirmationLink($entreprise));
+            ->send(new \App\Mail\CompanyConfirmationLink($entreprise));
 
         return response()->json([
             'message' => "Lien envoyé à {$entreprise->contact_email}",
