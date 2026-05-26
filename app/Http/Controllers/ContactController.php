@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactFormMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class ContactController extends Controller
@@ -22,7 +24,12 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        // TODO: envoi mail ou stockage de la demande
+        Mail::to('info@donnez-votre-sang.ch')->send(new ContactFormMail(
+            senderName:    $request->name,
+            senderEmail:   $request->email,
+            type:          $request->type,
+            userMessage:   $request->message,
+        ));
 
         return back()->with('success', 'Votre message a bien été envoyé.');
     }
