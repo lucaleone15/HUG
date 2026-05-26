@@ -108,7 +108,14 @@ class EntrepriseController extends Controller
             );
         }
 
+        $justValidated = !$entreprise->is_validated && ($data['is_validated'] ?? false);
+
         $entreprise->update($data);
+
+        if ($justValidated && $entreprise->contact_email) {
+            Mail::to($entreprise->contact_email)
+                ->send(new \App\Mail\CompanyConfirmationLink($entreprise));
+        }
 
         return new AdminEntrepriseResource($entreprise);
     }
