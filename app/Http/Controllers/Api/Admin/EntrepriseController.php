@@ -8,6 +8,7 @@ use App\Models\Entreprise;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -134,6 +135,20 @@ class EntrepriseController extends Controller
         return response()->json([
             'message' => "Kit envoyé à {$entreprise->contact_email}",
         ]);
+    }
+
+    public function sendLink(int $id): JsonResponse
+    {
+    $entreprise = Entreprise::findOrFail($id);
+
+    abort_if(! $entreprise->is_active, 422, 'Entreprise non active.');
+
+    Mail::to($entreprise->contact_email)
+        ->send(new \App\Mail\CompanyConfirmationLink($entreprise));
+
+    return response()->json([
+        'message' => "Lien envoyé à {$entreprise->contact_email}",
+    ]);
     }
 
     private function uniqueSlug(string $base): string
