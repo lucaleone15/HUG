@@ -2,28 +2,19 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
+import { usePagination } from '../composables/usePagination.js'
+import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 
 const api    = useApi()
 const router = useRouter()
+const store  = useEntreprisesStore()
 
-const data     = ref(null)
-const loading  = ref(true)
-const error    = ref(null)
-const page     = ref(1)
-const deleting = ref(null)
-const kitSent  = ref(null)
+const { data, loading, error, page, lastPage, isFirst, isLast, load, prev, next } =
+    usePagination((p) => api.get(`/admin/entreprises?page=${p}`))
+
+const deleting  = ref(null)
+const kitSent   = ref(null)
 const accepting = ref(null)
-
-const load = async () => {
-    loading.value = true
-    try {
-        data.value = await api.get(`/admin/entreprises?page=${page.value}`)
-    } catch (e) {
-        error.value = e.message
-    } finally {
-        loading.value = false
-    }
-}
 
 onMounted(load)
 
@@ -36,6 +27,7 @@ const destroy = async (e) => {
     try {
         await api.del(`/admin/entreprises/${e.id}`)
         await load()
+        store.refresh()
     } catch (err) {
         alert(err.message)
     } finally {
@@ -52,6 +44,7 @@ const accept = async (e) => {
         fd.append('is_labelled',  '1')
         await api.upload(`/admin/entreprises/${e.id}`, fd)
         await load()
+        store.refresh()
     } catch (err) {
         alert(err.message)
     } finally {
@@ -91,7 +84,7 @@ const statusBadge = (e) => {
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
-        <template v-else>
+        <template v-else-if="data">
             <div class="card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
@@ -106,7 +99,7 @@ const statusBadge = (e) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="e in data.data" :key="e.id" class="hover">
+                            <tr v-for="e in data" :key="e.id" class="hover">
                                 <td>
                                     <div class="flex items-center gap-2">
                                         <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
@@ -135,7 +128,6 @@ const statusBadge = (e) => {
                                 </td>
                                 <td>
                                     <div class="flex gap-1 justify-end flex-wrap">
-                                        <!-- Accepter (seulement si en attente) -->
                                         <button
                                             v-if="!e.is_active || !e.is_validated"
                                             class="btn btn-xs btn-success text-white"
@@ -171,10 +163,10 @@ const statusBadge = (e) => {
             </div>
 
             <!-- Pagination -->
-            <div v-if="data.meta.last_page > 1" class="flex justify-center mt-4 gap-2">
-                <button class="btn btn-sm btn-ghost" :disabled="page === 1" @click="page--; load()">←</button>
-                <span class="text-sm self-center">{{ page }} / {{ data.meta.last_page }}</span>
-                <button class="btn btn-sm btn-ghost" :disabled="page === data.meta.last_page" @click="page++; load()">→</button>
+            <div v-if="lastPage > 1" class="flex justify-center mt-4 gap-2">
+                <button class="btn btn-sm btn-ghost" :disabled="isFirst" @click="prev">←</button>
+                <span class="text-sm self-center">{{ page }} / {{ lastPage }}</span>
+                <button class="btn btn-sm btn-ghost" :disabled="isLast" @click="next">→</button>
             </div>
         </template>
     </div>

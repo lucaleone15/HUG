@@ -1,35 +1,27 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import { useAsyncData } from '../composables/useAsyncData.js'
+import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 
-const api  = useApi()
-const data = ref(null)
-const loading = ref(true)
-const error   = ref(null)
+const api = useApi()
+const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
+
 const filterEntreprise = ref('')
-const entreprises      = ref([])
 
-const load = async () => {
-    loading.value = true
-    try {
-        const params = filterEntreprise.value ? `?entreprise_id=${filterEntreprise.value}` : ''
-        data.value = await api.get(`/admin/analytics${params}`)
-    } catch (e) {
-        error.value = e.message
-    } finally {
-        loading.value = false
-    }
-}
-
-onMounted(async () => {
-    const res = await api.get('/admin/entreprises?per_page=100')
-    entreprises.value = res.data
-    load()
+const { data, loading, error, execute } = useAsyncData(() => {
+    const params = filterEntreprise.value ? `?entreprise_id=${filterEntreprise.value}` : ''
+    return api.get(`/admin/analytics${params}`)
 })
 
-watch(filterEntreprise, load)
+onMounted(async () => {
+    await fetchEntreprises()
+    execute()
+})
 
-const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '—'
+watch(filterEntreprise, execute)
+
+const pct    = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '—'
 const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
 </script>
 
@@ -48,7 +40,7 @@ const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
-        <template v-else>
+        <template v-else-if="data">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 <!-- Entonnoir -->
