@@ -71,7 +71,16 @@
         "ineligible_title": "Donation not possible right now",
         "ineligible_message": "Thank you for your interest. Your profile does not currently meet the medical criteria for blood donation. This can change — feel free to consult a doctor or contact the CTS.",
         "ineligible_cta": "Learn more about donation",
-        "back_home": "Back to home"
+        "back_home": "Back to home",
+        "referral_title": "Refer your colleagues!",
+        "referral_subtitle": "Even if you can't donate blood, your colleagues might be able to. Invite 3 of them to take the test!",
+        "referral_copy": "Copy link",
+        "referral_copied": "Link copied!",
+        "referral_email": "Copy message",
+        "referral_message_copied": "Message copied!",
+        "referral_whatsapp": "Share on WhatsApp",
+        "referral_email_subject": "Take part in the Blood Donation campaign — {company}",
+        "referral_email_body": "Hi,\n\nI'm taking part in the Blood Donation campaign organised by {company} in partnership with HUG and CTS Geneva.\n\nCheck in 2 minutes whether you're eligible to donate blood:\n{url}\n\nThank you!"
     },
     "inscription": {
         "title": "Register my company",

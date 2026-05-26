@@ -71,7 +71,16 @@
         "ineligible_title": "Spende momentan nicht möglich",
         "ineligible_message": "Vielen Dank für Ihr Interesse. Ihr Profil erfüllt derzeit nicht die medizinischen Kriterien für eine Blutspende. Dies kann sich ändern — konsultieren Sie einen Arzt oder wenden Sie sich an den CTS.",
         "ineligible_cta": "Mehr über Blutspenden erfahren",
-        "back_home": "Zurück zur Startseite"
+        "back_home": "Zurück zur Startseite",
+        "referral_title": "Empfehlen Sie Ihren Kolleginnen und Kollegen!",
+        "referral_subtitle": "Auch wenn Sie selbst nicht spenden können, vielleicht können es Ihre Kolleg:innen. Laden Sie 3 davon ein, den Test zu machen!",
+        "referral_copy": "Link kopieren",
+        "referral_copied": "Link kopiert!",
+        "referral_email": "Nachricht kopieren",
+        "referral_message_copied": "Nachricht kopiert!",
+        "referral_whatsapp": "Auf WhatsApp teilen",
+        "referral_email_subject": "Nehmen Sie an der Blutspendekampagne teil — {company}",
+        "referral_email_body": "Hallo,\n\nIch nehme an der Blutspendekampagne von {company} in Zusammenarbeit mit HUG und CTS Genf teil.\n\nPrüfen Sie in 2 Minuten, ob Sie zur Blutspende berechtigt sind:\n{url}\n\nVielen Dank!"
     },
     "inscription": {
         "title": "Mein Unternehmen anmelden",

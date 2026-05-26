@@ -71,7 +71,16 @@
         "ineligible_title": "Don impossible pour l'instant",
         "ineligible_message": "Merci pour votre démarche. Votre profil ne correspond pas actuellement aux critères médicaux du don du sang. Cela peut évoluer — n'hésitez pas à consulter un médecin ou à recontacter le CTS.",
         "ineligible_cta": "En savoir plus sur le don",
-        "back_home": "Retour à l'accueil"
+        "back_home": "Retour à l'accueil",
+        "referral_title": "Parrainez vos collègues !",
+        "referral_subtitle": "Même si vous ne pouvez pas donner votre sang, vos collègues le peuvent peut-être. Invitez-en 3 à faire le test !",
+        "referral_copy": "Copier le lien",
+        "referral_copied": "Lien copié !",
+        "referral_email": "Copier le message",
+        "referral_message_copied": "Message copié !",
+        "referral_whatsapp": "Partager sur WhatsApp",
+        "referral_email_subject": "Participez à la campagne Don du Sang — {company}",
+        "referral_email_body": "Bonjour,\n\nJe participe à la campagne Don du Sang organisée par {company} en partenariat avec les HUG et le CTS Genève.\n\nVérifiez en 2 minutes si vous êtes éligible au don de sang :\n{url}\n\nMerci !"
     },
     "inscription": {
         "title": "Inscrire mon entreprise",

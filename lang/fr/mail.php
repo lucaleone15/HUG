@@ -10,6 +10,11 @@ return [
     'footer_org'             => 'HUG – Hôpitaux Universitaires de Genève',
     'footer_center'          => 'Centre de Transfusion Sanguine · Genève',
 
+    'type_general'           => 'Question générale',
+    'type_partnership'       => 'Partenariat',
+    'type_technical'         => 'Support technique',
+    'type_other'             => 'Autre',
+
     'contact_new_message'    => 'Nouveau message de contact',
     'contact_from'           => 'De',
     'contact_message'        => 'Message',

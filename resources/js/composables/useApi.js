@@ -3,6 +3,23 @@ import { useAuth } from './useAuth.js'
 export function useApi() {
     const { token, clearAuth } = useAuth()
 
+    const handleResponse = async (res) => {
+        if (res.status === 401) {
+            clearAuth()
+            window.location.href = '/admin/login'
+            throw new Error('Unauthenticated')
+        }
+        if (res.status === 204) return null
+        const data = await res.json()
+        if (!res.ok) {
+            const err = new Error(data?.message ?? `HTTP ${res.status}`)
+            err.errors = data?.errors ?? {}
+            err.status = res.status
+            throw err
+        }
+        return data
+    }
+
     const request = async (method, path, body = null) => {
         const res = await fetch(`/api${path}`, {
             method,
@@ -13,49 +30,21 @@ export function useApi() {
             },
             ...(body !== null ? { body: JSON.stringify(body) } : {}),
         })
-
-        if (res.status === 401) {
-            clearAuth()
-            window.location.href = '/admin/login'
-            throw new Error('Unauthenticated')
-        }
-
-        if (res.status === 204) return null
-
-        const data = await res.json()
-
-        if (!res.ok) {
-            const err = new Error(data?.message ?? `HTTP ${res.status}`)
-            err.errors = data?.errors ?? {}
-            err.status = res.status
-            throw err
-        }
-
-        return data
+        return handleResponse(res)
     }
 
     // Multipart (pour les uploads de fichiers)
+    // Pas de Content-Type : le navigateur le positionne avec le boundary multipart
     const upload = async (path, formData) => {
         const res = await fetch(`/api${path}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
-                // Pas de Content-Type : le navigateur le positionne avec le boundary multipart
             },
             body: formData,
         })
-
-        if (res.status === 401) { clearAuth(); window.location.href = '/admin/login'; throw new Error('Unauthenticated') }
-        if (res.status === 204) return null
-
-        const data = await res.json()
-        if (!res.ok) {
-            const err = new Error(data?.message ?? `HTTP ${res.status}`)
-            err.errors = data?.errors ?? {}
-            throw err
-        }
-        return data
+        return handleResponse(res)
     }
 
     return {

@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\AnalyticsEvent;
 use App\Models\CampaignStats;
 use App\Models\Entreprise;
-use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -61,21 +59,24 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Banque Cantonale de Genève', 'slug' => 'bcge',
                 'type' => 'banque', 'primary_color' => '#003F7D',
-                'employee_count' => 850, 'trophy_rank' => 1,
+                'employee_count' => 850, 'trophy_rank' => 1, 'wants_trophy' => true,
+                'rdv_url' => 'https://rdv.cts-ge.ch/bcge', 'rdv_date' => '2026-06-15',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Marc Fontaine', 'contact_email' => 'rh@bcge.ch',
             ],
             [
                 'name' => 'Firmenich', 'slug' => 'firmenich',
                 'type' => 'industrie', 'primary_color' => '#00833E',
-                'employee_count' => 3200, 'trophy_rank' => 2,
+                'employee_count' => 3200, 'trophy_rank' => 2, 'wants_trophy' => true,
+                'rdv_url' => 'https://rdv.cts-ge.ch/firmenich', 'rdv_date' => '2026-06-22',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Sophie Müller', 'contact_email' => 'wellbeing@firmenich.com',
             ],
             [
                 'name' => 'Groupe Mutuel', 'slug' => 'groupe-mutuel',
                 'type' => 'assurance', 'primary_color' => '#E30613',
-                'employee_count' => 1400, 'trophy_rank' => 3,
+                'employee_count' => 1400, 'trophy_rank' => 3, 'wants_trophy' => true,
+                'rdv_url' => 'https://rdv.cts-ge.ch/groupe-mutuel', 'rdv_date' => '2026-07-03',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Alain Pernet', 'contact_email' => 'rh@groupemutuel.ch',
             ],
@@ -83,14 +84,16 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'SGS', 'slug' => 'sgs',
                 'type' => 'technologie', 'primary_color' => '#009FE3',
-                'employee_count' => 960, 'trophy_rank' => 4,
+                'employee_count' => 960, 'trophy_rank' => 4, 'wants_trophy' => true,
+                'rdv_url' => 'https://rdv.cts-ge.ch/sgs', 'rdv_date' => '2026-07-10',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Céline Rochat', 'contact_email' => 'hr@sgs.com',
             ],
             [
                 'name' => 'SIG — Services Industriels de Genève', 'slug' => 'sig',
                 'type' => 'service', 'primary_color' => '#F7941D',
-                'employee_count' => 1900, 'trophy_rank' => 5,
+                'employee_count' => 1900, 'trophy_rank' => 5, 'wants_trophy' => true,
+                'rdv_url' => 'https://rdv.cts-ge.ch/sig', 'rdv_date' => '2026-07-17',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Pierre-Alain Duc', 'contact_email' => 'rh@sig-ge.ch',
             ],
@@ -98,21 +101,24 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'CERN', 'slug' => 'cern',
                 'type' => 'technologie', 'primary_color' => '#0053A0',
-                'employee_count' => 2500, 'trophy_rank' => null,
+                'employee_count' => 2500, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Elena Kovač', 'contact_email' => 'hr@cern.ch',
             ],
             [
                 'name' => 'Pictet & Cie', 'slug' => 'pictet',
                 'type' => 'banque', 'primary_color' => '#1B4B8B',
-                'employee_count' => 4700, 'trophy_rank' => null,
+                'employee_count' => 4700, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Nathalie Clerc', 'contact_email' => 'rh@pictet.com',
             ],
             [
                 'name' => 'Richemont', 'slug' => 'richemont',
                 'type' => 'commerce', 'primary_color' => '#1A1A2E',
-                'employee_count' => 6000, 'trophy_rank' => null,
+                'employee_count' => 6000, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Thomas Bauer', 'contact_email' => 'hr@richemont.com',
             ],
@@ -120,14 +126,16 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'HES-SO Genève', 'slug' => 'hes-so-ge',
                 'type' => 'education', 'primary_color' => '#E30613',
-                'employee_count' => 700, 'trophy_rank' => null,
+                'employee_count' => 700, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => false, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Isabelle Favre', 'contact_email' => 'rh@hes-so.ch',
             ],
             [
                 'name' => 'Clinique des Grangettes', 'slug' => 'grangettes',
                 'type' => 'sante', 'primary_color' => '#00AEEF',
-                'employee_count' => 520, 'trophy_rank' => null,
+                'employee_count' => 520, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => false, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Dominique Ayer', 'contact_email' => 'rh@grangettes.ch',
             ],
@@ -135,14 +143,16 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Maus Frères', 'slug' => 'maus-freres',
                 'type' => 'commerce', 'primary_color' => '#333333',
-                'employee_count' => 2100, 'trophy_rank' => null,
+                'employee_count' => 2100, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => false, 'is_validated' => false, 'is_active' => false,
                 'contact_name' => 'Lucie Bernard', 'contact_email' => 'rh@maus.ch',
             ],
             [
                 'name' => 'Lonza', 'slug' => 'lonza',
                 'type' => 'industrie', 'primary_color' => '#0066CC',
-                'employee_count' => 1800, 'trophy_rank' => null,
+                'employee_count' => 1800, 'trophy_rank' => null, 'wants_trophy' => false,
+                'rdv_url' => null, 'rdv_date' => null,
                 'is_labelled' => false, 'is_validated' => false, 'is_active' => false,
                 'contact_name' => 'Andreas Wolf', 'contact_email' => 'hr@lonza.com',
             ],

@@ -10,6 +10,11 @@ return [
     'footer_org'             => 'HUG – Universitätsspital Genf',
     'footer_center'          => 'Bluttransfusionszentrum · Genf',
 
+    'type_general'           => 'Allgemeine Frage',
+    'type_partnership'       => 'Partnerschaft',
+    'type_technical'         => 'Technischer Support',
+    'type_other'             => 'Sonstiges',
+
     'contact_new_message'    => 'Neue Kontaktnachricht',
     'contact_from'           => 'Von',
     'contact_message'        => 'Nachricht',

@@ -71,7 +71,16 @@
         "ineligible_title": "Donazione al momento impossibile",
         "ineligible_message": "Grazie per il vostro interesse. Il vostro profilo non soddisfa attualmente i criteri medici per la donazione di sangue. La situazione può cambiare — non esitate a consultare un medico o a ricontattare il CTS.",
         "ineligible_cta": "Saperne di più sulla donazione",
-        "back_home": "Torna alla home"
+        "back_home": "Torna alla home",
+        "referral_title": "Invitate i vostri colleghi!",
+        "referral_subtitle": "Anche se non potete donare il sangue, forse i vostri colleghi sì. Invitate 3 di loro a fare il test!",
+        "referral_copy": "Copiare il link",
+        "referral_copied": "Link copiato!",
+        "referral_email": "Copiare il messaggio",
+        "referral_message_copied": "Messaggio copiato!",
+        "referral_whatsapp": "Condividi su WhatsApp",
+        "referral_email_subject": "Partecipate alla campagna di donazione del sangue — {company}",
+        "referral_email_body": "Ciao,\n\nPartecipo alla campagna di donazione del sangue organizzata da {company} in collaborazione con HUG e CTS Ginevra.\n\nVerificate in 2 minuti se siete idonei alla donazione di sangue:\n{url}\n\nGrazie!"
     },
     "inscription": {
         "title": "Iscrivere la mia azienda",

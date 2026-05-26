@@ -10,6 +10,11 @@ return [
     'footer_org'             => 'HUG – Ospedali Universitari di Ginevra',
     'footer_center'          => 'Centro di Trasfusione Sanguigna · Ginevra',
 
+    'type_general'           => 'Domanda generale',
+    'type_partnership'       => 'Partenariato',
+    'type_technical'         => 'Supporto tecnico',
+    'type_other'             => 'Altro',
+
     'contact_new_message'    => 'Nuovo messaggio di contatto',
     'contact_from'           => 'Da',
     'contact_message'        => 'Messaggio',

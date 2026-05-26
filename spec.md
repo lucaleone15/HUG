@@ -28,7 +28,12 @@ Quiz chargé depuis resources/quiz/quiz.json
 NON          OUI
  ↓            ↓
 Message      Prise de RDV (lien externe CTS)
-bienveillant
+bienveillant  + date de collecte (rdv_date)
+ ↓
+Bloc parrainage :
+  - copier le lien /c/{slug}
+  - copier le message (email)
+  - partager sur WhatsApp
 ```
 
 ```
@@ -100,11 +105,18 @@ Champs :
 - is_labelled      boolean default false
 - is_validated     boolean default false
 - trophy_rank      unsignedTinyInt nullable → 1/2/3 = podium, null = non classée
+- wants_trophy     boolean default false  → participation volontaire au trophée
+- rdv_url          string nullable        → lien de réservation CTS
+- rdv_date         date nullable          → date de la collecte
 - type             enum nullable → banque | assurance | industrie | commerce | service | technologie | sante | education | autre
 - timestamps
 
-Casts  : is_active → boolean, is_labelled → boolean, is_validated → boolean
+Casts  : is_active → boolean, is_labelled → boolean, is_validated → boolean,
+         wants_trophy → boolean, trophy_rank → integer, rdv_date → date:Y-m-d
 Méthode: getRouteKeyName() → 'slug'
+         participatesInTrophy() → bool  (trophy_rank !== null && > 0)
+         isLauréat() → bool             (trophy_rank in [1, 2, 3])
+         getTrophyNameAttribute() → ?string ('Or' | 'Argent' | 'Bronze' | null)
 ```
 
 Relations :
@@ -201,13 +213,14 @@ Relations :
 ## Ordre des migrations
 
 ```
-1. create_users_table                   ✅
-2. add_is_admin_to_users_table          ✅
-3. create_personal_access_tokens_table  ✅
-4. create_entreprises_table             ✅
-5. create_submissions_table             ✅
-6. create_analytics_events_table        ✅
-7. create_campaign_stats_table          ✅
+1. create_users_table                        ✅
+2. add_is_admin_to_users_table               ✅
+3. create_personal_access_tokens_table       ✅
+4. create_entreprises_table                  ✅
+5. create_submissions_table                  ✅
+6. create_analytics_events_table             ✅
+7. create_campaign_stats_table               ✅
+8. add_trophy_and_rdv_to_entreprises_table   ✅  (wants_trophy, rdv_url, rdv_date)
 ```
 
 ---
@@ -252,15 +265,16 @@ Relations :
 
 ### Web — Blade public
 
-| Controller             | Méthodes                      | Description                                |
-| ---------------------- | ----------------------------- | ------------------------------------------ |
-| `HomeController`       | `index()`                     | Page d'accueil + stats globales            |
-| `TropheeController`    | `index()`                     | Vainqueurs (`trophy_rank NOT NULL`)        |
-| `LabelController`      | `index()`                     | Entreprises labelisées                     |
-| `KitController`        | `index()`                     | Page kit promo                             |
-| `EntrepriseController` | `show(Entreprise $e)`         | Landing co-brandée — 404 si inactive       |
-| `QuizController`       | `show()` `store()` `result()` | Quiz JSON + éligibilité serveur + résultat |
-| `ContactController`    | `index()` `store()`           | Formulaire multi-type                      |
+| Controller              | Méthodes                      | Description                                |
+| ----------------------- | ----------------------------- | ------------------------------------------ |
+| `HomeController`        | `index()`                     | Page d'accueil + stats globales            |
+| `TropheeController`     | `index()`                     | Vainqueurs (`trophy_rank NOT NULL`)        |
+| `LabelController`       | `index()`                     | Entreprises labelisées                     |
+| `KitController`         | `index()`                     | Page kit promo                             |
+| `EntrepriseController`  | `show(Entreprise $e)`         | Landing co-brandée — 404 si inactive       |
+| `QuizController`        | `show()` `store()` `result()` | Quiz JSON + éligibilité serveur + résultat |
+| `ContactController`     | `index()` `store()`           | Formulaire multi-type → envoie `ContactFormMail` |
+| `InscriptionController` | `index()` `store()`           | Formulaire d'inscription entreprise partenaire   |
 
 ---
 
@@ -280,11 +294,11 @@ Relations :
 | Controller                          | Méthodes            | Description                               |
 | ----------------------------------- | ------------------- | ----------------------------------------- |
 | `Api\Admin\DashboardController`     | `index()`           | KPI globaux + entonnoir                   |
-| `Api\Admin\EntrepriseController`    | CRUD + `sendKit()`  | Gestion entreprises + envoi kit           |
+| `Api\Admin\EntrepriseController`    | CRUD + `sendKit()` (TODO) + `sendLink()` | Gestion entreprises — `sendLink` envoie `CompanyConfirmationLink` lors de la validation |
 | `Api\Admin\SubmissionController`    | `index()` `show()`  | Lecture seule                             |
 | `Api\Admin\AnalyticsController`     | `index()`           | Dashboard métriques — entonnoir, abandons |
 | `Api\Admin\CampaignStatsController` | `show()` `update()` | Stats d'impact                            |
-| `Api\Admin\ReportController`        | `show()`            | Bilan PDF par entreprise                  |
+| `Api\Admin\ReportController`        | `show()`            | Bilan par entreprise — JSON ou PDF (`?format=pdf` via dompdf) |
 
 ---
 
@@ -311,6 +325,9 @@ Route::get('/label',                     [LabelController::class, 'index']);
 Route::get('/kit-promo',                 [KitController::class, 'index']);
 Route::get('/contact',                   [ContactController::class, 'index']);
 Route::post('/contact',                  [ContactController::class, 'store']);
+
+Route::get('/inscription',               [InscriptionController::class, 'index']);
+Route::post('/inscription',              [InscriptionController::class, 'store']);
 
 Route::get('/c/{entreprise}',            [EntrepriseController::class, 'show']);
 Route::get('/c/{entreprise}/quiz',       [QuizController::class, 'show']);
@@ -340,8 +357,10 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/dashboard', [Admin\DashboardController::class, 'index']);
 
     Route::apiResource('entreprises', Admin\EntrepriseController::class);
-    Route::post('entreprises/{entreprise}/send-kit',
-                [Admin\EntrepriseController::class, 'sendKit']);
+    Route::post('entreprises/{id}/send-kit',
+                [Admin\EntrepriseController::class, 'sendKit']);   // TODO
+    Route::post('entreprises/{id}/send-link',
+                [Admin\EntrepriseController::class, 'sendLink']);  // Renvoie le lien de confirmation
 
     Route::get('submissions',              [Admin\SubmissionController::class, 'index']);
     Route::get('submissions/{submission}', [Admin\SubmissionController::class, 'show']);
@@ -436,5 +455,9 @@ return response()->json([
 - `QuizController@result` retourne 404 si pas de `session('quiz_token')` valide
 - Vider `session('quiz_token')` après rattachement ou expiration
 - Utiliser `CampaignStats::getInstance()` — jamais `::first()` directement
-- Seeder : 1 User admin (`is_admin = true`), 1 CampaignStats à zéro, 2-3 Entreprises de démo ✅
-- Configurer CORS dans `config/cors.php` pour le domaine Vue admin
+- CORS : l'admin SPA est servi sur la même origine — aucune config CORS nécessaire en production
+- **Emails** : utiliser `->locale($locale)` sur le Mailable (pas `app()->setLocale()`). Locales valides : `fr`, `de`, `it`, `en`. Envoi synchrone (`Mail::send`) car Infomaniak ne supporte pas les workers persistants.
+- `sendKit()` → TODO (non implémenté) ; `sendLink()` → envoie `CompanyConfirmationLink` lors de la validation ou à la demande
+- **Seeder dev** (`DatabaseSeeder`) : 12 entreprises (5 avec trophée + rdv, 3 labelisées, 2 validées, 2 en attente), données analytics réalistes. **Seeder prod** (`ProductionSeeder`) : uniquement `CampaignStats::getInstance()` — admin créé via `php artisan app:create-admin`
+- **Cache quiz** : `Cache::rememberForever('quiz', ...)` → invalider manuellement avec `php artisan cache:forget quiz` après modification de `quiz.json`
+- **PDF rapport** : `ReportController@show?format=pdf` → `barryvdh/laravel-dompdf`, template `resources/views/pdf/report.blade.php` (HTML tabulaire, pas de flexbox/grid)

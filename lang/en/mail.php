@@ -10,6 +10,11 @@ return [
     'footer_org'             => 'HUG – Geneva University Hospitals',
     'footer_center'          => 'Blood Transfusion Centre · Geneva',
 
+    'type_general'           => 'General question',
+    'type_partnership'       => 'Partnership',
+    'type_technical'         => 'Technical support',
+    'type_other'             => 'Other',
+
     'contact_new_message'    => 'New contact message',
     'contact_from'           => 'From',
     'contact_message'        => 'Message',

@@ -27,7 +27,7 @@
               {{ __('mail.contact_new_message') }}
             </p>
             <h1 style="margin:0 0 24px;font-size:20px;font-weight:600;color:#1a1a1a;">
-              {{ $type }}
+              {{ __('mail.' . $type) }}
             </h1>
 
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
