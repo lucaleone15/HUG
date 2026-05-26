@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);   // POST utilisé pour multipart (logo)
     Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
     Route::post('entreprises/{id}/send-kit', [AdminEntrepriseController::class, 'sendKit']);
+    Route::post('entreprises/{id}/send-link', [AdminEntrepriseController::class, 'sendLink']);
 
     Route::get('submissions',              [SubmissionController::class, 'index']);
     Route::get('submissions/{submission}', [SubmissionController::class, 'show']);
