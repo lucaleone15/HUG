@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CompanyConfirmationLink extends Mailable
+class CompanyConfirmationLink extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -39,7 +39,7 @@ class CompanyConfirmationLink extends Mailable
     public function content(): Content
     {
         return new Content(
-            htmlView: 'emails.company-confirmation-link',
+            view: 'emails.company-confirmation-link',
         );
     }
 

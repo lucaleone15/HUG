@@ -139,16 +139,17 @@ class EntrepriseController extends Controller
 
     public function sendLink(int $id): JsonResponse
     {
-    $entreprise = Entreprise::findOrFail($id);
+        $entreprise = Entreprise::findOrFail($id);
 
-    abort_if(! $entreprise->is_active, 422, 'Entreprise non active.');
+        abort_if(! $entreprise->is_active, 422, 'Entreprise non active.');
+        abort_if(! $entreprise->contact_email, 422, 'Aucun email de contact défini.');
 
-    Mail::to($entreprise->contact_email)
-        ->send(new \App\Mail\CompanyConfirmationLink($entreprise));
+        Mail::to($entreprise->contact_email)
+            ->queue(new \App\Mail\CompanyConfirmationLink($entreprise));
 
-    return response()->json([
-        'message' => "Lien envoyé à {$entreprise->contact_email}",
-    ]);
+        return response()->json([
+            'message' => "Lien envoyé à {$entreprise->contact_email}",
+        ]);
     }
 
     private function uniqueSlug(string $base): string
