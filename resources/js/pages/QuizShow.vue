@@ -203,8 +203,7 @@ const goBack = () => {
 
             <!-- Progress -->
             <div class="mb-6">
-                <div class="flex justify-between text-xs text-base-content/60 mb-1">
-                    <span>{{ answeredActive.length }} / {{ total }}</span>
+                <div class="flex justify-end text-xs text-base-content/60 mb-1">
                     <span>{{ progress }}%</span>
                 </div>
                 <progress class="progress w-full" :value="progress" max="100"

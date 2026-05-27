@@ -115,6 +115,21 @@ onMounted(() => {
                     </ul>
                 </div>
 
+                <!-- Encadré contact — visible uniquement si des raisons sont présentes -->
+                <div
+                    v-if="reasons.length > 0"
+                    class="text-left bg-base-100 border border-base-300 rounded-xl p-4 mb-6 shadow-sm flex items-start gap-3"
+                >
+                    <span class="text-2xl shrink-0">💬</span>
+                    <div>
+                        <p class="text-sm font-semibold mb-1">{{ t('result.contact_box_title') }}</p>
+                        <p class="text-sm text-base-content/70 leading-snug mb-3">{{ t('result.contact_box_message') }}</p>
+                        <a href="/contact" class="btn btn-sm btn-outline">
+                            {{ t('result.contact_box_cta') }}
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Évaluation médicale complémentaire (birth_check — origines géographiques) -->
                 <div
                     v-if="needsEvaluation"
