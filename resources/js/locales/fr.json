@@ -68,7 +68,16 @@
         "back": "← Retour",
         "complete_title": "Quiz complété !",
         "complete_subtitle": "Vous avez répondu à toutes les questions. Découvrez votre résultat.",
-        "submit": "Voir mon résultat"
+        "submit": "Voir mon résultat",
+        "checklist_confirm": "Confirmer la sélection ({n})",
+        "travel_add": "✈ Ajouter un voyage",
+        "travel_confirm": "Confirmer mes voyages",
+        "travel_region": "Région visitée",
+        "travel_return_date": "Date de retour en Suisse",
+        "travel_select_region": "— Sélectionner une région —",
+        "travel_risk_warning": "Risques associés :",
+        "birth_country_placeholder": "Indiquer le pays…",
+        "birth_confirm": "Confirmer"
     },
     "result": {
         "eligible_title": "Vous êtes éligible au don !",
@@ -77,6 +86,9 @@
         "ineligible_title": "Don impossible pour l'instant",
         "ineligible_message": "Merci pour votre démarche. Votre profil ne correspond pas actuellement aux critères médicaux du don du sang. Cela peut évoluer — n'hésitez pas à consulter un médecin ou à recontacter le CTS.",
         "ineligible_cta": "En savoir plus sur le don",
+        "ineligible_reasons_title": "Raison(s) de cette décision",
+        "needs_evaluation_title": "Évaluation complémentaire recommandée",
+        "needs_evaluation_message": "Votre profil nécessite une évaluation médicale complémentaire liée à vos origines géographiques. Présentez-vous directement au Centre de Transfusion Sanguine pour un bilan personnalisé.",
         "back_home": "Retour à l'accueil",
         "referral_title": "Parrainez vos collègues !",
         "referral_subtitle": "Même si vous ne pouvez pas donner votre sang, vos collègues le peuvent peut-être. Invitez-en 3 à faire le test !",
