@@ -10,10 +10,10 @@ const props = defineProps({
 })
 
 const variantClasses = {
-    primary: 'bg-[#E30613] hover:bg-[#c0051f] text-white border-none',
+    primary: 'bg-brand hover:bg-brand-dark text-white border-none',
     ghost:   'btn-ghost',
     outline: 'btn-outline',
-    white:   'bg-white text-[#E30613] hover:bg-white/90 border-none',
+    white:   'bg-white text-brand hover:bg-white/90 border-none',
 }
 
 const sizeClasses = {

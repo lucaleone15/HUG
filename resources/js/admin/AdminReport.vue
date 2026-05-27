@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import { useAuth } from '../composables/useAuth.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 import CompanySelector from '../components/admin/CompanySelector.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
 
+const { t, locale } = useI18n()
 const api = useApi()
 const { token } = useAuth()
 const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
@@ -38,7 +40,7 @@ const downloadPdf = async () => {
     if (!data.value) return
     downloading.value = true
     try {
-        const res = await fetch(`/api/admin/report?entreprise_id=${selectedId.value}&format=pdf`, {
+        const res = await fetch(`/api/admin/report?entreprise_id=${selectedId.value}&format=pdf&locale=${locale.value}`, {
             headers: {
                 'Authorization': `Bearer ${token.value}`,
                 'Accept': 'application/pdf',
@@ -53,7 +55,7 @@ const downloadPdf = async () => {
         a.click()
         URL.revokeObjectURL(url)
     } catch (e) {
-        alert('Erreur lors de la génération du PDF : ' + e.message)
+        alert(t('admin.pdf_error') + e.message)
     } finally {
         downloading.value = false
     }
@@ -65,7 +67,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
 
 <template>
     <div>
-        <h1 class="text-2xl font-bold mb-6">Rapport par entreprise</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ t('admin.report_title') }}</h1>
 
         <!-- Sélecteur -->
         <div class="card bg-base-100 shadow-sm max-w-md mb-6">
@@ -73,10 +75,10 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <CompanySelector
                     :companies="activeEntreprises"
                     v-model="selectedId"
-                    label="Choisir une entreprise"
+                    :label="t('admin.choose_company')"
                 />
                 <BaseButton size="sm" :disabled="!selectedId" :loading="loading" @click="generate">
-                    Générer le rapport
+                    {{ t('admin.generate_report') }}
                 </BaseButton>
             </div>
         </div>
@@ -94,7 +96,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                         <div class="text-sm space-y-1 text-base-content/60 mt-2">
                             <div>👤 {{ data.entreprise.contact_name ?? '—' }}</div>
                             <div>✉️ {{ data.entreprise.contact_email ?? '—' }}</div>
-                            <div>👥 {{ fmt(data.entreprise.employee_count) }} employés</div>
+                            <div>👥 {{ fmt(data.entreprise.employee_count) }} {{ t('admin.employees') }}</div>
                         </div>
                     </div>
                 </div>
@@ -102,23 +104,23 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <!-- KPIs participation -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
-                        <h2 class="font-semibold mb-3">Participation</h2>
+                        <h2 class="font-semibold mb-3">{{ t('admin.participation_title') }}</h2>
                         <div class="grid grid-cols-2 gap-3 text-center">
                             <div>
                                 <div class="text-2xl font-bold text-violet-600">{{ fmt(data.participation.quiz_started) }}</div>
-                                <div class="text-xs text-base-content/50">quiz démarrés</div>
+                                <div class="text-xs text-base-content/50">{{ t('admin.quiz_started_stat') }}</div>
                             </div>
                             <div>
                                 <div class="text-2xl font-bold text-amber-600">{{ fmt(data.participation.quiz_completed) }}</div>
-                                <div class="text-xs text-base-content/50">quiz complétés</div>
+                                <div class="text-xs text-base-content/50">{{ t('admin.quiz_completed_stat') }}</div>
                             </div>
                             <div>
                                 <div class="text-2xl font-bold text-emerald-600">{{ fmt(data.participation.eligible) }}</div>
-                                <div class="text-xs text-base-content/50">éligibles</div>
+                                <div class="text-xs text-base-content/50">{{ t('admin.funnel_eligible') }}</div>
                             </div>
                             <div>
-                                <div class="text-2xl font-bold text-[#E30613]">{{ fmt(data.participation.rdv_clicked) }}</div>
-                                <div class="text-xs text-base-content/50">RDV cliqués</div>
+                                <div class="text-2xl font-bold text-brand">{{ fmt(data.participation.rdv_clicked) }}</div>
+                                <div class="text-xs text-base-content/50">{{ t('admin.rdv_clicked_stat') }}</div>
                             </div>
                         </div>
                     </div>
@@ -127,19 +129,19 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <!-- Taux -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
-                        <h2 class="font-semibold mb-3">Taux clés</h2>
+                        <h2 class="font-semibold mb-3">{{ t('admin.key_rates') }}</h2>
                         <div class="space-y-3">
                             <div v-for="([label, a, b]) in [
-                                ['Taux de participation', data.participation.quiz_started, data.entreprise.employee_count],
-                                ['Taux d\'éligibilité',   data.participation.eligible,     data.participation.total_submissions],
-                                ['Taux de conversion',    data.participation.rdv_clicked,  data.participation.eligible],
+                                [t('admin.participation_rate'), data.participation.quiz_started, data.entreprise.employee_count],
+                                [t('admin.eligibility_rate'),   data.participation.eligible,     data.participation.total_submissions],
+                                [t('admin.conversion_rate'),    data.participation.rdv_clicked,  data.participation.eligible],
                             ]" :key="label">
                                 <div class="flex justify-between text-sm mb-1">
                                     <span class="text-base-content/60">{{ label }}</span>
                                     <span class="font-semibold">{{ pct(a, b) }}</span>
                                 </div>
                                 <div class="bg-base-200 rounded-full h-1.5">
-                                    <div class="bg-[#E30613] h-1.5 rounded-full"
+                                    <div class="bg-brand h-1.5 rounded-full"
                                         :style="`width:${b > 0 ? Math.min(a/b*100, 100).toFixed(1) : 0}%`"></div>
                                 </div>
                             </div>
@@ -150,17 +152,17 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <!-- Comportement -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
-                        <h2 class="font-semibold mb-3">Comportement</h2>
+                        <h2 class="font-semibold mb-3">{{ t('admin.behavior_title') }}</h2>
                         <div class="text-sm space-y-2 text-base-content/60">
-                            <div>⏱ Durée moyenne : <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '—' }}</strong></div>
+                            <div>⏱ {{ t('admin.avg_duration_stat') }} : <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '—' }}</strong></div>
                         </div>
                         <div v-if="Object.keys(data.behavior.abandon_by_question ?? {}).length" class="mt-3">
-                            <p class="text-xs text-base-content/40 mb-2">Abandons par question</p>
+                            <p class="text-xs text-base-content/40 mb-2">{{ t('admin.abandon_by_question') }}</p>
                             <div class="space-y-1 max-h-40 overflow-y-auto">
                                 <div v-for="(count, q) in data.behavior.abandon_by_question" :key="q"
                                     class="flex gap-2 text-xs text-base-content/60">
                                     <span class="w-8">Q{{ parseInt(q) + 1 }}</span>
-                                    <span>{{ count }} abandons</span>
+                                    <span>{{ count }} {{ t('admin.abandons') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +173,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
 
             <div class="flex justify-end mt-6">
                 <BaseButton size="sm" :loading="downloading" @click="downloadPdf">
-                    📄 Télécharger PDF
+                    📄 {{ t('admin.download_pdf') }}
                 </BaseButton>
             </div>
         </template>

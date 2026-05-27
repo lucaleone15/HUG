@@ -4,53 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:40px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:48px 16px;">
     <tr><td align="center">
-      <table width="580" cellpadding="0" cellspacing="0"
-             style="background:#ffffff;border-radius:8px;overflow:hidden;max-width:580px;width:100%;">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-        {{-- Header --}}
+        {{-- Header blanc logo --}}
         <tr>
-          <td style="background:#C41B1B;padding:32px 40px;text-align:center;">
-            <span style="color:#ffffff;font-size:18px;font-weight:600;letter-spacing:0.3px;">
-              ♥ donnez-votre-sang.ch
-            </span>
-          </td>
-        </tr>
-
-        {{-- Corps --}}
-        <tr>
-          <td style="padding:40px 40px 0;">
-            <p style="margin:0 0 6px;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:500;">
-              {{ __('mail.confirmation_activated') }}
-            </p>
-            <h1 style="margin:0 0 20px;font-size:22px;font-weight:600;color:#1a1a1a;line-height:1.3;">
-              {{ __('mail.confirmation_title') }}
-            </h1>
-            <p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.65;">
-              {{ __('mail.confirmation_greeting') }} <strong style="color:#1a1a1a;">{{ $entreprise->contact_name }}</strong>,
-            </p>
-            <p style="margin:0 0 0;font-size:15px;color:#444;line-height:1.65;">
-              {!! __('mail.confirmation_body', ['name' => $entreprise->name]) !!}
-            </p>
-          </td>
-        </tr>
-
-        {{-- Lien mis en avant --}}
-        <tr>
-          <td style="padding:28px 40px 0;">
-            <table width="100%" cellpadding="0" cellspacing="0"
-                   style="background:#FEF2F2;border-radius:8px;border-left:4px solid #C41B1B;padding:20px 24px;">
+          <td style="background:#ffffff;padding:18px 40px;border-bottom:3px solid #E30613;">
+            <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;padding-bottom:10px;">
-                  {{ __('mail.confirmation_link_label') }}
+                <td style="vertical-align:middle;">
+                  <img src="{{ config('app.url') }}/images/hug-logo.svg" alt="HUG × CTS" height="36" style="display:block;">
+                </td>
+                <td style="text-align:right;vertical-align:middle;">
+                  <span style="font-size:11px;color:#aaaaaa;letter-spacing:0.5px;">donnez-votre-sang.ch</span>
                 </td>
               </tr>
+            </table>
+          </td>
+        </tr>
+
+        {{-- Titre sur fond rouge --}}
+        <tr>
+          <td style="background:#E30613;padding:32px 40px 36px;">
+            <p style="margin:0 0 8px;font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:2px;font-weight:600;">
+              {{ __('mail.confirmation_activated') }}
+            </p>
+            <h1 style="margin:0;font-size:26px;font-weight:700;color:#ffffff;line-height:1.25;letter-spacing:-0.3px;">
+              {{ __('mail.confirmation_title') }}
+            </h1>
+          </td>
+        </tr>
+
+        {{-- Corps blanc --}}
+        <tr>
+          <td style="background:#ffffff;padding:40px 40px 32px;">
+            <p style="margin:0 0 20px;font-size:15px;color:#111111;line-height:1.7;">
+              {{ __('mail.confirmation_greeting') }} <strong>{{ $entreprise->contact_name }}</strong>,
+            </p>
+            <p style="margin:0;font-size:15px;color:#555555;line-height:1.7;">
+              {!! __('mail.confirmation_body', ['name' => '<strong style="color:#111111;">' . e($entreprise->name) . '</strong>']) !!}
+            </p>
+          </td>
+        </tr>
+
+        {{-- Bloc lien --}}
+        <tr>
+          <td style="background:#ffffff;padding:0 40px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0"
+                   style="background:#FEF2F2;border-left:3px solid #E30613;padding:20px 24px;">
               <tr>
-                <td style="font-size:15px;color:#C41B1B;font-weight:600;word-break:break-all;">
-                  {{ route('entreprise.show', $entreprise) }}
+                <td>
+                  <p style="margin:0 0 8px;font-size:10px;color:#888888;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">
+                    {{ __('mail.confirmation_link_label') }}
+                  </p>
+                  <p style="margin:0;font-size:14px;color:#E30613;font-weight:600;word-break:break-all;line-height:1.5;">
+                    {{ route('entreprise.show', $entreprise) }}
+                  </p>
                 </td>
               </tr>
             </table>
@@ -59,9 +71,9 @@
 
         {{-- CTA --}}
         <tr>
-          <td style="padding:32px 40px;text-align:center;">
+          <td style="background:#ffffff;padding:0 40px 48px;text-align:center;">
             <a href="{{ route('entreprise.show', $entreprise) }}"
-               style="display:inline-block;background:#C41B1B;color:#ffffff;text-decoration:none;padding:13px 32px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
+               style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:14px 36px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">
               {{ __('mail.confirmation_cta') }}
             </a>
           </td>
@@ -69,15 +81,21 @@
 
         {{-- Footer --}}
         <tr>
-          <td style="border-top:1px solid #f0f0f0;padding:24px 40px;background:#fafafa;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#999;">
+          <td style="background:#111111;padding:28px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td>
-                  <p style="margin:0 0 4px;color:#666;font-weight:500;">{{ __('mail.footer_org') }}</p>
-                  <p style="margin:0;">{{ __('mail.footer_center') }}</p>
+                  <p style="margin:0 0 3px;font-size:12px;color:#cccccc;font-weight:600;">
+                    {{ __('mail.footer_org') }}
+                  </p>
+                  <p style="margin:0;font-size:11px;color:#888888;">
+                    {{ __('mail.footer_center') }}
+                  </p>
                 </td>
-                <td style="text-align:right;vertical-align:top;">
-                  <a href="{{ config('app.url') }}" style="color:#999;text-decoration:none;">donnez-votre-sang.ch</a>
+                <td style="text-align:right;vertical-align:middle;">
+                  <span style="font-size:11px;color:#E30613;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+                    ♥
+                  </span>
                 </td>
               </tr>
             </table>

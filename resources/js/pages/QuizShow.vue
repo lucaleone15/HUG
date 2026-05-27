@@ -190,7 +190,7 @@ const goBack = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-200">
+    <div class="min-h-screen bg-base-200 flex flex-col">
         <NavBar />
 
         <!-- Company header -->
@@ -199,7 +199,7 @@ const goBack = () => {
             {{ entreprise.name }} &mdash; {{ t('quiz.title') }}
         </div>
 
-        <main class="max-w-xl mx-auto px-4 py-8">
+        <main class="max-w-xl mx-auto px-4 py-8 flex-1">
 
             <!-- Progress -->
             <div class="mb-6">

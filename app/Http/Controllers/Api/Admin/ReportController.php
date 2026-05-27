@@ -9,6 +9,7 @@ use App\Models\Submission;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -17,7 +18,11 @@ class ReportController extends Controller
     {
         $request->validate([
             'entreprise_id' => 'required|exists:entreprises,id',
+            'locale'        => 'nullable|in:fr,de,it,en',
         ]);
+
+        $locale = $request->input('locale', 'fr');
+        App::setLocale($locale);
 
         $entreprise = Entreprise::findOrFail($request->integer('entreprise_id'));
 
@@ -76,7 +81,11 @@ class ReportController extends Controller
                 'participation' => $participationData,
                 'behavior'      => $behaviorData,
                 'generatedAt'   => now()->format('d.m.Y'),
-            ]);
+                'tr'            => trans('pdf'),
+                'logoSrc'       => $this->svgToPngDataUri(
+                    public_path('images/hug-logo.svg')
+                ),
+            ])->setPaper('a4', 'portrait');
 
             return $pdf->download("rapport-{$entreprise->slug}.pdf");
         }
@@ -86,5 +95,21 @@ class ReportController extends Controller
             'participation' => $participationData,
             'behavior'      => $behaviorData,
         ]);
+    }
+
+    /**
+     * Rasterise an SVG to PNG via Imagick and return a base64 data URI.
+     * DomPDF handles PNG img tags reliably; inline SVG with CSS classes does not work.
+     */
+    private function svgToPngDataUri(string $path): string
+    {
+        $imagick = new \Imagick();
+        $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
+        $imagick->setResolution(144, 144);
+        $imagick->readImageBlob(file_get_contents($path));
+        $imagick->setImageFormat('png32');
+        $imagick->resizeImage(300, 0, \Imagick::FILTER_LANCZOS, 1);
+
+        return 'data:image/png;base64,' . base64_encode($imagick->getImageBlob());
     }
 }

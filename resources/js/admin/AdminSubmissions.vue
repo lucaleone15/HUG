@@ -1,10 +1,12 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 import CompanySelector from '../components/admin/CompanySelector.vue'
 
+const { t } = useI18n()
 const api = useApi()
 const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
 
@@ -31,49 +33,49 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
 
 <template>
     <div>
-        <h1 class="text-2xl font-bold mb-6">Soumissions</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ t('admin.submissions_title') }}</h1>
 
         <!-- Filtres -->
         <div class="flex flex-wrap gap-3 mb-4">
             <CompanySelector
                 :companies="entreprises"
                 v-model="filterEntreprise"
-                all-label="Toutes les entreprises"
+                :all-label="t('admin.all_companies')"
                 class="select-sm"
             />
             <select v-model="filterEligible" class="select select-bordered select-sm">
-                <option value="">Tous</option>
-                <option value="1">Éligibles</option>
-                <option value="0">Non éligibles</option>
+                <option value="">{{ t('admin.filter_all') }}</option>
+                <option value="1">{{ t('admin.filter_eligible') }}</option>
+                <option value="0">{{ t('admin.filter_ineligible') }}</option>
             </select>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
-            <span class="loading loading-spinner loading-lg text-[#E30613]"></span>
+            <span class="loading loading-spinner loading-lg text-brand"></span>
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
         <template v-else-if="data">
             <div class="mb-2 text-sm text-base-content/50">
-                {{ total.toLocaleString('fr-CH') }} soumissions
+                {{ t('admin.submissions_count', { n: total.toLocaleString('fr-CH') }) }}
             </div>
             <div class="card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
                         <thead>
                             <tr class="text-xs text-base-content/50">
-                                <th>Entreprise</th>
-                                <th>Éligibilité</th>
-                                <th>Soumis le</th>
-                                <th>Token</th>
+                                <th>{{ t('admin.col_company') }}</th>
+                                <th>{{ t('admin.col_eligibility') }}</th>
+                                <th>{{ t('admin.col_submitted_at') }}</th>
+                                <th>{{ t('admin.col_token') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="s in data" :key="s.id" class="hover">
                                 <td class="font-medium text-sm">{{ s.entreprise?.name ?? '—' }}</td>
                                 <td>
-                                    <span v-if="s.is_eligible === true"  class="badge badge-success badge-sm">Éligible</span>
-                                    <span v-else-if="s.is_eligible === false" class="badge badge-error badge-sm">Non éligible</span>
+                                    <span v-if="s.is_eligible === true"  class="badge badge-success badge-sm">{{ t('admin.eligible_badge') }}</span>
+                                    <span v-else-if="s.is_eligible === false" class="badge badge-error badge-sm">{{ t('admin.ineligible_badge') }}</span>
                                     <span v-else class="badge badge-ghost badge-sm">—</span>
                                 </td>
                                 <td class="text-sm text-base-content/60">{{ fmt(s.completed_at) }}</td>

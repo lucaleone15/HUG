@@ -36,7 +36,7 @@ defineProps({
             </div>
             <h2 class="card-title text-base">{{ entreprise.name }}</h2>
             <div class="flex gap-2 flex-wrap mt-1">
-                <span v-if="entreprise.type" class="badge badge-ghost badge-sm">{{ entreprise.type }}</span>
+                <span v-if="entreprise.type" class="badge badge-ghost badge-sm">{{ t('inscription.type_' + entreprise.type) }}</span>
                 <span v-if="entreprise.employee_count" class="badge badge-ghost badge-sm">
                     {{ entreprise.employee_count }} {{ t('entreprise.employees') }}
                 </span>

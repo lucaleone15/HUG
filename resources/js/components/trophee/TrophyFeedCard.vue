@@ -15,9 +15,9 @@ defineProps({
 const medal = (rank) => ({ 1: '🥇', 2: '🥈', 3: '🥉' }[rank] ?? '🏅')
 
 const rankLabel = (rank) => ({
-    1: t('trophee.gold')   ?? 'Or',
-    2: t('trophee.silver') ?? 'Argent',
-    3: t('trophee.bronze') ?? 'Bronze',
+    1: t('trophee.gold'),
+    2: t('trophee.silver'),
+    3: t('trophee.bronze'),
 }[rank] ?? `#${rank}`)
 </script>
 

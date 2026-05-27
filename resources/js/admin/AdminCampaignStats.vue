@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import BaseButton from '../components/ui/BaseButton.vue'
 
+const { t } = useI18n()
 const api     = useApi()
 const current = ref(null)
 const loading = ref(true)
@@ -46,10 +48,10 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
 
 <template>
     <div class="max-w-xl">
-        <h1 class="text-2xl font-bold mb-6">Stats de campagne</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ t('admin.campaign_stats_title') }}</h1>
 
         <div v-if="loading" class="flex justify-center py-16">
-            <span class="loading loading-spinner loading-lg text-[#E30613]"></span>
+            <span class="loading loading-spinner loading-lg text-brand"></span>
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
@@ -57,27 +59,27 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
             <!-- Stats actuelles -->
             <div class="grid grid-cols-3 gap-3 mb-6">
                 <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
-                    <div class="text-2xl font-bold text-[#E30613]">{{ fmt(current.donations_count) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">dons collectés</div>
+                    <div class="text-2xl font-bold text-brand">{{ fmt(current.donations_count) }}</div>
+                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.donations_collected') }}</div>
                 </div>
                 <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
                     <div class="text-2xl font-bold text-emerald-600">{{ fmt(current.lives_saved) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">vies sauvées</div>
+                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.lives_saved_stat') }}</div>
                 </div>
                 <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
                     <div class="text-2xl font-bold text-blue-600">{{ fmt(current.hug_hospitals_count) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">hôpitaux HUG</div>
+                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.hug_hospitals') }}</div>
                 </div>
             </div>
 
             <!-- Calculés (lecture seule) -->
             <div class="card bg-base-200 mb-6">
                 <div class="card-body py-3 px-4 text-sm text-base-content/60 flex flex-row gap-6 flex-wrap">
-                    <span>{{ fmt(current.eligible_count) }} participants éligibles</span>
-                    <span>{{ fmt(current.entreprises_count) }} entreprises actives</span>
-                    <span>{{ fmt(current.labelled_count) }} entreprises labelisées</span>
+                    <span>{{ fmt(current.eligible_count) }} {{ t('admin.eligible_participants') }}</span>
+                    <span>{{ fmt(current.entreprises_count) }} {{ t('admin.active_companies') }}</span>
+                    <span>{{ fmt(current.labelled_count) }} {{ t('admin.labelled_companies') }}</span>
                     <span v-if="current.updated_by">
-                        Mis à jour par <strong>{{ current.updated_by.name }}</strong>
+                        {{ t('admin.updated_by') }} <strong>{{ current.updated_by.name }}</strong>
                     </span>
                 </div>
             </div>
@@ -85,26 +87,26 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
             <!-- Formulaire de mise à jour -->
             <div class="card bg-base-100 shadow-sm">
                 <div class="card-body gap-4">
-                    <h2 class="font-semibold">Mettre à jour les chiffres CTS</h2>
-                    <p class="text-sm text-base-content/50">Ces données sont saisies manuellement depuis les rapports officiels CTS/HUG.</p>
+                    <h2 class="font-semibold">{{ t('admin.update_stats_title') }}</h2>
+                    <p class="text-sm text-base-content/50">{{ t('admin.update_stats_desc') }}</p>
 
-                    <div v-if="saved" class="alert alert-success text-sm py-2">✅ Enregistré avec succès</div>
+                    <div v-if="saved" class="alert alert-success text-sm py-2">✅ {{ t('admin.saved_success') }}</div>
 
                     <form class="grid grid-cols-1 gap-3" @submit.prevent="save">
                         <label class="form-control">
-                            <div class="label"><span class="label-text">Nombre de dons collectés</span></div>
+                            <div class="label"><span class="label-text">{{ t('admin.donations_count_label') }}</span></div>
                             <input v-model.number="form.donations_count" type="number" min="0" required class="input input-bordered input-sm">
                         </label>
                         <label class="form-control">
-                            <div class="label"><span class="label-text">Vies sauvées</span></div>
+                            <div class="label"><span class="label-text">{{ t('admin.lives_saved_label') }}</span></div>
                             <input v-model.number="form.lives_saved" type="number" min="0" required class="input input-bordered input-sm">
                         </label>
                         <label class="form-control">
-                            <div class="label"><span class="label-text">Hôpitaux HUG impliqués</span></div>
+                            <div class="label"><span class="label-text">{{ t('admin.hug_hospitals_label') }}</span></div>
                             <input v-model.number="form.hug_hospitals_count" type="number" min="0" required class="input input-bordered input-sm">
                         </label>
                         <div class="card-actions justify-end mt-2">
-                            <BaseButton type="submit" size="sm" :loading="saving">Enregistrer</BaseButton>
+                            <BaseButton type="submit" size="sm" :loading="saving">{{ t('admin.save') }}</BaseButton>
                         </div>
                     </form>
                 </div>

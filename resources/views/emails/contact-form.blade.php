@@ -4,61 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:40px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:48px 16px;">
     <tr><td align="center">
-      <table width="580" cellpadding="0" cellspacing="0"
-             style="background:#ffffff;border-radius:8px;overflow:hidden;max-width:580px;width:100%;">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-        {{-- Header --}}
+        {{-- Header blanc logo --}}
         <tr>
-          <td style="background:#C41B1B;padding:32px 40px;text-align:center;">
-            <span style="color:#ffffff;font-size:18px;font-weight:600;letter-spacing:0.3px;">
-              ♥ donnez-votre-sang.ch
-            </span>
+          <td style="background:#ffffff;padding:18px 40px;border-bottom:3px solid #E30613;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="vertical-align:middle;">
+                  <img src="{{ config('app.url') }}/images/hug-logo.svg" alt="HUG × CTS" height="36" style="display:block;">
+                </td>
+                <td style="text-align:right;vertical-align:middle;">
+                  <span style="font-size:11px;color:#aaaaaa;letter-spacing:0.5px;">donnez-votre-sang.ch</span>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
 
-        {{-- Corps --}}
+        {{-- Titre sur fond rouge --}}
         <tr>
-          <td style="padding:40px 40px 0;">
-            <p style="margin:0 0 6px;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:500;">
+          <td style="background:#E30613;padding:32px 40px 36px;">
+            <p style="margin:0 0 8px;font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:2px;font-weight:600;">
               {{ __('mail.contact_new_message') }}
             </p>
-            <h1 style="margin:0 0 24px;font-size:20px;font-weight:600;color:#1a1a1a;">
+            <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.25;letter-spacing:-0.2px;">
               {{ __('mail.' . $type) }}
             </h1>
+          </td>
+        </tr>
 
-            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-              <tr>
-                <td style="font-size:12px;color:#888;padding-bottom:4px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">{{ __('mail.contact_from') }}</td>
-              </tr>
-              <tr>
-                <td style="font-size:15px;color:#1a1a1a;font-weight:500;">{{ $senderName }}</td>
-              </tr>
-              <tr>
-                <td style="font-size:14px;color:#C41B1B;">{{ $senderEmail }}</td>
-              </tr>
-            </table>
+        {{-- Expéditeur --}}
+        <tr>
+          <td style="background:#ffffff;padding:40px 40px 28px;">
+            <p style="margin:0 0 6px;font-size:10px;color:#888888;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">
+              {{ __('mail.contact_from') }}
+            </p>
+            <p style="margin:0 0 2px;font-size:16px;color:#111111;font-weight:700;">
+              {{ $senderName }}
+            </p>
+            <p style="margin:0;font-size:13px;color:#E30613;">
+              {{ $senderEmail }}
+            </p>
+          </td>
+        </tr>
 
+        {{-- Message --}}
+        <tr>
+          <td style="background:#ffffff;padding:0 40px 40px;">
             <table width="100%" cellpadding="0" cellspacing="0"
-                   style="background:#f9f9f9;border-radius:8px;padding:20px 24px;">
+                   style="background:#f8f8f8;border-left:3px solid #E30613;padding:20px 24px;">
               <tr>
-                <td style="font-size:12px;color:#888;padding-bottom:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">{{ __('mail.contact_message') }}</td>
-              </tr>
-              <tr>
-                <td style="font-size:15px;color:#444;line-height:1.65;white-space:pre-wrap;">{{ $userMessage }}</td>
+                <td>
+                  <p style="margin:0 0 12px;font-size:10px;color:#888888;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">
+                    {{ __('mail.contact_message') }}
+                  </p>
+                  <p style="margin:0;font-size:15px;color:#444444;line-height:1.7;white-space:pre-wrap;">{{ $userMessage }}</p>
+                </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        {{-- Répondre --}}
+        {{-- CTA répondre --}}
         <tr>
-          <td style="padding:32px 40px;text-align:center;">
+          <td style="background:#ffffff;padding:0 40px 48px;text-align:center;">
             <a href="mailto:{{ $senderEmail }}"
-               style="display:inline-block;background:#C41B1B;color:#ffffff;text-decoration:none;padding:13px 32px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
+               style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:14px 36px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">
               {{ __('mail.contact_reply_cta', ['name' => $senderName]) }}
             </a>
           </td>
@@ -66,15 +82,21 @@
 
         {{-- Footer --}}
         <tr>
-          <td style="border-top:1px solid #f0f0f0;padding:24px 40px;background:#fafafa;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#999;">
+          <td style="background:#111111;padding:28px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td>
-                  <p style="margin:0 0 4px;color:#666;font-weight:500;">{{ __('mail.footer_org') }}</p>
-                  <p style="margin:0;">{{ __('mail.footer_center') }}</p>
+                  <p style="margin:0 0 3px;font-size:12px;color:#cccccc;font-weight:600;">
+                    {{ __('mail.footer_org') }}
+                  </p>
+                  <p style="margin:0;font-size:11px;color:#888888;">
+                    {{ __('mail.footer_center') }}
+                  </p>
                 </td>
-                <td style="text-align:right;vertical-align:top;">
-                  <a href="{{ config('app.url') }}" style="color:#999;text-decoration:none;">donnez-votre-sang.ch</a>
+                <td style="text-align:right;vertical-align:middle;">
+                  <span style="font-size:11px;color:#E30613;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+                    ♥
+                  </span>
                 </td>
               </tr>
             </table>

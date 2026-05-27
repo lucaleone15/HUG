@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-200">
+    <div class="min-h-screen bg-base-200 flex flex-col">
         <NavBar />
 
         <!-- Company strip -->
@@ -54,7 +54,7 @@ onMounted(() => {
             {{ entreprise.name }}
         </div>
 
-        <main class="max-w-lg mx-auto px-6 py-12 text-center">
+        <main class="max-w-lg mx-auto px-6 py-12 text-center flex-1">
 
             <!-- Eligible -->
             <template v-if="eligible">
