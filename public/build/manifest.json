@@ -52,7 +52,7 @@
     "src": "_instrument-sans-600-normal-DMks36a2.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DCl2tSiz.css",
+    "file": "assets/app-BmVTOY47.css",
     "name": "app",
     "names": [
       "app.css"
@@ -61,7 +61,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-TtmZgwfK.js",
+    "file": "assets/app-Dlf_AEK9.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -72,29 +72,29 @@
       "resources/js/locales/it.json"
     ],
     "css": [
-      "assets/app-Dhn0wQsW.css"
+      "assets/app-S59986q1.css"
     ]
   },
   "resources/js/locales/de.json": {
-    "file": "assets/de-sA_Bm-WZ.js",
+    "file": "assets/de-_hKvb6Zn.js",
     "name": "de",
     "src": "resources/js/locales/de.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/en.json": {
-    "file": "assets/en-Cs7RiMTQ.js",
+    "file": "assets/en-CiNvpPjN.js",
     "name": "en",
     "src": "resources/js/locales/en.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/fr.json": {
-    "file": "assets/fr-CeFzCiHb.js",
+    "file": "assets/fr-DhSam6Sh.js",
     "name": "fr",
     "src": "resources/js/locales/fr.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/it.json": {
-    "file": "assets/it-DDb4ZZRU.js",
+    "file": "assets/it-Cm6jTRbh.js",
     "name": "it",
     "src": "resources/js/locales/it.json",
     "isDynamicEntry": true
