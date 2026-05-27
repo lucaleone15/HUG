@@ -68,7 +68,16 @@
         "back": "← Indietro",
         "complete_title": "Quiz completato!",
         "complete_subtitle": "Avete risposto a tutte le domande. Scoprite il vostro risultato.",
-        "submit": "Vedere il mio risultato"
+        "submit": "Vedere il mio risultato",
+        "checklist_confirm": "Confermare la selezione ({n})",
+        "travel_add": "✈ Aggiungere un viaggio",
+        "travel_confirm": "Confermare i miei viaggi",
+        "travel_region": "Regione visitata",
+        "travel_return_date": "Data di ritorno in Svizzera",
+        "travel_select_region": "— Selezionare una regione —",
+        "travel_risk_warning": "Rischi associati:",
+        "birth_country_placeholder": "Indicare il paese…",
+        "birth_confirm": "Confermare"
     },
     "result": {
         "eligible_title": "Siete idonei alla donazione!",
@@ -77,6 +86,9 @@
         "ineligible_title": "Donazione al momento impossibile",
         "ineligible_message": "Grazie per il vostro interesse. Il vostro profilo non soddisfa attualmente i criteri medici per la donazione di sangue. La situazione può cambiare — non esitate a consultare un medico o a ricontattare il CTS.",
         "ineligible_cta": "Saperne di più sulla donazione",
+        "ineligible_reasons_title": "Motivo/i di questa decisione",
+        "needs_evaluation_title": "Valutazione supplementare raccomandata",
+        "needs_evaluation_message": "Il vostro profilo richiede una valutazione medica supplementare legata alle vostre origini geografiche. Vi preghiamo di recarvi direttamente al Centro Trasfusionale per una valutazione personalizzata.",
         "back_home": "Torna alla home",
         "referral_title": "Invitate i vostri colleghi!",
         "referral_subtitle": "Anche se non potete donare il sangue, forse i vostri colleghi sì. Invitate 3 di loro a fare il test!",

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/ui/NavBar.vue'
 import { sendAnalytics } from '../composables/useAnalytics.js'
@@ -16,10 +16,13 @@ const answers   = ref({})
 const formRef   = ref(null)
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? ''
 const startedAt = Date.now()
+const today     = new Date().toISOString().split('T')[0]
 
 const elapsedSeconds = () => Math.round((Date.now() - startedAt) / 1000)
 
-// --- Conditional logic ---
+// ---------------------------------------------------------------------------
+// Conditional logic
+// ---------------------------------------------------------------------------
 
 const conditionsMet = (q) =>
     q.conditions.every(c => answers.value[c.depends_on] === c.expects)
@@ -28,7 +31,6 @@ const activeQuestions = computed(() =>
     (props.questions ?? []).filter(conditionsMet)
 )
 
-// First unanswered active question
 const currentQuestion = computed(() =>
     activeQuestions.value.find(q => !(q.id in answers.value)) ?? null
 )
@@ -41,7 +43,46 @@ const total      = computed(() => activeQuestions.value.length)
 const progress   = computed(() => total.value ? Math.round((answeredActive.value.length / total.value) * 100) : 0)
 const isComplete = computed(() => !currentQuestion.value && total.value > 0)
 
-// --- Analytics ---
+// ---------------------------------------------------------------------------
+// Local state for complex question types
+// ---------------------------------------------------------------------------
+
+// checklist
+const checklistSelected = ref([])
+
+// birth_check
+const birthSelected  = ref([])   // item IDs sélectionnés
+const birthCountries = ref({})   // { itemId: 'Maroc' }
+
+// travel_check
+const travelTrips = ref([])      // [{ region: '', return_date: '' }]
+
+const travelTripsValid = computed(() =>
+    travelTrips.value.length > 0 &&
+    travelTrips.value.every(t => t.region && t.return_date)
+)
+
+// Synchronise l'état local quand la question courante change (retour arrière inclus)
+watch(currentQuestion, (q) => {
+    if (!q) return
+    const existing = answers.value[q.id]
+    switch (q.type) {
+        case 'checklist':
+            checklistSelected.value = Array.isArray(existing) ? [...existing] : []
+            break
+        case 'birth_check':
+            birthSelected.value  = Array.isArray(existing?.items) ? [...existing.items] : []
+            birthCountries.value = {}
+            break
+        case 'travel_check':
+            travelTrips.value = Array.isArray(existing?.trips) ? existing.trips.map(t => ({ ...t })) : []
+            break
+    }
+}, { immediate: true })
+
+// ---------------------------------------------------------------------------
+// Analytics
+// ---------------------------------------------------------------------------
 
 onMounted(() => {
     sendAnalytics('quiz_started', props.entreprise.id, props.session_token, {})
@@ -63,27 +104,81 @@ const handleBeforeUnload = () => {
 onMounted(()    => window.addEventListener('beforeunload', handleBeforeUnload))
 onBeforeUnmount(() => window.removeEventListener('beforeunload', handleBeforeUnload))
 
-// --- Actions ---
+// ---------------------------------------------------------------------------
+// Réponse — logique commune (cascade + reset état local)
+// ---------------------------------------------------------------------------
 
-const selectAnswer = (optionId) => {
-    if (!currentQuestion.value) return
-    const qId = currentQuestion.value.id
-    const next = { ...answers.value, [qId]: optionId }
+const setAnswer = (qId, value) => {
+    const next = { ...answers.value, [qId]: value }
 
-    // Cascade: clear answers for questions now inactive
+    // Cascade : effacer les réponses des questions devenues inactives
     props.questions.forEach(q => {
         if (q.id !== qId && q.id in next && !q.conditions.every(c => next[c.depends_on] === c.expects)) {
             delete next[q.id]
         }
     })
+
     answers.value = next
 
+    // Reset de l'état local — le watch se chargera de réinitialiser si besoin
+    checklistSelected.value = []
+    birthSelected.value     = []
+    birthCountries.value    = {}
+    travelTrips.value       = []
+
     sendAnalytics('question_answered', props.entreprise.id, props.session_token, {
-        question_index:    answeredActive.value.length,
+        question_index:     answeredActive.value.length,
         session_duration_s: elapsedSeconds(),
     })
 }
 
+// yes_no + option "aucun/non" des autres types
+const selectAnswer = (optionId) => {
+    if (!currentQuestion.value) return
+    setAnswer(currentQuestion.value.id, optionId)
+}
+
+// checklist — toggle d'un item
+const toggleChecklist = (itemId) => {
+    const i = checklistSelected.value.indexOf(itemId)
+    if (i === -1) checklistSelected.value.push(itemId)
+    else checklistSelected.value.splice(i, 1)
+}
+
+const confirmChecklist = () => {
+    if (!currentQuestion.value || checklistSelected.value.length === 0) return
+    setAnswer(currentQuestion.value.id, [...checklistSelected.value])
+}
+
+// birth_check — toggle d'un item
+const toggleBirth = (itemId) => {
+    const i = birthSelected.value.indexOf(itemId)
+    if (i === -1) birthSelected.value.push(itemId)
+    else {
+        birthSelected.value.splice(i, 1)
+        delete birthCountries.value[itemId]
+    }
+}
+
+const confirmBirth = () => {
+    if (!currentQuestion.value || birthSelected.value.length === 0) return
+    setAnswer(currentQuestion.value.id, {
+        items:     [...birthSelected.value],
+        countries: birthSelected.value.map(id => birthCountries.value[id] ?? ''),
+    })
+}
+
+// travel_check
+const addTrip    = () => travelTrips.value.push({ region: '', return_date: '' })
+const removeTrip = (i) => travelTrips.value.splice(i, 1)
+const updateTrip = (i, field, value) => { travelTrips.value[i][field] = value }
+
+const confirmTravel = () => {
+    if (!currentQuestion.value || !travelTripsValid.value) return
+    setAnswer(currentQuestion.value.id, { trips: travelTrips.value.map(t => ({ ...t })) })
+}
+
+// Retour arrière
 const goBack = () => {
     const last = answeredActive.value.at(-1)
     if (!last) return
@@ -120,6 +215,7 @@ const goBack = () => {
             <transition name="fade" mode="out-in">
                 <div v-if="currentQuestion" :key="currentQuestion.id" class="card bg-base-100 shadow-md">
                     <div class="card-body gap-4">
+
                         <p class="text-xs font-semibold uppercase tracking-widest text-base-content/40">
                             {{ currentQuestion.category }}
                         </p>
@@ -129,24 +225,228 @@ const goBack = () => {
                         <p v-if="currentQuestion.hint" class="text-sm text-base-content/60 italic">
                             {{ currentQuestion.hint }}
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                            <button
-                                v-for="opt in currentQuestion.options"
-                                :key="opt.id"
-                                class="btn flex-1 transition-all"
-                                :style="answers[currentQuestion.id] === opt.id
-                                    ? `background-color: ${entreprise.primary_color}; color: white; border-color: transparent`
-                                    : ''"
-                                :class="answers[currentQuestion.id] === opt.id ? '' : 'btn-outline'"
-                                @click="selectAnswer(opt.id)"
-                            >
-                                {{ opt.label }}
-                            </button>
-                        </div>
+
+                        <!-- ================================================ -->
+                        <!-- yes_no — deux boutons Oui / Non                  -->
+                        <!-- ================================================ -->
+                        <template v-if="!currentQuestion.type || currentQuestion.type === 'yes_no'">
+                            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                                <button
+                                    v-for="opt in currentQuestion.options"
+                                    :key="opt.id"
+                                    class="btn flex-1 transition-all"
+                                    :style="answers[currentQuestion.id] === opt.id
+                                        ? `background-color: ${entreprise.primary_color}; color: white; border-color: transparent`
+                                        : ''"
+                                    :class="answers[currentQuestion.id] === opt.id ? '' : 'btn-outline'"
+                                    @click="selectAnswer(opt.id)"
+                                >
+                                    {{ opt.label }}
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- ================================================ -->
+                        <!-- checklist — cases à cocher + bouton Aucun        -->
+                        <!-- ================================================ -->
+                        <template v-else-if="currentQuestion.type === 'checklist'">
+                            <div class="space-y-2 pt-2">
+                                <label
+                                    v-for="item in currentQuestion.items"
+                                    :key="item.id"
+                                    class="flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors hover:bg-base-200"
+                                    :class="checklistSelected.includes(item.id)
+                                        ? 'border-primary bg-primary/5'
+                                        : 'border-base-300'"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        class="checkbox checkbox-primary mt-0.5 shrink-0"
+                                        :checked="checklistSelected.includes(item.id)"
+                                        @change="toggleChecklist(item.id)"
+                                    >
+                                    <span class="leading-snug">
+                                        <span class="text-sm">{{ item.label }}</span>
+                                        <span v-if="item.sublabel" class="block text-xs text-base-content/50 mt-0.5">{{ item.sublabel }}</span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="flex flex-col gap-2 pt-1">
+                                <button
+                                    v-if="checklistSelected.length > 0"
+                                    class="btn text-white border-none"
+                                    :style="`background-color: ${entreprise.primary_color}`"
+                                    @click="confirmChecklist"
+                                >
+                                    {{ t('quiz.checklist_confirm', { n: checklistSelected.length }) }}
+                                </button>
+                                <button
+                                    v-for="opt in currentQuestion.options"
+                                    :key="opt.id"
+                                    class="btn btn-outline"
+                                    @click="selectAnswer(opt.id)"
+                                >
+                                    {{ opt.label }}
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- ================================================ -->
+                        <!-- birth_check — cases + champ pays + bouton Aucun  -->
+                        <!-- ================================================ -->
+                        <template v-else-if="currentQuestion.type === 'birth_check'">
+                            <div class="space-y-3 pt-2">
+                                <div
+                                    v-for="item in currentQuestion.items"
+                                    :key="item.id"
+                                >
+                                    <label
+                                        class="flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors hover:bg-base-200"
+                                        :class="birthSelected.includes(item.id)
+                                            ? 'border-primary bg-primary/5'
+                                            : 'border-base-300'"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            class="checkbox checkbox-primary mt-0.5 shrink-0"
+                                            :checked="birthSelected.includes(item.id)"
+                                            @change="toggleBirth(item.id)"
+                                        >
+                                        <span class="text-sm leading-snug">{{ item.label }}</span>
+                                    </label>
+                                    <input
+                                        v-if="birthSelected.includes(item.id)"
+                                        type="text"
+                                        class="input input-bordered w-full mt-1 text-sm"
+                                        :placeholder="t('quiz.birth_country_placeholder')"
+                                        :value="birthCountries[item.id] ?? ''"
+                                        @input="e => birthCountries[item.id] = e.target.value"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-2 pt-1">
+                                <button
+                                    v-if="birthSelected.length > 0"
+                                    class="btn text-white border-none"
+                                    :style="`background-color: ${entreprise.primary_color}`"
+                                    @click="confirmBirth"
+                                >
+                                    {{ t('quiz.birth_confirm') }}
+                                </button>
+                                <button
+                                    v-for="opt in currentQuestion.options"
+                                    :key="opt.id"
+                                    class="btn btn-outline"
+                                    @click="selectAnswer(opt.id)"
+                                >
+                                    {{ opt.label }}
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- ================================================ -->
+                        <!-- travel_check — ajout de voyages + bouton Non     -->
+                        <!-- ================================================ -->
+                        <template v-else-if="currentQuestion.type === 'travel_check'">
+                            <div class="space-y-3 pt-2">
+
+                                <!-- Liste des voyages saisis -->
+                                <div
+                                    v-for="(trip, i) in travelTrips"
+                                    :key="i"
+                                    class="p-3 rounded-lg border border-base-300 space-y-2"
+                                >
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-base-content/70">
+                                            {{ t('quiz.travel_region') }} {{ i + 1 }}
+                                        </span>
+                                        <button
+                                            class="btn btn-ghost btn-xs text-error"
+                                            @click="removeTrip(i)"
+                                        >✕</button>
+                                    </div>
+
+                                    <!-- Sélecteur de région -->
+                                    <select
+                                        class="select select-bordered w-full select-sm"
+                                        :value="trip.region"
+                                        @change="e => updateTrip(i, 'region', e.target.value)"
+                                    >
+                                        <option value="">{{ t('quiz.travel_select_region') }}</option>
+                                        <option
+                                            v-for="(zone, regionName) in currentQuestion.risk_map"
+                                            :key="regionName"
+                                            :value="regionName"
+                                        >
+                                            {{ regionName }}
+                                        </option>
+                                    </select>
+
+                                    <!-- Avertissement risques si région à risque -->
+                                    <div
+                                        v-if="trip.region && currentQuestion.risk_map[trip.region]?.diseases?.length"
+                                        class="flex items-start gap-2 text-xs text-warning bg-warning/10 rounded px-2 py-1.5"
+                                    >
+                                        <span>⚠</span>
+                                        <span>
+                                            <strong>{{ t('quiz.travel_risk_warning') }}</strong>
+                                            {{ currentQuestion.risk_map[trip.region].diseases.join(', ') }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Date de retour -->
+                                    <div>
+                                        <p class="text-xs text-base-content/50 mb-1">
+                                            {{ t('quiz.travel_return_date') }}
+                                        </p>
+                                        <input
+                                            type="date"
+                                            class="input input-bordered w-full input-sm"
+                                            :value="trip.return_date"
+                                            :max="today"
+                                            @change="e => updateTrip(i, 'return_date', e.target.value)"
+                                        >
+                                    </div>
+                                </div>
+
+                                <!-- Bouton ajouter un voyage -->
+                                <button
+                                    class="btn btn-outline btn-sm w-full"
+                                    @click="addTrip"
+                                >
+                                    {{ t('quiz.travel_add') }}
+                                </button>
+
+                                <!-- Confirmer les voyages (actif quand tous les champs sont remplis) -->
+                                <button
+                                    v-if="travelTripsValid"
+                                    class="btn text-white border-none w-full"
+                                    :style="`background-color: ${entreprise.primary_color}`"
+                                    @click="confirmTravel"
+                                >
+                                    {{ t('quiz.travel_confirm') }}
+                                </button>
+                            </div>
+
+                            <!-- Option "pas de voyage" -->
+                            <div class="flex flex-col gap-2 pt-1">
+                                <button
+                                    v-for="opt in currentQuestion.options"
+                                    :key="opt.id"
+                                    class="btn btn-outline"
+                                    @click="selectAnswer(opt.id)"
+                                >
+                                    {{ opt.label }}
+                                </button>
+                            </div>
+                        </template>
+
                     </div>
                 </div>
 
-                <!-- Complete -->
+                <!-- Écran de confirmation finale -->
                 <div v-else-if="isComplete" class="card bg-base-100 shadow-md text-center">
                     <div class="card-body items-center gap-4">
                         <div class="text-5xl">✅</div>
@@ -154,13 +454,37 @@ const goBack = () => {
                         <p class="text-base-content/60 text-sm">{{ t('quiz.complete_subtitle') }}</p>
                         <form :action="`/c/${entreprise.slug}/quiz`" method="POST" ref="formRef">
                             <input type="hidden" name="_token" :value="csrfToken">
-                            <input
-                                v-for="(value, key) in answers"
-                                :key="key"
-                                type="hidden"
-                                :name="`answers[${key}]`"
-                                :value="value"
-                            >
+                            <!--
+                                Sérialisation des réponses selon le type :
+                                - string  (yes_no, option "aucun/non")  → answers[qN]=value
+                                - Array   (checklist items)             → answers[qN][]=v1 & answers[qN][]=v2
+                                - Object  (travel_check / birth_check)  → answers[qN]={"trips":[…]}  (JSON décodé côté PHP)
+                            -->
+                            <template v-for="(value, key) in answers" :key="key">
+                                <template v-if="Array.isArray(value)">
+                                    <input
+                                        v-for="item in value"
+                                        :key="item"
+                                        type="hidden"
+                                        :name="`answers[${key}][]`"
+                                        :value="item"
+                                    >
+                                </template>
+                                <template v-else-if="value !== null && typeof value === 'object'">
+                                    <input
+                                        type="hidden"
+                                        :name="`answers[${key}]`"
+                                        :value="JSON.stringify(value)"
+                                    >
+                                </template>
+                                <template v-else>
+                                    <input
+                                        type="hidden"
+                                        :name="`answers[${key}]`"
+                                        :value="value"
+                                    >
+                                </template>
+                            </template>
                             <button
                                 type="submit"
                                 class="btn text-white border-none px-8"
@@ -173,7 +497,7 @@ const goBack = () => {
                 </div>
             </transition>
 
-            <!-- Back button -->
+            <!-- Bouton retour -->
             <div class="mt-4 min-h-[36px]">
                 <button
                     v-if="answeredActive.length > 0 && !isComplete"

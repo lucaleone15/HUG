@@ -11,7 +11,9 @@ const props = defineProps({
     submission: Object,
 })
 
-const eligible  = props.submission?.is_eligible ?? false
+const eligible        = props.submission?.is_eligible ?? false
+const reasons         = props.submission?.disqualification_reasons ?? []
+const needsEvaluation = props.submission?.needs_evaluation ?? false
 const copied        = ref(false)
 const messageCopied = ref(false)
 const shareUrl      = `${window.location.origin}/c/${props.entreprise.slug}`
@@ -91,6 +93,41 @@ onMounted(() => {
                 <p class="text-base-content/70 mb-6 leading-relaxed">
                     {{ t('result.ineligible_message') }}
                 </p>
+
+                <!-- Raisons de non-éligibilité (présentes seulement sur le premier affichage, pas sur refresh) -->
+                <div
+                    v-if="reasons.length > 0"
+                    class="text-left bg-base-100 border border-base-300 rounded-xl p-4 mb-6 shadow-sm"
+                >
+                    <p class="text-sm font-semibold mb-3 flex items-center gap-2">
+                        <span>ℹ️</span>
+                        {{ t('result.ineligible_reasons_title') }}
+                    </p>
+                    <ul class="space-y-2">
+                        <li
+                            v-for="(reason, i) in reasons"
+                            :key="i"
+                            class="flex items-start gap-2 text-sm text-base-content/75 leading-snug"
+                        >
+                            <span class="text-error mt-0.5 shrink-0">•</span>
+                            <span>{{ reason }}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Évaluation médicale complémentaire (birth_check — origines géographiques) -->
+                <div
+                    v-if="needsEvaluation"
+                    class="text-left bg-info/10 border border-info/30 rounded-xl p-4 mb-6"
+                >
+                    <p class="text-sm font-semibold text-info mb-1 flex items-center gap-2">
+                        <span>🔬</span>
+                        {{ t('result.needs_evaluation_title') }}
+                    </p>
+                    <p class="text-sm text-base-content/70 leading-snug">
+                        {{ t('result.needs_evaluation_message') }}
+                    </p>
+                </div>
 
                 <!-- Bloc parrainage -->
                 <div class="card bg-base-100 shadow-sm text-left mb-8">

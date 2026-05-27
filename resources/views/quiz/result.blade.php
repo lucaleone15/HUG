@@ -12,8 +12,10 @@ $propsJson = json_encode([
         'rdv_date'      => $entreprise->rdv_date?->format('Y-m-d'),
     ],
     'submission' => [
-        'is_eligible'  => $submission->is_eligible,
-        'completed_at' => $submission->completed_at?->toIso8601String(),
+        'is_eligible'              => $submission->is_eligible,
+        'needs_evaluation'         => $needsEvaluation,
+        'disqualification_reasons' => $disqualificationReasons,
+        'completed_at'             => $submission->completed_at?->toIso8601String(),
     ],
 ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 @endphp
