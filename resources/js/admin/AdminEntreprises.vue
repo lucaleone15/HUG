@@ -25,6 +25,7 @@ const deleteModal  = ref(false)
 
 onMounted(load)
 
+const goShow   = (id) => router.push(`/admin/entreprises/${id}`)
 const goEdit   = (id) => router.push(`/admin/entreprises/${id}/edit`)
 const goCreate = ()   => router.push('/admin/entreprises/new')
 
@@ -139,6 +140,7 @@ const sendKit = async (e) => {
                                             <span v-if="accepting === e.id" class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
+                                        <button class="btn btn-ghost btn-xs" @click="goShow(e.id)" :title="t('admin.show_title')">👁️</button>
                                         <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">✏️</button>
                                         <button
                                             class="btn btn-ghost btn-xs"

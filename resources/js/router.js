@@ -6,6 +6,7 @@ import AdminLayout         from './admin/AdminLayout.vue'
 import AdminDashboard      from './admin/AdminDashboard.vue'
 import AdminEntreprises    from './admin/AdminEntreprises.vue'
 import AdminEntrepriseForm from './admin/AdminEntrepriseForm.vue'
+import AdminEntrepriseShow from './admin/AdminEntrepriseShow.vue'
 import AdminSubmissions    from './admin/AdminSubmissions.vue'
 import AdminAnalytics      from './admin/AdminAnalytics.vue'
 import AdminCampaignStats  from './admin/AdminCampaignStats.vue'
@@ -21,6 +22,7 @@ const routes = [
             { path: 'dashboard',            component: AdminDashboard,      name: 'dashboard' },
             { path: 'entreprises',          component: AdminEntreprises,    name: 'entreprises' },
             { path: 'entreprises/new',      component: AdminEntrepriseForm, name: 'entreprise-new' },
+            { path: 'entreprises/:id',      component: AdminEntrepriseShow, name: 'entreprise-show' },
             { path: 'entreprises/:id/edit', component: AdminEntrepriseForm, name: 'entreprise-edit' },
             { path: 'submissions',          component: AdminSubmissions,    name: 'submissions' },
             { path: 'analytics',            component: AdminAnalytics,      name: 'analytics' },
