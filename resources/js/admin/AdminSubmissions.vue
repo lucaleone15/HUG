@@ -3,6 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
+import CompanySelector from '../components/admin/CompanySelector.vue'
 
 const api = useApi()
 const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
@@ -34,10 +35,12 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
 
         <!-- Filtres -->
         <div class="flex flex-wrap gap-3 mb-4">
-            <select v-model="filterEntreprise" class="select select-bordered select-sm">
-                <option value="">Toutes les entreprises</option>
-                <option v-for="e in entreprises" :key="e.id" :value="e.id">{{ e.name }}</option>
-            </select>
+            <CompanySelector
+                :companies="entreprises"
+                v-model="filterEntreprise"
+                all-label="Toutes les entreprises"
+                class="select-sm"
+            />
             <select v-model="filterEligible" class="select select-bordered select-sm">
                 <option value="">Tous</option>
                 <option value="1">Éligibles</option>

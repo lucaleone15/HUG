@@ -1,50 +1,46 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/ui/NavBar.vue'
+import Footer from '../components/ui/Footer.vue'
+import LabelHero from '../components/label/LabelHero.vue'
+import LabelCard from '../components/label/LabelCard.vue'
+import SectorFilter from '../components/label/SectorFilter.vue'
+import SectionCTA from '../components/trophee/SectionCTA.vue'
 
 const { t } = useI18n()
 
-const props = defineProps({
-    entreprises: Array,
+const props = defineProps({ entreprises: Array })
+
+const selectedSector = ref(null)
+
+const sectors = computed(() => {
+    const all = (props.entreprises ?? []).map(e => e.type).filter(Boolean)
+    return [...new Set(all)].sort()
+})
+
+const filtered = computed(() => {
+    if (!selectedSector.value) return props.entreprises ?? []
+    return (props.entreprises ?? []).filter(e => e.type === selectedSector.value)
 })
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-100">
+    <div class="min-h-screen bg-base-100 flex flex-col">
         <NavBar />
-
-        <main class="max-w-5xl mx-auto px-6 py-12">
-            <h1 class="text-3xl font-bold mb-2">{{ t('label.title') }}</h1>
-            <p class="text-base-content/60 mb-10">{{ t('label.subtitle') }}</p>
-
-            <div v-if="!entreprises?.length" class="text-base-content/50">
-                {{ t('label.no_label') }}
-            </div>
-
+        <main class="max-w-5xl mx-auto px-6 py-12 flex-1 w-full">
+            <LabelHero :title="t('label.title')" :subtitle="t('label.subtitle')" />
+            <SectorFilter v-if="sectors.length" :sectors="sectors" v-model="selectedSector" />
+            <div v-if="!filtered.length" class="text-base-content/50">{{ t('label.no_label') }}</div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <a
-                    v-for="e in entreprises"
-                    :key="e.id"
-                    :href="`/c/${e.slug}`"
-                    class="card bg-base-100 border border-base-200 shadow-sm hover:shadow-md transition-shadow"
-                >
-                    <div class="card-body">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-1 self-stretch rounded-full" :style="`background-color: ${e.primary_color}`"></div>
-                            <div v-if="e.logo_url" class="bg-white border border-base-200 rounded-lg p-1.5 w-14 h-10 flex items-center justify-center">
-                                <img :src="e.logo_url" :alt="e.name" class="max-h-7 max-w-full object-contain">
-                            </div>
-                        </div>
-                        <h2 class="card-title text-base">{{ e.name }}</h2>
-                        <div class="flex gap-2 flex-wrap mt-1">
-                            <span v-if="e.type" class="badge badge-ghost badge-sm">{{ e.type }}</span>
-                            <span v-if="e.employee_count" class="badge badge-ghost badge-sm">
-                                {{ e.employee_count }} {{ t('entreprise.employees') }}
-                            </span>
-                        </div>
-                    </div>
-                </a>
+                <LabelCard v-for="e in filtered" :key="e.id" :entreprise="e" />
             </div>
         </main>
+        <SectionCTA
+            :title="t('label.cta_section_title')"
+            :description="t('label.cta_section_description')"
+            :cta="{ label: t('nav.inscription'), href: '/inscription' }"
+        />
+        <Footer />
     </div>
 </template>

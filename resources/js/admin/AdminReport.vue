@@ -3,6 +3,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
 import { useAuth } from '../composables/useAuth.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
+import CompanySelector from '../components/admin/CompanySelector.vue'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const api = useApi()
 const { token } = useAuth()
@@ -68,18 +70,14 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
         <!-- Sélecteur -->
         <div class="card bg-base-100 shadow-sm max-w-md mb-6">
             <div class="card-body gap-3">
-                <label class="form-control">
-                    <div class="label"><span class="label-text">Choisir une entreprise</span></div>
-                    <select v-model="selectedId" class="select select-bordered select-sm">
-                        <option value="" disabled>— sélectionner —</option>
-                        <option v-for="e in activeEntreprises" :key="e.id" :value="e.id">{{ e.name }}</option>
-                    </select>
-                </label>
-                <button class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none"
-                    :disabled="!selectedId || loading" @click="generate">
-                    <span v-if="loading" class="loading loading-spinner loading-xs"></span>
+                <CompanySelector
+                    :companies="activeEntreprises"
+                    v-model="selectedId"
+                    label="Choisir une entreprise"
+                />
+                <BaseButton size="sm" :disabled="!selectedId" :loading="loading" @click="generate">
                     Générer le rapport
-                </button>
+                </BaseButton>
             </div>
         </div>
 
@@ -172,12 +170,9 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
             </div>
 
             <div class="flex justify-end mt-6">
-                <button class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none gap-2"
-                    :disabled="downloading" @click="downloadPdf">
-                    <span v-if="downloading" class="loading loading-spinner loading-xs"></span>
-                    <span v-else>📄</span>
-                    Télécharger PDF
-                </button>
+                <BaseButton size="sm" :loading="downloading" @click="downloadPdf">
+                    📄 Télécharger PDF
+                </BaseButton>
             </div>
         </template>
     </div>

@@ -3,6 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
 import { useAsyncData } from '../composables/useAsyncData.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
+import CompanySelector from '../components/admin/CompanySelector.vue'
 
 const api = useApi()
 const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
@@ -29,10 +30,12 @@ const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
     <div>
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold">Analytics</h1>
-            <select v-model="filterEntreprise" class="select select-bordered select-sm">
-                <option value="">Toutes les entreprises</option>
-                <option v-for="e in entreprises" :key="e.id" :value="e.id">{{ e.name }}</option>
-            </select>
+            <CompanySelector
+                :companies="entreprises"
+                v-model="filterEntreprise"
+                all-label="Toutes les entreprises"
+                class="select-sm"
+            />
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
