@@ -15,7 +15,9 @@
         "stats_lives": "vies sauvées",
         "stats_hospitals": "hôpitaux HUG",
         "stats_eligible": "participants éligibles",
-        "stats_companies": "entreprises mobilisées"
+        "stats_companies": "entreprises mobilisées",
+        "cta_section_title": "Votre entreprise veut faire la différence ?",
+        "cta_section_description": "Rejoignez les entreprises qui mobilisent leurs collaborateurs pour le don du sang. Inscription gratuite, impact réel."
     },
     "trophee": {
         "title": "Palmarès",
@@ -23,12 +25,16 @@
         "no_winners": "Aucun lauréat pour l'instant.",
         "gold": "Or",
         "silver": "Argent",
-        "bronze": "Bronze"
+        "bronze": "Bronze",
+        "cta_section_title": "Visez le podium ?",
+        "cta_section_description": "Inscrivez votre entreprise et participez au Trophée des entreprises les plus engagées dans la campagne Don du Sang."
     },
     "label": {
         "title": "Entreprises labelisées",
         "subtitle": "Ces entreprises se sont distinguées par leur implication dans la campagne Don du Sang HUG × CTS.",
-        "no_label": "Aucune entreprise labelisée pour l'instant."
+        "no_label": "Aucune entreprise labelisée pour l'instant.",
+        "cta_section_title": "Obtenez le label HUG × CTS",
+        "cta_section_description": "Faites reconnaître l'engagement de votre entreprise en obtenant le label officiel de la campagne Don du Sang."
     },
     "kit": {
         "title": "Kit de communication",

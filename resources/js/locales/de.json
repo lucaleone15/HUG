@@ -15,7 +15,9 @@
         "stats_lives": "gerettete Leben",
         "stats_hospitals": "HUG-Spitäler",
         "stats_eligible": "berechtigte Teilnehmer",
-        "stats_companies": "mobilisierte Unternehmen"
+        "stats_companies": "mobilisierte Unternehmen",
+        "cta_section_title": "Möchte Ihr Unternehmen einen Unterschied machen?",
+        "cta_section_description": "Schliessen Sie sich den Unternehmen an, die ihre Mitarbeitenden zur Blutspende mobilisieren. Kostenlose Anmeldung, echter Einfluss."
     },
     "trophee": {
         "title": "Siegerliste",
@@ -23,12 +25,16 @@
         "no_winners": "Noch keine Gewinner.",
         "gold": "Gold",
         "silver": "Silber",
-        "bronze": "Bronze"
+        "bronze": "Bronze",
+        "cta_section_title": "Wollen Sie aufs Podium?",
+        "cta_section_description": "Melden Sie Ihr Unternehmen an und nehmen Sie an der Trophäe der engagiertesten Unternehmen an der Blutspendeaktion teil."
     },
     "label": {
         "title": "Ausgezeichnete Unternehmen",
         "subtitle": "Diese Unternehmen haben sich durch ihr Engagement in der Blutspendeaktion HUG × CTS ausgezeichnet.",
-        "no_label": "Noch keine ausgezeichneten Unternehmen."
+        "no_label": "Noch keine ausgezeichneten Unternehmen.",
+        "cta_section_title": "Erhalten Sie das Label HUG × CTS",
+        "cta_section_description": "Lassen Sie das Engagement Ihres Unternehmens mit dem offiziellen Label der Blutspendeaktion anerkennen."
     },
     "kit": {
         "title": "Kommunikationskit",

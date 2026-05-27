@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const api     = useApi()
 const current = ref(null)
@@ -103,10 +104,7 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
                             <input v-model.number="form.hug_hospitals_count" type="number" min="0" required class="input input-bordered input-sm">
                         </label>
                         <div class="card-actions justify-end mt-2">
-                            <button type="submit" class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none" :disabled="saving">
-                                <span v-if="saving" class="loading loading-spinner loading-xs"></span>
-                                Enregistrer
-                            </button>
+                            <BaseButton type="submit" size="sm" :loading="saving">Enregistrer</BaseButton>
                         </div>
                     </form>
                 </div>

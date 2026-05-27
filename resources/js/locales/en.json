@@ -15,7 +15,9 @@
         "stats_lives": "lives saved",
         "stats_hospitals": "HUG hospitals",
         "stats_eligible": "eligible participants",
-        "stats_companies": "companies mobilised"
+        "stats_companies": "companies mobilised",
+        "cta_section_title": "Does your company want to make a difference?",
+        "cta_section_description": "Join the companies mobilising their employees for blood donation. Free registration, real impact."
     },
     "trophee": {
         "title": "Trophy",
@@ -23,12 +25,16 @@
         "no_winners": "No winners yet.",
         "gold": "Gold",
         "silver": "Silver",
-        "bronze": "Bronze"
+        "bronze": "Bronze",
+        "cta_section_title": "Aiming for the podium?",
+        "cta_section_description": "Register your company and take part in the Trophy for the most committed companies in the Blood Donation campaign."
     },
     "label": {
         "title": "Labelled Companies",
         "subtitle": "These companies have distinguished themselves through their involvement in the HUG × CTS Blood Donation campaign.",
-        "no_label": "No labelled companies yet."
+        "no_label": "No labelled companies yet.",
+        "cta_section_title": "Get the HUG × CTS label",
+        "cta_section_description": "Have your company's commitment recognised by obtaining the official Blood Donation campaign label."
     },
     "kit": {
         "title": "Communication Kit",

@@ -5,6 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
+import BaseButton from '../components/ui/BaseButton.vue'
+import BaseModal from '../components/ui/BaseModal.vue'
+import StatusBadge from '../components/admin/StatusBadge.vue'
 
 const api    = useApi()
 const router = useRouter()
@@ -14,17 +17,26 @@ const { locale } = useI18n()
 const { data, loading, error, page, lastPage, isFirst, isLast, load, prev, next } =
     usePagination((p) => api.get(`/admin/entreprises?page=${p}`))
 
-const deleting  = ref(null)
-const kitSent   = ref(null)
-const accepting = ref(null)
+const deleting     = ref(null)
+const kitSent      = ref(null)
+const accepting    = ref(null)
+const deleteTarget = ref(null)
+const deleteModal  = ref(false)
 
 onMounted(load)
 
 const goEdit   = (id) => router.push(`/admin/entreprises/${id}/edit`)
 const goCreate = ()   => router.push('/admin/entreprises/new')
 
-const destroy = async (e) => {
-    if (!confirm(`Supprimer « ${e.name} » ? Cette action est irréversible.`)) return
+const askDelete = (e) => {
+    deleteTarget.value = e
+    deleteModal.value  = true
+}
+
+const confirmDelete = async () => {
+    const e = deleteTarget.value
+    deleteModal.value  = false
+    deleteTarget.value = null
     deleting.value = e.id
     try {
         await api.del(`/admin/entreprises/${e.id}`)
@@ -64,22 +76,13 @@ const sendKit = async (e) => {
         alert(err.message)
     }
 }
-
-const statusBadge = (e) => {
-    if (!e.is_active && !e.is_validated) return { label: 'En attente', class: 'badge-warning' }
-    if (e.is_validated && e.is_active)   return { label: 'Active',     class: 'badge-success' }
-    if (e.is_validated && !e.is_active)  return { label: 'Suspendue',  class: 'badge-error' }
-    return                                      { label: 'Brouillon',  class: 'badge-ghost' }
-}
 </script>
 
 <template>
     <div>
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold">Entreprises</h1>
-            <button class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none" @click="goCreate">
-                + Nouvelle entreprise
-            </button>
+            <BaseButton size="sm" @click="goCreate">+ Nouvelle entreprise</BaseButton>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -115,12 +118,7 @@ const statusBadge = (e) => {
                                     </div>
                                 </td>
                                 <td class="text-xs text-base-content/60 capitalize">{{ e.type ?? '—' }}</td>
-                                <td>
-                                    <span class="badge badge-sm" :class="statusBadge(e).class">
-                                        {{ statusBadge(e).label }}
-                                    </span>
-                                    <span v-if="e.is_labelled" class="badge badge-sm badge-ghost ml-1">Label</span>
-                                </td>
+                                <td><StatusBadge :entreprise="e" /></td>
                                 <td class="text-right text-sm">
                                     <span class="text-emerald-600 font-semibold">{{ e.eligible_count ?? '—' }}</span>
                                     <span v-if="e.submission_count" class="text-base-content/40 text-xs"> / {{ e.submission_count }}</span>
@@ -154,7 +152,7 @@ const statusBadge = (e) => {
                                         <button
                                             class="btn btn-ghost btn-xs text-error"
                                             :disabled="deleting === e.id"
-                                            @click="destroy(e)"
+                                            @click="askDelete(e)"
                                             title="Supprimer"
                                         >🗑️</button>
                                     </div>
@@ -172,5 +170,19 @@ const statusBadge = (e) => {
                 <button class="btn btn-sm btn-ghost" :disabled="isLast" @click="next">→</button>
             </div>
         </template>
+
+        <!-- Modal de confirmation de suppression -->
+        <BaseModal v-model="deleteModal" title="Confirmer la suppression">
+            <p class="text-sm text-base-content/70">
+                Supprimer <strong>{{ deleteTarget?.name }}</strong> ?
+                Cette action est irréversible.
+            </p>
+            <template #footer>
+                <BaseButton variant="ghost" @click="deleteModal = false">Annuler</BaseButton>
+                <BaseButton variant="outline" class="text-error border-error hover:bg-error hover:text-white" @click="confirmDelete">
+                    Supprimer
+                </BaseButton>
+            </template>
+        </BaseModal>
     </div>
 </template>

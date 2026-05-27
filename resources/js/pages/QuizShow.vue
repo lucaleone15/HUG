@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/ui/NavBar.vue'
 import { sendAnalytics } from '../composables/useAnalytics.js'
 
 const { t } = useI18n()

@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/ui/NavBar.vue'
+import Footer from '../components/ui/Footer.vue'
+import BaseInput from '../components/ui/BaseInput.vue'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t, locale } = useI18n()
 
@@ -16,10 +18,9 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-100">
+    <div class="min-h-screen bg-base-100 flex flex-col">
         <NavBar />
-
-        <main class="max-w-xl mx-auto px-6 py-12">
+        <main class="max-w-xl mx-auto px-6 py-12 flex-1 w-full">
             <h1 class="text-3xl font-bold mb-2">{{ t('contact.title') }}</h1>
             <p class="text-base-content/60 mb-8">{{ t('contact.subtitle') }}</p>
 
@@ -31,21 +32,20 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
                 <input type="hidden" name="_token" :value="csrfToken">
                 <input type="hidden" name="locale" :value="locale">
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-sm font-medium">{{ t('contact.name') }}</label>
-                    <input type="text" name="name" required maxlength="255"
-                        class="input input-bordered w-full"
-                        :class="errors.name ? 'input-error' : ''">
-                    <span v-if="errors.name" class="text-error text-xs">{{ errors.name[0] }}</span>
-                </div>
+                <BaseInput
+                    name="name"
+                    :label="t('contact.name')"
+                    :error="errors.name?.[0]"
+                    required
+                />
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-sm font-medium">{{ t('contact.email') }}</label>
-                    <input type="email" name="email" required maxlength="255"
-                        class="input input-bordered w-full"
-                        :class="errors.email ? 'input-error' : ''">
-                    <span v-if="errors.email" class="text-error text-xs">{{ errors.email[0] }}</span>
-                </div>
+                <BaseInput
+                    name="email"
+                    type="email"
+                    :label="t('contact.email')"
+                    :error="errors.email?.[0]"
+                    required
+                />
 
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium">{{ t('contact.type') }}</label>
@@ -65,10 +65,9 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
                     <span v-if="errors.message" class="text-error text-xs">{{ errors.message[0] }}</span>
                 </div>
 
-                <button type="submit" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none w-full">
-                    {{ t('contact.submit') }}
-                </button>
+                <BaseButton type="submit" full>{{ t('contact.submit') }}</BaseButton>
             </form>
         </main>
+        <Footer />
     </div>
 </template>

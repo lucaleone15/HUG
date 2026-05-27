@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const route  = useRoute()
 const router = useRouter()
@@ -299,11 +300,10 @@ const fieldError = (key) => errors.value[key]?.[0]
                 </div>
 
                 <div class="card-actions justify-end mt-2 gap-2">
-                    <button type="button" class="btn btn-ghost btn-sm" @click="router.back()">Annuler</button>
-                    <button type="submit" class="btn btn-sm bg-[#E30613] hover:bg-[#c0051f] text-white border-none" :disabled="saving">
-                        <span v-if="saving" class="loading loading-spinner loading-xs"></span>
+                    <BaseButton variant="ghost" size="sm" @click="router.back()">Annuler</BaseButton>
+                    <BaseButton type="submit" size="sm" :loading="saving">
                         {{ isEdit ? 'Enregistrer' : 'Créer' }}
-                    </button>
+                    </BaseButton>
                 </div>
             </div>
         </form>

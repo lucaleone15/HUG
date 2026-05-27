@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/ui/NavBar.vue'
+import Footer from '../components/ui/Footer.vue'
+import BaseInput from '../components/ui/BaseInput.vue'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t, locale } = useI18n()
 
@@ -34,10 +37,9 @@ const clearLogo = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-base-100">
+    <div class="min-h-screen bg-base-100 flex flex-col">
         <NavBar />
-
-        <main class="max-w-xl mx-auto px-6 py-12">
+        <main class="max-w-xl mx-auto px-6 py-12 flex-1 w-full">
 
             <!-- Success -->
             <template v-if="success">
@@ -45,9 +47,7 @@ const clearLogo = () => {
                     <div class="text-6xl mb-6">🎉</div>
                     <h1 class="text-2xl font-bold mb-3">{{ t('inscription.success_title') }}</h1>
                     <p class="text-base-content/60 mb-8">{{ t('inscription.success_message') }}</p>
-                    <a href="/" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none">
-                        {{ t('result.back_home') }}
-                    </a>
+                    <BaseButton href="/">{{ t('result.back_home') }}</BaseButton>
                 </div>
             </template>
 
@@ -60,21 +60,19 @@ const clearLogo = () => {
 
                 <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
                     <input type="hidden" name="_token" :value="csrfToken">
-                <input type="hidden" name="locale" :value="locale">
+                    <input type="hidden" name="locale" :value="locale">
 
                     <!-- Section : Entreprise -->
                     <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
                         {{ t('inscription.section_company') }}
                     </div>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.name') }} *</span></div>
-                        <input type="text" name="name" required maxlength="255"
-                            class="input input-bordered" :class="errors.name ? 'input-error' : ''">
-                        <div v-if="errors.name" class="label">
-                            <span class="label-text-alt text-error">{{ errors.name[0] }}</span>
-                        </div>
-                    </label>
+                    <BaseInput
+                        name="name"
+                        :label="t('inscription.name')"
+                        :error="errors.name?.[0]"
+                        required
+                    />
 
                     <label class="form-control">
                         <div class="label"><span class="label-text font-medium">{{ t('inscription.type') }} *</span></div>
@@ -90,11 +88,11 @@ const clearLogo = () => {
                         </div>
                     </label>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.employee_count') }}</span></div>
-                        <input type="number" name="employee_count" min="1" max="999999"
-                            class="input input-bordered" :class="errors.employee_count ? 'input-error' : ''">
-                    </label>
+                    <BaseInput
+                        name="employee_count"
+                        type="number"
+                        :label="t('inscription.employee_count')"
+                    />
 
                     <!-- Logo -->
                     <div class="form-control gap-2">
@@ -124,13 +122,14 @@ const clearLogo = () => {
                             class="input input-bordered" placeholder="https://exemple.com/logo.png"
                             :disabled="!!logoPreview">
                         <div class="label pt-0">
-                            <span class="label-text-alt text-base-content/50">{{ logoPreview ? '← Désactivé : fichier sélectionné ci-dessus' : '' }}</span>
+                            <span class="label-text-alt text-base-content/50">
+                                {{ logoPreview ? '← Désactivé : fichier sélectionné ci-dessus' : '' }}
+                            </span>
                         </div>
                     </label>
 
                     <!-- Couleurs -->
                     <div class="flex flex-col gap-3">
-                        <!-- Couleur principale -->
                         <div>
                             <p class="label-text font-medium mb-1">{{ t('inscription.primary_color') }}</p>
                             <p class="text-xs text-base-content/50 mb-2">{{ t('inscription.color_hint') }}</p>
@@ -141,8 +140,6 @@ const clearLogo = () => {
                                     :style="`background-color: ${primaryColor}`">{{ primaryColor }}</span>
                             </div>
                         </div>
-
-                        <!-- Couleur secondaire -->
                         <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <p class="label-text font-medium">{{ t('inscription.secondary_color') }}</p>
@@ -166,23 +163,20 @@ const clearLogo = () => {
                         {{ t('inscription.section_contact') }}
                     </div>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.contact_name') }} *</span></div>
-                        <input type="text" name="contact_name" required maxlength="255"
-                            class="input input-bordered" :class="errors.contact_name ? 'input-error' : ''">
-                        <div v-if="errors.contact_name" class="label">
-                            <span class="label-text-alt text-error">{{ errors.contact_name[0] }}</span>
-                        </div>
-                    </label>
+                    <BaseInput
+                        name="contact_name"
+                        :label="t('inscription.contact_name')"
+                        :error="errors.contact_name?.[0]"
+                        required
+                    />
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.contact_email') }} *</span></div>
-                        <input type="email" name="contact_email" required maxlength="255"
-                            class="input input-bordered" :class="errors.contact_email ? 'input-error' : ''">
-                        <div v-if="errors.contact_email" class="label">
-                            <span class="label-text-alt text-error">{{ errors.contact_email[0] }}</span>
-                        </div>
-                    </label>
+                    <BaseInput
+                        name="contact_email"
+                        type="email"
+                        :label="t('inscription.contact_email')"
+                        :error="errors.contact_email?.[0]"
+                        required
+                    />
 
                     <!-- Trophée -->
                     <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
@@ -199,11 +193,10 @@ const clearLogo = () => {
                         <span>{{ t('inscription.pending_note') }}</span>
                     </div>
 
-                    <button type="submit" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none mt-2">
-                        {{ t('inscription.submit') }}
-                    </button>
+                    <BaseButton type="submit" class="mt-2">{{ t('inscription.submit') }}</BaseButton>
                 </form>
             </template>
         </main>
+        <Footer />
     </div>
 </template>
