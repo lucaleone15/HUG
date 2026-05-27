@@ -76,7 +76,7 @@
         "travel_return_date": "Rückreisedatum in die Schweiz",
         "travel_select_region": "— Region auswählen —",
         "travel_risk_warning": "Verbundene Risiken:",
-        "birth_country_placeholder": "Land angeben…",
+        "birth_country_placeholder": "— Land auswählen —",
         "birth_confirm": "Bestätigen"
     },
     "result": {

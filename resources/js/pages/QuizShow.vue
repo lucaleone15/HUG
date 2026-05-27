@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/ui/NavBar.vue'
 import { sendAnalytics } from '../composables/useAnalytics.js'
+import { countries } from '../data/countries.js'
 
 const { t } = useI18n()
 
@@ -315,14 +316,17 @@ const goBack = () => {
                                         >
                                         <span class="text-sm leading-snug">{{ item.label }}</span>
                                     </label>
-                                    <input
+                                    <select
                                         v-if="birthSelected.includes(item.id)"
-                                        type="text"
-                                        class="input input-bordered w-full mt-1 text-sm"
-                                        :placeholder="t('quiz.birth_country_placeholder')"
+                                        class="select select-bordered select-sm w-full mt-1"
                                         :value="birthCountries[item.id] ?? ''"
-                                        @input="e => birthCountries[item.id] = e.target.value"
+                                        @change="e => birthCountries[item.id] = e.target.value"
                                     >
+                                        <option value="">{{ t('quiz.birth_country_placeholder') }}</option>
+                                        <option v-for="country in countries" :key="country" :value="country">
+                                            {{ country }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
