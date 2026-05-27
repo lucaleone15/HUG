@@ -15,7 +15,7 @@ defineProps({
             <a
                 v-if="cta"
                 :href="cta.href"
-                class="btn bg-white text-[#E30613] hover:bg-white/90 border-none font-semibold px-8"
+                class="btn bg-white text-brand hover:bg-white/90 border-none font-semibold px-8"
             >
                 {{ cta.label }}
             </a>

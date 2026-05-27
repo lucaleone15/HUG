@@ -12,7 +12,7 @@ import StatusBadge from '../components/admin/StatusBadge.vue'
 const api    = useApi()
 const router = useRouter()
 const store  = useEntreprisesStore()
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 const { data, loading, error, page, lastPage, isFirst, isLast, load, prev, next } =
     usePagination((p) => api.get(`/admin/entreprises?page=${p}`))
@@ -81,12 +81,12 @@ const sendKit = async (e) => {
 <template>
     <div>
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold">Entreprises</h1>
-            <BaseButton size="sm" @click="goCreate">+ Nouvelle entreprise</BaseButton>
+            <h1 class="text-2xl font-bold">{{ t('admin.nav_entreprises') }}</h1>
+            <BaseButton size="sm" @click="goCreate">{{ t('admin.new_company') }}</BaseButton>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
-            <span class="loading loading-spinner loading-lg text-[#E30613]"></span>
+            <span class="loading loading-spinner loading-lg text-brand"></span>
         </div>
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
@@ -96,12 +96,12 @@ const sendKit = async (e) => {
                     <table class="table table-sm">
                         <thead>
                             <tr class="text-xs text-base-content/50">
-                                <th>Entreprise</th>
-                                <th>Type</th>
-                                <th>Statut</th>
-                                <th class="text-right">Éligibles</th>
-                                <th class="text-right">Trophée</th>
-                                <th class="text-right">Actions</th>
+                                <th>{{ t('admin.col_company') }}</th>
+                                <th>{{ t('admin.col_type') }}</th>
+                                <th>{{ t('admin.col_status') }}</th>
+                                <th class="text-right">{{ t('admin.col_eligible') }}</th>
+                                <th class="text-right">{{ t('admin.col_trophy') }}</th>
+                                <th class="text-right">{{ t('admin.col_actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -117,7 +117,7 @@ const sendKit = async (e) => {
                                         </div>
                                     </div>
                                 </td>
-                                <td class="text-xs text-base-content/60 capitalize">{{ e.type ?? '—' }}</td>
+                                <td class="text-xs text-base-content/60">{{ e.type ? t('inscription.type_' + e.type) : '—' }}</td>
                                 <td><StatusBadge :entreprise="e" /></td>
                                 <td class="text-right text-sm">
                                     <span class="text-emerald-600 font-semibold">{{ e.eligible_count ?? '—' }}</span>
@@ -134,18 +134,18 @@ const sendKit = async (e) => {
                                             class="btn btn-xs btn-success text-white"
                                             :disabled="accepting === e.id"
                                             @click="accept(e)"
-                                            title="Accepter l'entreprise"
+                                            :title="t('admin.accept_title')"
                                         >
                                             <span v-if="accepting === e.id" class="loading loading-spinner loading-xs"></span>
-                                            <span v-else>✓ Accepter</span>
+                                            <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
-                                        <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" title="Modifier">✏️</button>
+                                        <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">✏️</button>
                                         <button
                                             class="btn btn-ghost btn-xs"
                                             :class="kitSent === e.id ? 'text-success' : ''"
                                             :disabled="!e.contact_email"
                                             @click="sendKit(e)"
-                                            title="Envoyer kit"
+                                            :title="t('admin.send_kit_title')"
                                         >
                                             {{ kitSent === e.id ? '✅' : '📦' }}
                                         </button>
@@ -153,7 +153,7 @@ const sendKit = async (e) => {
                                             class="btn btn-ghost btn-xs text-error"
                                             :disabled="deleting === e.id"
                                             @click="askDelete(e)"
-                                            title="Supprimer"
+                                            :title="t('admin.delete_title')"
                                         >🗑️</button>
                                     </div>
                                 </td>
@@ -172,15 +172,14 @@ const sendKit = async (e) => {
         </template>
 
         <!-- Modal de confirmation de suppression -->
-        <BaseModal v-model="deleteModal" title="Confirmer la suppression">
+        <BaseModal v-model="deleteModal" :title="t('admin.delete_confirm_title')">
             <p class="text-sm text-base-content/70">
-                Supprimer <strong>{{ deleteTarget?.name }}</strong> ?
-                Cette action est irréversible.
+                {{ t('admin.delete_confirm_text', { name: deleteTarget?.name }) }}
             </p>
             <template #footer>
-                <BaseButton variant="ghost" @click="deleteModal = false">Annuler</BaseButton>
+                <BaseButton variant="ghost" @click="deleteModal = false">{{ t('admin.cancel') }}</BaseButton>
                 <BaseButton variant="outline" class="text-error border-error hover:bg-error hover:text-white" @click="confirmDelete">
-                    Supprimer
+                    {{ t('admin.delete_title') }}
                 </BaseButton>
             </template>
         </BaseModal>

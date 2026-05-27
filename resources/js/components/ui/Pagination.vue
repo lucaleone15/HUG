@@ -27,7 +27,7 @@ const pages = computed(() => {
             :key="p"
             class="btn btn-sm"
             :class="p === currentPage
-                ? 'bg-[#E30613] border-none text-white hover:bg-[#c0051f]'
+                ? 'bg-brand border-none text-white hover:bg-brand-dark'
                 : 'btn-ghost'"
             @click="emit('update:currentPage', p)"
         >{{ p }}</button>

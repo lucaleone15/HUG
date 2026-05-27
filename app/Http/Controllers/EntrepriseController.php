@@ -11,6 +11,11 @@ class EntrepriseController extends Controller
     {
         abort_if(! $entreprise->is_active, 404);
 
+        $entreprise->loadCount([
+            'submissions',
+            'submissions as eligible_count' => fn ($q) => $q->where('is_eligible', true),
+        ]);
+
         return view('entreprise.show', compact('entreprise'));
     }
 }

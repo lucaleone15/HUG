@@ -39,7 +39,26 @@ const clearLogo = () => {
 <template>
     <div class="min-h-screen bg-base-100 flex flex-col">
         <NavBar />
-        <main class="max-w-xl mx-auto px-6 py-12 flex-1 w-full">
+
+        <!-- Hero header -->
+        <section class="grid md:grid-cols-2">
+            <div class="flex flex-col justify-center px-8 py-12 bg-white">
+                <h1 class="text-2xl md:text-3xl font-bold leading-tight">
+                    {{ t('inscription.hero_line1') }}<br>
+                    <span class="text-brand">{{ t('inscription.hero_program_name') }}</span><br>
+                    {{ t('inscription.hero_line2') }}
+                </h1>
+            </div>
+            <div class="relative flex flex-col justify-center px-8 py-12 bg-brand-muted text-white">
+                <span class="absolute top-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1">
+                    {{ t('inscription.hero_badge') }}
+                </span>
+                <p class="mb-5 leading-relaxed">{{ t('inscription.hero_short_subtitle') }}</p>
+                <p class="leading-relaxed text-white/75">{{ t('inscription.hero_text') }}</p>
+            </div>
+        </section>
+
+        <main class="max-w-3xl mx-auto px-6 py-12 flex-1 w-full">
 
             <!-- Success -->
             <template v-if="success">
@@ -47,153 +66,134 @@ const clearLogo = () => {
                     <div class="text-6xl mb-6">🎉</div>
                     <h1 class="text-2xl font-bold mb-3">{{ t('inscription.success_title') }}</h1>
                     <p class="text-base-content/60 mb-8">{{ t('inscription.success_message') }}</p>
-                    <BaseButton href="/">{{ t('result.back_home') }}</BaseButton>
+                    <BaseButton href="/" class="w-full">{{ t('result.back_home') }}</BaseButton>
                 </div>
             </template>
 
             <!-- Formulaire -->
             <template v-else>
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold mb-2">{{ t('inscription.title') }}</h1>
-                    <p class="text-base-content/60">{{ t('inscription.subtitle') }}</p>
-                </div>
+                <h1 class="text-3xl font-bold text-brand mb-10">{{ t('inscription.form_title') }}</h1>
 
-                <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
+                <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
                     <input type="hidden" name="_token" :value="csrfToken">
                     <input type="hidden" name="locale" :value="locale">
 
-                    <!-- Section : Entreprise -->
-                    <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
-                        {{ t('inscription.section_company') }}
+                    <!-- Nom -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">{{ t('inscription.name') }} *</label>
+                        <input name="name" required :placeholder="t('inscription.name_placeholder')"
+                            class="input input-bordered w-full"
+                            :class="errors.name ? 'input-error' : ''">
+                        <p v-if="errors.name" class="text-error text-xs mt-1">{{ errors.name[0] }}</p>
                     </div>
 
-                    <BaseInput
-                        name="name"
-                        :label="t('inscription.name')"
-                        :error="errors.name?.[0]"
-                        required
-                    />
-
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.type') }} *</span></div>
-                        <select name="type" required class="select select-bordered"
+                    <!-- Secteur -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">{{ t('inscription.type') }}</label>
+                        <select name="type" class="select select-bordered w-full"
                             :class="errors.type ? 'select-error' : ''">
-                            <option value="" disabled selected>—</option>
+                            <option value="" disabled selected>{{ t('inscription.select_placeholder') }}</option>
                             <option v-for="type in types" :key="type" :value="type">
                                 {{ t(`inscription.type_${type}`) }}
                             </option>
                         </select>
-                        <div v-if="errors.type" class="label">
-                            <span class="label-text-alt text-error">{{ errors.type[0] }}</span>
-                        </div>
-                    </label>
-
-                    <BaseInput
-                        name="employee_count"
-                        type="number"
-                        :label="t('inscription.employee_count')"
-                    />
-
-                    <!-- Logo -->
-                    <div class="form-control gap-2">
-                        <div class="label pb-0"><span class="label-text font-medium">{{ t('inscription.logo') }}</span></div>
-
-                        <div v-if="logoPreview" class="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
-                            <img :src="logoPreview" alt="Logo" class="h-12 w-12 object-contain rounded bg-white p-1">
-                            <span class="flex-1 text-sm text-base-content/50 truncate">{{ t('inscription.logo_hint') }}</span>
-                            <button type="button" class="btn btn-ghost btn-xs text-error" @click="clearLogo">✕</button>
-                        </div>
-
-                        <input ref="logoFileRef" type="file" name="logo" accept="image/*"
-                            class="file-input file-input-bordered w-full"
-                            :class="errors.logo ? 'file-input-error' : ''"
-                            @change="onFileChange">
-                        <div class="label pt-0">
-                            <span class="label-text-alt text-base-content/50">{{ t('inscription.logo_hint') }}</span>
-                        </div>
-                        <div v-if="errors.logo" class="label pt-0">
-                            <span class="label-text-alt text-error">{{ errors.logo[0] }}</span>
-                        </div>
+                        <p v-if="errors.type" class="text-error text-xs mt-1">{{ errors.type[0] }}</p>
                     </div>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text font-medium">{{ t('inscription.logo_url') }}</span></div>
-                        <input type="url" name="logo_url" maxlength="2048"
-                            class="input input-bordered" placeholder="https://exemple.com/logo.png"
-                            :disabled="!!logoPreview">
-                        <div class="label pt-0">
-                            <span class="label-text-alt text-base-content/50">
-                                {{ logoPreview ? '← Désactivé : fichier sélectionné ci-dessus' : '' }}
-                            </span>
+                    <!-- Taille de l'entreprise (pleine largeur) -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">{{ t('inscription.field_size') }} *</label>
+                        <input name="employee_count" type="number" :placeholder="t('inscription.size_placeholder')"
+                            class="input input-bordered w-full">
+                    </div>
+
+                    <!-- Logo fichier + URL côte à côte -->
+                    <div class="grid grid-cols-2 gap-4 items-start">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">{{ t('inscription.logo') }}</label>
+                            <div v-if="logoPreview" class="flex items-center gap-2 mb-2">
+                                <img :src="logoPreview" class="h-8 w-8 object-contain rounded border border-base-300 bg-white p-0.5">
+                                <button type="button" class="text-xs text-error underline" @click="clearLogo">{{ t('inscription.logo_delete') }}</button>
+                            </div>
+                            <input ref="logoFileRef" type="file" name="logo" accept="image/*"
+                                class="file-input file-input-bordered w-full text-sm"
+                                :class="errors.logo ? 'file-input-error' : ''"
+                                @change="onFileChange">
+                            <p v-if="errors.logo" class="text-error text-xs mt-1">{{ errors.logo[0] }}</p>
                         </div>
-                    </label>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">{{ t('inscription.logo_url') }} <span class="font-normal text-base-content/40">{{ t('inscription.logo_url_alt') }}</span></label>
+                            <input type="url" name="logo_url" maxlength="2048"
+                                class="input input-bordered w-full"
+                                :placeholder="t('inscription.logo_url_placeholder')"
+                                :disabled="!!logoPreview">
+                            <p v-if="logoPreview" class="text-xs text-base-content/30 italic mt-1">{{ t('inscription.logo_url_disabled') }}</p>
+                            <p v-else class="text-xs text-base-content/40 mt-1">{{ t('inscription.logo_hint') }}</p>
+                        </div>
+                    </div>
 
                     <!-- Couleurs -->
-                    <div class="flex flex-col gap-3">
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p class="label-text font-medium mb-1">{{ t('inscription.primary_color') }}</p>
-                            <p class="text-xs text-base-content/50 mb-2">{{ t('inscription.color_hint') }}</p>
-                            <div class="flex items-center gap-3">
+                            <label class="block text-sm font-semibold mb-1">{{ t('inscription.primary_color') }} *</label>
+                            <div class="flex items-center border border-base-300 rounded-lg overflow-hidden">
                                 <input type="color" name="primary_color" v-model="primaryColor"
-                                    class="w-12 h-10 rounded-lg border border-base-300 cursor-pointer p-1">
-                                <span class="badge text-white font-mono text-xs px-3 py-3"
-                                    :style="`background-color: ${primaryColor}`">{{ primaryColor }}</span>
+                                    class="w-10 h-10 cursor-pointer border-none shrink-0 p-1 bg-transparent">
+                                <input type="text" v-model="primaryColor" maxlength="7"
+                                    class="flex-1 px-3 py-2 text-sm font-mono outline-none bg-transparent"
+                                    placeholder="#000000">
                             </div>
                         </div>
                         <div>
-                            <div class="flex items-center gap-2 mb-2">
-                                <p class="label-text font-medium">{{ t('inscription.secondary_color') }}</p>
-                                <span class="text-xs text-base-content/40">{{ t('inscription.secondary_color_hint') }}</span>
-                            </div>
-                            <div class="flex items-center gap-3">
+                            <label class="block text-sm font-semibold mb-1">{{ t('inscription.secondary_color') }}</label>
+                            <div class="flex items-center border border-base-300 rounded-lg overflow-hidden">
                                 <input type="color" name="secondary_color" v-model="secondaryColor"
-                                    class="w-12 h-10 rounded-lg border border-base-300 cursor-pointer p-1">
-                                <span v-if="secondaryColor" class="badge text-white font-mono text-xs px-3 py-3"
-                                    :style="`background-color: ${secondaryColor}`">{{ secondaryColor }}</span>
-                                <button v-if="secondaryColor" type="button"
-                                    class="btn btn-ghost btn-xs text-base-content/40"
-                                    @click="secondaryColor = ''">✕</button>
-                                <span v-else class="text-xs text-base-content/30 italic">Aucune</span>
+                                    class="w-10 h-10 cursor-pointer border-none shrink-0 p-1 bg-transparent">
+                                <input type="text" v-model="secondaryColor" maxlength="7"
+                                    class="flex-1 px-3 py-2 text-sm font-mono outline-none bg-transparent"
+                                    placeholder="#000000">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Section : Contact -->
-                    <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
-                        {{ t('inscription.section_contact') }}
+                    <!-- Section Contact référent -->
+                    <h2 class="text-2xl font-bold text-brand mt-4">{{ t('inscription.section_contact_ref') }}</h2>
+
+                    <!-- Nom -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">{{ t('inscription.contact_name') }} *</label>
+                        <input name="contact_name" required :placeholder="t('inscription.contact_name_placeholder')"
+                            class="input input-bordered w-full"
+                            :class="errors.contact_name ? 'input-error' : ''">
+                        <p v-if="errors.contact_name" class="text-error text-xs mt-1">{{ errors.contact_name[0] }}</p>
                     </div>
 
-                    <BaseInput
-                        name="contact_name"
-                        :label="t('inscription.contact_name')"
-                        :error="errors.contact_name?.[0]"
-                        required
-                    />
-
-                    <BaseInput
-                        name="contact_email"
-                        type="email"
-                        :label="t('inscription.contact_email')"
-                        :error="errors.contact_email?.[0]"
-                        required
-                    />
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">{{ t('inscription.contact_email') }} *</label>
+                        <input name="contact_email" type="email" required :placeholder="t('inscription.contact_email_placeholder')"
+                            class="input input-bordered w-full"
+                            :class="errors.contact_email ? 'input-error' : ''">
+                        <p v-if="errors.contact_email" class="text-error text-xs mt-1">{{ errors.contact_email[0] }}</p>
+                    </div>
 
                     <!-- Trophée -->
-                    <div class="divider text-xs text-base-content/40 uppercase tracking-widest">
-                        {{ t('inscription.section_trophy') }}
+                    <div>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" name="wants_trophy" value="1" class="checkbox checkbox-sm">
+                            <span class="text-sm">{{ t('inscription.wants_trophy') }}</span>
+                        </label>
+                        <p class="text-xs text-base-content/40 mt-1 ml-7">{{ t('inscription.wants_trophy_hint') }}</p>
                     </div>
 
-                    <label class="label gap-3 cursor-pointer justify-start">
-                        <input type="checkbox" name="wants_trophy" value="1" class="checkbox checkbox-sm">
-                        <span class="label-text">{{ t('inscription.wants_trophy') }}</span>
-                    </label>
-                    <p class="text-xs text-base-content/50 -mt-3">{{ t('inscription.wants_trophy_hint') }}</p>
-
-                    <div class="alert alert-info text-sm mt-2">
+                    <div class="alert alert-info text-sm">
                         <span>{{ t('inscription.pending_note') }}</span>
                     </div>
 
-                    <BaseButton type="submit" class="mt-2">{{ t('inscription.submit') }}</BaseButton>
+                    <button type="submit"
+                        class="w-full bg-black hover:bg-black/80 text-white font-semibold py-4 rounded-sm uppercase tracking-wide text-sm transition-colors">
+                        {{ t('inscription.submit_label') }}
+                    </button>
                 </form>
             </template>
         </main>

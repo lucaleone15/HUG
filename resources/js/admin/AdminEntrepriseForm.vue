@@ -8,7 +8,7 @@ import BaseButton from '../components/ui/BaseButton.vue'
 const route  = useRoute()
 const router = useRouter()
 const api    = useApi()
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 const isEdit  = computed(() => !!route.params.id)
 const loading = ref(false)
@@ -41,33 +41,27 @@ onMounted(async () => {
     try {
         const e = await api.get(`/admin/entreprises/${route.params.id}`)
 
-        // Champs texte / numérique — on écrase même si vide pour effacer les defaults
         const textFields = ['name', 'slug', 'type', 'contact_name', 'contact_email', 'logo_url']
         textFields.forEach(k => { form.value[k] = e[k] ?? '' })
 
-        // Valeurs nullables numériques
         form.value.employee_count = e.employee_count ?? ''
         form.value.trophy_rank    = e.trophy_rank    ?? ''
 
-        // Couleurs
         form.value.primary_color   = e.primary_color   ?? '#E30613'
         form.value.secondary_color = e.secondary_color ?? ''
 
-        // Booléens
         form.value.is_active    = !!e.is_active
         form.value.is_labelled  = !!e.is_labelled
         form.value.is_validated = !!e.is_validated
         form.value.wants_trophy = !!e.wants_trophy
 
-        // CTS
         form.value.rdv_url  = e.rdv_url  ?? ''
         form.value.rdv_date = e.rdv_date ?? ''
 
-        // Prévisualisation logo
         if (e.logo_url) logoPreview.value = e.logo_url
 
     } catch (err) {
-        alert('Impossible de charger les données : ' + err.message)
+        alert(t('admin.form_error_load') + err.message)
         router.push('/admin/entreprises')
     } finally {
         loading.value = false
@@ -93,7 +87,6 @@ const save = async () => {
     try {
         const fd = new FormData()
 
-        // Champs texte / bool
         const fields = ['name','slug','type','employee_count','contact_name','contact_email',
                         'primary_color','secondary_color','logo_url','trophy_rank','rdv_url','rdv_date']
         fields.forEach(k => {
@@ -105,7 +98,6 @@ const save = async () => {
         fd.append('wants_trophy', form.value.wants_trophy ? '1' : '0')
         fd.append('locale', locale.value)
 
-        // Fichier logo (prioritaire sur logo_url si sélectionné)
         if (logoFile.value) fd.append('logo', logoFile.value)
 
         const path = isEdit.value
@@ -128,8 +120,8 @@ const fieldError = (key) => errors.value[key]?.[0]
 <template>
     <div class="max-w-2xl">
         <div class="flex items-center gap-3 mb-6">
-            <button class="btn btn-ghost btn-sm" @click="router.back()">← Retour</button>
-            <h1 class="text-2xl font-bold">{{ isEdit ? 'Modifier l\'entreprise' : 'Nouvelle entreprise' }}</h1>
+            <button class="btn btn-ghost btn-sm" @click="router.back()">{{ t('admin.form_back') }}</button>
+            <h1 class="text-2xl font-bold">{{ isEdit ? t('admin.form_edit_title') : t('admin.form_new_title') }}</h1>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -140,46 +132,45 @@ const fieldError = (key) => errors.value[key]?.[0]
             <div class="card-body gap-4">
 
                 <!-- Section : Identité -->
-                <div class="divider text-xs text-base-content/40">Identité</div>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_identity') }}</div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <label class="form-control col-span-2">
-                        <div class="label"><span class="label-text">Nom *</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_name') }}</span></div>
                         <input v-model="form.name" type="text" required class="input input-bordered input-sm"
                             :class="fieldError('name') ? 'input-error' : ''">
                         <div v-if="fieldError('name')" class="label"><span class="label-text-alt text-error">{{ fieldError('name') }}</span></div>
                     </label>
 
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Slug (URL)</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_slug') }}</span></div>
                         <input v-model="form.slug" type="text" class="input input-bordered input-sm font-mono"
-                            :class="fieldError('slug') ? 'input-error' : ''" placeholder="auto-généré">
+                            :class="fieldError('slug') ? 'input-error' : ''" :placeholder="t('admin.form_slug_placeholder')">
                         <div v-if="fieldError('slug')" class="label"><span class="label-text-alt text-error">{{ fieldError('slug') }}</span></div>
                     </label>
 
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Secteur *</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_sector') }}</span></div>
                         <select v-model="form.type" required class="select select-bordered select-sm">
                             <option value="" disabled>—</option>
-                            <option v-for="t in types" :key="t" :value="t" class="capitalize">{{ t }}</option>
+                            <option v-for="tp in types" :key="tp" :value="tp">{{ t('inscription.type_' + tp) }}</option>
                         </select>
                     </label>
 
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Effectif</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_employee_count') }}</span></div>
                         <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm">
                     </label>
 
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Rang trophée</span></div>
-                        <input v-model="form.trophy_rank" type="number" min="1" class="input input-bordered input-sm" placeholder="vide = non classée">
+                        <div class="label"><span class="label-text">{{ t('admin.form_trophy_rank') }}</span></div>
+                        <input v-model="form.trophy_rank" type="number" min="1" class="input input-bordered input-sm" :placeholder="t('admin.form_trophy_rank_placeholder')">
                     </label>
                 </div>
 
                 <!-- Section : Logo -->
-                <div class="divider text-xs text-base-content/40">Logo</div>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_logo') }}</div>
 
-                <!-- Prévisualisation -->
                 <div v-if="logoPreview" class="flex items-center gap-4 p-3 bg-base-200 rounded-lg">
                     <img :src="logoPreview" alt="Logo" class="h-14 w-14 object-contain rounded bg-white p-1">
                     <div class="flex-1 text-sm text-base-content/60 truncate">{{ logoFile?.name ?? form.logo_url }}</div>
@@ -187,27 +178,26 @@ const fieldError = (key) => errors.value[key]?.[0]
                 </div>
 
                 <label class="form-control">
-                    <div class="label"><span class="label-text">Uploader un fichier</span></div>
+                    <div class="label"><span class="label-text">{{ t('admin.form_logo_upload') }}</span></div>
                     <input ref="logoInputRef" type="file" accept="image/*"
                         class="file-input file-input-bordered file-input-sm w-full"
                         @change="onFileChange">
-                    <div class="label"><span class="label-text-alt text-base-content/50">PNG, JPG, SVG — 2 Mo max</span></div>
+                    <div class="label"><span class="label-text-alt text-base-content/50">{{ t('admin.form_logo_hint') }}</span></div>
                 </label>
 
                 <label class="form-control">
-                    <div class="label"><span class="label-text">Ou URL du logo</span></div>
+                    <div class="label"><span class="label-text">{{ t('admin.form_logo_url') }}</span></div>
                     <input v-model="form.logo_url" type="text" class="input input-bordered input-sm"
-                        placeholder="https://exemple.com/logo.png"
+                        :placeholder="t('admin.logo_url_placeholder')"
                         :disabled="!!logoFile">
                 </label>
 
                 <!-- Section : Couleurs -->
-                <div class="divider text-xs text-base-content/40">Couleurs</div>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_colors') }}</div>
 
                 <div class="flex flex-col gap-3">
-                    <!-- Couleur principale -->
                     <div>
-                        <p class="text-sm font-medium mb-2">Couleur principale</p>
+                        <p class="text-sm font-medium mb-2">{{ t('admin.form_primary_color') }}</p>
                         <div class="flex items-center gap-3">
                             <input type="color" v-model="form.primary_color"
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
@@ -216,11 +206,10 @@ const fieldError = (key) => errors.value[key]?.[0]
                         </div>
                     </div>
 
-                    <!-- Couleur secondaire -->
                     <div>
                         <div class="flex items-center gap-2 mb-2">
-                            <p class="text-sm font-medium">Couleur secondaire</p>
-                            <span class="text-xs text-base-content/40">optionnelle</span>
+                            <p class="text-sm font-medium">{{ t('admin.form_secondary_color') }}</p>
+                            <span class="text-xs text-base-content/40">{{ t('admin.form_color_optional') }}</span>
                         </div>
                         <div v-if="form.secondary_color" class="flex items-center gap-3">
                             <input type="color" v-model="form.secondary_color"
@@ -228,70 +217,70 @@ const fieldError = (key) => errors.value[key]?.[0]
                             <span class="badge text-white font-mono text-xs px-3 py-3"
                                 :style="`background:${form.secondary_color}`">{{ form.secondary_color }}</span>
                             <button type="button" class="btn btn-ghost btn-xs text-base-content/40"
-                                @click="form.secondary_color = ''">✕ Retirer</button>
+                                @click="form.secondary_color = ''">{{ t('admin.form_color_remove') }}</button>
                         </div>
                         <button v-else type="button" class="btn btn-ghost btn-xs border border-dashed border-base-300 text-base-content/50"
                             @click="form.secondary_color = '#CCCCCC'">
-                            + Ajouter une couleur secondaire
+                            {{ t('admin.form_color_add') }}
                         </button>
                     </div>
                 </div>
 
                 <!-- Section : Contact -->
-                <div class="divider text-xs text-base-content/40">Contact</div>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_contact') }}</div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Nom du responsable</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_contact_name') }}</span></div>
                         <input v-model="form.contact_name" type="text" class="input input-bordered input-sm">
                     </label>
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Email de contact</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_contact_email') }}</span></div>
                         <input v-model="form.contact_email" type="email" class="input input-bordered input-sm">
                         <div v-if="fieldError('contact_email')" class="label"><span class="label-text-alt text-error">{{ fieldError('contact_email') }}</span></div>
                     </label>
                 </div>
 
                 <!-- Section : Statut -->
-                <div class="divider text-xs text-base-content/40">Statut</div>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_status') }}</div>
 
                 <div class="flex flex-wrap gap-6">
                     <label class="label gap-2 cursor-pointer">
                         <input type="checkbox" v-model="form.is_active" class="checkbox checkbox-sm">
-                        <span class="label-text">Active (visible sur le site)</span>
+                        <span class="label-text">{{ t('admin.form_is_active') }}</span>
                     </label>
                     <label class="label gap-2 cursor-pointer">
                         <input type="checkbox" v-model="form.is_validated" class="checkbox checkbox-sm">
-                        <span class="label-text">Validée</span>
+                        <span class="label-text">{{ t('admin.form_is_validated') }}</span>
                     </label>
                     <label class="label gap-2 cursor-pointer">
                         <input type="checkbox" v-model="form.is_labelled" class="checkbox checkbox-sm">
-                        <span class="label-text">Labelisée</span>
+                        <span class="label-text">{{ t('admin.form_is_labelled') }}</span>
                     </label>
                     <label class="label gap-2 cursor-pointer">
                         <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">
                         <span class="label-text">
-                            Souhaite participer au trophée
-                            <span class="text-base-content/40 text-xs ml-1">(déclaré par l'entreprise)</span>
+                            {{ t('admin.form_wants_trophy') }}
+                            <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint') }}</span>
                         </span>
                     </label>
                 </div>
 
                 <!-- Section : Collecte CTS -->
-                <div class="divider text-xs text-base-content/40">Collecte CTS</div>
-                <p class="text-xs text-base-content/50 -mt-2">Ces informations sont renseignées par le CTS après concertation avec l'entreprise.</p>
+                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_cts') }}</div>
+                <p class="text-xs text-base-content/50 -mt-2">{{ t('admin.form_cts_desc') }}</p>
 
                 <div class="grid grid-cols-2 gap-4">
                     <label class="form-control col-span-2">
-                        <div class="label"><span class="label-text">Lien de prise de rendez-vous</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_rdv_url') }}</span></div>
                         <input v-model="form.rdv_url" type="url" class="input input-bordered input-sm"
-                            placeholder="https://calendly.com/... ou Doodle">
+                            :placeholder="t('admin.form_rdv_url_placeholder')">
                         <div v-if="fieldError('rdv_url')" class="label">
                             <span class="label-text-alt text-error">{{ fieldError('rdv_url') }}</span>
                         </div>
                     </label>
                     <label class="form-control">
-                        <div class="label"><span class="label-text">Date de la collecte</span></div>
+                        <div class="label"><span class="label-text">{{ t('admin.form_rdv_date') }}</span></div>
                         <input v-model="form.rdv_date" type="date" class="input input-bordered input-sm">
                         <div v-if="fieldError('rdv_date')" class="label">
                             <span class="label-text-alt text-error">{{ fieldError('rdv_date') }}</span>
@@ -300,9 +289,9 @@ const fieldError = (key) => errors.value[key]?.[0]
                 </div>
 
                 <div class="card-actions justify-end mt-2 gap-2">
-                    <BaseButton variant="ghost" size="sm" @click="router.back()">Annuler</BaseButton>
+                    <BaseButton variant="ghost" size="sm" @click="router.back()">{{ t('admin.cancel') }}</BaseButton>
                     <BaseButton type="submit" size="sm" :loading="saving">
-                        {{ isEdit ? 'Enregistrer' : 'Créer' }}
+                        {{ isEdit ? t('admin.save') : t('admin.form_create') }}
                     </BaseButton>
                 </div>
             </div>

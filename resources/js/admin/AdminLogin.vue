@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuth } from '../composables/useAuth.js'
+import LangSwitcher from '../components/ui/LangSwitcher.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const { setAuth } = useAuth()
 
 const email    = ref('')
@@ -22,13 +25,13 @@ const submit = async () => {
         })
         const data = await res.json()
         if (!res.ok) {
-            error.value = data.message ?? 'Erreur de connexion'
+            error.value = data.message ?? t('admin.login_error_server')
             return
         }
         setAuth(data.token, data.user)
         router.push('/admin/dashboard')
     } catch {
-        error.value = 'Impossible de contacter le serveur.'
+        error.value = t('admin.login_error_server')
     } finally {
         loading.value = false
     }
@@ -39,10 +42,12 @@ const submit = async () => {
     <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
         <div class="card bg-base-100 shadow-xl w-full max-w-sm">
             <div class="card-body gap-5">
+                <div class="flex justify-end">
+                    <LangSwitcher />
+                </div>
                 <div class="text-center">
-                    <div class="text-4xl mb-3">🏥</div>
-                    <h1 class="text-xl font-bold">HUG × CTS</h1>
-                    <p class="text-base-content/50 text-sm">Interface d'administration</p>
+                    <img :src="'/images/hug-logo.svg'" alt="HUG × CTS" class="h-10 mx-auto mb-3">
+                    <p class="text-base-content/50 text-sm">{{ t('admin.login_subtitle') }}</p>
                 </div>
 
                 <div v-if="error" class="alert alert-error text-sm py-2">
@@ -57,15 +62,15 @@ const submit = async () => {
                     </label>
 
                     <label class="form-control">
-                        <div class="label py-1"><span class="label-text text-sm">Mot de passe</span></div>
+                        <div class="label py-1"><span class="label-text text-sm">{{ t('admin.login_password') }}</span></div>
                         <input v-model="password" type="password" required autocomplete="current-password"
                             class="input input-bordered input-sm">
                     </label>
 
-                    <button type="submit" class="btn bg-[#E30613] hover:bg-[#c0051f] text-white border-none mt-2"
+                    <button type="submit" class="btn bg-brand hover:bg-brand-dark text-white border-none mt-2"
                         :disabled="loading">
                         <span v-if="loading" class="loading loading-spinner loading-sm"></span>
-                        <span v-else>Se connecter</span>
+                        <span v-else>{{ t('admin.login_submit') }}</span>
                     </button>
                 </form>
             </div>
