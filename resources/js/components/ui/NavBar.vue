@@ -65,7 +65,7 @@ onBeforeUnmount(()  => document.removeEventListener('click', onClickOutside))
                 <a
                     href="/inscription"
                     class="btn btn-sm text-white border-none hidden lg:flex rounded-sm uppercase text-xs tracking-wide font-semibold"
-                    :class="isActive('/inscription') ? 'bg-brand-deeper' : 'bg-brand hover:bg-brand-dark'"
+                    :class="isActive('/inscription') ? 'bg-brand-dark' : 'bg-brand hover:bg-brand-dark'"
                 >
                     {{ t('nav.cta') }}
                 </a>
@@ -87,6 +87,7 @@ onBeforeUnmount(()  => document.removeEventListener('click', onClickOutside))
                         </svg>
                     </button>
 
+                    <Transition name="menu">
                     <ul
                         v-if="menuOpen"
                         class="absolute right-0 top-full mt-1 w-52 bg-base-100 rounded-box shadow-lg border border-base-200 p-2 z-50"
@@ -111,6 +112,7 @@ onBeforeUnmount(()  => document.removeEventListener('click', onClickOutside))
                             </a>
                         </li>
                     </ul>
+                    </Transition>
                 </div>
             </div>
 

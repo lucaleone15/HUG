@@ -49,6 +49,125 @@
     }
 }
 
+/* ─── Custom easing curves ───────────────────────────────────────────────── */
+:root {
+    --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ─── Shared scroll reveal ───────────────────────────────────────────────── */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 440ms cubic-bezier(0.23, 1, 0.32, 1),
+                transform 440ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-up.reveal-up--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    .reveal-up { opacity: 1; transform: none; transition: none; }
+}
+
+/* ─── Page hero entrance (shared) ───────────────────────────────────────── */
+.page-hero-text {
+    animation: hero-rise 580ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: 60ms;
+}
+.page-hero-visual {
+    animation: hero-rise 680ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: 180ms;
+}
+@keyframes hero-rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page-hero-text, .page-hero-visual { animation: none; opacity: 1; }
+}
+
+/* ─── Button press feedback ──────────────────────────────────────────────── */
+.btn {
+    transition: transform 140ms var(--ease-out),
+                background-color 150ms ease,
+                box-shadow 150ms ease,
+                border-color 150ms ease;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+/* ─── Modal entry animation ──────────────────────────────────────────────── */
+.modal-box {
+    animation: modal-pop 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes modal-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ─── Stats stagger animation ────────────────────────────────────────────── */
+.stat-stagger {
+    animation: stat-appear 380ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.stat-stagger:nth-child(1) { animation-delay: 0ms; }
+.stat-stagger:nth-child(2) { animation-delay: 70ms; }
+.stat-stagger:nth-child(3) { animation-delay: 140ms; }
+.stat-stagger:nth-child(4) { animation-delay: 210ms; }
+.stat-stagger:nth-child(5) { animation-delay: 280ms; }
+
+@keyframes stat-appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Mobile menu transition ─────────────────────────────────────────────── */
+.menu-enter-active {
+    transition: opacity 180ms var(--ease-out),
+                transform 180ms var(--ease-out);
+}
+.menu-leave-active {
+    transition: opacity 120ms ease,
+                transform 120ms ease;
+}
+.menu-enter-from,
+.menu-leave-to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+}
+.menu-enter-to,
+.menu-leave-from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .btn { transition: background-color 150ms ease, border-color 150ms ease; }
+    .btn:active:not(:disabled) { transform: none; }
+    .modal-box { animation: none; }
+    .stat-stagger { animation: none; }
+    .menu-enter-active,
+    .menu-leave-active { transition: opacity 100ms ease; }
+    .menu-enter-from,
+    .menu-leave-to { transform: none; }
+}
+
 @theme {
     --font-sans: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
@@ -59,9 +178,14 @@
      * Les couleurs d'entreprise (primary_color, secondary_color) sont dynamiques.
      * ──────────────────────────────────────────────────────────────────────── */
 
-    --color-brand:        #E30613;  /* Rouge HUG — couleur principale           */
-    --color-brand-dark:   #c0051f;  /* Rouge HUG foncé — hover boutons          */
-    --color-brand-deeper: #a0040e;  /* Rouge HUG très foncé — état actif nav    */
-    --color-brand-muted:  #7B1E1E;  /* Bordeaux — panneaux accent               */
-    --color-site-ink:     #111111;  /* Quasi-noir — footer                      */
+    --color-brand:      #D32C37;  /* Rouge HUG — couleur principale / Brand MAIN   */
+    --color-brand-dark: #A9232C;  /* Rouge HUG foncé — hover / Brand SECONDARY    */
+    --color-site-ink:   #190507;  /* Quasi-noir — footer / Brand BUTTON           */
+
+    --color-success:         #05FA67;  /* Vert succès — base                       */
+    --color-success-content: #04C852;  /* Vert succès — foncé / hover              */
+    --color-error:           #FA0511;  /* Rouge erreur — base                      */
+    --color-error-content:   #C8040E;  /* Rouge erreur — foncé / hover             */
+    --color-info:            #04BDFB;  /* Bleu info — base                         */
+    --color-info-content:    #0497C8;  /* Bleu info — foncé / hover                */
 }

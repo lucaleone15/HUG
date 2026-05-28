@@ -103,11 +103,11 @@ const deviceKey = {
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.device_title') }}</h2>
-                        <div class="flex gap-4 flex-wrap">
-                            <div v-for="(count, device) in data.by_device" :key="device" class="text-center">
-                                <div class="text-3xl">{{ device === 'mobile' ? '📱' : device === 'tablet' ? '📲' : '🖥️' }}</div>
-                                <div class="font-semibold">{{ count?.toLocaleString('fr-CH') }}</div>
-                                <div class="text-xs text-base-content/50">{{ t(deviceKey[device] ?? device) }}</div>
+                        <div class="divide-y divide-base-200 w-full">
+                            <div v-for="(count, device) in data.by_device" :key="device"
+                                 class="flex items-center justify-between py-2.5">
+                                <span class="text-sm text-base-content/60">{{ t(deviceKey[device] ?? device) }}</span>
+                                <span class="font-semibold text-sm tabular-nums">{{ count?.toLocaleString('fr-CH') }}</span>
                             </div>
                         </div>
                     </div>

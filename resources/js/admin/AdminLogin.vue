@@ -46,7 +46,7 @@ const submit = async () => {
                     <LangSwitcher />
                 </div>
                 <div class="text-center">
-                    <img :src="'/images/hug-logo.svg'" alt="HUG × CTS" class="h-10 mx-auto mb-3">
+                    <img :src="'/images/hug-logo.svg'" alt="Donnez Votre Sang" class="h-10 mx-auto mb-3">
                     <p class="text-base-content/50 text-sm">{{ t('admin.login_subtitle') }}</p>
                 </div>
 

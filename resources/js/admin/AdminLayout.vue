@@ -15,16 +15,12 @@ const router = useRouter();
 const route = useRoute();
 
 const nav = computed(() => [
-    { to: "/admin/dashboard", label: t("admin.nav_dashboard"), icon: "📊" },
-    { to: "/admin/entreprises", label: t("admin.nav_entreprises"), icon: "🏢" },
-    { to: "/admin/submissions", label: t("admin.nav_submissions"), icon: "📋" },
-    { to: "/admin/analytics", label: t("admin.nav_analytics"), icon: "📈" },
-    {
-        to: "/admin/campaign-stats",
-        label: t("admin.nav_campaign_stats"),
-        icon: "🩸",
-    },
-    { to: "/admin/report", label: t("admin.nav_report"), icon: "📄" },
+    { to: "/admin/dashboard",      label: t("admin.nav_dashboard") },
+    { to: "/admin/entreprises",    label: t("admin.nav_entreprises") },
+    { to: "/admin/submissions",    label: t("admin.nav_submissions") },
+    { to: "/admin/analytics",      label: t("admin.nav_analytics") },
+    { to: "/admin/campaign-stats", label: t("admin.nav_campaign_stats") },
+    { to: "/admin/report",         label: t("admin.nav_report") },
 ]);
 
 const isActive = (path) => route.path.startsWith(path);
@@ -66,7 +62,7 @@ const logout = async () => {
                         />
                     </svg>
                 </label>
-                <img :src="'/images/hug-logo.svg'" alt="HUG × CTS" class="h-6 ml-2">
+                <a href="/"><img :src="'/images/hug-logo.svg'" alt="Donnez Votre Sang" class="h-6 ml-2"></a>
                 <LangSwitcher />
             </header>
 
@@ -89,9 +85,9 @@ const logout = async () => {
                 <!-- Logo + LangSwitcher -->
                 <div class="p-5 border-b border-base-200">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <img :src="'/images/hug-logo.svg'" alt="HUG × CTS" class="h-7">
-                        </div>
+                        <a href="/" class="flex items-center gap-2">
+                            <img :src="'/images/hug-logo.svg'" alt="Donnez Votre Sang" class="h-7">
+                        </a>
                         <LangSwitcher />
                     </div>
                     <p
@@ -114,7 +110,6 @@ const logout = async () => {
                                     : 'text-base-content/70 hover:text-base-content hover:bg-base-200'
                             "
                         >
-                            <span>{{ item.icon }}</span>
                             {{ item.label }}
                         </RouterLink>
                     </li>
@@ -126,7 +121,7 @@ const logout = async () => {
                         class="btn btn-ghost btn-sm w-full justify-start text-base-content/60"
                         @click="logout"
                     >
-                        🚪 {{ t("admin.logout") }}
+                        {{ t("admin.logout") }}
                     </button>
                 </div>
             </nav>

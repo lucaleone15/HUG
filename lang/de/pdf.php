@@ -3,7 +3,7 @@
 return [
     'generated_at'       => 'Erstellt am',
     'report_title'       => 'Teilnahmebericht',
-    'report_subtitle'    => 'Blutspende-Kampagne HUG × CTS',
+    'report_subtitle'    => 'Blutspende-Kampagne 2026',
 
     'section_company'    => 'Unternehmen',
     'contact_name'       => 'Ansprechpartner',
@@ -28,5 +28,5 @@ return [
     'abandon'            => 'Abbruch',
     'abandons'           => 'Abbrüche',
 
-    'footer_org'         => 'Stiftung für Bluttransfusion — HUG × CTS Genf',
+    'footer_org'         => 'Blutspende-Kampagne · Genf',
 ];

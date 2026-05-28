@@ -15,23 +15,27 @@ defineProps({
 <template>
     <a
         :href="`/c/${entreprise.slug}`"
-        class="card bg-base-100 border border-base-200 shadow-sm hover:shadow-md transition-shadow"
+        class="card bg-base-100 border border-base-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 overflow-hidden"
+        :style="`border-top-color: ${entreprise.primary_color}; border-top-width: 3px; transition: transform 200ms cubic-bezier(0.23,1,0.32,1), box-shadow 200ms cubic-bezier(0.23,1,0.32,1);`"
     >
         <div class="card-body">
             <div class="flex items-center gap-3 mb-3">
                 <div
-                    class="w-1 self-stretch rounded-full"
-                    :style="`background-color: ${entreprise.primary_color}`"
-                ></div>
-                <div
                     v-if="entreprise.logo_url"
-                    class="bg-white border border-base-200 rounded-lg p-1.5 w-14 h-10 flex items-center justify-center"
+                    class="bg-white border border-base-200 rounded-lg p-1.5 w-14 h-10 flex items-center justify-center shrink-0"
                 >
                     <img
                         :src="entreprise.logo_url"
                         :alt="entreprise.name"
                         class="max-h-7 max-w-full object-contain"
                     >
+                </div>
+                <div
+                    v-else
+                    class="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0 select-none"
+                    :style="`background-color: ${entreprise.primary_color}`"
+                >
+                    {{ entreprise.name[0] }}
                 </div>
             </div>
             <h2 class="card-title text-base">{{ entreprise.name }}</h2>

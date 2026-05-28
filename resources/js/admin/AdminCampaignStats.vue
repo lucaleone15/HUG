@@ -57,18 +57,18 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
 
         <template v-else>
             <!-- Stats actuelles -->
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
-                    <div class="text-2xl font-bold text-brand">{{ fmt(current.donations_count) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.donations_collected') }}</div>
+            <div class="bg-base-100 rounded-xl shadow-sm divide-y divide-base-200 mb-6">
+                <div class="flex items-center justify-between px-5 py-3.5">
+                    <span class="text-sm text-base-content/55">{{ t('admin.donations_collected') }}</span>
+                    <span class="font-bold tabular-nums text-brand">{{ fmt(current.donations_count) }}</span>
                 </div>
-                <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
-                    <div class="text-2xl font-bold text-emerald-600">{{ fmt(current.lives_saved) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.lives_saved_stat') }}</div>
+                <div class="flex items-center justify-between px-5 py-3.5">
+                    <span class="text-sm text-base-content/55">{{ t('admin.lives_saved_stat') }}</span>
+                    <span class="font-bold tabular-nums">{{ fmt(current.lives_saved) }}</span>
                 </div>
-                <div class="stat bg-base-100 rounded-xl shadow-sm p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-600">{{ fmt(current.hug_hospitals_count) }}</div>
-                    <div class="text-xs text-base-content/50 mt-1">{{ t('admin.hug_hospitals') }}</div>
+                <div class="flex items-center justify-between px-5 py-3.5">
+                    <span class="text-sm text-base-content/55">{{ t('admin.hug_hospitals') }}</span>
+                    <span class="font-bold tabular-nums">{{ fmt(current.hug_hospitals_count) }}</span>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
                     <h2 class="font-semibold">{{ t('admin.update_stats_title') }}</h2>
                     <p class="text-sm text-base-content/50">{{ t('admin.update_stats_desc') }}</p>
 
-                    <div v-if="saved" class="alert alert-success text-sm py-2">✅ {{ t('admin.saved_success') }}</div>
+                    <div v-if="saved" class="text-sm text-success font-medium py-1">{{ t('admin.saved_success') }}</div>
 
                     <form class="grid grid-cols-1 gap-3" @submit.prevent="save">
                         <label class="form-control">

@@ -34,7 +34,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
             <button class="btn btn-ghost btn-sm" @click="router.back()">{{ t('admin.form_back') }}</button>
             <h1 class="text-2xl font-bold">{{ t('admin.show_title') }}</h1>
             <div class="ml-auto">
-                <BaseButton size="sm" @click="goEdit">✏️ {{ t('admin.edit_title') }}</BaseButton>
+                <BaseButton size="sm" @click="goEdit">{{ t('admin.edit_title') }}</BaseButton>
             </div>
         </div>
 
@@ -150,14 +150,14 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                         </div>
                         <div class="flex items-center gap-2 text-sm">
                             <span :class="e.wants_trophy ? 'badge badge-warning badge-sm' : 'badge badge-ghost badge-sm'">
-                                {{ e.wants_trophy ? '🏆' : '✗' }}
+                                {{ e.wants_trophy ? '✓' : '✗' }}
                             </span>
                             {{ t('admin.form_wants_trophy') }}
                         </div>
                     </div>
 
                     <div v-if="e.trophy_rank" class="flex items-center gap-2 mt-1 text-sm">
-                        <span class="text-2xl">🏆</span>
+                        <span class="font-mono text-brand font-bold">#{{ e.trophy_rank }}</span>
                         <span class="font-semibold">{{ t('admin.show_trophy_rank', { rank: e.trophy_rank }) }}</span>
                     </div>
                 </div>
@@ -197,7 +197,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                         <div class="stat">
                             <div class="stat-title text-xs">{{ t('admin.col_trophy') }}</div>
                             <div class="stat-value text-2xl">
-                                <span v-if="e.trophy_rank">🏆 #{{ e.trophy_rank }}</span>
+                                <span v-if="e.trophy_rank" class="text-brand">#{{ e.trophy_rank }}</span>
                                 <span v-else class="text-base-content/30 text-lg">—</span>
                             </div>
                         </div>

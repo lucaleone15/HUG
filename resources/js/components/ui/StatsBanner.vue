@@ -24,7 +24,7 @@ defineProps({
             <div
                 v-for="c in counters"
                 :key="c.label"
-                class="text-center"
+                class="text-center stat-stagger"
                 :class="dark ? '' : 'card bg-base-100 shadow-sm p-4'"
             >
                 <div class="text-3xl font-bold" :class="dark ? 'text-white' : c.color">

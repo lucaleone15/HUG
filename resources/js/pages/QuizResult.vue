@@ -58,11 +58,16 @@ onMounted(() => {
 
             <!-- Eligible -->
             <template v-if="eligible">
-                <div class="text-7xl mb-6">🩸</div>
-                <h1 class="text-2xl font-bold text-emerald-600 mb-3">
+                <div class="mb-6 result-icon flex justify-center" style="animation-delay: 0ms;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="11" fill="#05FA67" opacity="0.12"/>
+                        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#04C852" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold mb-3 result-content" style="color: #04C852;">
                     {{ t('result.eligible_title') }}
                 </h1>
-                <p class="text-base-content/70 mb-8 leading-relaxed">
+                <p class="text-base-content/70 mb-8 leading-relaxed result-content" style="animation-delay: 80ms;">
                     {{ t('result.eligible_message') }}
                 </p>
                 <p v-if="entreprise.rdv_date" class="text-sm text-base-content/60 mb-4">
@@ -86,11 +91,16 @@ onMounted(() => {
 
             <!-- Not eligible -->
             <template v-else>
-                <div class="text-7xl mb-6">💙</div>
-                <h1 class="text-2xl font-bold text-base-content mb-3">
+                <div class="mb-6 result-icon flex justify-center" style="animation-delay: 0ms;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" opacity="0.08" class="text-base-content"/>
+                        <path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-base-content"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-base-content mb-3 result-content">
                     {{ t('result.ineligible_title') }}
                 </h1>
-                <p class="text-base-content/70 mb-6 leading-relaxed">
+                <p class="text-base-content/70 mb-6 leading-relaxed result-content" style="animation-delay: 80ms;">
                     {{ t('result.ineligible_message') }}
                 </p>
 
@@ -99,8 +109,7 @@ onMounted(() => {
                     v-if="reasons.length > 0"
                     class="text-left bg-base-100 border border-base-300 rounded-xl p-4 mb-6 shadow-sm"
                 >
-                    <p class="text-sm font-semibold mb-3 flex items-center gap-2">
-                        <span>ℹ️</span>
+                    <p class="text-sm font-semibold mb-3">
                         {{ t('result.ineligible_reasons_title') }}
                     </p>
                     <ul class="space-y-2">
@@ -118,9 +127,8 @@ onMounted(() => {
                 <!-- Encadré contact — visible uniquement si des raisons sont présentes -->
                 <div
                     v-if="reasons.length > 0"
-                    class="text-left bg-base-100 border border-base-300 rounded-xl p-4 mb-6 shadow-sm flex items-start gap-3"
+                    class="text-left bg-base-100 border border-base-300 rounded-xl p-4 mb-6 shadow-sm"
                 >
-                    <span class="text-2xl shrink-0">💬</span>
                     <div>
                         <p class="text-sm font-semibold mb-1">{{ t('result.contact_box_title') }}</p>
                         <p class="text-sm text-base-content/70 leading-snug mb-3">{{ t('result.contact_box_message') }}</p>
@@ -130,13 +138,13 @@ onMounted(() => {
                     </div>
                 </div>
 
+
                 <!-- Évaluation médicale complémentaire (birth_check — origines géographiques) -->
                 <div
                     v-if="needsEvaluation"
                     class="text-left bg-info/10 border border-info/30 rounded-xl p-4 mb-6"
                 >
-                    <p class="text-sm font-semibold text-info mb-1 flex items-center gap-2">
-                        <span>🔬</span>
+                    <p class="text-sm font-semibold text-info mb-1">
                         {{ t('result.needs_evaluation_title') }}
                     </p>
                     <p class="text-sm text-base-content/70 leading-snug">
@@ -145,21 +153,18 @@ onMounted(() => {
                 </div>
 
                 <!-- Bloc parrainage -->
-                <div class="card bg-base-100 shadow-sm text-left mb-8">
-                    <div class="card-body gap-4">
-                        <div class="flex items-center gap-3">
-                            <span class="text-3xl">🤝</span>
-                            <div>
-                                <h2 class="font-bold text-base">{{ t('result.referral_title') }}</h2>
-                                <p class="text-sm text-base-content/60 mt-0.5">{{ t('result.referral_subtitle') }}</p>
-                            </div>
+                <div class="bg-base-100 border border-base-200 rounded-xl p-4 text-left mb-8">
+                    <div class="flex flex-col gap-4">
+                        <div>
+                            <h2 class="font-bold text-base">{{ t('result.referral_title') }}</h2>
+                            <p class="text-sm text-base-content/60 mt-0.5">{{ t('result.referral_subtitle') }}</p>
                         </div>
 
                         <!-- Lien à copier -->
                         <div class="flex items-center gap-2 bg-base-200 rounded-lg px-3 py-2">
                             <span class="text-xs text-base-content/50 flex-1 truncate font-mono">{{ shareUrl }}</span>
                             <button class="btn btn-xs border-none text-white shrink-0 transition-colors"
-                                :style="`background-color: ${copied ? '#059669' : entreprise.primary_color}`"
+                                :style="`background-color: ${copied ? '#04C852' : entreprise.primary_color}`"
                                 @click="copyLink">
                                 {{ copied ? t('result.referral_copied') : t('result.referral_copy') }}
                             </button>
@@ -167,14 +172,14 @@ onMounted(() => {
 
                         <!-- Boutons partage -->
                         <div class="flex flex-col sm:flex-row gap-2">
-                            <button class="btn btn-sm flex-1 gap-2 transition-colors"
+                            <button class="btn btn-sm flex-1 transition-colors"
                                 :class="messageCopied ? 'btn-success text-white border-none' : 'btn-outline'"
                                 @click="copyEmailMessage">
-                                ✉️ {{ messageCopied ? t('result.referral_message_copied') : t('result.referral_email') }}
+                                {{ messageCopied ? t('result.referral_message_copied') : t('result.referral_email') }}
                             </button>
                             <a :href="whatsappHref" target="_blank" rel="noopener noreferrer"
-                               class="btn btn-sm flex-1 gap-2 text-white border-none" style="background-color:#25D366">
-                                💬 {{ t('result.referral_whatsapp') }}
+                               class="btn btn-sm flex-1 text-white border-none" style="background-color:#25D366">
+                                {{ t('result.referral_whatsapp') }}
                             </a>
                         </div>
                     </div>
@@ -191,3 +196,28 @@ onMounted(() => {
         </main>
     </div>
 </template>
+
+<style scoped>
+.result-icon {
+    animation: result-pop 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.result-content {
+    animation: result-rise 480ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: 60ms;
+}
+
+@keyframes result-pop {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes result-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .result-icon, .result-content { animation: none; }
+}
+</style>

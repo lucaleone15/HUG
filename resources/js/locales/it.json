@@ -11,7 +11,7 @@
     },
     "home": {
         "hero_title": "Insieme, salviamo delle vite",
-        "hero_subtitle": "Mobilitate la vostra azienda per la campagna di donazione del sangue HUG × CTS. Un gesto semplice, un impatto enorme.",
+        "hero_subtitle": "Mobilitate la vostra azienda per la campagna di donazione del sangue. Un gesto semplice, un impatto enorme.",
         "cta": "Scoprire le aziende partner",
         "stats_donations": "donazioni raccolte",
         "stats_lives": "vite salvate",
@@ -23,7 +23,17 @@
         "how_title": "Come funziona?",
         "read_more": "Scopri di più",
         "register_cta": "Iscriversi",
-        "edition_badge": "Edizione {year}"
+        "edition_badge": "Edizione {year}",
+        "how_step_1_title": "Registra la tua azienda",
+        "how_step_1_desc": "Ci vogliono meno di 5 minuti. Il nostro team vi contatterà per organizzare la raccolta.",
+        "how_step_2_title": "Mobilita i tuoi collaboratori",
+        "how_step_2_desc": "Forniamo un kit di comunicazione completo per sensibilizzare il vostro team.",
+        "how_step_3_title": "Ogni donazione può salvare fino a 3 vite",
+        "how_step_3_desc": "I vostri collaboratori si recano al centro di raccolta. Ogni donazione può beneficiare tre pazienti diversi.",
+        "impact_unit": "Donazione",
+        "impact_lives": "Vite salvate",
+        "programme_label": "Programma",
+        "campaign_badge": "Donazione del sangue"
     },
     "trophee": {
         "title": "Palmares",
@@ -53,13 +63,16 @@
         "criteria_2_title": "Impatto",
         "criteria_2_desc": "Numero di donazioni effettive e vite potenzialmente salvate",
         "criteria_3_title": "Impegno interno",
-        "criteria_3_desc": "Mezzi messi in campo: comunicazione, tempo liberato, ambasciatori"
+        "criteria_3_desc": "Mezzi messi in campo: comunicazione, tempo liberato, ambasciatori",
+        "visual_badge": "Donazione del sangue",
+        "visual_line1": "Trofeo della",
+        "visual_line2": "generosità"
     },
     "label": {
         "title": "Aziende certificate",
-        "subtitle": "Queste aziende si sono distinte per il loro coinvolgimento nella campagna di donazione del sangue HUG × CTS.",
+        "subtitle": "Queste aziende si sono distinte per il loro coinvolgimento nella campagna di donazione del sangue.",
         "no_label": "Nessuna azienda certificata per il momento.",
-        "cta_section_title": "Ottenete il label HUG × CTS",
+        "cta_section_title": "Ottenete il label",
         "cta_section_description": "Fate riconoscere l'impegno della vostra azienda ottenendo il label ufficiale della campagna di donazione del sangue.",
         "section_title": "Cos'è il Label di solidarietà?",
         "section_text_1": "Ogni anno, il Centro Trasfusionale premia le aziende ginevrine che organizzano una raccolta di sangue.",
@@ -68,13 +81,26 @@
         "cta_italic": "Organizzate la vostra prima raccolta.",
         "cta_button": "Unirsi e fare la differenza →",
         "hero_cta": "Conquistare la medaglia →",
-        "filter_all": "Tutti"
+        "filter_all": "Tutti",
+        "visual_badge": "Label CTS",
+        "visual_tagline_line1": "Impegno",
+        "visual_tagline_line2": "collettivo",
+        "companies_unit": "aziende"
     },
     "kit": {
         "title": "Kit di comunicazione",
         "subtitle": "Scaricate le nostre risorse per promuovere la campagna nella vostra azienda: poster, immagini, modelli email.",
         "download_cta": "Scaricare il kit",
-        "coming_soon": "Il kit sarà disponibile a breve."
+        "coming_soon": "Il kit sarà disponibile a breve.",
+        "contents_label": "Contenuto",
+        "status_label": "Stato",
+        "item_1": "Poster A3 / A4",
+        "item_2": "Immagini per social media",
+        "item_3": "Email tipo per collaboratori",
+        "item_4": "Banner intranet",
+        "status_desc": "Le risorse saranno disponibili dall'apertura ufficiale della campagna.",
+        "question_prompt": "Una domanda?",
+        "contact_link": "Contattateci →"
     },
     "contact": {
         "title": "Contattateci",
@@ -86,6 +112,7 @@
         "type_partnership": "Partenariato",
         "type_technical": "Supporto tecnico",
         "type_other": "Altro",
+        "type_placeholder": "Selezionare...",
         "message": "Messaggio",
         "submit": "Inviare",
         "success": "Il vostro messaggio è stato inviato. Vi risponderemo al più presto."
@@ -164,7 +191,7 @@
         "eligible_message": "Complimenti! Il vostro profilo soddisfa i criteri per donare il sangue. Prendete subito un appuntamento con il CTS.",
         "eligible_cta": "Prendere un appuntamento",
         "ineligible_title": "Donazione al momento impossibile",
-        "ineligible_message": "Grazie per il vostro interesse. Il vostro profilo non soddisfa attualmente i criteri medici per la donazione di sangue. La situazione può cambiare — non esitate a consultare un medico o a ricontattare il CTS.",
+        "ineligible_message": "Grazie per il vostro interesse. Il vostro profilo non soddisfa attualmente i criteri medici per la donazione di sangue. La situazione può cambiare. Non esitate a consultare un medico o a ricontattare il CTS.",
         "ineligible_cta": "Saperne di più sulla donazione",
         "ineligible_reasons_title": "Motivo/i di questa decisione",
         "contact_box_title": "Domande sulla vostra situazione?",
@@ -180,12 +207,12 @@
         "referral_email": "Copiare il messaggio",
         "referral_message_copied": "Messaggio copiato!",
         "referral_whatsapp": "Condividi su WhatsApp",
-        "referral_email_subject": "Partecipate alla campagna di donazione del sangue — {company}",
+        "referral_email_subject": "Partecipate alla campagna di donazione del sangue: {company}",
         "referral_email_body": "Ciao,\n\nPartecipo alla campagna di donazione del sangue organizzata da {company} in collaborazione con HUG e CTS Ginevra.\n\nVerificate in 2 minuti se siete idonei alla donazione di sangue:\n{url}\n\nGrazie!"
     },
     "inscription": {
         "title": "Iscrivere la mia azienda",
-        "subtitle": "Unitevi alla campagna di donazione del sangue HUG × CTS e mobilitate i vostri collaboratori.",
+        "subtitle": "Unitevi alla campagna di donazione del sangue e mobilitate i vostri collaboratori.",
         "section_company": "La vostra azienda",
         "section_contact": "Persona di contatto",
         "name": "Nome dell'azienda",
@@ -208,7 +235,7 @@
         "secondary_color": "Colore secondario",
         "secondary_color_hint": "Opzionale",
         "logo": "Logo dell'azienda",
-        "logo_hint": "PNG, JPG o SVG — max 2 MB",
+        "logo_hint": "PNG, JPG o SVG, max 2 MB",
         "logo_url": "O URL del logo",
         "contact_name": "Nome completo",
         "contact_email": "Email professionale",
@@ -229,7 +256,7 @@
         "submit_label": "Iscriversi",
         "logo_delete": "Eliminare",
         "logo_url_alt": "(alternativa)",
-        "logo_url_disabled": "URL disattivato — file selezionato",
+        "logo_url_disabled": "URL disattivato (file selezionato)",
         "select_placeholder": "Selezionare",
         "hero_line1": "Iscrivete la vostra azienda al",
         "hero_program_name": "Dossier Sang-26",
@@ -245,7 +272,7 @@
         "contact_title": "Contatto",
         "disclaimer_label": "Progetto studentesco",
         "disclaimer_text": "Questo sito è stato realizzato nell'ambito di un progetto accademico alla HEIG-VD e non è il sito ufficiale delle organizzazioni menzionate.",
-        "official_link": "Sito ufficiale HUG — Donazione del sangue →"
+        "official_link": "Sito ufficiale HUG: Donazione del sangue →"
     },
     "admin": {
         "status_pending": "In attesa",
@@ -357,7 +384,7 @@
         "form_employee_count": "Numero dipendenti",
         "form_trophy_rank": "Posizione trofeo",
         "form_logo_upload": "Carica un file",
-        "form_logo_hint": "PNG, JPG, SVG — 2 MB max",
+        "form_logo_hint": "PNG, JPG, SVG, 2 MB max",
         "form_logo_url": "O URL del logo",
         "form_primary_color": "Colore principale",
         "form_secondary_color": "Colore secondario",
@@ -388,7 +415,8 @@
         "show_trophy_rank": "Posizione #{rank} al Trofeo",
         "show_section_stats": "Statistiche",
         "show_submissions": "invii",
-        "view_title": "Visualizza"
+        "view_title": "Visualizza",
+        "kit_sent": "Inviato"
     },
     "lang": "IT"
 }

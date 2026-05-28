@@ -11,7 +11,7 @@
     },
     "home": {
         "hero_title": "Ensemble, sauvons des vies",
-        "hero_subtitle": "Mobilisez votre entreprise pour la campagne Don du Sang HUG × CTS. Un geste simple, un impact immense.",
+        "hero_subtitle": "Mobilisez votre entreprise pour la campagne Don du Sang. Un geste simple, un impact immense.",
         "cta": "Découvrir les entreprises partenaires",
         "stats_donations": "dons collectés",
         "stats_lives": "vies sauvées",
@@ -23,7 +23,17 @@
         "how_title": "Comment ça se passe ?",
         "read_more": "Plus d'info",
         "register_cta": "S'inscrire",
-        "edition_badge": "Édition {year}"
+        "edition_badge": "Édition {year}",
+        "how_step_1_title": "Inscrivez votre entreprise",
+        "how_step_1_desc": "La démarche prend moins de 5 minutes. Notre équipe vous contacte ensuite pour organiser la collecte.",
+        "how_step_2_title": "Mobilisez vos collaborateurs",
+        "how_step_2_desc": "Nous vous fournissons un kit de communication complet pour sensibiliser vos équipes.",
+        "how_step_3_title": "Chaque don peut sauver jusqu'à 3 vies",
+        "how_step_3_desc": "Vos collaborateurs se rendent au centre de collecte. Chaque don prélevé peut bénéficier à trois patients.",
+        "impact_unit": "Don",
+        "impact_lives": "Vies sauvées",
+        "programme_label": "Programme",
+        "campaign_badge": "Don du Sang"
     },
     "trophee": {
         "title": "Trophée de la générosité",
@@ -32,7 +42,7 @@
         "gold": "Or",
         "silver": "Argent",
         "bronze": "Bronze",
-        "cta_section_title": "Édition 2026 — candidatures ouvertes.",
+        "cta_section_title": "Édition 2026 : candidatures ouvertes.",
         "cta_section_description": "Votre entreprise organise déjà des collectes de sang ? Présentez votre candidature avant le 30 octobre 2026 pour être considérée par le jury HUG.",
         "how_title": "Comment on désigne le lauréat ?",
         "how_text": "Le Trophée n'est pas une course au volume. Une petite équipe ultra-mobilisée peut l'emporter sur un grand groupe. Le jury CTS-HUG évalue chaque candidature sur quatre axes.",
@@ -53,13 +63,16 @@
         "criteria_2_title": "Impact",
         "criteria_2_desc": "Nombre de dons effectifs et vies potentiellement sauvées",
         "criteria_3_title": "Engagement interne",
-        "criteria_3_desc": "Moyens mis en œuvre : communication, temps libéré, ambassadeurs"
+        "criteria_3_desc": "Moyens mis en œuvre : communication, temps libéré, ambassadeurs",
+        "visual_badge": "Donnez Votre Sang",
+        "visual_line1": "Trophée de",
+        "visual_line2": "la générosité"
     },
     "label": {
         "title": "Label CTS",
-        "subtitle": "La médaille des entreprises engagées.",
+        "subtitle": "Ces entreprises se sont distinguées par leur engagement dans la campagne Don du Sang.",
         "no_label": "Aucune entreprise labelisée pour l'instant.",
-        "cta_section_title": "Votre entreprise n'est pas là ?",
+        "cta_section_title": "Obtenez le label",
         "cta_section_description": "Organisez votre première collecte et rejoignez les brigades labellisées. Notre équipe vous accompagne à chaque étape, du premier contact à la cérémonie de remise.",
         "section_title": "C'est quoi le Label de solidarité ?",
         "section_text_1": "Chaque année, le Centre de Transfusion Sanguine récompense les entreprises genevoises qui organisent une collecte de don du sang.",
@@ -68,13 +81,26 @@
         "cta_italic": "Organisez votre 1re collecte.",
         "cta_button": "Rejoindre et faire une différence →",
         "hero_cta": "Décrocher la médaille →",
-        "filter_all": "Tous"
+        "filter_all": "Tous",
+        "visual_badge": "Label CTS",
+        "visual_tagline_line1": "Engagement",
+        "visual_tagline_line2": "collectif",
+        "companies_unit": "entreprises"
     },
     "kit": {
         "title": "Kit de communication",
         "subtitle": "Téléchargez nos ressources pour promouvoir la campagne au sein de votre entreprise : affiches, visuels, email type.",
         "download_cta": "Télécharger le kit",
-        "coming_soon": "Le kit sera disponible prochainement."
+        "coming_soon": "Le kit sera disponible prochainement.",
+        "contents_label": "Contenu",
+        "status_label": "Statut",
+        "item_1": "Affiches A3 / A4",
+        "item_2": "Visuels réseaux sociaux",
+        "item_3": "Email type collaborateurs",
+        "item_4": "Bannière intranet",
+        "status_desc": "Les ressources seront disponibles dès l'ouverture officielle de la campagne.",
+        "question_prompt": "Une question ?",
+        "contact_link": "Contactez-nous →"
     },
     "contact": {
         "title": "Contactez-nous",
@@ -86,6 +112,7 @@
         "type_partnership": "Partenariat",
         "type_technical": "Support technique",
         "type_other": "Autre",
+        "type_placeholder": "Sélectionner...",
         "message": "Message",
         "submit": "Envoyer",
         "success": "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais."
@@ -164,7 +191,7 @@
         "eligible_message": "Bravo ! Votre profil correspond aux critères pour donner votre sang. Prenez rendez-vous dès maintenant auprès du CTS.",
         "eligible_cta": "Prendre rendez-vous",
         "ineligible_title": "Don impossible pour l'instant",
-        "ineligible_message": "Merci pour votre démarche. Votre profil ne correspond pas actuellement aux critères médicaux du don du sang. Cela peut évoluer — n'hésitez pas à consulter un médecin ou à recontacter le CTS.",
+        "ineligible_message": "Merci pour votre démarche. Votre profil ne correspond pas actuellement aux critères médicaux du don du sang. Cela peut évoluer. N'hésitez pas à consulter un médecin ou à recontacter le CTS.",
         "ineligible_cta": "En savoir plus sur le don",
         "ineligible_reasons_title": "Raison(s) de cette décision",
         "contact_box_title": "Une question sur votre situation ?",
@@ -180,12 +207,12 @@
         "referral_email": "Copier le message",
         "referral_message_copied": "Message copié !",
         "referral_whatsapp": "Partager sur WhatsApp",
-        "referral_email_subject": "Participez à la campagne Don du Sang — {company}",
+        "referral_email_subject": "Participez à la campagne Don du Sang : {company}",
         "referral_email_body": "Bonjour,\n\nJe participe à la campagne Don du Sang organisée par {company} en partenariat avec les HUG et le CTS Genève.\n\nVérifiez en 2 minutes si vous êtes éligible au don de sang :\n{url}\n\nMerci !"
     },
     "inscription": {
         "title": "Inscrire mon entreprise",
-        "subtitle": "Rejoignez la campagne Don du Sang HUG × CTS et mobilisez vos collaborateurs.",
+        "subtitle": "Rejoignez la campagne Don du Sang et mobilisez vos collaborateurs.",
         "section_company": "Votre entreprise",
         "section_contact": "Personne de contact",
         "name": "Nom de l'entreprise",
@@ -208,7 +235,7 @@
         "secondary_color": "Couleur secondaire",
         "secondary_color_hint": "Optionnel",
         "logo": "Logo de l'entreprise",
-        "logo_hint": "PNG, JPG ou SVG — 2 Mo max",
+        "logo_hint": "PNG, JPG ou SVG, 2 Mo max",
         "logo_url": "Ou URL du logo",
         "contact_name": "Nom complet",
         "contact_email": "Email professionnel",
@@ -229,7 +256,7 @@
         "submit_label": "S'engager",
         "logo_delete": "Supprimer",
         "logo_url_alt": "(alternative)",
-        "logo_url_disabled": "URL désactivée — fichier sélectionné",
+        "logo_url_disabled": "URL désactivée (fichier sélectionné)",
         "select_placeholder": "Sélectionner",
         "hero_line1": "Inscrivez votre entreprise au",
         "hero_program_name": "Dossier Sang-26",
@@ -245,7 +272,7 @@
         "contact_title": "Contact",
         "disclaimer_label": "Projet étudiant",
         "disclaimer_text": "Ce site est réalisé dans le cadre d'un projet académique à la HEIG-VD et n'est pas le site officiel des organisations mentionnées.",
-        "official_link": "Site officiel HUG — Don du sang →"
+        "official_link": "Site officiel HUG : Don du sang →"
     },
     "admin": {
         "status_pending": "En attente",
@@ -357,7 +384,7 @@
         "form_employee_count": "Effectif",
         "form_trophy_rank": "Rang trophée",
         "form_logo_upload": "Uploader un fichier",
-        "form_logo_hint": "PNG, JPG, SVG — 2 Mo max",
+        "form_logo_hint": "PNG, JPG, SVG, 2 Mo max",
         "form_logo_url": "Ou URL du logo",
         "form_primary_color": "Couleur principale",
         "form_secondary_color": "Couleur secondaire",
@@ -388,7 +415,8 @@
         "show_trophy_rank": "Rang #{rank} au trophée",
         "show_section_stats": "Statistiques",
         "show_submissions": "soumissions",
-        "view_title": "Voir"
+        "view_title": "Voir",
+        "kit_sent": "Envoyé"
     },
     "lang": "FR"
 }

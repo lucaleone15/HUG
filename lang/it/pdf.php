@@ -3,7 +3,7 @@
 return [
     'generated_at'       => 'Generato il',
     'report_title'       => 'Rapporto di partecipazione',
-    'report_subtitle'    => 'Campagna Donazione del Sangue HUG × CTS',
+    'report_subtitle'    => 'Campagna Donazione del Sangue 2026',
 
     'section_company'    => 'Azienda',
     'contact_name'       => 'Responsabile',
@@ -28,5 +28,5 @@ return [
     'abandon'            => 'abbandono',
     'abandons'           => 'abbandoni',
 
-    'footer_org'         => 'Fondazione per la Trasfusione del Sangue — HUG × CTS Ginevra',
+    'footer_org'         => 'Campagna Donazione del Sangue · Ginevra',
 ];
