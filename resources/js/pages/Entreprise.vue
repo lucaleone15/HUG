@@ -111,6 +111,27 @@ const updateCountdown = () => {
             </div>
         </header>
 
+        <!-- Bottom nav — mobile uniquement -->
+        <nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-base-200"
+             style="padding-bottom: env(safe-area-inset-bottom);">
+            <div class="flex items-center gap-3 px-4 py-2 min-h-[56px]">
+                <!-- Retour accueil HUG -->
+                <a href="/"
+                   class="flex flex-col items-center justify-center gap-1 px-3 shrink-0 text-base-content/40 hover:text-base-content/70 transition-colors">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                    <span class="text-[0.6rem] tracking-[0.04em] leading-none">HUG</span>
+                </a>
+                <!-- CTA quiz — occupe tout l'espace restant -->
+                <a :href="`/c/${entreprise.slug}/quiz`"
+                   class="flex-1 btn border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
+                   :style="`background-color: var(--c1); color: var(--t1);`">
+                    {{ t('entreprise.quiz_cta') }}
+                </a>
+            </div>
+        </nav>
+
         <!-- Hero avec countdown -->
         <section class="py-10 md:py-16 px-4 md:px-6 bg-white">
             <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
