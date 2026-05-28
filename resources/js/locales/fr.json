@@ -39,7 +39,7 @@
         "campaign_badge": "Don du Sang"
     },
     "trophee": {
-        "title": "Trophée de la générosité",
+        "title": "Trophée SangSationnel",
         "subtitle": "Chaque année, une entreprise franchit une ligne que personne ne lui demandait de franchir. Le Trophée de la générosité distingue celle qui, en 2026, a fait du don du sang un réflexe collectif.",
         "no_winners": "Aucun lauréat pour l'instant.",
         "gold": "Or",
@@ -72,7 +72,7 @@
         "visual_line2": "la générosité"
     },
     "label": {
-        "title": "Label CTS",
+        "title": "Label 100 pour Sang",
         "subtitle": "Ces entreprises se sont distinguées par leur engagement dans la campagne Don du Sang.",
         "no_label": "Aucune entreprise labelisée pour l'instant.",
         "cta_section_title": "Obtenez le label",

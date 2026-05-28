@@ -167,14 +167,8 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('trophee.title')" :description="t('trophee.subtitle')" href="/trophee">
                             <template #visual>
-                                <div class="w-full h-full bg-site-ink flex items-center justify-center">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M6 2h12v7a6 6 0 01-12 0V2z"/>
-                                        <path d="M6 5.5H3v1.5a3 3 0 003 3"/>
-                                        <path d="M18 5.5h3v1.5a3 3 0 01-3 3"/>
-                                        <line x1="12" y1="15" x2="12" y2="18"/>
-                                        <line x1="8" y1="18" x2="16" y2="18"/>
-                                    </svg>
+                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-3 transition-colors duration-150">
+                                    <img :src="'/images/trophée.svg'" alt="" class="w-full h-full object-contain transition-[filter] duration-150 group-hover:brightness-0 group-hover:invert" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
                         </ProgrammeRow>
@@ -183,10 +177,8 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('label.title')" :description="t('label.subtitle')" href="/label">
                             <template #visual>
-                                <div class="w-full h-full bg-brand flex items-center justify-center">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M12 2l2.6 7.9H22l-6.7 4.9 2.6 7.9L12 18.2l-5.9 4.5 2.6-7.9L2 9.9h7.4z"/>
-                                    </svg>
+                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-3 transition-colors duration-150">
+                                    <img :src="'/images/label.svg'" alt="" class="w-full h-full object-contain" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
                         </ProgrammeRow>
@@ -195,8 +187,8 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('kit.title')" :description="t('kit.subtitle')" href="/kit-promo">
                             <template #visual>
-                                <div class="w-full h-full bg-base-300 flex items-center justify-center">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/55" aria-hidden="true">
+                                <div class="w-full h-full bg-base-300 group-hover:bg-brand flex items-center justify-center transition-colors duration-150">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/55 group-hover:text-white transition-colors duration-150" aria-hidden="true">
                                         <path d="M12 2L2 7v10l10 5 10-5V7z"/>
                                         <polyline points="2,7 12,12 22,7"/>
                                         <line x1="12" y1="12" x2="12" y2="22"/>

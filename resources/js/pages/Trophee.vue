@@ -69,24 +69,7 @@ const criteriaIcons = [
             :cta="{ label: t('nav.inscription'), href: '/inscription' }"
         >
             <template #visual>
-                <div class="aspect-[4/3] bg-site-ink rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative select-none">
-                    <span class="absolute top-6 right-6 text-[0.65rem] uppercase tracking-[0.2em] text-white/40 font-semibold">
-                        {{ new Date().getFullYear() }}
-                    </span>
-                    <!-- Decorative arc -->
-                    <svg class="absolute top-0 right-0 w-48 h-48 opacity-10" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-                        <circle cx="200" cy="0" r="160" stroke="white" stroke-width="1.5"/>
-                        <circle cx="200" cy="0" r="120" stroke="white" stroke-width="1"/>
-                        <circle cx="200" cy="0" r="80"  stroke="white" stroke-width="0.5"/>
-                    </svg>
-                    <div class="relative z-10">
-                        <div class="text-white/40 text-xs uppercase tracking-[0.25em] mb-3">{{ t('trophee.visual_badge') }}</div>
-                        <div class="font-extrabold leading-tight text-white"
-                             style="font-size: clamp(2rem, 4.5vw, 3.25rem);">{{ t('trophee.visual_line1') }}</div>
-                        <div class="font-extrabold leading-tight text-brand"
-                             style="font-size: clamp(2rem, 4.5vw, 3.25rem);">{{ t('trophee.visual_line2') }}</div>
-                    </div>
-                </div>
+                <img :src="'/images/trophée.svg'" alt="Trophée HUG" class="w-1/2 max-w-[200px] mx-auto h-auto object-contain" decoding="async" />
             </template>
         </PageHero>
 
