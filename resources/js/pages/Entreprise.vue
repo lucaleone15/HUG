@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Footer from '../components/ui/Footer.vue'
 import LangSwitcher from '../components/ui/LangSwitcher.vue'
+import CorkboardFaq from '../components/ui/CorkboardFaq.vue'
 import { sendAnalytics, getDevice } from '../composables/useAnalytics.js'
 
 const { t } = useI18n()
@@ -40,15 +41,6 @@ const faqRef    = ref(null); const faqVisible    = ref(false)
 const statsRef  = ref(null); const statsVisible  = ref(false)
 const ctaERef   = ref(null); const ctaEVisible   = ref(false)
 
-const openFaq = ref(null)
-
-const faqs = computed(() =>
-    [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ({
-        short: t(`entreprise.faq_${i}_short`),
-        q:     t(`entreprise.faq_${i}_q`),
-        a:     t(`entreprise.faq_${i}_a`),
-    }))
-)
 
 onMounted(() => {
     sendAnalytics('page_viewed', props.entreprise.id, null, {
@@ -87,28 +79,30 @@ const updateCountdown = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white flex flex-col" :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}`">
+    <div class="min-h-screen bg-white flex flex-col overflow-x-hidden" :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}`">
 
         <!-- Header co-brandé -->
-        <header class="border-b border-base-200 bg-white sticky top-0 z-50 px-6 py-3">
-            <div class="max-w-5xl mx-auto flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <a href="/" class="flex items-center">
-                        <img v-if="!hugLogoError" :src="'/images/hug-logo.svg'" alt="HUG" class="h-8 w-auto"
+        <header class="border-b border-base-200 bg-white sticky top-0 z-50 px-3 md:px-6 py-3">
+            <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+                <!-- Logos -->
+                <div class="flex items-center gap-2 min-w-0 overflow-hidden">
+                    <a href="/" class="flex items-center shrink-0">
+                        <img v-if="!hugLogoError" :src="'/images/hug-logo.svg'" alt="HUG" class="h-7 w-auto"
                             @error="hugLogoError = true">
-                        <span v-else class="font-bold" style="color: var(--c1)">HUG</span>
+                        <span v-else class="font-bold text-sm" style="color: var(--c1)">HUG</span>
                     </a>
-                    <span class="text-base-content/30 text-lg font-light">×</span>
+                    <span class="text-base-content/30 font-light shrink-0">×</span>
                     <div v-if="entreprise.logo_url"
-                        class="bg-white border border-base-200 rounded-lg p-1 flex items-center justify-center h-9">
-                        <img :src="entreprise.logo_url" :alt="entreprise.name" class="max-h-6 max-w-[80px] object-contain">
+                        class="border border-base-200 rounded p-1 flex items-center justify-center shrink-0">
+                        <img :src="entreprise.logo_url" :alt="entreprise.name" class="h-5 max-w-[52px] object-contain">
                     </div>
-                    <span v-else class="font-semibold text-sm">{{ entreprise.name }}</span>
+                    <span v-else class="font-semibold text-sm truncate min-w-0">{{ entreprise.name }}</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <!-- Actions -->
+                <div class="flex items-center gap-2 shrink-0">
                     <a
                         :href="`/c/${entreprise.slug}/quiz`"
-                        class="btn btn-sm btn-co border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
+                        class="hidden sm:inline-flex btn btn-sm btn-co border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
                     >
                         {{ t('entreprise.quiz_cta') }}
                     </a>
@@ -118,14 +112,14 @@ const updateCountdown = () => {
         </header>
 
         <!-- Hero avec countdown -->
-        <section class="py-16 px-6 bg-white">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <section class="py-10 md:py-16 px-4 md:px-6 bg-white">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="page-hero-text">
                     <p v-if="entreprise.is_active === false" class="text-error text-sm mb-4 font-medium">
                         {{ t('entreprise.inactive') }}
                     </p>
                     <h1 class="font-extrabold leading-tight mb-5 text-base-content"
-                        style="font-size: clamp(2rem, 5vw, 3.5rem);">
+                        style="font-size: clamp(1.6rem, 5vw, 3.5rem); overflow-wrap: break-word;">
                         {{ t('entreprise.hero_title_line1') }} <span style="color: var(--c1)">{{ t('entreprise.hero_title_highlight') }}</span><br>
                         {{ t('entreprise.hero_title_line2') }}
                     </h1>
@@ -134,38 +128,38 @@ const updateCountdown = () => {
                     </p>
                     <a
                         :href="`/c/${entreprise.slug}/quiz`"
-                        class="btn btn-co border-none font-semibold px-8 rounded-sm uppercase text-sm tracking-wide"
+                        class="btn btn-co border-none font-semibold px-6 md:px-8 rounded-sm uppercase text-sm tracking-wide w-full sm:w-auto"
                     >
                         {{ t('entreprise.quiz_discover') }}
                     </a>
                 </div>
 
                 <!-- Countdown / date prochaine collecte -->
-                <div v-if="hasCountdown" class="flex flex-col items-center gap-2 page-hero-visual">
+                <div v-if="hasCountdown" class="flex flex-col items-center gap-2 page-hero-visual w-full">
                     <p class="text-sm text-base-content/50 mb-2">{{ t('entreprise.countdown_label') }}</p>
-                    <div class="flex items-center gap-3">
-                        <div class="text-center">
-                            <div class="text-5xl font-bold tabular-nums rounded-xl px-4 py-3 min-w-[80px]" style="background-color: var(--c1); color: var(--t1)">
+                    <div class="flex items-center gap-2 w-full">
+                        <div class="text-center flex-1 min-w-0">
+                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c1); color: var(--t1)">
                                 {{ pad(countdown.days) }}
                             </div>
                             <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_days') }}</div>
                         </div>
-                        <span class="text-3xl font-bold text-base-content/30 mb-4">:</span>
-                        <div class="text-center">
-                            <div class="text-5xl font-bold tabular-nums rounded-xl px-4 py-3 min-w-[80px]" style="background-color: var(--c2); color: var(--t2)">
+                        <span class="text-xl font-bold text-base-content/30 mb-4 shrink-0">:</span>
+                        <div class="text-center flex-1 min-w-0">
+                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c2); color: var(--t2)">
                                 {{ pad(countdown.hours) }}
                             </div>
                             <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_hours') }}</div>
                         </div>
-                        <span class="text-3xl font-bold text-base-content/30 mb-4">:</span>
-                        <div class="text-center">
-                            <div class="text-5xl font-bold tabular-nums rounded-xl px-4 py-3 min-w-[80px]" style="background-color: var(--c1); color: var(--t1)">
+                        <span class="text-xl font-bold text-base-content/30 mb-4 shrink-0">:</span>
+                        <div class="text-center flex-1 min-w-0">
+                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c1); color: var(--t1)">
                                 {{ pad(countdown.minutes) }}
                             </div>
                             <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_minutes') }}</div>
                         </div>
                     </div>
-                    <p v-if="entreprise.rdv_date" class="text-sm text-base-content/40 mt-3">
+                    <p v-if="entreprise.rdv_date" class="text-sm text-base-content/40 mt-3 text-center">
                         {{ t('entreprise.collect_date') }} :
                         <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
                     </p>
@@ -188,131 +182,88 @@ const updateCountdown = () => {
             </div>
         </section>
 
-        <!-- C'est quoi le don du sang -->
-        <section class="py-16 px-6 bg-base-100" ref="faqRef">
-            <div class="max-w-5xl mx-auto">
-                <div class="grid md:grid-cols-[1fr_2fr] gap-12">
-                    <div class="reveal-up" :class="{ 'reveal-up--visible': faqVisible }">
-                        <h2 class="font-bold leading-tight mb-4"
-                            style="font-size: clamp(1.35rem, 2.5vw, 1.75rem);">
-                            {{ t('entreprise.faq_section_title') }}
-                        </h2>
-                        <p class="text-base-content/55 text-sm leading-relaxed" style="max-width: 36ch;">
-                            {{ t('entreprise.faq_section_subtitle') }}
-                        </p>
-                    </div>
-                    <ul class="divide-y divide-base-200 reveal-up"
-                        :class="{ 'reveal-up--visible': faqVisible }"
-                        style="transition-delay: 100ms;">
-                        <li v-for="(faq, i) in faqs" :key="i"
-                            class="py-4 cursor-pointer select-none group"
-                            @click="openFaq = openFaq === i ? null : i">
-                            <div class="flex items-start gap-4">
-                                <span class="font-mono text-xs text-base-content/30 pt-0.5 shrink-0 w-5">
-                                    {{ String(i + 1).padStart(2, '0') }}
-                                </span>
-                                <div class="flex-1">
-                                    <div class="flex items-start justify-between gap-4">
-                                        <p class="font-semibold text-sm leading-tight group-hover:text-brand"
-                                           :style="openFaq === i ? `color: var(--c1)` : ''"
-                                           style="transition: color 150ms ease;">
-                                            {{ faq.q }}
-                                        </p>
-                                        <span class="text-base-content/30 shrink-0 text-sm"
-                                              :style="openFaq === i ? `color: var(--c1)` : ''"
-                                              style="transition: transform 200ms cubic-bezier(0.23,1,0.32,1);"
-                                              :class="openFaq === i ? 'rotate-45' : ''">+</span>
-                                    </div>
-                                    <p v-show="openFaq === i"
-                                       class="text-sm text-base-content/60 leading-relaxed mt-3"
-                                       style="max-width: 62ch;">
-                                        {{ faq.a }}
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+        <!-- C'est quoi le don du sang — Corkboard interactif -->
+        <section class="py-8 md:py-10 px-2 md:px-6 bg-base-100" ref="faqRef">
+            <div class="max-w-5xl mx-auto reveal-up" :class="{ 'reveal-up--visible': faqVisible }">
+                <CorkboardFaq />
             </div>
         </section>
 
         <!-- Stats de l'entreprise -->
-        <section class="py-16 px-6" style="background-color: var(--c2); color: var(--t2)" ref="statsRef">
+        <section class="py-10 md:py-16 px-4 md:px-6" style="background-color: var(--c2); color: var(--t2)" ref="statsRef">
             <div class="max-w-5xl mx-auto">
                 <p class="text-xs mb-8 uppercase tracking-[0.2em] font-semibold opacity-50 reveal-up"
                    :class="{ 'reveal-up--visible': statsVisible }">{{ t('entreprise.stats_label') }}</p>
-                <div class="flex flex-wrap gap-x-16 gap-y-6">
+                <div class="grid grid-cols-2 md:flex md:flex-wrap gap-6 md:gap-x-16">
                     <div v-if="entreprise.eligible_count"
                          class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
                          style="transition-delay: 80ms;">
                         <div class="font-bold leading-none mb-1"
-                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                             style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.eligible_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('home.stats_eligible') }}</div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('home.stats_eligible') }}</div>
                     </div>
                     <div v-if="entreprise.submissions_count"
                          class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
                          style="transition-delay: 160ms;">
                         <div class="font-bold leading-none mb-1"
-                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                             style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.submissions_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('entreprise.stats_quiz') }}</div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('entreprise.stats_quiz') }}</div>
                     </div>
                     <div v-if="entreprise.employee_count"
                          class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
                          style="transition-delay: 240ms;">
                         <div class="font-bold leading-none mb-1"
-                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                             style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.employee_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('entreprise.employees') }}</div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('entreprise.employees') }}</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Countdown grand format (si date disponible) -->
-        <section v-if="hasCountdown" class="py-16 px-6 bg-white text-center">
-            <div class="max-w-2xl mx-auto">
-                <div class="flex items-center justify-center gap-4">
-                    <div class="text-center">
-                        <div class="text-7xl font-bold tabular-nums rounded-2xl px-6 py-5 min-w-[110px]" style="background-color: var(--c1); color: var(--t1)">
-                            {{ pad(countdown.days) }}
-                        </div>
-                        <div class="text-sm text-base-content/50 mt-2">{{ t('entreprise.countdown_days') }}</div>
+        <section v-if="hasCountdown" class="py-10 md:py-16 px-4 md:px-6 bg-white text-center">
+            <div class="flex items-center gap-2 md:gap-4 max-w-md md:max-w-2xl mx-auto">
+                <div class="text-center flex-1 min-w-0">
+                    <div class="text-4xl md:text-7xl font-bold tabular-nums rounded-xl md:rounded-2xl py-3 md:py-5" style="background-color: var(--c1); color: var(--t1)">
+                        {{ pad(countdown.days) }}
                     </div>
-                    <span class="text-4xl font-bold text-base-content/20 mb-6">:</span>
-                    <div class="text-center">
-                        <div class="text-7xl font-bold tabular-nums rounded-2xl px-6 py-5 min-w-[110px]" style="background-color: var(--c2); color: var(--t2)">
-                            {{ pad(countdown.hours) }}
-                        </div>
-                        <div class="text-sm text-base-content/50 mt-2">{{ t('entreprise.countdown_hours') }}</div>
+                    <div class="text-xs md:text-sm text-base-content/50 mt-1 md:mt-2">{{ t('entreprise.countdown_days') }}</div>
+                </div>
+                <span class="text-xl md:text-4xl font-bold text-base-content/20 mb-4 md:mb-6 shrink-0">:</span>
+                <div class="text-center flex-1 min-w-0">
+                    <div class="text-4xl md:text-7xl font-bold tabular-nums rounded-xl md:rounded-2xl py-3 md:py-5" style="background-color: var(--c2); color: var(--t2)">
+                        {{ pad(countdown.hours) }}
                     </div>
-                    <span class="text-4xl font-bold text-base-content/20 mb-6">:</span>
-                    <div class="text-center">
-                        <div class="text-7xl font-bold tabular-nums rounded-2xl px-6 py-5 min-w-[110px]" style="background-color: var(--c1); color: var(--t1)">
-                            {{ pad(countdown.minutes) }}
-                        </div>
-                        <div class="text-sm text-base-content/50 mt-2">{{ t('entreprise.countdown_minutes') }}</div>
+                    <div class="text-xs md:text-sm text-base-content/50 mt-1 md:mt-2">{{ t('entreprise.countdown_hours') }}</div>
+                </div>
+                <span class="text-xl md:text-4xl font-bold text-base-content/20 mb-4 md:mb-6 shrink-0">:</span>
+                <div class="text-center flex-1 min-w-0">
+                    <div class="text-4xl md:text-7xl font-bold tabular-nums rounded-xl md:rounded-2xl py-3 md:py-5" style="background-color: var(--c1); color: var(--t1)">
+                        {{ pad(countdown.minutes) }}
                     </div>
+                    <div class="text-xs md:text-sm text-base-content/50 mt-1 md:mt-2">{{ t('entreprise.countdown_minutes') }}</div>
                 </div>
             </div>
         </section>
 
         <!-- CTA quiz -->
-        <section class="py-16 px-6 bg-white border-t border-base-200" ref="ctaERef">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_0.8fr] gap-16 items-end">
+        <section class="py-10 md:py-16 px-4 md:px-6 bg-white border-t border-base-200" ref="ctaERef">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-16 items-end">
 
                 <!-- Gauche : titre + faits -->
                 <div>
-                    <h2 class="font-bold mb-8 leading-tight reveal-up"
+                    <h2 class="font-bold mb-5 md:mb-8 leading-tight reveal-up"
                         :class="{ 'reveal-up--visible': ctaEVisible }"
-                        style="font-size: clamp(1.5rem, 3vw, 2.25rem);">
+                        style="font-size: clamp(1.4rem, 3vw, 2.25rem); overflow-wrap: break-word;">
                         {{ t('entreprise.cta_section_title') }}
                     </h2>
-                    <div class="space-y-3 border-t border-base-200 pt-8 reveal-up"
+                    <div class="space-y-3 border-t border-base-200 pt-5 md:pt-8 reveal-up"
                          :class="{ 'reveal-up--visible': ctaEVisible }"
                          style="transition-delay: 80ms;">
                         <p class="font-semibold leading-snug"
@@ -338,7 +289,7 @@ const updateCountdown = () => {
                     </p>
                     <a
                         :href="`/c/${entreprise.slug}/quiz`"
-                        class="btn btn-co border-none font-semibold px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97]"
+                        class="btn btn-co border-none font-semibold px-6 md:px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97] w-full md:w-auto"
                     >
                         {{ t('entreprise.quiz_discover') }}
                     </a>
