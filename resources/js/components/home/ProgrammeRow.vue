@@ -1,6 +1,5 @@
 <script setup>
 defineProps({
-    num:         { type: String, required: true },
     title:       { type: String, required: true },
     description: { type: String, default: null },
     href:        { type: String, required: true },
@@ -9,10 +8,8 @@ defineProps({
 </script>
 
 <template>
-    <a :href="href" class="row group grid gap-6 md:gap-12 py-9"
-       style="grid-template-columns: 3rem 1fr;">
-        <span class="font-mono text-xs text-base-content/30 pt-1 select-none">{{ num }}</span>
-        <div class="flex items-center justify-between gap-6">
+    <a :href="href" class="row group flex items-center justify-between gap-6 py-9">
+        <div class="flex items-center justify-between gap-6 w-full">
             <div class="flex-1 min-w-0">
                 <h3 class="title font-bold mb-2"
                     style="font-size: clamp(1.1rem, 2vw, 1.4rem);">

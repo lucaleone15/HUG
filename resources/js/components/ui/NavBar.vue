@@ -1,11 +1,28 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LangSwitcher from './LangSwitcher.vue'
 
 const { t } = useI18n()
 
+const props = defineProps({
+    transparent: { type: Boolean, default: false },
+})
+
 const path = window.location.pathname
+
+const scrolled = ref(false)
+let removeScroll = null
+onMounted(() => {
+    if (props.transparent) {
+        const onScroll = () => { scrolled.value = window.scrollY > 60 }
+        window.addEventListener('scroll', onScroll, { passive: true })
+        removeScroll = () => window.removeEventListener('scroll', onScroll)
+    }
+})
+onUnmounted(() => removeScroll?.())
+
+const isOpaque = computed(() => !props.transparent || scrolled.value)
 
 const links = [
     {
@@ -43,14 +60,20 @@ const logoError = ref(false)
 
 <template>
     <!-- ── Barre du haut ────────────────────────────────────────────────────── -->
-    <nav class="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 px-6">
+    <nav class="navbar top-0 z-50 px-6 nav-bar w-full"
+         :class="[
+             props.transparent ? 'fixed' : 'sticky',
+             isOpaque ? 'nav-bar--opaque' : 'nav-bar--transparent'
+         ]">
         <div class="max-w-5xl mx-auto w-full flex items-center">
 
             <div class="navbar-start">
                 <a href="/" class="flex items-center">
-                    <img v-if="!logoError" :src="'/images/hug-logo.svg'" alt="HUG" class="h-9 w-auto"
-                        @error="logoError = true">
-                    <span v-else class="font-bold text-lg text-brand">HUG</span>
+                    <img v-if="!logoError" :src="'/images/hug-logo.svg'" alt="HUG"
+                         class="h-9 w-auto nav-logo"
+                         :class="{ 'nav-logo--light': !isOpaque }"
+                         @error="logoError = true">
+                    <span v-else class="font-bold text-lg" :class="isOpaque ? 'text-brand' : 'text-white'">HUG</span>
                 </a>
             </div>
 
@@ -60,7 +83,9 @@ const logoError = ref(false)
                     <li v-for="link in links" :key="link.href">
                         <a :href="link.href"
                            class="rounded-lg text-sm"
-                           :class="isActive(link.href) ? 'font-semibold text-brand bg-red-50' : 'text-base-content/70 hover:text-base-content'">
+                           :class="isActive(link.href)
+                               ? (isOpaque ? 'font-semibold text-brand bg-red-50' : 'font-semibold text-white bg-white/15')
+                               : (isOpaque ? 'text-base-content/70 hover:text-base-content' : 'text-white/75 hover:text-white')">
                             {{ t(link.key) }}
                         </a>
                     </li>
@@ -68,10 +93,11 @@ const logoError = ref(false)
             </div>
 
             <div class="navbar-end gap-2">
-                <!-- CTA inscription — desktop uniquement -->
                 <a href="/inscription"
-                   class="btn btn-sm text-white border-none flex rounded-sm uppercase text-xs tracking-wide font-semibold"
-                   :class="isActive('/inscription') ? 'bg-brand-dark' : 'bg-brand hover:bg-brand-dark'">
+                   class="btn btn-sm border-none flex rounded-sm text-xs font-semibold"
+                   :class="isOpaque
+                       ? (isActive('/inscription') ? 'bg-brand-dark text-white' : 'bg-brand hover:bg-brand-dark text-white')
+                       : 'bg-white/15 hover:bg-white/25 text-white border border-white/30'">
                     {{ t('nav.cta') }}
                 </a>
                 <LangSwitcher />
@@ -99,3 +125,20 @@ const logoError = ref(false)
         </div>
     </nav>
 </template>
+
+<style scoped>
+.nav-bar {
+    transition: background-color 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease;
+}
+.nav-bar--opaque {
+    background-color: var(--color-base-100, #fff);
+    border-bottom: 1px solid var(--color-base-200, #e5e7eb);
+}
+.nav-bar--transparent {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+}
+.nav-logo--light {
+    filter: brightness(0) invert(1);
+}
+</style>

@@ -46,6 +46,17 @@ const criteria = computed(() => [0, 1, 2, 3].map(i => ({
     title: t(`trophee.criteria_${i}_title`),
     desc:  t(`trophee.criteria_${i}_desc`),
 })))
+
+const criteriaIcons = [
+    // Taux de participation — pourcentage
+    '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+    // Fidélité — répétition
+    '<path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    // Impact — goutte de sang
+    '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+    // Engagement interne — collaborateurs
+    '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+]
 </script>
 
 <template>
@@ -95,10 +106,10 @@ const criteria = computed(() => [0, 1, 2, 3].map(i => ({
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-7 mb-8">
                     <div v-for="(c, i) in criteria" :key="c.title"
-                        class="flex gap-4 reveal-up"
+                        class="flex items-start gap-5 reveal-up"
                         :class="{ 'reveal-up--visible': criteriaVisible }"
                         :style="`transition-delay: ${(i + 2) * 90}ms`">
-                        <span class="font-mono text-xs text-white/30 mt-1 shrink-0 w-5 select-none">0{{ i + 1 }}</span>
+                        <span class="criteria-num" aria-hidden="true">0{{ i + 1 }}</span>
                         <div>
                             <h3 class="font-bold mb-1">{{ c.title }}</h3>
                             <p class="text-sm text-white/70 leading-relaxed">{{ c.desc }}</p>
@@ -264,3 +275,16 @@ const criteria = computed(() => [0, 1, 2, 3].map(i => ({
         <Footer />
     </div>
 </template>
+
+<style scoped>
+.criteria-num {
+    display: block;
+    font-weight: 800;
+    line-height: 1;
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.18);
+    flex-shrink: 0;
+    width: 3.5rem;
+}
+</style>

@@ -51,7 +51,17 @@ function open(item) { activeItem.value = item }
 function close()    { activeItem.value = null }
 
 function onKeydown(e) { if (e.key === 'Escape') close() }
-onMounted(()  => window.addEventListener('keydown', onKeydown))
+onMounted(() => {
+    window.addEventListener('keydown', onKeydown)
+    // Précharge les assets critiques avant que Vue ne rende le template
+    const critical = ['Corkboard.svg', 'title.svg', 'badge-scotch 1.svg', ...items.map(i => i.svg)]
+    critical.forEach(name => {
+        const link = Object.assign(document.createElement('link'), {
+            rel: 'preload', as: 'image', href: base + name,
+        })
+        document.head.appendChild(link)
+    })
+})
 onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
@@ -70,6 +80,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             alt=""
             class="absolute inset-0 w-full h-full"
             style="object-fit: cover;"
+            fetchpriority="high"
+            decoding="async"
             aria-hidden="true"
         />
 
@@ -89,12 +101,16 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                     alt="HUG"
                     class="shrink-0 h-auto"
                     style="width: 48px;"
+                    fetchpriority="high"
+                    decoding="async"
                 />
                 <div class="flex-1 min-w-0">
                     <img
                         :src="base + 'title.svg'"
                         alt="Le don du sang c'est quoi ?"
                         class="w-full h-auto block"
+                        fetchpriority="high"
+                        decoding="async"
                     />
                 </div>
             </div>
@@ -110,6 +126,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                             alt=""
                             class="w-full h-auto block"
                             style="filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));"
+                            loading="lazy"
+                            decoding="async"
                             aria-hidden="true"
                         />
                     </div>
@@ -126,6 +144,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                                 alt=""
                                 class="w-full h-auto block"
                                 style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.28));"
+                                decoding="async"
                             />
                         </button>
                         <span class="pin" aria-hidden="true"></span>
@@ -151,6 +170,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             alt=""
             class="absolute inset-0 w-full h-full"
             style="object-fit: fill;"
+            fetchpriority="high"
+            decoding="async"
             aria-hidden="true"
         />
 
@@ -194,6 +215,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             alt="Le don du sang c'est quoi ?"
             class="absolute"
             style="left: 12%; top: 2%; width: 74%; z-index: 3;"
+            fetchpriority="high"
+            decoding="async"
         />
 
         <!-- Badge HUG (coin supérieur gauche) -->
@@ -202,6 +225,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             alt="HUG"
             class="absolute"
             style="left: 1%; top: 0.5%; width: 9%; z-index: 6;"
+            fetchpriority="high"
+            decoding="async"
         />
 
         <!-- Décorations non-interactives -->
@@ -212,6 +237,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             alt=""
             class="absolute pointer-events-none"
             :style="{ left: d.pos.left, top: d.pos.top, width: d.pos.width, zIndex: 2 }"
+            loading="lazy"
+            decoding="async"
             aria-hidden="true"
         />
 
@@ -229,7 +256,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                 :aria-label="t(`entreprise.faq_${item.faqIndex}_q`)"
                 @click="open(item)"
             >
-                <img :src="base + item.svg" alt="" class="w-full h-auto block" />
+                <img :src="base + item.svg" alt="" class="w-full h-auto block" decoding="async" />
             </button>
         </div>
 

@@ -51,7 +51,7 @@ const steps = computed(() => [
 
 <template>
     <div class="min-h-screen bg-base-100 flex flex-col overflow-x-hidden">
-        <NavBar />
+        <NavBar :transparent="true" />
 
         <!-- ── HERO ─────────────────────────────────────────────────────────── -->
         <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 py-20 overflow-hidden">
@@ -65,7 +65,7 @@ const steps = computed(() => [
                  style="background: linear-gradient(108deg, rgba(25,5,7,0.88) 28%, rgba(25,5,7,0.62) 58%, rgba(25,5,7,0.40) 100%);"></div>
 
             <div class="relative z-10 max-w-5xl mx-auto w-full">
-                <span class="h-badge inline-block text-xs uppercase tracking-[0.2em] text-white/35 mb-8">
+                <span class="h-badge inline-block text-xs tracking-[0.06em] text-white/35 mb-8">
                     {{ t('home.edition_badge', { year: new Date().getFullYear() }) }}
                 </span>
                 <h1 class="font-extrabold leading-[1.0] tracking-tight text-white mb-7"
@@ -98,7 +98,7 @@ const steps = computed(() => [
                           style="font-size: clamp(1.75rem, 3vw, 2.5rem);">
                         {{ typeof item.value === 'number' ? item.value.toLocaleString() : item.value }}
                     </span>
-                    <span class="text-white/55 uppercase tracking-[0.14em] shrink-0 mx-4"
+                    <span class="text-white/55 tracking-[0.04em] shrink-0 mx-4"
                           style="font-size: clamp(0.65rem, 1vw, 0.75rem);">
                         {{ item.label }}
                     </span>
@@ -108,43 +108,64 @@ const steps = computed(() => [
         </div>
 
         <!-- ── HOW IT WORKS ───────────────────────────────────────────────────── -->
-        <section class="py-24 px-6 bg-base-200/40" ref="howRef">
+        <section class="py-24 px-6 bg-site-ink" ref="howRef">
             <div class="max-w-5xl mx-auto">
-                <h2 class="font-bold mb-14 reveal-up"
-                    :class="{ 'reveal-up--visible': howVisible }"
-                    style="font-size: clamp(1.5rem, 3vw, 2.25rem);">
+
+                <p class="reveal-up how-eyebrow"
+                   :class="{ 'reveal-up--visible': howVisible }">
                     {{ t('home.how_title') }}
-                </h2>
-                <div class="divide-y divide-base-300/60">
-                    <div v-for="(step, i) in steps" :key="i"
-                        class="grid py-9 gap-4 items-start reveal-up"
-                        :class="{ 'reveal-up--visible': howVisible }"
-                        :style="`grid-template-columns: 3rem 1fr; transition-delay: ${(i + 1) * 130}ms`">
-                        <span class="font-mono text-xs text-base-content/28 pt-1 select-none">0{{ i + 1 }}</span>
-                        <div>
-                            <h3 class="font-semibold mb-1.5" style="font-size: clamp(1rem, 1.5vw, 1.125rem);">
-                                {{ step.title }}
-                            </h3>
-                            <p class="text-base-content/50 text-sm leading-relaxed" style="max-width: 52ch;">
-                                {{ step.desc }}
-                            </p>
-                        </div>
-                    </div>
+                </p>
+
+                <div class="how-steps-grid">
+
+                    <article class="how-step reveal-up" :class="{ 'reveal-up--visible': howVisible }" style="transition-delay: 120ms;">
+                        <svg class="how-step-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 21h18"/>
+                            <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                            <path d="M9 8h1"/><path d="M14 8h1"/>
+                            <path d="M9 12h1"/><path d="M14 12h1"/>
+                            <path d="M9 16h1"/><path d="M14 16h1"/>
+                        </svg>
+                        <h3 class="how-step-title">{{ steps[0].title }}</h3>
+                        <p class="how-step-desc">{{ steps[0].desc }}</p>
+                    </article>
+
+                    <article class="how-step reveal-up" :class="{ 'reveal-up--visible': howVisible }" style="transition-delay: 240ms;">
+                        <svg class="how-step-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <h3 class="how-step-title">{{ steps[1].title }}</h3>
+                        <p class="how-step-desc">{{ steps[1].desc }}</p>
+                    </article>
+
+                    <article class="how-step reveal-up" :class="{ 'reveal-up--visible': howVisible }" style="transition-delay: 360ms;">
+                        <svg class="how-step-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                        </svg>
+                        <h3 class="how-step-title">{{ steps[2].title }}</h3>
+                        <p class="how-step-desc">{{ steps[2].desc }}</p>
+                    </article>
+
                 </div>
+
             </div>
         </section>
 
         <!-- ── PROGRAMME ─────────────────────────────────────────────────────── -->
-        <section class="py-20 px-6 bg-white" ref="progRef">
+        <section class="py-20 px-6 bg-base-100" ref="progRef">
             <div class="max-w-5xl mx-auto">
-                <p class="text-xs uppercase tracking-[0.25em] text-base-content/30 mb-10 reveal-up"
-                   :class="{ 'reveal-up--visible': progVisible }">
+                <h2 class="font-bold mb-8 reveal-up"
+                    :class="{ 'reveal-up--visible': progVisible }"
+                    style="font-size: clamp(1.25rem, 2.5vw, 1.75rem); letter-spacing: -0.01em;">
                     {{ t('home.programme_label') }}
-                </p>
-                <div class="divide-y divide-base-200">
+                </h2>
+                <div class="flex flex-col gap-3">
 
-                    <div class="reveal-up" :class="{ 'reveal-up--visible': progVisible }" style="transition-delay: 80ms;">
-                        <ProgrammeRow num="01" :title="t('trophee.title')" :description="t('trophee.subtitle')" href="/trophee">
+                    <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
+                        <ProgrammeRow :title="t('trophee.title')" :description="t('trophee.subtitle')" href="/trophee">
                             <template #visual>
                                 <div class="w-full h-full bg-site-ink flex items-center justify-center">
                                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -159,8 +180,8 @@ const steps = computed(() => [
                         </ProgrammeRow>
                     </div>
 
-                    <div class="reveal-up" :class="{ 'reveal-up--visible': progVisible }" style="transition-delay: 200ms;">
-                        <ProgrammeRow num="02" :title="t('label.title')" :description="t('label.subtitle')" href="/label">
+                    <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
+                        <ProgrammeRow :title="t('label.title')" :description="t('label.subtitle')" href="/label">
                             <template #visual>
                                 <div class="w-full h-full bg-brand flex items-center justify-center">
                                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -171,8 +192,8 @@ const steps = computed(() => [
                         </ProgrammeRow>
                     </div>
 
-                    <div class="reveal-up" :class="{ 'reveal-up--visible': progVisible }" style="transition-delay: 320ms;">
-                        <ProgrammeRow num="03" :title="t('kit.title')" :description="t('kit.subtitle')" href="/kit-promo">
+                    <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
+                        <ProgrammeRow :title="t('kit.title')" :description="t('kit.subtitle')" href="/kit-promo">
                             <template #visual>
                                 <div class="w-full h-full bg-base-300 flex items-center justify-center">
                                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/55" aria-hidden="true">
@@ -204,7 +225,7 @@ const steps = computed(() => [
                         {{ t('home.cta_section_description') }}
                     </p>
                     <a href="/inscription"
-                        class="btn bg-white hover:bg-white/92 text-brand border-none font-bold px-10 rounded-sm uppercase text-sm tracking-widest">
+                        class="btn bg-white hover:bg-white/92 text-brand border-none font-bold px-10 rounded-sm text-sm">
                         {{ t('home.register_cta') }}
                     </a>
                 </div>
@@ -217,13 +238,13 @@ const steps = computed(() => [
                     <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(25,5,7,0.85) 35%, rgba(25,5,7,0.25) 100%);"></div>
                     <!-- Top-right -->
                     <div class="absolute top-6 right-6 text-right z-10">
-                        <div class="text-white/55 text-[0.6rem] uppercase tracking-[0.22em] mb-1">{{ t('home.impact_lives') }}</div>
+                        <div class="text-white/55 text-[0.7rem] mb-1">{{ t('home.impact_lives') }}</div>
                         <div class="font-extrabold leading-none text-white"
                              style="font-size: clamp(2rem, 4vw, 3rem);">3</div>
                     </div>
                     <!-- Bottom strip -->
                     <div class="absolute bottom-0 left-0 right-0 px-6 py-5 z-10">
-                        <div class="text-[0.6rem] uppercase tracking-[0.22em] text-white/45 mb-1">{{ t('home.campaign_badge') }}</div>
+                        <div class="text-[0.7rem] text-white/45 mb-1">{{ t('home.campaign_badge') }}</div>
                         <div class="font-extrabold text-white leading-tight"
                              style="font-size: clamp(1.2rem, 2.5vw, 1.6rem);">{{ t('home.cta_section_title') }}</div>
                     </div>
@@ -294,6 +315,63 @@ const steps = computed(() => [
 .reveal-up--visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ── How it works — dark editorial ────────────────────────────────────── */
+.how-eyebrow {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: oklch(92% 0.006 24);
+    margin-bottom: 2.75rem;
+}
+.how-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3.5rem;
+}
+.how-step {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+}
+.how-step-icon {
+    color: var(--color-brand);
+    flex-shrink: 0;
+}
+.how-step-title {
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: oklch(96% 0.006 24);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+}
+.how-step-desc {
+    font-size: 0.8125rem;
+    line-height: 1.75;
+    color: oklch(58% 0.008 24);
+}
+@media (max-width: 680px) {
+    .how-steps-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+/* ── Programme rows — shadow lift ──────────────────────────────────────── */
+.prog-row-wrap {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0 1.5rem;
+    box-shadow: 0 1px 3px rgba(25, 5, 7, 0.08), 0 1px 2px rgba(25, 5, 7, 0.06);
+    transition: box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1),
+                transform   200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+    .prog-row-wrap:hover {
+        box-shadow: 0 10px 30px rgba(25, 5, 7, 0.12), 0 4px 8px rgba(25, 5, 7, 0.08);
+        transform: translateY(-2px);
+    }
 }
 
 /* ── CTA dot grid ──────────────────────────────────────────────────────── */
