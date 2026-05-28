@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', $entreprise->name . ' — Don du Sang HUG × CTS')
+@section('title', $entreprise->name . ' — Donnez Votre Sang')
 @section('page', 'Entreprise')
 @php
 $propsJson = json_encode([

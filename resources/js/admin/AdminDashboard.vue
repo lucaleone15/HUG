@@ -28,30 +28,32 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
             <!-- Entonnoir KPI -->
             <section class="mb-8">
                 <h2 class="text-sm font-semibold uppercase tracking-widest text-base-content/40 mb-3">{{ t('admin.funnel_title') }}</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                    <div class="stat bg-base-100 rounded-xl shadow-sm p-4">
-                        <div class="stat-title text-xs">{{ t('admin.funnel_visitors') }}</div>
-                        <div class="stat-value text-xl text-blue-600">{{ fmt(data.funnel.page_viewed) }}</div>
-                    </div>
-                    <div class="stat bg-base-100 rounded-xl shadow-sm p-4">
-                        <div class="stat-title text-xs">{{ t('admin.funnel_started') }}</div>
-                        <div class="stat-value text-xl text-violet-600">{{ fmt(data.funnel.quiz_started) }}</div>
-                        <div class="stat-desc">{{ pct(data.funnel.quiz_started, data.funnel.page_viewed) }} {{ t('admin.funnel_of_visitors') }}</div>
-                    </div>
-                    <div class="stat bg-base-100 rounded-xl shadow-sm p-4">
-                        <div class="stat-title text-xs">{{ t('admin.funnel_completed') }}</div>
-                        <div class="stat-value text-xl text-amber-600">{{ fmt(data.funnel.quiz_completed) }}</div>
-                        <div class="stat-desc">{{ pct(data.funnel.quiz_completed, data.funnel.quiz_started) }} {{ t('admin.funnel_completion') }}</div>
-                    </div>
-                    <div class="stat bg-base-100 rounded-xl shadow-sm p-4">
-                        <div class="stat-title text-xs">{{ t('admin.funnel_eligible') }}</div>
-                        <div class="stat-value text-xl text-emerald-600">{{ fmt(data.funnel.eligible) }}</div>
-                        <div class="stat-desc">{{ pct(data.funnel.eligible, data.funnel.quiz_completed) }} {{ t('admin.funnel_eligibility') }}</div>
-                    </div>
-                    <div class="stat bg-base-100 rounded-xl shadow-sm p-4">
-                        <div class="stat-title text-xs">{{ t('admin.funnel_rdv') }}</div>
-                        <div class="stat-value text-xl text-brand">{{ fmt(data.funnel.rdv_clicked) }}</div>
-                        <div class="stat-desc">{{ pct(data.funnel.rdv_clicked, data.funnel.eligible) }} {{ t('admin.funnel_of_eligible') }}</div>
+                <div class="bg-base-100 rounded-xl shadow-sm overflow-hidden">
+                    <div class="grid grid-cols-1 divide-y divide-base-200 md:grid-cols-5 md:divide-y-0 md:divide-x">
+                        <div class="px-5 py-4">
+                            <div class="text-xs text-base-content/50 mb-1">{{ t('admin.funnel_visitors') }}</div>
+                            <div class="text-2xl font-bold tabular-nums">{{ fmt(data.funnel.page_viewed) }}</div>
+                        </div>
+                        <div class="px-5 py-4">
+                            <div class="text-xs text-base-content/50 mb-1">{{ t('admin.funnel_started') }}</div>
+                            <div class="text-2xl font-bold tabular-nums">{{ fmt(data.funnel.quiz_started) }}</div>
+                            <div class="text-xs text-base-content/40 mt-0.5">{{ pct(data.funnel.quiz_started, data.funnel.page_viewed) }}</div>
+                        </div>
+                        <div class="px-5 py-4">
+                            <div class="text-xs text-base-content/50 mb-1">{{ t('admin.funnel_completed') }}</div>
+                            <div class="text-2xl font-bold tabular-nums">{{ fmt(data.funnel.quiz_completed) }}</div>
+                            <div class="text-xs text-base-content/40 mt-0.5">{{ pct(data.funnel.quiz_completed, data.funnel.quiz_started) }}</div>
+                        </div>
+                        <div class="px-5 py-4">
+                            <div class="text-xs text-base-content/50 mb-1">{{ t('admin.funnel_eligible') }}</div>
+                            <div class="text-2xl font-bold tabular-nums text-brand">{{ fmt(data.funnel.eligible) }}</div>
+                            <div class="text-xs text-base-content/40 mt-0.5">{{ pct(data.funnel.eligible, data.funnel.quiz_completed) }}</div>
+                        </div>
+                        <div class="px-5 py-4">
+                            <div class="text-xs text-base-content/50 mb-1">{{ t('admin.funnel_rdv') }}</div>
+                            <div class="text-2xl font-bold tabular-nums">{{ fmt(data.funnel.rdv_clicked) }}</div>
+                            <div class="text-xs text-base-content/40 mt-0.5">{{ pct(data.funnel.rdv_clicked, data.funnel.eligible) }}</div>
+                        </div>
                     </div>
                 </div>
             </section>

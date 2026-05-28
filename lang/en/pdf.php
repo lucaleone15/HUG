@@ -3,7 +3,7 @@
 return [
     'generated_at'       => 'Generated on',
     'report_title'       => 'Participation Report',
-    'report_subtitle'    => 'Blood Donation Campaign HUG × CTS',
+    'report_subtitle'    => 'Blood Donation Campaign 2026',
 
     'section_company'    => 'Company',
     'contact_name'       => 'Contact',
@@ -28,5 +28,5 @@ return [
     'abandon'            => 'drop-off',
     'abandons'           => 'drop-offs',
 
-    'footer_org'         => 'Blood Transfusion Foundation — HUG × CTS Geneva',
+    'footer_org'         => 'Blood Donation Campaign · Geneva',
 ];

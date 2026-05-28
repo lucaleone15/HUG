@@ -39,7 +39,7 @@
     .card { border: 1px solid #e4e4e4; margin-bottom: 18px; }
     .card-head {
       background: #f6f6f6;
-      border-left: 4px solid #E30613;
+      border-bottom: 1px solid #e4e4e4;
       padding: 8px 16px;
     }
     .card-label {

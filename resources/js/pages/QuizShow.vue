@@ -234,7 +234,8 @@ const goBack = () => {
                                 <button
                                     v-for="opt in currentQuestion.options"
                                     :key="opt.id"
-                                    class="btn flex-1 transition-all"
+                                    class="btn flex-1"
+                                    style="transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 140ms cubic-bezier(0.23,1,0.32,1);"
                                     :style="answers[currentQuestion.id] === opt.id
                                         ? `background-color: ${entreprise.primary_color}; color: white; border-color: transparent`
                                         : ''"
@@ -452,7 +453,12 @@ const goBack = () => {
                 <!-- Écran de confirmation finale -->
                 <div v-else-if="isComplete" class="card bg-base-100 shadow-md text-center">
                     <div class="card-body items-center gap-4">
-                        <div class="text-5xl">✅</div>
+                        <div class="flex justify-center">
+                            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <circle cx="12" cy="12" r="11" fill="#D32C37" opacity="0.1"/>
+                                <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#D32C37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
                         <h2 class="card-title">{{ t('quiz.complete_title') }}</h2>
                         <p class="text-base-content/60 text-sm">{{ t('quiz.complete_subtitle') }}</p>
                         <form :action="`/c/${entreprise.slug}/quiz`" method="POST" ref="formRef">
@@ -515,6 +521,20 @@ const goBack = () => {
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active { transition: opacity .15s ease; }
-.fade-enter-from, .fade-leave-to       { opacity: 0; }
+.fade-enter-active {
+    transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+                transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.fade-leave-active {
+    transition: opacity 120ms ease,
+                transform 120ms ease;
+}
+.fade-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
 </style>

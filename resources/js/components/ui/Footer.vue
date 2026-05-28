@@ -36,8 +36,8 @@ const logoError = ref(false)
                     <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">{{ t('footer.contact_title') }}</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="mailto:info@donnezvotresang.ch" class="text-sm text-white/60 hover:text-white transition-colors">
-                                info@donnezvotresang.ch
+                            <a href="mailto:info@donnez-votre-sang.ch" class="text-sm text-white/60 hover:text-white transition-colors">
+                                info@donnez-votre-sang.ch
                             </a>
                         </li>
                         <li>
@@ -68,7 +68,7 @@ const logoError = ref(false)
         <!-- Bottom bar -->
         <div class="border-t border-white/10 px-6 py-4">
             <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-                <span class="text-xs text-white/30">© COPYRIGHT - HUG - {{ year }}</span>
+                <span class="text-xs text-white/30">© {{ year }} HUG</span>
                 <a href="/inscription"
                     class="btn btn-sm bg-white text-black hover:bg-white/90 border-none text-xs font-semibold rounded-sm uppercase tracking-wide">
                     {{ t('home.register_cta') }}

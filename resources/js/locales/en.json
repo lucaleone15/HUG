@@ -11,7 +11,7 @@
     },
     "home": {
         "hero_title": "Together, let's save lives",
-        "hero_subtitle": "Mobilise your company for the HUG × CTS Blood Donation campaign. A simple act, an immense impact.",
+        "hero_subtitle": "Mobilise your company for the Blood Donation campaign. A simple act, an immense impact.",
         "cta": "Discover partner companies",
         "stats_donations": "donations collected",
         "stats_lives": "lives saved",
@@ -23,7 +23,17 @@
         "how_title": "How does it work?",
         "read_more": "Find out more",
         "register_cta": "Register",
-        "edition_badge": "Edition {year}"
+        "edition_badge": "Edition {year}",
+        "how_step_1_title": "Register your company",
+        "how_step_1_desc": "It takes less than 5 minutes. Our team will contact you to organise the blood drive.",
+        "how_step_2_title": "Engage your team",
+        "how_step_2_desc": "We provide a full communication kit to raise awareness among your employees.",
+        "how_step_3_title": "Every donation can save up to 3 lives",
+        "how_step_3_desc": "Your colleagues visit the donation centre. Each donation collected can benefit three different patients.",
+        "impact_unit": "Donation",
+        "impact_lives": "Lives saved",
+        "programme_label": "Programme",
+        "campaign_badge": "Blood Donation"
     },
     "trophee": {
         "title": "Trophy",
@@ -39,7 +49,7 @@
         "how_note": "An SME with 1,000 people and 80% participation can win the Trophy ahead of a group of 5,000 employees. Commitment is what counts.",
         "rank_title": "Rankings",
         "rank_subtitle": "The companies competing for this edition's Trophy.",
-        "palmares_title": "Hall of Fame — Previous editions",
+        "palmares_title": "Hall of Fame: Previous editions",
         "palmares_subtitle": "The companies that have won the Generosity Trophy since the campaign was founded.",
         "winner_label": "Winner",
         "stat_donations": "donations",
@@ -53,13 +63,16 @@
         "criteria_2_title": "Impact",
         "criteria_2_desc": "Number of effective donations and lives potentially saved",
         "criteria_3_title": "Internal engagement",
-        "criteria_3_desc": "Means deployed: communication, time off, ambassadors"
+        "criteria_3_desc": "Means deployed: communication, time off, ambassadors",
+        "visual_badge": "Blood Donation",
+        "visual_line1": "Trophy of",
+        "visual_line2": "generosity"
     },
     "label": {
         "title": "Labelled Companies",
-        "subtitle": "These companies have distinguished themselves through their involvement in the HUG × CTS Blood Donation campaign.",
+        "subtitle": "These companies have distinguished themselves through their involvement in the Blood Donation campaign.",
         "no_label": "No labelled companies yet.",
-        "cta_section_title": "Get the HUG × CTS label",
+        "cta_section_title": "Get the label",
         "cta_section_description": "Have your company's commitment recognised by obtaining the official Blood Donation campaign label.",
         "section_title": "What is the Solidarity Label?",
         "section_text_1": "Each year, the Blood Transfusion Centre recognises Geneva companies that organise a blood donation drive.",
@@ -68,13 +81,26 @@
         "cta_italic": "Organise your first blood drive.",
         "cta_button": "Join and make a difference →",
         "hero_cta": "Claim the medal →",
-        "filter_all": "All"
+        "filter_all": "All",
+        "visual_badge": "Label CTS",
+        "visual_tagline_line1": "Collective",
+        "visual_tagline_line2": "commitment",
+        "companies_unit": "companies"
     },
     "kit": {
         "title": "Communication Kit",
         "subtitle": "Download our resources to promote the campaign within your company: posters, visuals, email templates.",
         "download_cta": "Download the kit",
-        "coming_soon": "The kit will be available soon."
+        "coming_soon": "The kit will be available soon.",
+        "contents_label": "Contents",
+        "status_label": "Status",
+        "item_1": "A3 / A4 posters",
+        "item_2": "Social media visuals",
+        "item_3": "Employee email template",
+        "item_4": "Intranet banner",
+        "status_desc": "Resources will be available from the official campaign launch.",
+        "question_prompt": "A question?",
+        "contact_link": "Contact us →"
     },
     "contact": {
         "title": "Contact Us",
@@ -86,6 +112,7 @@
         "type_partnership": "Partnership",
         "type_technical": "Technical support",
         "type_other": "Other",
+        "type_placeholder": "Select...",
         "message": "Message",
         "submit": "Send",
         "success": "Your message has been sent. We will get back to you as soon as possible."
@@ -164,7 +191,7 @@
         "eligible_message": "Congratulations! Your profile meets the criteria to donate blood. Book an appointment with the CTS now.",
         "eligible_cta": "Book an appointment",
         "ineligible_title": "Donation not possible right now",
-        "ineligible_message": "Thank you for your interest. Your profile does not currently meet the medical criteria for blood donation. This can change — feel free to consult a doctor or contact the CTS.",
+        "ineligible_message": "Thank you for your interest. Your profile does not currently meet the medical criteria for blood donation. This can change. Feel free to consult a doctor or contact the CTS.",
         "ineligible_cta": "Learn more about donation",
         "ineligible_reasons_title": "Reason(s) for this decision",
         "contact_box_title": "Questions about your situation?",
@@ -180,12 +207,12 @@
         "referral_email": "Copy message",
         "referral_message_copied": "Message copied!",
         "referral_whatsapp": "Share on WhatsApp",
-        "referral_email_subject": "Take part in the Blood Donation campaign — {company}",
+        "referral_email_subject": "Take part in the Blood Donation campaign: {company}",
         "referral_email_body": "Hi,\n\nI'm taking part in the Blood Donation campaign organised by {company} in partnership with HUG and CTS Geneva.\n\nCheck in 2 minutes whether you're eligible to donate blood:\n{url}\n\nThank you!"
     },
     "inscription": {
         "title": "Register my company",
-        "subtitle": "Join the HUG × CTS Blood Donation campaign and mobilise your employees.",
+        "subtitle": "Join the Blood Donation campaign and mobilise your employees.",
         "section_company": "Your company",
         "section_contact": "Contact person",
         "name": "Company name",
@@ -208,7 +235,7 @@
         "secondary_color": "Secondary colour",
         "secondary_color_hint": "Optional",
         "logo": "Company logo",
-        "logo_hint": "PNG, JPG or SVG — 2 MB max",
+        "logo_hint": "PNG, JPG or SVG, 2 MB max",
         "logo_url": "Or logo URL",
         "contact_name": "Full name",
         "contact_email": "Professional email",
@@ -229,7 +256,7 @@
         "submit_label": "Join now",
         "logo_delete": "Remove",
         "logo_url_alt": "(alternative)",
-        "logo_url_disabled": "URL disabled — file selected",
+        "logo_url_disabled": "URL disabled (file selected)",
         "select_placeholder": "Select",
         "hero_line1": "Register your company for",
         "hero_program_name": "Dossier Sang-26",
@@ -245,7 +272,7 @@
         "contact_title": "Contact",
         "disclaimer_label": "Student project",
         "disclaimer_text": "This website was created as part of an academic project at HEIG-VD and is not the official website of the organisations mentioned.",
-        "official_link": "HUG official website — Blood Donation →"
+        "official_link": "HUG official website: Blood Donation →"
     },
     "admin": {
         "status_pending": "Pending",
@@ -357,7 +384,7 @@
         "form_employee_count": "Headcount",
         "form_trophy_rank": "Trophy rank",
         "form_logo_upload": "Upload a file",
-        "form_logo_hint": "PNG, JPG, SVG — 2 MB max",
+        "form_logo_hint": "PNG, JPG, SVG, 2 MB max",
         "form_logo_url": "Or logo URL",
         "form_primary_color": "Primary colour",
         "form_secondary_color": "Secondary colour",
@@ -388,7 +415,8 @@
         "show_trophy_rank": "Rank #{rank} in Trophy",
         "show_section_stats": "Statistics",
         "show_submissions": "submissions",
-        "view_title": "View"
+        "view_title": "View",
+        "kit_sent": "Sent"
     },
     "lang": "EN"
 }

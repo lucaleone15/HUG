@@ -16,7 +16,7 @@
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="vertical-align:middle;">
-                  <img src="{{ config('app.url') }}/images/hug-logo.svg" alt="HUG × CTS" height="36" style="display:block;">
+                  <img src="{{ config('app.url') }}/images/hug-logo.svg" alt="Don du Sang" height="36" style="display:block;">
                 </td>
                 <td style="text-align:right;vertical-align:middle;">
                   <span style="font-size:11px;color:#aaaaaa;letter-spacing:0.5px;">donnez-votre-sang.ch</span>
@@ -54,7 +54,7 @@
         <tr>
           <td style="background:#ffffff;padding:0 40px 40px;">
             <table width="100%" cellpadding="0" cellspacing="0"
-                   style="background:#FEF2F2;border-left:3px solid #E30613;padding:20px 24px;">
+                   style="background:#FEF2F2;border:1px solid #FECACA;padding:20px 24px;">
               <tr>
                 <td>
                   <p style="margin:0 0 8px;font-size:10px;color:#888888;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">

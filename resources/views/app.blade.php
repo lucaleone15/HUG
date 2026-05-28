@@ -1,2 +1,2 @@
 @extends('layouts.base')
-@section('title', 'Admin — HUG × CTS')
+@section('title', 'Admin — Donnez Votre Sang')

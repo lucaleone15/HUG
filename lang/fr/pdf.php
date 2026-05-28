@@ -3,7 +3,7 @@
 return [
     'generated_at'       => 'Généré le',
     'report_title'       => 'Rapport de participation',
-    'report_subtitle'    => 'Campagne Don du Sang HUG × CTS',
+    'report_subtitle'    => 'Campagne Don du Sang 2026',
 
     'section_company'    => 'Entreprise',
     'contact_name'       => 'Responsable',
@@ -28,5 +28,5 @@ return [
     'abandon'            => 'abandon',
     'abandons'           => 'abandons',
 
-    'footer_org'         => 'Fondation pour la Transfusion Sanguine — HUG × CTS Genève',
+    'footer_org'         => 'Campagne Don du Sang · Genève',
 ];

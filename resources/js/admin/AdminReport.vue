@@ -93,10 +93,19 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold text-lg">{{ data.entreprise.name }}</h2>
-                        <div class="text-sm space-y-1 text-base-content/60 mt-2">
-                            <div>👤 {{ data.entreprise.contact_name ?? '—' }}</div>
-                            <div>✉️ {{ data.entreprise.contact_email ?? '—' }}</div>
-                            <div>👥 {{ fmt(data.entreprise.employee_count) }} {{ t('admin.employees') }}</div>
+                        <div class="divide-y divide-base-200 mt-2">
+                            <div class="flex justify-between py-2 text-sm">
+                                <span class="text-base-content/50">{{ t('inscription.contact_name') }}</span>
+                                <span>{{ data.entreprise.contact_name ?? '—' }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 text-sm">
+                                <span class="text-base-content/50">{{ t('inscription.contact_email') }}</span>
+                                <span class="font-mono text-xs">{{ data.entreprise.contact_email ?? '—' }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 text-sm">
+                                <span class="text-base-content/50">{{ t('inscription.employee_count') }}</span>
+                                <span>{{ fmt(data.entreprise.employee_count) }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,22 +114,22 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.participation_title') }}</h2>
-                        <div class="grid grid-cols-2 gap-3 text-center">
-                            <div>
-                                <div class="text-2xl font-bold text-violet-600">{{ fmt(data.participation.quiz_started) }}</div>
-                                <div class="text-xs text-base-content/50">{{ t('admin.quiz_started_stat') }}</div>
+                        <div class="divide-y divide-base-200">
+                            <div class="flex items-center justify-between py-2.5">
+                                <span class="text-sm text-base-content/55">{{ t('admin.quiz_started_stat') }}</span>
+                                <span class="font-bold tabular-nums">{{ fmt(data.participation.quiz_started) }}</span>
                             </div>
-                            <div>
-                                <div class="text-2xl font-bold text-amber-600">{{ fmt(data.participation.quiz_completed) }}</div>
-                                <div class="text-xs text-base-content/50">{{ t('admin.quiz_completed_stat') }}</div>
+                            <div class="flex items-center justify-between py-2.5">
+                                <span class="text-sm text-base-content/55">{{ t('admin.quiz_completed_stat') }}</span>
+                                <span class="font-bold tabular-nums">{{ fmt(data.participation.quiz_completed) }}</span>
                             </div>
-                            <div>
-                                <div class="text-2xl font-bold text-emerald-600">{{ fmt(data.participation.eligible) }}</div>
-                                <div class="text-xs text-base-content/50">{{ t('admin.funnel_eligible') }}</div>
+                            <div class="flex items-center justify-between py-2.5">
+                                <span class="text-sm text-base-content/55">{{ t('admin.funnel_eligible') }}</span>
+                                <span class="font-bold tabular-nums text-brand">{{ fmt(data.participation.eligible) }}</span>
                             </div>
-                            <div>
-                                <div class="text-2xl font-bold text-brand">{{ fmt(data.participation.rdv_clicked) }}</div>
-                                <div class="text-xs text-base-content/50">{{ t('admin.rdv_clicked_stat') }}</div>
+                            <div class="flex items-center justify-between py-2.5">
+                                <span class="text-sm text-base-content/55">{{ t('admin.rdv_clicked_stat') }}</span>
+                                <span class="font-bold tabular-nums">{{ fmt(data.participation.rdv_clicked) }}</span>
                             </div>
                         </div>
                     </div>
@@ -153,8 +162,9 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.behavior_title') }}</h2>
-                        <div class="text-sm space-y-2 text-base-content/60">
-                            <div>⏱ {{ t('admin.avg_duration_stat') }} : <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '—' }}</strong></div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-base-content/55">{{ t('admin.avg_duration_stat') }}</span>
+                            <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '—' }}</strong>
                         </div>
                         <div v-if="Object.keys(data.behavior.abandon_by_question ?? {}).length" class="mt-3">
                             <p class="text-xs text-base-content/40 mb-2">{{ t('admin.abandon_by_question') }}</p>
@@ -173,7 +183,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
 
             <div class="flex justify-end mt-6">
                 <BaseButton size="sm" :loading="downloading" @click="downloadPdf">
-                    📄 {{ t('admin.download_pdf') }}
+                    {{ t('admin.download_pdf') }}
                 </BaseButton>
             </div>
         </template>

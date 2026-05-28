@@ -3,7 +3,7 @@ defineProps({
     title:       { type: String, required: true },
     description: { type: String, default: null },
     cta:         { type: Object, default: null }, // { label, href }
-    bgColor:     { type: String, default: '#E30613' },
+    bgColor:     { type: String, default: '#D32C37' },
 })
 </script>
 

@@ -28,6 +28,18 @@ const textOn = (hex) => {
 const t1 = computed(() => textOn(c1.value))
 const t2 = computed(() => textOn(c2.value))
 
+function makeObserver(targetRef, visibleRef, threshold = 0.15) {
+    const io = new IntersectionObserver(
+        ([e]) => { if (e.isIntersecting) { visibleRef.value = true; io.disconnect() } },
+        { threshold }
+    )
+    if (targetRef.value) io.observe(targetRef.value)
+}
+
+const faqRef    = ref(null); const faqVisible    = ref(false)
+const statsRef  = ref(null); const statsVisible  = ref(false)
+const ctaERef   = ref(null); const ctaEVisible   = ref(false)
+
 const openFaq = ref(null)
 
 const faqs = computed(() =>
@@ -47,6 +59,9 @@ onMounted(() => {
         updateCountdown()
         timer = setInterval(updateCountdown, 60000)
     }
+    makeObserver(faqRef,   faqVisible,   0.08)
+    makeObserver(statsRef, statsVisible, 0.15)
+    makeObserver(ctaERef,  ctaEVisible,  0.2)
 })
 
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
@@ -105,11 +120,12 @@ const updateCountdown = () => {
         <!-- Hero avec countdown -->
         <section class="py-16 px-6 bg-white">
             <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-                <div>
+                <div class="page-hero-text">
                     <p v-if="entreprise.is_active === false" class="text-error text-sm mb-4 font-medium">
                         {{ t('entreprise.inactive') }}
                     </p>
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-5 text-base-content">
+                    <h1 class="font-extrabold leading-tight mb-5 text-base-content"
+                        style="font-size: clamp(2rem, 5vw, 3.5rem);">
                         {{ t('entreprise.hero_title_line1') }} <span style="color: var(--c1)">{{ t('entreprise.hero_title_highlight') }}</span><br>
                         {{ t('entreprise.hero_title_line2') }}
                     </h1>
@@ -125,7 +141,7 @@ const updateCountdown = () => {
                 </div>
 
                 <!-- Countdown / date prochaine collecte -->
-                <div v-if="hasCountdown" class="flex flex-col items-center gap-2">
+                <div v-if="hasCountdown" class="flex flex-col items-center gap-2 page-hero-visual">
                     <p class="text-sm text-base-content/50 mb-2">{{ t('entreprise.countdown_label') }}</p>
                     <div class="flex items-center gap-3">
                         <div class="text-center">
@@ -154,48 +170,104 @@ const updateCountdown = () => {
                         <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
                     </p>
                 </div>
-                <div v-else class="aspect-[4/3] bg-base-200 rounded-xl flex items-center justify-center text-base-content/20 text-sm italic">
-                    Visuelle
+                <div v-else class="aspect-[4/3] rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative page-hero-visual"
+                     :style="`background-color: var(--c1); color: var(--t1)`">
+                    <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 300" fill="none" aria-hidden="true">
+                        <circle cx="360" cy="-20" r="220" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="360" cy="-20" r="160" stroke="currentColor" stroke-width="1"/>
+                        <circle cx="360" cy="-20" r="100" stroke="currentColor" stroke-width="0.5"/>
+                    </svg>
+                    <div class="relative z-10">
+                        <div class="text-[0.65rem] uppercase tracking-[0.25em] opacity-50 mb-2">{{ entreprise.name }}</div>
+                        <div class="font-extrabold leading-tight opacity-90"
+                             style="font-size: clamp(1.5rem, 3.5vw, 2.25rem);">
+                            {{ t('entreprise.quiz_cta') }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- C'est quoi le don du sang -->
-        <section class="py-16 px-6 bg-base-100">
+        <section class="py-16 px-6 bg-base-100" ref="faqRef">
             <div class="max-w-5xl mx-auto">
-                <h2 class="text-2xl md:text-3xl font-bold mb-4">{{ t('entreprise.faq_section_title') }}</h2>
-                <p class="text-base-content/60 mb-10 max-w-xl leading-relaxed">
-                    {{ t('entreprise.faq_section_subtitle') }}
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="(faq, i) in faqs" :key="i"
-                        class="faq-card bg-white border border-base-200 rounded-xl p-5 cursor-pointer select-none transition-shadow hover:shadow-md"
-                        @click="openFaq = openFaq === i ? null : i">
-                        <p class="text-xs font-semibold uppercase tracking-widest opacity-40 mb-1">{{ faq.short }}</p>
-                        <p class="font-semibold mb-3 leading-tight">{{ faq.q }}</p>
-                        <p v-show="openFaq === i" class="text-sm text-base-content/60 leading-relaxed">{{ faq.a }}</p>
-                        <p v-show="openFaq !== i" class="text-xs" :style="`color: var(--c1)`">{{ t('entreprise.faq_read_more') }}</p>
+                <div class="grid md:grid-cols-[1fr_2fr] gap-12">
+                    <div class="reveal-up" :class="{ 'reveal-up--visible': faqVisible }">
+                        <h2 class="font-bold leading-tight mb-4"
+                            style="font-size: clamp(1.35rem, 2.5vw, 1.75rem);">
+                            {{ t('entreprise.faq_section_title') }}
+                        </h2>
+                        <p class="text-base-content/55 text-sm leading-relaxed" style="max-width: 36ch;">
+                            {{ t('entreprise.faq_section_subtitle') }}
+                        </p>
                     </div>
+                    <ul class="divide-y divide-base-200 reveal-up"
+                        :class="{ 'reveal-up--visible': faqVisible }"
+                        style="transition-delay: 100ms;">
+                        <li v-for="(faq, i) in faqs" :key="i"
+                            class="py-4 cursor-pointer select-none group"
+                            @click="openFaq = openFaq === i ? null : i">
+                            <div class="flex items-start gap-4">
+                                <span class="font-mono text-xs text-base-content/30 pt-0.5 shrink-0 w-5">
+                                    {{ String(i + 1).padStart(2, '0') }}
+                                </span>
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <p class="font-semibold text-sm leading-tight group-hover:text-brand"
+                                           :style="openFaq === i ? `color: var(--c1)` : ''"
+                                           style="transition: color 150ms ease;">
+                                            {{ faq.q }}
+                                        </p>
+                                        <span class="text-base-content/30 shrink-0 text-sm"
+                                              :style="openFaq === i ? `color: var(--c1)` : ''"
+                                              style="transition: transform 200ms cubic-bezier(0.23,1,0.32,1);"
+                                              :class="openFaq === i ? 'rotate-45' : ''">+</span>
+                                    </div>
+                                    <p v-show="openFaq === i"
+                                       class="text-sm text-base-content/60 leading-relaxed mt-3"
+                                       style="max-width: 62ch;">
+                                        {{ faq.a }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <!-- Stats de l'entreprise -->
-        <section class="py-16 px-6" style="background-color: var(--c2); color: var(--t2)">
+        <section class="py-16 px-6" style="background-color: var(--c2); color: var(--t2)" ref="statsRef">
             <div class="max-w-5xl mx-auto">
-                <p class="text-sm mb-6 uppercase tracking-widest font-semibold opacity-70">{{ t('entreprise.stats_label') }}</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
-                    <div v-if="entreprise.eligible_count" class="text-center">
-                        <div class="text-4xl font-bold">{{ entreprise.eligible_count.toLocaleString() }}</div>
-                        <div class="text-sm mt-1 opacity-70">{{ t('home.stats_eligible') }}</div>
+                <p class="text-xs mb-8 uppercase tracking-[0.2em] font-semibold opacity-50 reveal-up"
+                   :class="{ 'reveal-up--visible': statsVisible }">{{ t('entreprise.stats_label') }}</p>
+                <div class="flex flex-wrap gap-x-16 gap-y-6">
+                    <div v-if="entreprise.eligible_count"
+                         class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
+                         style="transition-delay: 80ms;">
+                        <div class="font-bold leading-none mb-1"
+                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                            {{ entreprise.eligible_count.toLocaleString() }}
+                        </div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('home.stats_eligible') }}</div>
                     </div>
-                    <div v-if="entreprise.submissions_count" class="text-center">
-                        <div class="text-4xl font-bold">{{ entreprise.submissions_count.toLocaleString() }}</div>
-                        <div class="text-sm mt-1 opacity-70">{{ t('entreprise.stats_quiz') }}</div>
+                    <div v-if="entreprise.submissions_count"
+                         class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
+                         style="transition-delay: 160ms;">
+                        <div class="font-bold leading-none mb-1"
+                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                            {{ entreprise.submissions_count.toLocaleString() }}
+                        </div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('entreprise.stats_quiz') }}</div>
                     </div>
-                    <div v-if="entreprise.employee_count" class="text-center">
-                        <div class="text-4xl font-bold">{{ entreprise.employee_count.toLocaleString() }}</div>
-                        <div class="text-sm mt-1 opacity-70">{{ t('entreprise.employees') }}</div>
+                    <div v-if="entreprise.employee_count"
+                         class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
+                         style="transition-delay: 240ms;">
+                        <div class="font-bold leading-none mb-1"
+                             style="font-size: clamp(2rem, 4vw, 3rem);">
+                            {{ entreprise.employee_count.toLocaleString() }}
+                        </div>
+                        <div class="text-xs opacity-60 uppercase tracking-[0.15em]">{{ t('entreprise.employees') }}</div>
                     </div>
                 </div>
             </div>
@@ -230,23 +302,48 @@ const updateCountdown = () => {
         </section>
 
         <!-- CTA quiz -->
-        <section class="py-16 px-6 bg-white border-t border-base-200">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-2xl md:text-3xl font-bold mb-6 leading-tight">
-                    {{ t('entreprise.cta_section_title') }}
-                </h2>
-                <p class="text-base-content/60 leading-relaxed mb-1">{{ t('entreprise.cta_section_line1') }}</p>
-                <p class="text-base-content/60 leading-relaxed mb-1">{{ t('entreprise.cta_section_line2') }}</p>
-                <p class="text-base-content/60 leading-relaxed mb-8">{{ t('entreprise.cta_section_line3') }}</p>
-                <p class="text-base-content/50 text-sm mb-8 max-w-md mx-auto leading-relaxed">
-                    {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
-                </p>
-                <a
-                    :href="`/c/${entreprise.slug}/quiz`"
-                    class="btn btn-co border-none font-semibold px-10 rounded-sm uppercase text-sm tracking-wide"
-                >
-                    {{ t('entreprise.quiz_discover') }}
-                </a>
+        <section class="py-16 px-6 bg-white border-t border-base-200" ref="ctaERef">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_0.8fr] gap-16 items-end">
+
+                <!-- Gauche : titre + faits -->
+                <div>
+                    <h2 class="font-bold mb-8 leading-tight reveal-up"
+                        :class="{ 'reveal-up--visible': ctaEVisible }"
+                        style="font-size: clamp(1.5rem, 3vw, 2.25rem);">
+                        {{ t('entreprise.cta_section_title') }}
+                    </h2>
+                    <div class="space-y-3 border-t border-base-200 pt-8 reveal-up"
+                         :class="{ 'reveal-up--visible': ctaEVisible }"
+                         style="transition-delay: 80ms;">
+                        <p class="font-semibold leading-snug"
+                           style="font-size: clamp(1rem, 2vw, 1.15rem);">
+                            {{ t('entreprise.cta_section_line1') }}
+                        </p>
+                        <p class="font-semibold leading-snug"
+                           style="font-size: clamp(1rem, 2vw, 1.15rem);">
+                            {{ t('entreprise.cta_section_line2') }}
+                        </p>
+                        <p class="font-semibold leading-snug"
+                           style="color: var(--c1); font-size: clamp(1rem, 2vw, 1.15rem);">
+                            {{ t('entreprise.cta_section_line3') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Droite : description + CTA -->
+                <div class="reveal-up" :class="{ 'reveal-up--visible': ctaEVisible }"
+                     style="transition-delay: 160ms;">
+                    <p class="text-base-content/55 text-sm mb-8 leading-relaxed" style="max-width: 42ch;">
+                        {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
+                    </p>
+                    <a
+                        :href="`/c/${entreprise.slug}/quiz`"
+                        class="btn btn-co border-none font-semibold px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97]"
+                    >
+                        {{ t('entreprise.quiz_discover') }}
+                    </a>
+                </div>
+
             </div>
         </section>
 

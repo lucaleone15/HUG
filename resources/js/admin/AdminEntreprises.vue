@@ -111,7 +111,7 @@ const sendKit = async (e) => {
                                     <div class="flex items-center gap-2">
                                         <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
                                             class="w-7 h-7 rounded object-contain bg-base-200">
-                                        <div v-else class="w-1.5 h-6 rounded-full" :style="`background:${e.primary_color}`"></div>
+                                        <div v-else class="w-2.5 h-2.5 rounded-full shrink-0" :style="`background:${e.primary_color}`"></div>
                                         <div>
                                             <div class="font-medium text-sm">{{ e.name }}</div>
                                             <div class="text-xs text-base-content/40">{{ e.slug }}</div>
@@ -125,7 +125,7 @@ const sendKit = async (e) => {
                                     <span v-if="e.submission_count" class="text-base-content/40 text-xs"> / {{ e.submission_count }}</span>
                                 </td>
                                 <td class="text-right text-sm">
-                                    <span v-if="e.trophy_rank">🏆 #{{ e.trophy_rank }}</span>
+                                    <span v-if="e.trophy_rank" class="font-mono font-semibold text-brand">#{{ e.trophy_rank }}</span>
                                     <span v-else class="text-base-content/30">—</span>
                                 </td>
                                 <td>
@@ -140,8 +140,12 @@ const sendKit = async (e) => {
                                             <span v-if="accepting === e.id" class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
-                                        <button class="btn btn-ghost btn-xs" @click="goShow(e.id)" :title="t('admin.show_title')">👁️</button>
-                                        <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">✏️</button>
+                                        <button class="btn btn-ghost btn-xs" @click="goShow(e.id)" :title="t('admin.show_title')">
+                                            {{ t('admin.show_title') }}
+                                        </button>
+                                        <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">
+                                            {{ t('admin.edit_title') }}
+                                        </button>
                                         <button
                                             class="btn btn-ghost btn-xs"
                                             :class="kitSent === e.id ? 'text-success' : ''"
@@ -149,14 +153,16 @@ const sendKit = async (e) => {
                                             @click="sendKit(e)"
                                             :title="t('admin.send_kit_title')"
                                         >
-                                            {{ kitSent === e.id ? '✅' : '📦' }}
+                                            {{ kitSent === e.id ? t('admin.kit_sent') : 'Kit' }}
                                         </button>
                                         <button
                                             class="btn btn-ghost btn-xs text-error"
                                             :disabled="deleting === e.id"
                                             @click="askDelete(e)"
                                             :title="t('admin.delete_title')"
-                                        >🗑️</button>
+                                        >
+                                            {{ t('admin.delete_title') }}
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
