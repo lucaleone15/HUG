@@ -54,78 +54,39 @@ const steps = computed(() => [
         <NavBar />
 
         <!-- ── HERO ─────────────────────────────────────────────────────────── -->
-        <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 py-20 bg-white">
-            <div class="max-w-5xl mx-auto w-full grid md:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+        <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 py-20 overflow-hidden">
 
-                <div class="hero-text">
-                    <span class="inline-block text-xs uppercase tracking-[0.2em] text-base-content/35 mb-8">
-                        {{ t('home.edition_badge', { year: new Date().getFullYear() }) }}
-                    </span>
-                    <h1 class="font-extrabold leading-[0.93] tracking-tight text-base-content mb-7"
-                        style="font-size: clamp(2.75rem, 6vw, 4.5rem); max-width: 15ch;">
-                        {{ t('home.hero_title') }}
-                    </h1>
-                    <p class="text-base-content/50 mb-10 leading-relaxed"
-                       style="font-size: clamp(1rem, 1.5vw, 1.075rem); max-width: 42ch;">
-                        {{ t('home.hero_subtitle') }}
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="/label"
-                            class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-8">
-                            {{ t('home.cta') }}
-                        </a>
-                        <a href="/inscription"
-                            class="btn btn-outline border-base-300 text-base-content hover:bg-base-100 hover:border-base-400 font-semibold px-8">
-                            {{ t('home.register_cta') }}
-                        </a>
-                    </div>
+            <!-- Image — calque séparé pour Ken Burns -->
+            <div class="hero-bg absolute inset-0"
+                 style="background-image: url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center 35%;"></div>
+
+            <!-- Scrim directionnel -->
+            <div class="absolute inset-0 pointer-events-none"
+                 style="background: linear-gradient(108deg, rgba(25,5,7,0.88) 28%, rgba(25,5,7,0.62) 58%, rgba(25,5,7,0.40) 100%);"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto w-full">
+                <span class="h-badge inline-block text-xs uppercase tracking-[0.2em] text-white/35 mb-8">
+                    {{ t('home.edition_badge', { year: new Date().getFullYear() }) }}
+                </span>
+                <h1 class="font-extrabold leading-[1.0] tracking-tight text-white mb-7"
+                    style="font-size: clamp(2.75rem, 6vw, 4.5rem);">
+                    <span class="h-line1 block">{{ t('home.hero_line1') }}</span>
+                    <span class="h-line2 block">{{ t('home.hero_line2') }} <span class="h-highlight text-brand">{{ t('home.hero_highlight') }}</span></span>
+                </h1>
+                <p class="h-sub text-white/55 mb-10 leading-relaxed"
+                   style="font-size: clamp(1rem, 1.5vw, 1.075rem); max-width: 42ch;">
+                    {{ t('home.hero_subtitle') }}
+                </p>
+                <div class="h-ctas flex flex-wrap gap-4">
+                    <a href="/label"
+                        class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-8">
+                        {{ t('home.cta') }}
+                    </a>
+                    <a href="/inscription"
+                        class="btn text-white font-semibold px-8 border-white/25 bg-white/8 hover:bg-white/15">
+                        {{ t('home.register_cta') }}
+                    </a>
                 </div>
-
-                <!-- Visual panel -->
-                <div class="hero-visual relative aspect-[4/3] bg-site-ink rounded-xl overflow-hidden select-none">
-                    <!-- Ghost year -->
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                        <span class="font-extrabold leading-none text-white/[0.055]"
-                              style="font-size: clamp(7rem, 18vw, 13rem);">2026</span>
-                    </div>
-                    <!-- Arcs -->
-                    <svg class="absolute top-0 right-0 w-52 h-52 opacity-[0.09]" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-                        <circle cx="200" cy="0" r="180" stroke="white" stroke-width="1"/>
-                        <circle cx="200" cy="0" r="130" stroke="white" stroke-width="1"/>
-                        <circle cx="200" cy="0" r="80"  stroke="white" stroke-width="0.5"/>
-                    </svg>
-                    <!-- Bottom brand gradient -->
-                    <div class="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-brand/30 to-transparent pointer-events-none"></div>
-                    <!-- Core metric -->
-                    <div class="absolute inset-0 flex items-center justify-center text-white z-10">
-                        <div class="text-center">
-                            <div class="font-extrabold leading-none"
-                                 style="font-size: clamp(3.75rem, 7.5vw, 6rem);">1</div>
-                            <div class="text-white/40 text-[0.68rem] uppercase tracking-[0.35em] my-3">
-                                {{ t('home.impact_unit') }}
-                            </div>
-                            <div class="flex items-center justify-center gap-3 mb-3">
-                                <div class="w-8 h-px bg-white/15"></div>
-                                <svg width="9" height="13" viewBox="0 0 10 14" fill="none" aria-hidden="true">
-                                    <path d="M5 0.5C5 0.5 0.5 6.5 0.5 9C0.5 11.5 2.5 13.5 5 13.5C7.5 13.5 9.5 11.5 9.5 9C9.5 6.5 5 0.5 5 0.5Z"
-                                          fill="white" fill-opacity="0.5"/>
-                                </svg>
-                                <div class="w-8 h-px bg-white/15"></div>
-                            </div>
-                            <div class="font-extrabold leading-none text-brand"
-                                 style="font-size: clamp(3.75rem, 7.5vw, 6rem);">3</div>
-                            <div class="text-white/40 text-[0.68rem] uppercase tracking-[0.35em] mt-3">
-                                {{ t('home.impact_lives') }}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Bottom strip -->
-                    <div class="absolute bottom-0 left-0 right-0 px-5 py-4 z-10 flex items-center justify-between">
-                        <span class="text-[0.6rem] uppercase tracking-[0.22em] text-white/35">{{ t('home.campaign_badge') }}</span>
-                        <span class="text-[0.6rem] uppercase tracking-[0.22em] text-white/35 font-mono">HUG × CTS</span>
-                    </div>
-                </div>
-
             </div>
         </section>
 
@@ -248,30 +209,21 @@ const steps = computed(() => [
                     </a>
                 </div>
 
-                <!-- CTA visual: editorial number panel -->
-                <div class="reveal-up relative aspect-[4/3] rounded-xl overflow-hidden bg-white/8 select-none"
+                <!-- CTA visual: photo + texte superposé -->
+                <div class="reveal-up relative aspect-[4/3] rounded-xl overflow-hidden select-none"
                      :class="{ 'reveal-up--visible': ctaVisible }"
-                     style="transition-delay: 160ms;">
-                    <!-- Large ghosted number -->
-                    <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                        <span class="font-extrabold leading-none text-white/[0.07]"
-                              style="font-size: clamp(9rem, 22vw, 16rem);">3</span>
-                    </div>
-                    <!-- Arcs bottom-left -->
-                    <svg class="absolute bottom-0 left-0 w-48 h-48 opacity-[0.10]" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-                        <circle cx="0" cy="200" r="160" stroke="white" stroke-width="1"/>
-                        <circle cx="0" cy="200" r="110" stroke="white" stroke-width="1"/>
-                        <circle cx="0" cy="200" r="60"  stroke="white" stroke-width="0.5"/>
-                    </svg>
-                    <!-- Top-right content -->
-                    <div class="absolute top-6 right-6 text-right">
-                        <div class="text-white/40 text-[0.6rem] uppercase tracking-[0.22em] mb-1">{{ t('home.impact_lives') }}</div>
-                        <div class="font-extrabold leading-none text-white/90"
+                     style="transition-delay: 160ms; background-image: url('https://images.unsplash.com/photo-1697192156499-d85cfe1452c0?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
+                    <!-- Scrim pour lisibilité du texte -->
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(25,5,7,0.85) 35%, rgba(25,5,7,0.25) 100%);"></div>
+                    <!-- Top-right -->
+                    <div class="absolute top-6 right-6 text-right z-10">
+                        <div class="text-white/55 text-[0.6rem] uppercase tracking-[0.22em] mb-1">{{ t('home.impact_lives') }}</div>
+                        <div class="font-extrabold leading-none text-white"
                              style="font-size: clamp(2rem, 4vw, 3rem);">3</div>
                     </div>
                     <!-- Bottom strip -->
-                    <div class="absolute bottom-0 left-0 right-0 px-6 py-5 border-t border-white/12">
-                        <div class="text-[0.6rem] uppercase tracking-[0.22em] text-white/30 mb-1">{{ t('home.campaign_badge') }}</div>
+                    <div class="absolute bottom-0 left-0 right-0 px-6 py-5 z-10">
+                        <div class="text-[0.6rem] uppercase tracking-[0.22em] text-white/45 mb-1">{{ t('home.campaign_badge') }}</div>
                         <div class="font-extrabold text-white leading-tight"
                              style="font-size: clamp(1.2rem, 2.5vw, 1.6rem);">{{ t('home.cta_section_title') }}</div>
                     </div>
@@ -285,18 +237,38 @@ const steps = computed(() => [
 </template>
 
 <style scoped>
-/* ── Hero entrance ────────────────────────────────────────────────────── */
-.hero-text {
-    animation: hero-rise 580ms cubic-bezier(0.23, 1, 0.32, 1) both;
-    animation-delay: 60ms;
+/* ── Hero : Ken Burns ──────────────────────────────────────────────────── */
+.hero-bg {
+    animation: hero-zoom 8s cubic-bezier(0.25, 0, 0, 1) forwards;
+    will-change: transform;
 }
-.hero-visual {
-    animation: hero-rise 680ms cubic-bezier(0.23, 1, 0.32, 1) both;
-    animation-delay: 180ms;
+@keyframes hero-zoom {
+    from { transform: scale(1.06); }
+    to   { transform: scale(1.0); }
 }
-@keyframes hero-rise {
-    from { opacity: 0; transform: translateY(22px); }
-    to   { opacity: 1; transform: translateY(0);    }
+
+/* ── Hero : stagger par élément ────────────────────────────────────────── */
+.h-badge { animation: h-rise 420ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay:   0ms; }
+.h-line1 { animation: h-rise 520ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay:  80ms; }
+.h-line2 { animation: h-rise 520ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay: 170ms; }
+.h-sub   { animation: h-rise 480ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay: 310ms; }
+.h-ctas  { animation: h-rise 480ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay: 410ms; }
+
+@keyframes h-rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── "vies." — pop final après que la ligne soit apparue (170+520=690ms) ── */
+.h-highlight {
+    display: inline-block;
+    opacity: 0;
+    animation: highlight-pop 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: 740ms;
+}
+@keyframes highlight-pop {
+    from { opacity: 0; transform: translateY(10px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── Stats marquee ─────────────────────────────────────────────────────── */
@@ -332,7 +304,9 @@ const steps = computed(() => [
 
 /* ── Reduced motion ────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-    .hero-text, .hero-visual { animation: none; opacity: 1; transform: none; }
+    .hero-bg { animation: none; }
+    .h-badge, .h-line1, .h-line2, .h-sub, .h-ctas { animation: none; opacity: 1; transform: none; }
+    .h-highlight { animation: none; opacity: 1; transform: none; }
     .marquee-track { animation: none; }
     .reveal-up { opacity: 1; transform: none; transition: none; }
 }

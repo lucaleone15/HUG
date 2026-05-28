@@ -40,11 +40,6 @@ const logoError = ref(false)
                                 info@donnez-votre-sang.ch
                             </a>
                         </li>
-                        <li>
-                            <a href="tel:+41223723311" class="text-sm text-white/60 hover:text-white transition-colors">
-                                +41 (0)22 372 33 11
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>

@@ -11,6 +11,9 @@
     },
     "home": {
         "hero_title": "Together, let's save lives",
+        "hero_line1": "Together,",
+        "hero_line2": "let's save",
+        "hero_highlight": "lives.",
         "hero_subtitle": "Mobilise your company for the Blood Donation campaign. A simple act, an immense impact.",
         "cta": "Discover partner companies",
         "stats_donations": "donations collected",

@@ -11,6 +11,9 @@
     },
     "home": {
         "hero_title": "Ensemble, sauvons des vies",
+        "hero_line1": "Ensemble,",
+        "hero_line2": "sauvons des",
+        "hero_highlight": "vies.",
         "hero_subtitle": "Mobilisez votre entreprise pour la campagne Don du Sang. Un geste simple, un impact immense.",
         "cta": "Découvrir les entreprises partenaires",
         "stats_donations": "dons collectés",

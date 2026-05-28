@@ -11,6 +11,9 @@
     },
     "home": {
         "hero_title": "Gemeinsam Leben retten",
+        "hero_line1": "Gemeinsam",
+        "hero_line2": "Leben",
+        "hero_highlight": "retten.",
         "hero_subtitle": "Mobilisieren Sie Ihr Unternehmen für die Blutspendeaktion. Eine einfache Geste, eine enorme Wirkung.",
         "cta": "Partnerunternehmen entdecken",
         "stats_donations": "gesammelte Spenden",
