@@ -1,7 +1,7 @@
 {
     "nav": {
         "home": "Home",
-        "trophee": "Trophy",
+        "trophee": "Trophée",
         "label": "Label",
         "kit": "Promo Kit",
         "contact": "Contact",
@@ -39,7 +39,7 @@
         "campaign_badge": "Blood Donation"
     },
     "trophee": {
-        "title": "Trophy",
+        "title": "Trophée SangSationnel",
         "subtitle": "Companies recognised for their exceptional commitment to the Blood Donation campaign.",
         "no_winners": "No winners yet.",
         "gold": "Gold",
@@ -72,7 +72,7 @@
         "visual_line2": "generosity"
     },
     "label": {
-        "title": "Labelled Companies",
+        "title": "Label 100 pour Sang",
         "subtitle": "These companies have distinguished themselves through their involvement in the Blood Donation campaign.",
         "no_label": "No labelled companies yet.",
         "cta_section_title": "Get the label",

@@ -56,37 +56,7 @@ const colorSwatches = computed(() =>
             :cta="{ label: t('label.hero_cta'), href: '/inscription' }"
         >
             <template #visual>
-                <div class="aspect-[4/3] rounded-xl overflow-hidden relative bg-base-200">
-                    <!-- Mosaïque des couleurs entreprises -->
-                    <div v-if="colorSwatches.length"
-                         class="grid absolute inset-0 gap-1 p-1"
-                         style="grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr);">
-                        <div v-for="(color, i) in colorSwatches.slice(0, 30)"
-                             :key="i"
-                             class="rounded-sm"
-                             :style="`background-color: ${color}`">
-                        </div>
-                    </div>
-                    <!-- Fallback sans données -->
-                    <div v-else class="absolute inset-0 flex items-end p-8 bg-brand">
-                        <div class="text-white">
-                            <div class="text-xs uppercase tracking-[0.25em] text-white/50 mb-2">{{ t('label.visual_badge') }}</div>
-                            <div class="font-extrabold leading-tight text-white"
-                                 style="font-size: clamp(1.75rem, 4vw, 2.75rem);">{{ t('label.visual_tagline_line1') }}<br>{{ t('label.visual_tagline_line2') }}</div>
-                        </div>
-                    </div>
-                    <!-- Overlay texte sur la mosaïque -->
-                    <div v-if="colorSwatches.length"
-                         class="absolute inset-0 bg-site-ink/60 flex items-end p-8">
-                        <div>
-                            <div class="text-xs uppercase tracking-[0.25em] text-white/50 mb-2">{{ t('label.visual_badge') }}</div>
-                            <div class="font-extrabold leading-tight text-white"
-                                 style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
-                                {{ (props.entreprises ?? []).length }}<br>{{ t('label.companies_unit') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <img :src="'/images/label.svg'" alt="Label HUG" class="w-2/3 max-w-xs mx-auto h-auto object-contain" decoding="async" />
             </template>
         </PageHero>
 

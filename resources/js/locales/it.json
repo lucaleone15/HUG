@@ -1,7 +1,7 @@
 {
     "nav": {
         "home": "Home",
-        "trophee": "Trofeo",
+        "trophee": "Trophée",
         "label": "Label",
         "kit": "Kit Promozionale",
         "contact": "Contatto",
@@ -39,7 +39,7 @@
         "campaign_badge": "Donazione del sangue"
     },
     "trophee": {
-        "title": "Palmares",
+        "title": "Trophée SangSationnel",
         "subtitle": "Le aziende premiate per il loro straordinario impegno nella campagna di donazione del sangue.",
         "no_winners": "Nessun vincitore per il momento.",
         "gold": "Oro",
@@ -72,7 +72,7 @@
         "visual_line2": "generosità"
     },
     "label": {
-        "title": "Aziende certificate",
+        "title": "Label 100 pour Sang",
         "subtitle": "Queste aziende si sono distinte per il loro coinvolgimento nella campagna di donazione del sangue.",
         "no_label": "Nessuna azienda certificata per il momento.",
         "cta_section_title": "Ottenete il label",
