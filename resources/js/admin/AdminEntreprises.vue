@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
@@ -14,8 +14,17 @@ const router = useRouter()
 const store  = useEntreprisesStore()
 const { t, locale } = useI18n()
 
-const { data, loading, error, page, lastPage, isFirst, isLast, load, prev, next } =
-    usePagination((p) => api.get(`/admin/entreprises?page=${p}`))
+const search       = ref('')
+const sectorFilter = ref('')
+const statusFilter = ref('')
+
+const { data, loading, error, page, lastPage, perPage, total, isFirst, isLast, load, prev, next, reset } =
+    usePagination((p) => api.get(
+        `/admin/entreprises?page=${p}` +
+        (search.value       ? `&search=${encodeURIComponent(search.value)}`     : '') +
+        (sectorFilter.value ? `&type=${encodeURIComponent(sectorFilter.value)}` : '') +
+        (statusFilter.value ? `&status=${encodeURIComponent(statusFilter.value)}` : '')
+    ))
 
 const deleting     = ref(null)
 const kitSent      = ref(null)
@@ -23,7 +32,25 @@ const accepting    = ref(null)
 const deleteTarget = ref(null)
 const deleteModal  = ref(false)
 
+let searchTimer = null
+watch(search, () => {
+    clearTimeout(searchTimer)
+    searchTimer = setTimeout(() => reset(), 400)
+})
+watch([sectorFilter, statusFilter], () => reset())
+
 onMounted(load)
+
+const paginationFrom = computed(() => total.value === 0 ? 0 : (page.value - 1) * perPage.value + 1)
+const paginationTo   = computed(() => Math.min(page.value * perPage.value, total.value))
+
+const pageNumbers = computed(() => {
+    const pages = []
+    const start = Math.max(1, page.value - 1)
+    const end   = Math.min(lastPage.value, page.value + 1)
+    for (let i = start; i <= end; i++) pages.push(i)
+    return pages
+})
 
 const goShow   = (id) => router.push(`/admin/entreprises/${id}`)
 const goEdit   = (id) => router.push(`/admin/entreprises/${id}/edit`)
@@ -77,13 +104,55 @@ const sendKit = async (e) => {
         alert(err.message)
     }
 }
+
+const SECTORS = [
+    'banque', 'assurance', 'industrie', 'commerce', 'service',
+    'technologie', 'sante', 'education', 'horlogerie', 'services_publics', 'fintech', 'autre',
+]
+
+const goPage = (n) => {
+    if (n !== page.value) {
+        page.value = n
+        load()
+    }
+}
 </script>
 
 <template>
     <div>
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold">{{ t('admin.nav_entreprises') }}</h1>
+        <!-- Header -->
+        <div class="flex items-start justify-between mb-1">
+            <div>
+                <h1 class="text-2xl font-bold">{{ t('admin.nav_entreprises') }}</h1>
+                <p v-if="total > 0" class="text-sm text-base-content/50 mt-0.5">
+                    {{ t('admin.companies_registered_count', { n: total }) }}
+                </p>
+            </div>
             <BaseButton size="sm" @click="goCreate">{{ t('admin.new_company') }}</BaseButton>
+        </div>
+
+        <!-- Filtres -->
+        <div class="flex flex-wrap gap-3 mt-4 mb-5">
+            <label class="input input-sm input-bordered flex items-center gap-2 flex-1 min-w-[200px] max-w-sm">
+                <svg class="w-4 h-4 text-base-content/40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <input v-model="search" type="text" :placeholder="t('admin.search_company')" class="grow bg-transparent outline-none text-sm" />
+            </label>
+
+            <select v-model="sectorFilter" class="select select-sm select-bordered">
+                <option value="">{{ t('admin.filter_sector') }}</option>
+                <option v-for="s in SECTORS" :key="s" :value="s">
+                    {{ t('inscription.type_' + s, s) }}
+                </option>
+            </select>
+
+            <select v-model="statusFilter" class="select select-sm select-bordered">
+                <option value="">{{ t('admin.filter_status') }}</option>
+                <option value="active">{{ t('admin.status_active') }}</option>
+                <option value="draft">{{ t('admin.status_draft') }}</option>
+                <option value="inactive">{{ t('admin.status_suspended') }}</option>
+            </select>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -96,39 +165,52 @@ const sendKit = async (e) => {
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
                         <thead>
-                            <tr class="text-xs text-base-content/50">
-                                <th>{{ t('admin.col_company') }}</th>
-                                <th>{{ t('admin.col_type') }}</th>
+                            <tr class="text-xs text-brand font-semibold uppercase tracking-wide">
+                                <th>{{ t('admin.col_name') }}</th>
+                                <th>{{ t('admin.col_sector') }}</th>
+                                <th class="text-right">{{ t('admin.col_headcount') }}</th>
+                                <th class="text-right">{{ t('admin.col_collections') }}</th>
+                                <th>{{ t('admin.col_label') }}</th>
                                 <th>{{ t('admin.col_status') }}</th>
-                                <th class="text-right">{{ t('admin.col_eligible') }}</th>
-                                <th class="text-right">{{ t('admin.col_trophy') }}</th>
                                 <th class="text-right">{{ t('admin.col_actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="e in data" :key="e.id" class="hover">
+                            <tr
+                                v-for="e in data"
+                                :key="e.id"
+                                class="hover cursor-pointer"
+                                @click="goShow(e.id)"
+                            >
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                                            class="w-7 h-7 rounded object-contain bg-base-200">
+                                        <img
+                                            v-if="e.logo_url"
+                                            :src="e.logo_url"
+                                            :alt="e.name"
+                                            class="w-7 h-7 rounded object-contain bg-base-200 shrink-0"
+                                        />
                                         <div v-else class="w-2.5 h-2.5 rounded-full shrink-0" :style="`background:${e.primary_color}`"></div>
-                                        <div>
-                                            <div class="font-medium text-sm">{{ e.name }}</div>
-                                            <div class="text-xs text-base-content/40">{{ e.slug }}</div>
-                                        </div>
+                                        <span class="font-medium text-sm">{{ e.name }}</span>
                                     </div>
                                 </td>
-                                <td class="text-xs text-base-content/60">{{ e.type ? t('inscription.type_' + e.type) : '—' }}</td>
-                                <td><StatusBadge :entreprise="e" /></td>
-                                <td class="text-right text-sm">
-                                    <span class="text-emerald-600 font-semibold">{{ e.eligible_count ?? '—' }}</span>
-                                    <span v-if="e.submission_count" class="text-base-content/40 text-xs"> / {{ e.submission_count }}</span>
+                                <td class="text-sm text-base-content/60">
+                                    {{ e.type ? t('inscription.type_' + e.type, e.type) : '—' }}
                                 </td>
-                                <td class="text-right text-sm">
-                                    <span v-if="e.trophy_rank" class="font-mono font-semibold text-brand">#{{ e.trophy_rank }}</span>
-                                    <span v-else class="text-base-content/30">—</span>
+                                <td class="text-right text-sm tabular-nums">
+                                    {{ e.employee_count ? e.employee_count.toLocaleString('fr-CH') : '—' }}
                                 </td>
+                                <td class="text-right text-sm tabular-nums text-base-content/50">—</td>
                                 <td>
+                                    <span
+                                        v-if="e.is_labelled"
+                                        class="badge badge-sm font-semibold"
+                                        style="background-color:#d4edda;color:#155724;border:none"
+                                    >2026</span>
+                                    <span v-else class="text-base-content/30 text-sm">—</span>
+                                </td>
+                                <td><StatusBadge :entreprise="e" /></td>
+                                <td @click.stop>
                                     <div class="flex gap-1 justify-end flex-wrap">
                                         <button
                                             v-if="!e.is_active || !e.is_validated"
@@ -141,7 +223,7 @@ const sendKit = async (e) => {
                                             <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
                                         <button class="btn btn-ghost btn-xs" @click="goShow(e.id)" :title="t('admin.show_title')">
-                                            {{ t('admin.show_title') }}
+                                            {{ t('admin.view_title') }}
                                         </button>
                                         <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">
                                             {{ t('admin.edit_title') }}
@@ -172,10 +254,23 @@ const sendKit = async (e) => {
             </div>
 
             <!-- Pagination -->
-            <div v-if="lastPage > 1" class="flex justify-center mt-4 gap-2">
-                <button class="btn btn-sm btn-ghost" :disabled="isFirst" @click="prev">←</button>
-                <span class="text-sm self-center">{{ page }} / {{ lastPage }}</span>
-                <button class="btn btn-sm btn-ghost" :disabled="isLast" @click="next">→</button>
+            <div v-if="lastPage > 1" class="flex flex-col sm:flex-row items-center justify-between mt-4 gap-3">
+                <p class="text-sm text-base-content/50">
+                    {{ t('admin.showing_entries', { from: paginationFrom, to: paginationTo, total }) }}
+                </p>
+                <div class="flex items-center gap-1">
+                    <button class="btn btn-sm btn-ghost btn-square" :disabled="isFirst" @click="prev">‹</button>
+                    <button
+                        v-for="n in pageNumbers"
+                        :key="n"
+                        class="btn btn-sm btn-square"
+                        :class="n === page ? 'bg-brand text-white border-none hover:bg-brand-dark' : 'btn-ghost'"
+                        @click="goPage(n)"
+                    >
+                        {{ n }}
+                    </button>
+                    <button class="btn btn-sm btn-ghost btn-square" :disabled="isLast" @click="next">›</button>
+                </div>
             </div>
         </template>
 
