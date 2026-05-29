@@ -161,7 +161,46 @@ const goPage = (n) => {
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
         <template v-else-if="data">
-            <div class="card bg-base-100 shadow-sm">
+            <!-- Vue mobile : cartes -->
+            <div class="md:hidden card bg-base-100 shadow-sm divide-y divide-base-200">
+                <div
+                    v-for="e in data"
+                    :key="'m-' + e.id"
+                    class="flex items-center gap-3 p-4 cursor-pointer active:bg-base-200"
+                    @click="goShow(e.id)"
+                >
+                    <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
+                        class="w-10 h-10 rounded object-contain bg-base-200 shrink-0" />
+                    <div v-else class="w-10 h-10 rounded-full shrink-0 flex items-center justify-center bg-base-200">
+                        <div class="w-4 h-4 rounded-full" :style="`background:${e.primary_color || '#D32C37'}`"></div>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-sm truncate">{{ e.name }}</div>
+                        <div class="text-xs text-base-content/50 mt-0.5">
+                            {{ e.type ? t('inscription.type_' + e.type, e.type) : '—' }}
+                            <span v-if="e.employee_count"> · {{ e.employee_count.toLocaleString('fr-CH') }} {{ t('admin.employees') }}</span>
+                        </div>
+                        <div class="text-xs font-semibold text-brand mt-1">— {{ t('admin.col_collections').toUpperCase() }}</div>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-1.5 shrink-0">
+                        <div class="flex items-center gap-1">
+                            <span v-if="e.is_labelled"
+                                class="badge badge-xs font-semibold"
+                                style="background-color:#d4edda;color:#155724;border:none">2026</span>
+                            <StatusBadge :entreprise="e" />
+                        </div>
+                    </div>
+
+                    <svg class="w-4 h-4 text-base-content/30 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Vue desktop : tableau -->
+            <div class="hidden md:block card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
                         <thead>
@@ -176,20 +215,11 @@ const goPage = (n) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                v-for="e in data"
-                                :key="e.id"
-                                class="hover cursor-pointer"
-                                @click="goShow(e.id)"
-                            >
+                            <tr v-for="e in data" :key="e.id" class="hover cursor-pointer" @click="goShow(e.id)">
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <img
-                                            v-if="e.logo_url"
-                                            :src="e.logo_url"
-                                            :alt="e.name"
-                                            class="w-7 h-7 rounded object-contain bg-base-200 shrink-0"
-                                        />
+                                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
+                                            class="w-7 h-7 rounded object-contain bg-base-200 shrink-0" />
                                         <div v-else class="w-2.5 h-2.5 rounded-full shrink-0" :style="`background:${e.primary_color}`"></div>
                                         <span class="font-medium text-sm">{{ e.name }}</span>
                                     </div>
@@ -202,23 +232,18 @@ const goPage = (n) => {
                                 </td>
                                 <td class="text-right text-sm tabular-nums text-base-content/50">—</td>
                                 <td>
-                                    <span
-                                        v-if="e.is_labelled"
+                                    <span v-if="e.is_labelled"
                                         class="badge badge-sm font-semibold"
-                                        style="background-color:#d4edda;color:#155724;border:none"
-                                    >2026</span>
+                                        style="background-color:#d4edda;color:#155724;border:none">2026</span>
                                     <span v-else class="text-base-content/30 text-sm">—</span>
                                 </td>
                                 <td><StatusBadge :entreprise="e" /></td>
                                 <td @click.stop>
                                     <div class="flex gap-1 justify-end flex-wrap">
-                                        <button
-                                            v-if="!e.is_active || !e.is_validated"
+                                        <button v-if="!e.is_active || !e.is_validated"
                                             class="btn btn-xs btn-success text-white"
                                             :disabled="accepting === e.id"
-                                            @click="accept(e)"
-                                            :title="t('admin.accept_title')"
-                                        >
+                                            @click="accept(e)" :title="t('admin.accept_title')">
                                             <span v-if="accepting === e.id" class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
@@ -228,21 +253,15 @@ const goPage = (n) => {
                                         <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)" :title="t('admin.edit_title')">
                                             {{ t('admin.edit_title') }}
                                         </button>
-                                        <button
-                                            class="btn btn-ghost btn-xs"
+                                        <button class="btn btn-ghost btn-xs"
                                             :class="kitSent === e.id ? 'text-success' : ''"
                                             :disabled="!e.contact_email"
-                                            @click="sendKit(e)"
-                                            :title="t('admin.send_kit_title')"
-                                        >
+                                            @click="sendKit(e)" :title="t('admin.send_kit_title')">
                                             {{ kitSent === e.id ? t('admin.kit_sent') : 'Kit' }}
                                         </button>
-                                        <button
-                                            class="btn btn-ghost btn-xs text-error"
+                                        <button class="btn btn-ghost btn-xs text-error"
                                             :disabled="deleting === e.id"
-                                            @click="askDelete(e)"
-                                            :title="t('admin.delete_title')"
-                                        >
+                                            @click="askDelete(e)" :title="t('admin.delete_title')">
                                             {{ t('admin.delete_title') }}
                                         </button>
                                     </div>

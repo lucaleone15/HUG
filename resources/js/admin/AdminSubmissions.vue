@@ -59,7 +59,28 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
             <div class="mb-2 text-sm text-base-content/50">
                 {{ t('admin.submissions_count', { n: total.toLocaleString('fr-CH') }) }}
             </div>
-            <div class="card bg-base-100 shadow-sm">
+
+            <!-- Vue mobile : cartes -->
+            <div class="md:hidden card bg-base-100 shadow-sm divide-y divide-base-200">
+                <div v-for="s in data" :key="'m-' + s.id" class="flex items-center gap-3 p-4">
+                    <div class="flex-1 min-w-0">
+                        <div class="font-medium text-sm truncate">{{ s.entreprise?.name ?? '—' }}</div>
+                        <div class="text-xs text-base-content/50 mt-0.5">{{ fmt(s.completed_at) }}</div>
+                    </div>
+                    <span v-if="s.is_eligible === true"
+                        class="badge badge-success badge-sm shrink-0 whitespace-nowrap">
+                        {{ t('admin.eligible_badge') }}
+                    </span>
+                    <span v-else-if="s.is_eligible === false"
+                        class="badge badge-error badge-sm shrink-0 whitespace-nowrap">
+                        {{ t('admin.ineligible_badge') }}
+                    </span>
+                    <span v-else class="badge badge-ghost badge-sm shrink-0">—</span>
+                </div>
+            </div>
+
+            <!-- Vue desktop : tableau -->
+            <div class="hidden md:block card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
                         <thead>
@@ -73,12 +94,18 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                         <tbody>
                             <tr v-for="s in data" :key="s.id" class="hover">
                                 <td class="font-medium text-sm">{{ s.entreprise?.name ?? '—' }}</td>
-                                <td>
-                                    <span v-if="s.is_eligible === true"  class="badge badge-success badge-sm">{{ t('admin.eligible_badge') }}</span>
-                                    <span v-else-if="s.is_eligible === false" class="badge badge-error badge-sm">{{ t('admin.ineligible_badge') }}</span>
+                                <td class="whitespace-nowrap">
+                                    <span v-if="s.is_eligible === true"
+                                        class="badge badge-success badge-sm whitespace-nowrap">
+                                        {{ t('admin.eligible_badge') }}
+                                    </span>
+                                    <span v-else-if="s.is_eligible === false"
+                                        class="badge badge-error badge-sm whitespace-nowrap">
+                                        {{ t('admin.ineligible_badge') }}
+                                    </span>
                                     <span v-else class="badge badge-ghost badge-sm">—</span>
                                 </td>
-                                <td class="text-sm text-base-content/60">{{ fmt(s.completed_at) }}</td>
+                                <td class="text-sm text-base-content/60 whitespace-nowrap">{{ fmt(s.completed_at) }}</td>
                                 <td class="font-mono text-xs text-base-content/30 max-w-[100px] truncate">{{ s.id }}</td>
                             </tr>
                         </tbody>

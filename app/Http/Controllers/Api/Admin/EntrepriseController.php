@@ -14,14 +14,33 @@ use Illuminate\Support\Str;
 
 class EntrepriseController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $entreprises = Entreprise::withCount([
+        $query = Entreprise::withCount([
                 'submissions as eligible_count'  => fn($q) => $q->where('is_eligible', true),
                 'submissions as submission_count',
             ])
-            ->latest()
-            ->paginate(25);
+            ->latest();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('status')) {
+            if ($request->status === 'active') {
+                $query->where('is_validated', true)->where('is_active', true);
+            } elseif ($request->status === 'draft') {
+                $query->where('is_validated', false);
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_validated', true)->where('is_active', false);
+            }
+        }
+
+        $entreprises = $query->paginate(25);
 
         return response()->json([
             'data' => AdminEntrepriseResource::collection($entreprises->items()),

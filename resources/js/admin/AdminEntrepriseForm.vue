@@ -71,7 +71,7 @@ onMounted(async () => {
 const onFileChange = (event) => {
     const file = event.target.files[0]
     if (!file) return
-    logoFile.value   = file
+    logoFile.value    = file
     logoPreview.value = URL.createObjectURL(file)
 }
 
@@ -118,10 +118,10 @@ const fieldError = (key) => errors.value[key]?.[0]
 </script>
 
 <template>
-    <div class="max-w-2xl">
+    <div class="w-full max-w-2xl">
         <div class="flex items-center gap-3 mb-6">
-            <button class="btn btn-ghost btn-sm" @click="router.back()">{{ t('admin.form_back') }}</button>
-            <h1 class="text-2xl font-bold">{{ isEdit ? t('admin.form_edit_title') : t('admin.form_new_title') }}</h1>
+            <button class="btn btn-ghost btn-sm shrink-0" @click="router.back()">{{ t('admin.form_back') }}</button>
+            <h1 class="text-xl sm:text-2xl font-bold truncate">{{ isEdit ? t('admin.form_edit_title') : t('admin.form_new_title') }}</h1>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -134,8 +134,8 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <!-- Section : Identité -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_identity') }}</div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <label class="form-control col-span-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="form-control col-span-1 sm:col-span-2">
                         <div class="label"><span class="label-text">{{ t('admin.form_name') }}</span></div>
                         <input v-model="form.name" type="text" required class="input input-bordered input-sm"
                             :class="fieldError('name') ? 'input-error' : ''">
@@ -176,9 +176,9 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_logo') }}</div>
 
                 <div v-if="logoPreview" class="flex items-center gap-4 p-3 bg-base-200 rounded-lg">
-                    <img :src="logoPreview" alt="Logo" class="h-14 w-14 object-contain rounded bg-white p-1">
-                    <div class="flex-1 text-sm text-base-content/60 truncate">{{ logoFile?.name ?? form.logo_url }}</div>
-                    <button type="button" class="btn btn-ghost btn-xs text-error" @click="clearLogo">✕</button>
+                    <img :src="logoPreview" alt="Logo" class="h-14 w-14 object-contain rounded bg-white p-1 shrink-0">
+                    <div class="flex-1 text-sm text-base-content/60 truncate min-w-0">{{ logoFile?.name ?? form.logo_url }}</div>
+                    <button type="button" class="btn btn-ghost btn-xs text-error shrink-0" @click="clearLogo">✕</button>
                 </div>
 
                 <label class="form-control">
@@ -192,7 +192,6 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <label class="form-control">
                     <div class="label"><span class="label-text">{{ t('admin.form_logo_url') }}</span></div>
                     <input v-model="form.logo_url" type="text" class="input input-bordered input-sm"
-                        :placeholder="t('admin.logo_url_placeholder')"
                         :disabled="!!logoFile">
                 </label>
 
@@ -202,7 +201,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="flex flex-col gap-3">
                     <div>
                         <p class="text-sm font-medium mb-2">{{ t('admin.form_primary_color') }}</p>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 flex-wrap">
                             <input type="color" v-model="form.primary_color"
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
                             <span class="badge text-white font-mono text-xs px-3 py-3"
@@ -211,11 +210,11 @@ const fieldError = (key) => errors.value[key]?.[0]
                     </div>
 
                     <div>
-                        <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-2 mb-2 flex-wrap">
                             <p class="text-sm font-medium">{{ t('admin.form_secondary_color') }}</p>
                             <span class="text-xs text-base-content/40">{{ t('admin.form_color_optional') }}</span>
                         </div>
-                        <div v-if="form.secondary_color" class="flex items-center gap-3">
+                        <div v-if="form.secondary_color" class="flex items-center gap-3 flex-wrap">
                             <input type="color" v-model="form.secondary_color"
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
                             <span class="badge text-white font-mono text-xs px-3 py-3"
@@ -233,7 +232,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <!-- Section : Contact -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_contact') }}</div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_contact_name') }}</span></div>
                         <input v-model="form.contact_name" type="text" class="input input-bordered input-sm">
@@ -248,22 +247,22 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <!-- Section : Statut -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_status') }}</div>
 
-                <div class="flex flex-wrap gap-6">
-                    <label class="label gap-2 cursor-pointer">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.is_active" class="checkbox checkbox-sm">
                         <span class="label-text">{{ t('admin.form_is_active') }}</span>
                     </label>
-                    <label class="label gap-2 cursor-pointer">
+                    <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.is_validated" class="checkbox checkbox-sm">
                         <span class="label-text">{{ t('admin.form_is_validated') }}</span>
                     </label>
-                    <label class="label gap-2 cursor-pointer">
+                    <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.is_labelled" class="checkbox checkbox-sm">
                         <span class="label-text">{{ t('admin.form_is_labelled') }}</span>
                     </label>
-                    <label class="label gap-2 cursor-pointer">
+                    <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">
-                        <span class="label-text">
+                        <span class="label-text text-sm">
                             {{ t('admin.form_wants_trophy') }}
                             <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint') }}</span>
                         </span>
@@ -274,8 +273,8 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_cts') }}</div>
                 <p class="text-xs text-base-content/50 -mt-2">{{ t('admin.form_cts_desc') }}</p>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <label class="form-control col-span-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="form-control col-span-1 sm:col-span-2">
                         <div class="label"><span class="label-text">{{ t('admin.form_rdv_url') }}</span></div>
                         <input v-model="form.rdv_url" type="url" class="input input-bordered input-sm"
                             :placeholder="t('admin.form_rdv_url_placeholder')">
@@ -292,7 +291,8 @@ const fieldError = (key) => errors.value[key]?.[0]
                     </label>
                 </div>
 
-                <div class="card-actions justify-end mt-2 gap-2">
+                <!-- Actions -->
+                <div class="card-actions justify-end mt-2 gap-2 flex-wrap">
                     <BaseButton variant="ghost" size="sm" @click="router.back()">{{ t('admin.cancel') }}</BaseButton>
                     <BaseButton type="submit" size="sm" :loading="saving">
                         {{ isEdit ? t('admin.save') : t('admin.form_create') }}
