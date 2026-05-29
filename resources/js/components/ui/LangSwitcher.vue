@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setLocale, SUPPORTED_LOCALES } from '../../i18n'
 
@@ -6,11 +7,18 @@ const { locale } = useI18n()
 const langLabels = { fr: 'FR', de: 'DE', it: 'IT', en: 'EN' }
 
 defineProps({ light: { type: Boolean, default: false } })
+
+const triggerRef = ref(null)
+
+const selectLang = (lang) => {
+    setLocale(lang)
+    triggerRef.value?.blur()
+}
 </script>
 
 <template>
     <div class="dropdown dropdown-end">
-        <button tabindex="0" class="btn btn-ghost btn-sm text-xs font-mono"
+        <button ref="triggerRef" tabindex="0" class="btn btn-ghost btn-sm text-xs font-mono"
                 :class="light ? 'text-white hover:text-white hover:bg-white/15' : ''">
             {{ langLabels[locale] ?? locale.toUpperCase() }}
         </button>
@@ -19,7 +27,7 @@ defineProps({ light: { type: Boolean, default: false } })
                 <button
                     class="text-xs font-mono justify-center px-2 py-1.5 rounded"
                     :class="locale === lang ? 'font-bold text-brand' : 'text-base-content/70'"
-                    @click="setLocale(lang)"
+                    @click="selectLang(lang)"
                 >
                     {{ langLabels[lang] }}
                 </button>

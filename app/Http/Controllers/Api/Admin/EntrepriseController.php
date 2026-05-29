@@ -62,6 +62,9 @@ class EntrepriseController extends Controller
             'is_labelled'     => 'boolean',
             'is_validated'    => 'boolean',
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
+            'wants_trophy'    => 'boolean',
+            'rdv_url'         => 'nullable|url|max:2048',
+            'rdv_date'        => 'nullable|date',
         ]);
 
         if ($request->hasFile('logo')) {

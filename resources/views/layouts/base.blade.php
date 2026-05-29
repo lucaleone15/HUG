@@ -8,6 +8,9 @@
     <title>@yield('title', 'Donnez Votre Sang')</title>
     <link rel="icon" href="/images/hug-favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/images/hug-favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>

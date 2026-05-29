@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ContactFormMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
@@ -17,6 +18,8 @@ class ContactController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        App::setLocale(in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr');
+
         $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import NavBar from '../components/ui/NavBar.vue'
 import { sendAnalytics } from '../composables/useAnalytics.js'
 import { countries } from '../data/countries.js'
+import { COUNTRY_REGION_MAP } from '../data/countryRegions.js'
 
 const { t } = useI18n()
 
@@ -56,11 +57,11 @@ const birthSelected  = ref([])   // item IDs sélectionnés
 const birthCountries = ref({})   // { itemId: 'Maroc' }
 
 // travel_check
-const travelTrips = ref([])      // [{ region: '', return_date: '' }]
+const travelTrips = ref([])      // [{ country: '', region: '', return_date: '' }]
 
 const travelTripsValid = computed(() =>
     travelTrips.value.length > 0 &&
-    travelTrips.value.every(t => t.region && t.return_date)
+    travelTrips.value.every(t => t.country && t.return_date)
 )
 
 // Synchronise l'état local quand la question courante change (retour arrière inclus)
@@ -76,7 +77,7 @@ watch(currentQuestion, (q) => {
             birthCountries.value = {}
             break
         case 'travel_check':
-            travelTrips.value = Array.isArray(existing?.trips) ? existing.trips.map(t => ({ ...t })) : []
+            travelTrips.value = Array.isArray(existing?.trips) ? existing.trips.map(t => ({ country: t.country ?? '', region: t.region ?? '', return_date: t.return_date ?? '' })) : []
             break
     }
 }, { immediate: true })
@@ -170,9 +171,13 @@ const confirmBirth = () => {
 }
 
 // travel_check
-const addTrip    = () => travelTrips.value.push({ region: '', return_date: '' })
+const addTrip    = () => travelTrips.value.push({ country: '', region: '', return_date: '' })
 const removeTrip = (i) => travelTrips.value.splice(i, 1)
 const updateTrip = (i, field, value) => { travelTrips.value[i][field] = value }
+const updateTripCountry = (i, country) => {
+    travelTrips.value[i].country = country
+    travelTrips.value[i].region  = COUNTRY_REGION_MAP[country] ?? ''
+}
 
 const confirmTravel = () => {
     if (!currentQuestion.value || !travelTripsValid.value) return
@@ -364,7 +369,7 @@ const goBack = () => {
                                 >
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm font-medium text-base-content/70">
-                                            {{ t('quiz.travel_region') }} {{ i + 1 }}
+                                            {{ t('quiz.travel_trip') }} {{ i + 1 }}
                                         </span>
                                         <button
                                             class="btn btn-ghost btn-xs text-error"
@@ -372,21 +377,31 @@ const goBack = () => {
                                         >✕</button>
                                     </div>
 
-                                    <!-- Sélecteur de région -->
+                                    <!-- Sélecteur de pays -->
                                     <select
                                         class="select select-bordered w-full select-sm"
-                                        :value="trip.region"
-                                        @change="e => updateTrip(i, 'region', e.target.value)"
+                                        :value="trip.country"
+                                        @change="e => updateTripCountry(i, e.target.value)"
                                     >
-                                        <option value="">{{ t('quiz.travel_select_region') }}</option>
+                                        <option value="">{{ t('quiz.travel_select_country') }}</option>
                                         <option
-                                            v-for="(zone, regionName) in currentQuestion.risk_map"
-                                            :key="regionName"
-                                            :value="regionName"
+                                            v-for="country in countries"
+                                            :key="country"
+                                            :value="country"
                                         >
-                                            {{ regionName }}
+                                            {{ country }}
                                         </option>
                                     </select>
+
+                                    <!-- Région détectée automatiquement -->
+                                    <div v-if="trip.country && trip.region"
+                                         class="text-xs text-base-content/50 flex items-center gap-1">
+                                        <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-2.076 3.208-4.461 3.208-7.327a6.5 6.5 0 00-13 0c0 2.866 1.264 5.25 3.208 7.327a19.58 19.58 0 002.683 2.282 16.974 16.974 0 001.144.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span>{{ trip.region }}</span>
+                                    </div>
+
 
                                     <!-- Avertissement risques si région à risque -->
                                     <div

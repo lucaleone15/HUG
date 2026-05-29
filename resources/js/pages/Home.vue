@@ -83,7 +83,7 @@ const steps = computed(() => [
                         {{ t('home.cta') }}
                     </a>
                     <a href="/inscription"
-                        class="btn text-white font-semibold px-8 border-white/25 bg-white/8 hover:bg-white/15">
+                        class="btn bg-white hover:bg-white/90 text-brand border-none font-semibold px-8">
                         {{ t('home.register_cta') }}
                     </a>
                 </div>
@@ -187,12 +187,10 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('kit.title')" :description="t('kit.subtitle')" href="/kit-promo">
                             <template #visual>
-                                <div class="w-full h-full bg-base-300 group-hover:bg-brand flex items-center justify-center transition-colors duration-150">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="text-base-content/55 group-hover:text-white transition-colors duration-150" aria-hidden="true">
-                                        <path d="M12 2L2 7v10l10 5 10-5V7z"/>
-                                        <polyline points="2,7 12,12 22,7"/>
-                                        <line x1="12" y1="12" x2="12" y2="22"/>
-                                        <line x1="7" y1="4.5" x2="17" y2="9.5"/>
+                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center transition-colors duration-150">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-white/70 group-hover:text-white transition-colors duration-150" aria-hidden="true">
+                                        <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z"/>
+                                        <path d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087z"/>
                                     </svg>
                                 </div>
                             </template>
@@ -320,7 +318,7 @@ const steps = computed(() => [
 .how-steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3.5rem;
+    gap: 2rem;
 }
 .how-step {
     display: flex;

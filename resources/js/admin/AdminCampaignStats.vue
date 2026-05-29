@@ -10,7 +10,9 @@ const current = ref(null)
 const loading = ref(true)
 const saving  = ref(false)
 const saved   = ref(false)
-const error   = ref(null)
+const error       = ref(null)
+const saveError   = ref(null)
+const fieldErrors = ref({})
 
 const form = ref({ donations_count: 0, lives_saved: 0, hug_hospitals_count: 0 })
 
@@ -30,18 +32,23 @@ onMounted(async () => {
 })
 
 const save = async () => {
-    saving.value = true
-    saved.value  = false
+    saving.value      = true
+    saved.value       = false
+    saveError.value   = null
+    fieldErrors.value = {}
     try {
         current.value = await api.put('/admin/campaign-stats', form.value)
         saved.value = true
         setTimeout(() => { saved.value = false }, 3000)
     } catch (e) {
-        alert(e.message)
+        if (e.errors) fieldErrors.value = e.errors
+        else saveError.value = e.message
     } finally {
         saving.value = false
     }
 }
+
+const fieldError = (key) => fieldErrors.value[key]?.[0]
 
 const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
 </script>
@@ -91,19 +98,32 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
                     <p class="text-sm text-base-content/50">{{ t('admin.update_stats_desc') }}</p>
 
                     <div v-if="saved" class="text-sm text-success font-medium py-1">{{ t('admin.saved_success') }}</div>
+                    <div v-if="saveError" class="alert alert-error text-sm py-2">{{ saveError }}</div>
 
                     <form class="grid grid-cols-1 gap-3" @submit.prevent="save">
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.donations_count_label') }}</span></div>
-                            <input v-model.number="form.donations_count" type="number" min="0" required class="input input-bordered input-sm">
+                            <input v-model.number="form.donations_count" type="number" min="0" required
+                                class="input input-bordered input-sm" :class="fieldError('donations_count') ? 'input-error' : ''">
+                            <div v-if="fieldError('donations_count')" class="label">
+                                <span class="label-text-alt text-error">{{ fieldError('donations_count') }}</span>
+                            </div>
                         </label>
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.lives_saved_label') }}</span></div>
-                            <input v-model.number="form.lives_saved" type="number" min="0" required class="input input-bordered input-sm">
+                            <input v-model.number="form.lives_saved" type="number" min="0" required
+                                class="input input-bordered input-sm" :class="fieldError('lives_saved') ? 'input-error' : ''">
+                            <div v-if="fieldError('lives_saved')" class="label">
+                                <span class="label-text-alt text-error">{{ fieldError('lives_saved') }}</span>
+                            </div>
                         </label>
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.hug_hospitals_label') }}</span></div>
-                            <input v-model.number="form.hug_hospitals_count" type="number" min="0" required class="input input-bordered input-sm">
+                            <input v-model.number="form.hug_hospitals_count" type="number" min="0" required
+                                class="input input-bordered input-sm" :class="fieldError('hug_hospitals_count') ? 'input-error' : ''">
+                            <div v-if="fieldError('hug_hospitals_count')" class="label">
+                                <span class="label-text-alt text-error">{{ fieldError('hug_hospitals_count') }}</span>
+                            </div>
                         </label>
                         <div class="card-actions justify-end mt-2">
                             <BaseButton type="submit" size="sm" :loading="saving">{{ t('admin.save') }}</BaseButton>

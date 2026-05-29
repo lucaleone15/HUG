@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/ui/NavBar.vue'
 import Footer from '../components/ui/Footer.vue'
@@ -22,11 +22,17 @@ onMounted(() => {
 const props = defineProps({
     success: { type: String, default: null },
     errors:  { type: Object, default: () => ({}) },
+    old:     { type: Object, default: () => ({}) },
 })
+
+const hasErrors = computed(() => Object.keys(props.errors).length > 0)
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? ''
 
 const types = ['type_general', 'type_partnership', 'type_technical', 'type_other']
+
+const selectedType = ref(props.old?.type || '')
+const message      = ref(props.old?.message || '')
 </script>
 
 <template>
@@ -79,10 +85,20 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
                     <input type="hidden" name="_token" :value="csrfToken">
                     <input type="hidden" name="locale" :value="locale">
 
+                    <!-- Bandeau d'erreur global -->
+                    <div v-if="hasErrors"
+                         class="flex items-start gap-3 rounded-lg border border-error/30 bg-error/5 px-4 py-3 text-sm text-error">
+                        <svg class="mt-0.5 shrink-0 w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ t('inscription.form_errors_banner') }}</span>
+                    </div>
+
                     <BaseInput
                         name="name"
                         :label="t('contact.name')"
                         :error="errors.name?.[0]"
+                        :model-value="old?.name"
                         required
                     />
 
@@ -91,22 +107,26 @@ const types = ['type_general', 'type_partnership', 'type_technical', 'type_other
                         type="email"
                         :label="t('contact.email')"
                         :error="errors.email?.[0]"
+                        :model-value="old?.email"
                         required
                     />
 
                     <div class="flex flex-col gap-1">
                         <label class="text-sm font-medium">{{ t('contact.type') }}</label>
-                        <select name="type" required class="select select-bordered w-full">
-                            <option value="" disabled selected>{{ t('contact.type_placeholder') }}</option>
+                        <select name="type" v-model="selectedType" required
+                                class="select select-bordered w-full"
+                                :class="errors.type ? 'select-error' : ''">
+                            <option value="" disabled>{{ t('contact.type_placeholder') }}</option>
                             <option v-for="type in types" :key="type" :value="type">
                                 {{ t(`contact.${type}`) }}
                             </option>
                         </select>
+                        <span v-if="errors.type" class="text-error text-xs">{{ errors.type[0] }}</span>
                     </div>
 
                     <div class="flex flex-col gap-1">
                         <label class="text-sm font-medium">{{ t('contact.message') }}</label>
-                        <textarea name="message" required maxlength="5000" rows="5"
+                        <textarea name="message" v-model="message" required maxlength="5000" rows="5"
                             class="textarea textarea-bordered resize-none w-full"
                             :class="errors.message ? 'textarea-error' : ''"></textarea>
                         <span v-if="errors.message" class="text-error text-xs">{{ errors.message[0] }}</span>

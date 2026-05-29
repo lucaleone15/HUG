@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entreprise;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -18,13 +19,15 @@ class InscriptionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        App::setLocale(in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr');
+
         $request->validate([
             'name'            => 'required|string|max:255',
             'type'            => 'required|in:banque,assurance,industrie,commerce,service,technologie,sante,education,autre',
-            'employee_count'  => 'nullable|integer|min:1|max:999999',
+            'employee_count'  => 'required|integer|min:1|max:999999',
             'contact_name'    => 'required|string|max:255',
             'contact_email'   => 'required|email|max:255',
-            'primary_color'   => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'primary_color'   => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'secondary_color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'logo'            => 'nullable|image|max:2048',
             'logo_url'        => 'nullable|string|max:2048',
@@ -49,7 +52,7 @@ class InscriptionController extends Controller
             'employee_count'  => $request->employee_count,
             'contact_name'    => $request->contact_name,
             'contact_email'   => $request->contact_email,
-            'primary_color'   => $request->primary_color ?? '#E30613',
+            'primary_color'   => $request->primary_color,
             'secondary_color' => $request->secondary_color,
             'logo_url'        => $logoUrl,
             'is_active'       => false,

@@ -151,10 +151,14 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_sector') }}</span></div>
-                        <select v-model="form.type" required class="select select-bordered select-sm">
+                        <select v-model="form.type" required class="select select-bordered select-sm"
+                            :class="fieldError('type') ? 'select-error' : ''">
                             <option value="" disabled>—</option>
                             <option v-for="tp in types" :key="tp" :value="tp">{{ t('inscription.type_' + tp) }}</option>
                         </select>
+                        <div v-if="fieldError('type')" class="label">
+                            <span class="label-text-alt text-error">{{ fieldError('type') }}</span>
+                        </div>
                     </label>
 
                     <label class="form-control">
