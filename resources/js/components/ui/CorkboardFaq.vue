@@ -1,35 +1,58 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+const props = defineProps({
+    primaryColor:   { type: String, default: '#E30613' },
+    secondaryColor: { type: String, default: null },
+})
+
 const base = '/images/corkboard/'
 const activeItem = ref(null)
 
-const POSTIT_COLORS = [
-    { bg: '#fef08a', grad: '#fff9b0', dark: '#e8d020' }, // jaune classique
-    { bg: '#ffc2c7', grad: '#ffd8db', dark: '#e89098' }, // rose
-    { bg: '#b8e4ff', grad: '#d4f0ff', dark: '#78c0f0' }, // bleu ciel
-    { bg: '#c8f0a8', grad: '#dff8c4', dark: '#90d858' }, // vert
-    { bg: '#ffd8a8', grad: '#ffe8c4', dark: '#f0a850' }, // orange
-    { bg: '#e0ccff', grad: '#eedeff', dark: '#b090e8' }, // lavande
-    { bg: '#c8f0e0', grad: '#dcf8ec', dark: '#70d0a8' }, // menthe
-    { bg: '#ffe0a8', grad: '#fff0c8', dark: '#f0c060' }, // crème
-    { bg: '#f8c8f0', grad: '#fcddf8', dark: '#e090d8' }, // lilas
+// Génère une teinte d'une couleur hex en la mélangeant avec du blanc (factor 0=original, 1=blanc)
+function tint(hex, factor) {
+    if (!hex || !/^#[0-9A-Fa-f]{6}$/.test(hex)) hex = '#E30613'
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    const t = (c) => Math.round(c + (255 - c) * factor).toString(16).padStart(2, '0')
+    return `#${t(r)}${t(g)}${t(b)}`
+}
+
+// 9 couleurs de post-its dérivées des couleurs de l'entreprise
+const postitColors = computed(() => {
+    const c1 = props.primaryColor   || '#E30613'
+    const c2 = props.secondaryColor || c1
+    // Alterner c1/c2 avec des niveaux de teinte variés pour créer de la diversité
+    const defs = [
+        [c1, 0.76], [c2, 0.72], [c1, 0.63], [c2, 0.68],
+        [c1, 0.82], [c2, 0.78], [c1, 0.70], [c2, 0.60], [c1, 0.58],
+    ]
+    return defs.map(([c, f]) => ({
+        bg:   tint(c, f),
+        grad: tint(c, Math.min(f + 0.10, 0.96)),
+        dark: tint(c, Math.max(f - 0.14, 0.30)),
+    }))
+})
+
+const ITEM_POSITIONS = [
+    { id: 'pourquoi',  faqIndex: 0, rotation: -3,   pos: { left: '6%',  top: '30%', width: '15%' } },
+    { id: 'frequence', faqIndex: 8, rotation: -1.5, pos: { left: '53%', top: '26%', width: '15%' } },
+    { id: 'quantite',  faqIndex: 3, rotation:  2.5, pos: { left: '70%', top: '26%', width: '15%' } },
+    { id: 'a-qui',     faqIndex: 7, rotation:  1.5, pos: { left: '26%', top: '38%', width: '15%' } },
+    { id: 'jeun',      faqIndex: 5, rotation: -1.5, pos: { left: '58%', top: '47%', width: '15%' } },
+    { id: 'sens-mal',  faqIndex: 4, rotation: -2.5, pos: { left: '5%',  top: '63%', width: '15%' } },
+    { id: 'qui-peut',  faqIndex: 6, rotation:  1,   pos: { left: '31%', top: '63%', width: '16%' } },
+    { id: 'mal',       faqIndex: 2, rotation:  2.5, pos: { left: '48%', top: '66%', width: '14%' } },
+    { id: 'temps',     faqIndex: 1, rotation: -1,   pos: { left: '70%', top: '63%', width: '15%' } },
 ]
 
-const items = [
-    { id: 'pourquoi',  faqIndex: 0, rotation: -3,   color: POSTIT_COLORS[0], pos: { left: '6%',  top: '30%', width: '15%' } },
-    { id: 'frequence', faqIndex: 8, rotation: -1.5, color: POSTIT_COLORS[1], pos: { left: '53%', top: '26%', width: '15%' } },
-    { id: 'quantite',  faqIndex: 3, rotation:  2.5, color: POSTIT_COLORS[2], pos: { left: '70%', top: '26%', width: '15%' } },
-    { id: 'a-qui',     faqIndex: 7, rotation:  1.5, color: POSTIT_COLORS[3], pos: { left: '26%', top: '38%', width: '15%' } },
-    { id: 'jeun',      faqIndex: 5, rotation: -1.5, color: POSTIT_COLORS[4], pos: { left: '58%', top: '47%', width: '15%' } },
-    { id: 'sens-mal',  faqIndex: 4, rotation: -2.5, color: POSTIT_COLORS[5], pos: { left: '5%',  top: '63%', width: '15%' } },
-    { id: 'qui-peut',  faqIndex: 6, rotation:  1,   color: POSTIT_COLORS[6], pos: { left: '31%', top: '63%', width: '16%' } },
-    { id: 'mal',       faqIndex: 2, rotation:  2.5, color: POSTIT_COLORS[7], pos: { left: '48%', top: '66%', width: '14%' } },
-    { id: 'temps',     faqIndex: 1, rotation: -1,   color: POSTIT_COLORS[8], pos: { left: '70%', top: '63%', width: '15%' } },
-]
+const items = computed(() =>
+    ITEM_POSITIONS.map((p, i) => ({ ...p, color: postitColors.value[i] }))
+)
 
 const decorations = [
     { svg: 'squared-sheet.svg',  pos: { left: '42%', top: '24%', width: '11%' } },
@@ -40,23 +63,29 @@ const decorations = [
     { svg: 'coupure2presse.svg', pos: { left: '85%', top: '66%', width: '13%' } },
 ]
 
-const mobileGrid = [
-    { type: 'item', id: 'm-0', item: items[0] },
+const MOBILE_GRID_TEMPLATE = [
+    { type: 'item', id: 'm-0',  itemIndex: 0 },
     { type: 'deco', id: 'm-d0', svg: 'polaroid-1.svg' },
     { type: 'deco', id: 'm-d1', svg: 'polaroid-2.svg' },
-    { type: 'item', id: 'm-1', item: items[1] },
-    { type: 'item', id: 'm-2', item: items[2] },
-    { type: 'item', id: 'm-3', item: items[3] },
+    { type: 'item', id: 'm-1',  itemIndex: 1 },
+    { type: 'item', id: 'm-2',  itemIndex: 2 },
+    { type: 'item', id: 'm-3',  itemIndex: 3 },
     { type: 'deco', id: 'm-d2', svg: 'squared-sheet.svg' },
-    { type: 'item', id: 'm-4', item: items[4] },
-    { type: 'item', id: 'm-5', item: items[5] },
+    { type: 'item', id: 'm-4',  itemIndex: 4 },
+    { type: 'item', id: 'm-5',  itemIndex: 5 },
     { type: 'deco', id: 'm-d3', svg: 'polaroid-3.svg' },
-    { type: 'item', id: 'm-6', item: items[6] },
+    { type: 'item', id: 'm-6',  itemIndex: 6 },
     { type: 'deco', id: 'm-d4', svg: '1 don 3 vies.svg' },
-    { type: 'item', id: 'm-7', item: items[7] },
-    { type: 'item', id: 'm-8', item: items[8] },
+    { type: 'item', id: 'm-7',  itemIndex: 7 },
+    { type: 'item', id: 'm-8',  itemIndex: 8 },
     { type: 'deco', id: 'm-d5', svg: 'coupure2presse.svg' },
 ]
+
+const mobileGrid = computed(() =>
+    MOBILE_GRID_TEMPLATE.map(e =>
+        e.type === 'item' ? { ...e, item: items.value[e.itemIndex] } : e
+    )
+)
 
 function open(item) { activeItem.value = item }
 function close()    { activeItem.value = null }

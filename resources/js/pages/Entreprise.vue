@@ -206,7 +206,7 @@ const updateCountdown = () => {
         <!-- C'est quoi le don du sang — Corkboard interactif -->
         <section class="py-8 md:py-10 px-2 md:px-6 bg-base-100" ref="faqRef">
             <div class="max-w-5xl mx-auto reveal-up" :class="{ 'reveal-up--visible': faqVisible }">
-                <CorkboardFaq />
+                <CorkboardFaq :primary-color="c1" :secondary-color="c2" />
             </div>
         </section>
 
