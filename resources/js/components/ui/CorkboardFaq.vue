@@ -84,11 +84,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     <div class="md:hidden cork-frame" style="box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
     <div class="cork-board relative rounded-sm overflow-hidden">
 
-        <!-- Fil rouge -->
-        <div class="absolute inset-0 pointer-events-none"
-             style="background-image: url('/images/corkboard/red-lines.svg'); background-size: 100% auto; background-repeat: repeat-y; z-index: 1; opacity: 0.85;"
-             aria-hidden="true" />
-
         <div class="relative px-3 pt-3 pb-5" style="z-index: 2;">
 
             <!-- En-tête : badge HUG + titre traduit -->
@@ -466,6 +461,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     background: rgba(185, 215, 240, 0.62);
     border-radius: 2px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* ── Overrides mobile ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    .postit {
+        padding: 18% 8% 10%;
+    }
+    .postit-label {
+        font-size: clamp(1.1rem, 6vw, 1.5rem);
+        line-height: 1.2;
+    }
+    .pin {
+        width: 20px;
+        height: 20px;
+        top: 4px;
+    }
 }
 
 /* ── Animations modale ───────────────────────────────────────────── */
