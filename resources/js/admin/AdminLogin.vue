@@ -42,33 +42,63 @@ const submit = async () => {
     <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
         <div class="card bg-base-100 shadow-xl w-full max-w-sm">
             <div class="card-body gap-5">
+                <!-- Header card -->
                 <div class="flex justify-end">
                     <LangSwitcher />
                 </div>
                 <div class="text-center">
-                    <img :src="'/images/hug-logo.svg'" alt="Donnez Votre Sang" class="h-10 mx-auto mb-3">
-                    <p class="text-base-content/50 text-sm">{{ t('admin.login_subtitle') }}</p>
+                    <a href="/">
+                        <img :src="'/images/hug-logo.svg'" alt="HUG" class="h-10 mx-auto mb-4" />
+                    </a>
+                    <div class="bg-brand rounded-lg py-2.5 px-4">
+                        <h1 class="text-white font-bold tracking-widest text-sm uppercase">{{ t('admin.login_title_banner') }}</h1>
+                    </div>
                 </div>
 
                 <div v-if="error" class="alert alert-error text-sm py-2">
                     {{ error }}
                 </div>
 
-                <form class="flex flex-col gap-3" @submit.prevent="submit">
-                    <label class="form-control">
-                        <div class="label py-1"><span class="label-text text-sm">Email</span></div>
-                        <input v-model="email" type="email" required autocomplete="email"
-                            class="input input-bordered input-sm" placeholder="admin@hug-ge.ch">
-                    </label>
+                <form class="flex flex-col gap-4" @submit.prevent="submit">
+                    <div class="form-control">
+                        <label class="label py-1">
+                            <span class="label-text text-sm font-medium">{{ t('admin.login_email_label') }}</span>
+                        </label>
+                        <input
+                            v-model="email"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            class="input input-bordered input-sm"
+                            :placeholder="t('admin.login_email_placeholder')"
+                        />
+                    </div>
 
-                    <label class="form-control">
-                        <div class="label py-1"><span class="label-text text-sm">{{ t('admin.login_password') }}</span></div>
-                        <input v-model="password" type="password" required autocomplete="current-password"
-                            class="input input-bordered input-sm">
-                    </label>
+                    <div class="form-control">
+                        <label class="label py-1">
+                            <span class="label-text text-sm font-medium">{{ t('admin.login_password') }}</span>
+                        </label>
+                        <input
+                            v-model="password"
+                            type="password"
+                            required
+                            autocomplete="current-password"
+                            class="input input-bordered input-sm"
+                            placeholder="••••••"
+                        />
+                        <div class="label pt-1">
+                            <span></span>
+                            <a href="#" class="label-text-alt text-xs underline text-base-content/60 hover:text-brand">
+                                {{ t('admin.login_forgot_password') }}
+                            </a>
+                        </div>
+                    </div>
 
-                    <button type="submit" class="btn bg-brand hover:bg-brand-dark text-white border-none mt-2"
-                        :disabled="loading">
+                    <button
+                        type="submit"
+                        class="btn bg-brand hover:bg-brand-dark text-white border-none mt-1"
+                        :disabled="loading"
+                    >
                         <span v-if="loading" class="loading loading-spinner loading-sm"></span>
                         <span v-else>{{ t('admin.login_submit') }}</span>
                     </button>
