@@ -450,7 +450,20 @@
         "login_title_banner": "ADMIN LOGIN",
         "login_email_label": "Professional email",
         "login_email_placeholder": "example{'@'}mail.com",
-        "login_forgot_password": "Forgot password?"
+        "login_forgot_password": "Forgot password?",
+        "nav_settings": "Settings",
+        "settings_admins_section": "Admin management",
+        "settings_admins_desc": "Administrators have access to the entire management interface.",
+        "settings_admin_name": "Name",
+        "settings_admin_email": "Email",
+        "settings_admin_since": "Added on",
+        "settings_admin_add": "Add an administrator",
+        "settings_admin_password": "Password (min. 8 chars)",
+        "settings_admin_add_btn": "Add",
+        "settings_admin_remove": "Remove",
+        "settings_remove_confirm": "Remove {name} from administrators? This action is irreversible.",
+        "settings_admin_added": "Administrator added successfully.",
+        "settings_you": "you"
     },
     "lang": "EN"
 }

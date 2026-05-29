@@ -450,7 +450,20 @@
         "login_title_banner": "ADMIN-ANMELDUNG",
         "login_email_label": "Geschäftliche E-Mail",
         "login_email_placeholder": "beispiel{'@'}mail.ch",
-        "login_forgot_password": "Passwort vergessen?"
+        "login_forgot_password": "Passwort vergessen?",
+        "nav_settings": "Einstellungen",
+        "settings_admins_section": "Administratorenverwaltung",
+        "settings_admins_desc": "Administratoren haben Zugang zur gesamten Verwaltungsoberfläche.",
+        "settings_admin_name": "Name",
+        "settings_admin_email": "E-Mail",
+        "settings_admin_since": "Hinzugefügt am",
+        "settings_admin_add": "Administrator hinzufügen",
+        "settings_admin_password": "Passwort (mind. 8 Zeichen)",
+        "settings_admin_add_btn": "Hinzufügen",
+        "settings_admin_remove": "Entfernen",
+        "settings_remove_confirm": "Möchten Sie {name} als Administrator entfernen? Diese Aktion ist unwiderruflich.",
+        "settings_admin_added": "Administrator erfolgreich hinzugefügt.",
+        "settings_you": "Sie"
     },
     "lang": "DE"
 }

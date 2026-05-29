@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\EntrepriseController as AdminEntrepriseController;
 use App\Http\Controllers\Api\Admin\ReportController;
 use App\Http\Controllers\Api\Admin\SubmissionController;
+use App\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 // --- Auth ---
@@ -48,4 +49,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::put('campaign-stats', [CampaignStatsController::class, 'update']);
 
     Route::get('report', [ReportController::class, 'show']);
+
+    Route::get('users',         [UserController::class, 'index']);
+    Route::post('users',        [UserController::class, 'store']);
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
 });

@@ -450,7 +450,20 @@
         "login_title_banner": "ACCESSO ADMIN",
         "login_email_label": "Email professionale",
         "login_email_placeholder": "esempio{'@'}mail.it",
-        "login_forgot_password": "Password dimenticata?"
+        "login_forgot_password": "Password dimenticata?",
+        "nav_settings": "Impostazioni",
+        "settings_admins_section": "Gestione degli amministratori",
+        "settings_admins_desc": "Gli amministratori hanno accesso all'intera interfaccia di gestione.",
+        "settings_admin_name": "Nome",
+        "settings_admin_email": "Email",
+        "settings_admin_since": "Aggiunto il",
+        "settings_admin_add": "Aggiungere un amministratore",
+        "settings_admin_password": "Password (min. 8 car.)",
+        "settings_admin_add_btn": "Aggiungere",
+        "settings_admin_remove": "Rimuovere",
+        "settings_remove_confirm": "Rimuovere {name} dagli amministratori? Questa azione è irreversibile.",
+        "settings_admin_added": "Amministratore aggiunto con successo.",
+        "settings_you": "voi"
     },
     "lang": "IT"
 }

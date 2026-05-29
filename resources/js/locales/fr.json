@@ -450,7 +450,20 @@
         "login_title_banner": "CONNEXION ADMIN",
         "login_email_label": "Email professionnel",
         "login_email_placeholder": "exemple{'@'}mail.ch",
-        "login_forgot_password": "Mot de passe oublié ?"
+        "login_forgot_password": "Mot de passe oublié ?",
+        "nav_settings": "Réglages",
+        "settings_admins_section": "Gestion des administrateurs",
+        "settings_admins_desc": "Les administrateurs ont accès à l'ensemble de l'interface de gestion.",
+        "settings_admin_name": "Nom",
+        "settings_admin_email": "Email",
+        "settings_admin_since": "Ajouté le",
+        "settings_admin_add": "Ajouter un administrateur",
+        "settings_admin_password": "Mot de passe (8 car. min.)",
+        "settings_admin_add_btn": "Ajouter",
+        "settings_admin_remove": "Retirer",
+        "settings_remove_confirm": "Retirer {name} des administrateurs ? Cette action est irréversible.",
+        "settings_admin_added": "Administrateur ajouté avec succès.",
+        "settings_you": "vous"
     },
     "lang": "FR"
 }
