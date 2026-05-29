@@ -83,9 +83,8 @@ const logoError = ref(false)
 
             <div class="navbar-start">
                 <a href="/" class="flex items-center">
-                    <img v-if="!logoError" :src="'/images/hug-logo.svg'" alt="HUG"
+                    <img v-if="!logoError" :src="isOpaque ? '/images/hug-logo.svg' : '/images/hug-logo_blanc.svg'" alt="HUG"
                          class="h-9 w-auto nav-logo"
-                         :class="{ 'nav-logo--light': !isOpaque }"
                          @error="logoError = true">
                     <span v-else class="font-bold text-lg" :class="isOpaque ? 'text-brand' : 'text-white'">HUG</span>
                 </a>
@@ -158,8 +157,5 @@ const logoError = ref(false)
 .nav-bar--transparent {
     background-color: transparent;
     border-bottom: 1px solid transparent;
-}
-.nav-logo--light {
-    filter: brightness(0) invert(1);
 }
 </style>

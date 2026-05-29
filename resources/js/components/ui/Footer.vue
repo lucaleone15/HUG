@@ -14,8 +14,8 @@ const logoError = ref(false)
             <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Branding -->
                 <div>
-                    <img v-if="!logoError" :src="'/images/hug-logo.svg'" alt="HUG"
-                        class="h-8 w-auto mb-4 brightness-0 invert"
+                    <img v-if="!logoError" :src="'/images/hug-logo_blanc.svg'" alt="HUG"
+                        class="h-8 w-auto mb-4"
                         @error="logoError = true">
                     <span v-else class="font-bold text-lg mb-4 block text-white">HUG</span>
                     <p class="text-sm text-white/50 leading-relaxed mt-2">{{ t('footer.tagline') }}</p>
@@ -62,12 +62,9 @@ const logoError = ref(false)
 
         <!-- Bottom bar -->
         <div class="border-t border-white/10 px-6 py-4">
-            <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="max-w-5xl mx-auto flex items-center justify-between">
                 <span class="text-xs text-white/30">© {{ year }} HUG</span>
-                <a href="/inscription"
-                    class="btn btn-sm bg-white text-black hover:bg-white/90 border-none text-xs font-semibold rounded-sm uppercase tracking-wide">
-                    {{ t('home.register_cta') }}
-                </a>
+                <a href="/admin" class="text-xs text-white/15 hover:text-white/40 transition-colors">Admin</a>
             </div>
         </div>
 

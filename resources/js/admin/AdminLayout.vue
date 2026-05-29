@@ -101,7 +101,7 @@ const logout = async () => {
                 <!-- Logo -->
                 <div class="px-5 py-4 border-b border-white/10">
                     <a href="/" class="flex items-center gap-2">
-                        <img :src="'/images/hug-logo.svg'" alt="HUG" class="h-7 brightness-0 invert" />
+                        <img :src="'/images/hug-logo_blanc.svg'" alt="HUG" class="h-7" />
                     </a>
                 </div>
 
