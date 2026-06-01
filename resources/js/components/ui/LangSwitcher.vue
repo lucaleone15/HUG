@@ -31,7 +31,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onClickOutside, tr
 <template>
     <div class="relative" ref="containerRef">
         <button
-            class="btn btn-ghost btn-sm text-xs font-mono"
+            class="btn btn-ghost btn-sm text-xs"
             :class="light ? 'text-white hover:text-white hover:bg-white/15' : ''"
             @click="toggle"
             :aria-expanded="isOpen"
@@ -54,7 +54,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onClickOutside, tr
                 style="transform-origin: top right;">
                 <li v-for="lang in SUPPORTED_LOCALES" :key="lang" role="option">
                     <button
-                        class="w-full text-xs font-mono text-center px-2 py-1.5 rounded"
+                        class="w-full text-xs text-center px-2 py-1.5 rounded"
                         :class="locale === lang ? 'font-bold text-brand' : 'text-base-content/70 hover:bg-base-200'"
                         @click="selectLang(lang)"
                     >

@@ -170,7 +170,7 @@ const criteriaIcons = [
                         <span class="text-xs uppercase tracking-[0.2em] text-brand font-semibold">
                             {{ t('trophee.winner_label') }}
                         </span>
-                        <span class="text-xs text-base-content/35 font-mono">{{ previousWinners[0].year }}</span>
+                        <span class="text-xs text-base-content/35">{{ previousWinners[0].year }}</span>
                     </div>
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                         <div class="flex items-center gap-4">
@@ -209,7 +209,7 @@ const criteriaIcons = [
                     <div v-for="w in previousWinners.slice(1)" :key="w.year"
                         class="grid gap-4 px-6 py-4 items-center"
                         style="grid-template-columns: 3.5rem 1fr auto;">
-                        <span class="font-mono text-xs text-base-content/35">{{ w.year }}</span>
+                        <span class="text-xs text-base-content/35">{{ w.year }}</span>
                         <div class="flex items-center gap-3">
                             <span class="w-2.5 h-2.5 rounded-full shrink-0"
                                   :style="`background-color: ${w.color}`"></span>

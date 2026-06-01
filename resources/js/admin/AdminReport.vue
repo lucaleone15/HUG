@@ -100,7 +100,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                             </div>
                             <div class="flex justify-between py-2 text-sm">
                                 <span class="text-base-content/50">{{ t('inscription.contact_email') }}</span>
-                                <span class="font-mono text-xs">{{ data.entreprise.contact_email ?? '—' }}</span>
+                                <span class="text-xs">{{ data.entreprise.contact_email ?? '—' }}</span>
                             </div>
                             <div class="flex justify-between py-2 text-sm">
                                 <span class="text-base-content/50">{{ t('inscription.employee_count') }}</span>

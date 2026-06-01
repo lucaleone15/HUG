@@ -57,7 +57,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="text-lg font-bold truncate">{{ e.name }}</div>
-                            <div class="text-sm text-base-content/40 font-mono truncate">{{ e.slug }}</div>
+                            <div class="text-sm text-base-content/40 truncate">{{ e.slug }}</div>
                         </div>
                         <div class="shrink-0">
                             <StatusBadge :entreprise="e" />
@@ -85,13 +85,13 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                         <div class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded border border-base-300 shrink-0"
                                 :style="`background:${e.primary_color}`"></span>
-                            <span class="font-mono text-xs">{{ e.primary_color }}</span>
+                            <span class="text-xs">{{ e.primary_color }}</span>
                             <span class="text-base-content/50 text-xs">{{ t('admin.form_primary_color') }}</span>
                         </div>
                         <div v-if="e.secondary_color" class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded border border-base-300 shrink-0"
                                 :style="`background:${e.secondary_color}`"></span>
-                            <span class="font-mono text-xs">{{ e.secondary_color }}</span>
+                            <span class="text-xs">{{ e.secondary_color }}</span>
                             <span class="text-base-content/50 text-xs">{{ t('admin.form_secondary_color') }}</span>
                         </div>
                         <span v-else class="text-base-content/30 text-xs self-center">{{ t('admin.show_no_secondary_color') }}</span>
@@ -138,7 +138,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                         </div>
                     </div>
                     <div v-if="e.trophy_rank" class="flex items-center gap-2 mt-1 text-sm">
-                        <span class="font-mono text-brand font-bold">#{{ e.trophy_rank }}</span>
+                        <span class="text-brand font-bold">#{{ e.trophy_rank }}</span>
                         <span class="font-semibold">{{ t('admin.show_trophy_rank', { rank: e.trophy_rank }) }}</span>
                     </div>
                 </div>

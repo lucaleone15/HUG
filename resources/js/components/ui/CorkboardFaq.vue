@@ -11,6 +11,8 @@ const props = defineProps({
 
 const base = '/images/corkboard/'
 const activeItem = ref(null)
+const clickedId  = ref(null)
+const boardRef   = ref(null)
 
 // Génère une teinte d'une couleur hex en la mélangeant avec du blanc (factor 0=original, 1=blanc)
 function tint(hex, factor) {
@@ -22,20 +24,24 @@ function tint(hex, factor) {
     return `#${t(r)}${t(g)}${t(b)}`
 }
 
-// 9 couleurs de post-its dérivées des couleurs de l'entreprise
+// 9 couleurs de post-its : mix couleur(s) de marque + neutres chauds pour la diversité
 const postitColors = computed(() => {
-    const c1 = props.primaryColor   || '#E30613'
-    const c2 = props.secondaryColor || c1
-    // Alterner c1/c2 avec des niveaux de teinte variés pour créer de la diversité
-    const defs = [
-        [c1, 0.76], [c2, 0.72], [c1, 0.63], [c2, 0.68],
-        [c1, 0.82], [c2, 0.78], [c1, 0.70], [c2, 0.60], [c1, 0.58],
+    const c1 = props.primaryColor || '#E30613'
+    const c2 = props.secondaryColor
+    // Neutres chaleureux qui s'harmonisent avec n'importe quelle marque
+    const warm = ['#F7E87A', '#F5C97A', '#B8DFAA', '#D4B8E8', '#F5B8C0', '#A8D8EA']
+    if (c2) {
+        return [
+            { bg: tint(c1, 0.72) }, { bg: tint(c2, 0.70) }, { bg: warm[0] },
+            { bg: tint(c1, 0.62) }, { bg: tint(c2, 0.78) }, { bg: warm[1] },
+            { bg: tint(c1, 0.80) }, { bg: warm[2] },         { bg: tint(c2, 0.65) },
+        ]
+    }
+    return [
+        { bg: tint(c1, 0.72) }, { bg: warm[0] }, { bg: tint(c1, 0.62) },
+        { bg: warm[1] },        { bg: warm[2] }, { bg: tint(c1, 0.80) },
+        { bg: warm[3] },        { bg: warm[4] }, { bg: warm[5] },
     ]
-    return defs.map(([c, f]) => ({
-        bg:   tint(c, f),
-        grad: tint(c, Math.min(f + 0.10, 0.96)),
-        dark: tint(c, Math.max(f - 0.14, 0.30)),
-    }))
 })
 
 const ITEM_POSITIONS = [
@@ -87,13 +93,21 @@ const mobileGrid = computed(() =>
     )
 )
 
-function open(item) { activeItem.value = item }
-function close()    { activeItem.value = null }
+function open(item) {
+    clickedId.value = item.id
+    setTimeout(() => {
+        activeItem.value = item
+        clickedId.value  = null
+    }, 140)
+}
+function close() { activeItem.value = null }
 
 function onKeydown(e) { if (e.key === 'Escape') close() }
+
+let _observer = null
 onMounted(() => {
     window.addEventListener('keydown', onKeydown)
-    // Précharge uniquement les décorations (post-its et fond sont maintenant en CSS)
+
     const assets = ['badge-scotch 1.svg', ...decorations.map(d => d.svg)]
     assets.forEach(name => {
         const link = Object.assign(document.createElement('link'), {
@@ -101,17 +115,37 @@ onMounted(() => {
         })
         document.head.appendChild(link)
     })
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        boardRef.value?.querySelectorAll('.stagger-item')
+            .forEach(el => el.classList.add('is-visible'))
+        return
+    }
+
+    _observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return
+        _observer.disconnect()
+        boardRef.value.querySelectorAll('.stagger-item').forEach((el, i) => {
+            setTimeout(() => el.classList.add('is-visible'), i * 55)
+        })
+    }, { threshold: 0.08 })
+
+    if (boardRef.value) _observer.observe(boardRef.value)
 })
-onUnmounted(() => window.removeEventListener('keydown', onKeydown))
+onUnmounted(() => {
+    window.removeEventListener('keydown', onKeydown)
+    _observer?.disconnect()
+})
 </script>
 
 <template>
+<div ref="boardRef">
 
     <!-- ═══════════════════════════════════
          MOBILE — portrait (< md)
     ═══════════════════════════════════ -->
-    <div class="md:hidden cork-frame" style="box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-    <div class="cork-board relative rounded-sm overflow-hidden">
+    <div class="md:hidden cork-shell">
+    <div class="cork-board relative overflow-hidden">
 
         <div class="relative px-3 pt-3 pb-5" style="z-index: 2;">
 
@@ -136,18 +170,18 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                     <!-- Décoration -->
                     <div v-if="entry.type === 'deco'" class="flex items-center justify-center py-1">
                         <img :src="base + entry.svg" alt=""
-                             class="w-full h-auto block"
+                             class="stagger-item w-full h-auto block"
                              style="filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));"
                              loading="lazy" decoding="async" aria-hidden="true" />
                     </div>
 
                     <!-- Post-it CSS -->
-                    <div v-else class="relative">
-                        <button class="postit-btn w-full border-0 bg-transparent p-0 cursor-pointer block"
+                    <div v-else :class="['relative', { 'postit-pluck': clickedId === entry.item.id }]">
+                        <button class="stagger-item postit-btn w-full border-0 bg-transparent p-0 cursor-pointer block"
                                 :aria-label="t(`entreprise.faq_${entry.item.faqIndex}_q`)"
                                 @click="open(entry.item)">
                             <div class="postit"
-                                 :style="`transform: rotate(${entry.item.rotation}deg); --pi-bg:${entry.item.color.bg}; --pi-grad:${entry.item.color.grad}; --pi-dk:${entry.item.color.dark}`">
+                                 :style="`transform: rotate(${entry.item.rotation}deg); --pi-bg:${entry.item.color.bg}`">
                                 <span class="pin" aria-hidden="true"></span>
                                 <p class="postit-label">{{ t(`entreprise.faq_${entry.item.faqIndex}_short`) }}</p>
                             </div>
@@ -159,13 +193,14 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
         </div>
     </div>
-    </div><!-- /cork-frame mobile -->
+    </div><!-- /mobile -->
+
 
     <!-- ═══════════════════════════════════
          DESKTOP — paysage (≥ md)
     ═══════════════════════════════════ -->
-    <div class="hidden md:block cork-frame" style="box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-    <div class="cork-board relative w-full overflow-hidden rounded-sm"
+    <div class="hidden md:block cork-shell">
+    <div class="cork-board relative w-full overflow-hidden"
          style="aspect-ratio: 1529 / 1025;">
 
         <!-- Fil rouge avec ombre -->
@@ -206,7 +241,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
         <!-- Décorations non-interactives -->
         <img v-for="(d, i) in decorations" :key="i"
              :src="base + d.svg" alt=""
-             class="absolute pointer-events-none"
+             class="stagger-item absolute pointer-events-none"
              :style="{ left: d.pos.left, top: d.pos.top, width: d.pos.width, zIndex: 2 }"
              loading="lazy" decoding="async" aria-hidden="true" />
 
@@ -215,15 +250,15 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
         <!-- Post-its CSS — z-index 4 (sous le fil) -->
         <div v-for="item in items" :key="item.id"
-             class="absolute"
+             :class="['absolute', { 'postit-pluck': clickedId === item.id }]"
              :style="{ left: item.pos.left, top: item.pos.top, width: item.pos.width, zIndex: 4 }">
-            <button class="postit-btn w-full border-0 bg-transparent p-0 cursor-pointer block
+            <button class="stagger-item postit-btn w-full border-0 bg-transparent p-0 cursor-pointer block
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600
                            focus-visible:ring-offset-1 rounded-sm"
                     :aria-label="t(`entreprise.faq_${item.faqIndex}_q`)"
                     @click="open(item)">
                 <div class="postit"
-                     :style="`transform: rotate(${item.rotation}deg); --pi-bg:${item.color.bg}; --pi-grad:${item.color.grad}; --pi-dk:${item.color.dark}`">
+                     :style="`transform: rotate(${item.rotation}deg); --pi-bg:${item.color.bg}`">
                     <p class="postit-label">{{ t(`entreprise.faq_${item.faqIndex}_short`) }}</p>
                 </div>
             </button>
@@ -245,7 +280,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
         />
 
     </div>
-    </div><!-- /cork-frame desktop -->
+    </div><!-- /desktop -->
+
+</div><!-- /boardRef -->
 
     <!-- ═══════════════════════════════════
          MODALE réponse
@@ -255,7 +292,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
             <div v-if="activeItem"
                  class="fixed inset-0 flex items-center justify-center p-4"
                  style="z-index: 9999;" @click="close">
-                <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+                <div class="modal-backdrop absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
                 <div class="notebook-card relative w-full mx-4" style="max-width: 420px;" @click.stop>
                     <div class="tape"></div>
                     <button class="absolute top-4 right-4 w-7 h-7 flex items-center justify-center
@@ -277,50 +314,59 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
 </template>
 
+
 <style scoped>
-/* ── Cadre bois ──────────────────────────────────────────────────── */
-.cork-frame {
-    background:
-        repeating-linear-gradient(
-            92deg,
-            transparent, transparent 3px,
-            rgba(255,255,255,0.04) 3px, rgba(255,255,255,0.04) 4px
-        ),
-        linear-gradient(145deg, #8b5e38 0%, #5c3820 28%, #7a4e2a 56%, #4a2e14 78%, #6b4228 100%);
-    padding: 16px;
-    border-radius: 14px;
+/* ── Ombre + lift corkboard ──────────────────────────────────────── */
+.cork-shell {
+    border-radius: 12px;
     box-shadow:
-        inset 0 2px 4px rgba(255,255,255,0.08),
-        inset 0 -3px 8px rgba(0,0,0,0.4);
+        0 2px 4px rgba(0,0,0,0.08),
+        0 8px 24px rgba(0,0,0,0.14),
+        0 24px 64px rgba(0,0,0,0.22),
+        0 48px 96px rgba(0,0,0,0.12);
+    transition:
+        box-shadow 400ms cubic-bezier(0.23,1,0.32,1),
+        transform   400ms cubic-bezier(0.23,1,0.32,1);
+}
+@media (hover: hover) and (pointer: fine) {
+    .cork-shell:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 2px 4px rgba(0,0,0,0.10),
+            0 12px 32px rgba(0,0,0,0.18),
+            0 32px 80px rgba(0,0,0,0.26),
+            0 64px 120px rgba(0,0,0,0.14);
+    }
 }
 
-/* ── Fond liège texturé ──────────────────────────────────────────── */
+/* ── Stagger d'entrée ────────────────────────────────────────────── */
+.stagger-item {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity  500ms cubic-bezier(0.23,1,0.32,1),
+        transform 500ms cubic-bezier(0.23,1,0.32,1);
+}
+.stagger-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Pluck au clic ───────────────────────────────────────────────── */
+@keyframes pluck {
+    0%   { transform: translateY(0)    scale(1); }
+    55%  { transform: translateY(-12px) scale(1.06); }
+    100% { transform: translateY(-6px)  scale(1.03); }
+}
+.postit-pluck {
+    animation: pluck 140ms cubic-bezier(0.23,1,0.32,1) forwards;
+}
+
+/* ── Fond board ──────────────────────────────────────────────────── */
 .cork-board {
-    background-color: #c8975e;
-    background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E"),
-        repeating-linear-gradient(
-            74deg,
-            transparent 0, transparent 4px,
-            rgba(130,78,20,0.09) 4px, rgba(130,78,20,0.09) 5px
-        ),
-        repeating-linear-gradient(
-            160deg,
-            transparent 0, transparent 7px,
-            rgba(190,132,55,0.06) 7px, rgba(190,132,55,0.06) 8px
-        ),
-        repeating-linear-gradient(
-            35deg,
-            transparent 0, transparent 11px,
-            rgba(110,62,15,0.04) 11px, rgba(110,62,15,0.04) 12px
-        ),
-        radial-gradient(ellipse 45% 35% at 18% 22%, rgba(210,165,92,0.5) 0%, transparent 68%),
-        radial-gradient(ellipse 38% 28% at 82% 78%, rgba(140,82,22,0.42) 0%, transparent 68%),
-        radial-gradient(ellipse 32% 38% at 52% 48%, rgba(178,122,50,0.22) 0%, transparent 68%),
-        radial-gradient(ellipse 22% 28% at 72% 16%, rgba(152,98,32,0.38) 0%, transparent 68%),
-        radial-gradient(ellipse 30% 24% at 20% 82%, rgba(205,155,80,0.3) 0%, transparent 68%),
-        radial-gradient(ellipse 18% 20% at 90% 30%, rgba(160,105,40,0.28) 0%, transparent 68%);
-    box-shadow: inset 0 2px 8px rgba(70,35,5,0.25);
+    background-image: url('/images/corkboard/board-bg.webp');
+    background-size: cover;
+    background-position: center;
 }
 
 /* ── Titre (remplace title.svg) ──────────────────────────────────── */
@@ -362,69 +408,64 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 .cork-tape-r { right: 11%; transform: rotate(6deg); }
 
 .cork-title-text {
-    font-family: 'Permanent Marker', 'Arial Black', cursive;
-    font-weight: 400;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
     text-transform: uppercase;
     text-align: center;
-    font-size: clamp(0.9rem, 3.2vw, 2.7rem);
-    letter-spacing: 0.03em;
-    color: #1a1200;
+    font-size: clamp(0.75rem, 2.0vw, 1.6rem);
+    letter-spacing: 0.12em;
+    color: #1a0a0a;
     line-height: 1.1;
-    text-shadow: 1px 2px 0 rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,200,0.5);
 }
 
 /* ── Post-its CSS (couleur via CSS vars) ─────────────────────────── */
 .postit {
-    --pi-bg:   #fef08a;
-    --pi-grad: #fff9b0;
-    --pi-dk:   #e8d020;
-    background-color: var(--pi-bg);
-    background-image:
-        /* réglure légère */
-        repeating-linear-gradient(
-            0deg,
-            transparent 0, transparent 22px,
-            rgba(0,0,0,0.055) 22px, rgba(0,0,0,0.055) 23px
-        ),
-        /* bruit papier */
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.06'/%3E%3C/svg%3E"),
-        /* dégradé directionnel */
-        linear-gradient(155deg, var(--pi-grad) 0%, var(--pi-bg) 48%, var(--pi-dk) 100%);
+    --pi-bg: #fef08a;
+    background: linear-gradient(175deg, rgba(255,255,255,0.30) 0%, transparent 42%), var(--pi-bg);
     box-shadow:
-        6px 12px 32px rgba(0,0,0,0.5),
-        2px 3px 8px rgba(0,0,0,0.25),
-        inset 0 1px 0 rgba(255,255,255,0.75);
+        0 10px 28px rgba(0,0,0,0.28),
+        0 3px 8px rgba(0,0,0,0.16),
+        inset 0 -3px 0 rgba(0,0,0,0.10);
     display: flex;
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
-    padding: 24% 10% 14%;
+    padding: 28% 10% 12%;
     position: relative;
+    border-radius: 3px;
 }
 .postit-label {
-    font-family: 'Permanent Marker', 'Arial Black', cursive;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
     font-size: clamp(0.52rem, 1.18vw, 0.92rem);
     text-align: center;
-    color: #181000;
+    color: rgba(0,0,0,0.65);
     line-height: 1.28;
     overflow-wrap: break-word;
     hyphens: auto;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.35);
     position: relative;
     z-index: 1;
-    letter-spacing: 0.005em;
+    letter-spacing: 0.01em;
 }
 
 /* ── Bouton post-it hover ────────────────────────────────────────── */
-.postit-btn { transition: transform 180ms cubic-bezier(0.23,1,0.32,1), filter 180ms ease; }
-.postit-btn:active { transform: scale(0.95) !important; }
-@media (hover: hover) {
+.postit-btn { cursor: pointer; }
+.postit {
+    transition:
+        transform 200ms cubic-bezier(0.23,1,0.32,1),
+        box-shadow 200ms cubic-bezier(0.23,1,0.32,1);
+}
+.postit-btn:active .postit {
+    transform: scale(0.96);
+    transition-duration: 120ms;
+}
+@media (hover: hover) and (pointer: fine) {
     .postit-btn:hover .postit {
-        transform: scale(1.10) rotate(-2deg) translateY(-4px) !important;
+        transform: scale(1.08) rotate(-1deg) translateY(-6px);
         box-shadow:
-            10px 20px 48px rgba(0,0,0,0.55),
-            3px 5px 12px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.75) !important;
+            0 20px 48px rgba(0,0,0,0.32),
+            0 6px 14px rgba(0,0,0,0.18),
+            inset 0 -3px 0 rgba(0,0,0,0.10);
     }
 }
 
@@ -432,65 +473,38 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 .pin {
     display: block;
     position: absolute;
-    top: 5px;
+    top: -11px;
     left: 50%;
     transform: translateX(-50%);
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: radial-gradient(circle at 33% 26%, #ffcccc 0%, #f04040 25%, #b00000 58%, #4a0000 100%);
+    background: #D32C37;
     box-shadow:
-        0 4px 14px rgba(0,0,0,0.75),
-        0 1px 4px rgba(0,0,0,0.45),
-        inset 0 2px 4px rgba(255,200,200,0.55),
-        inset 0 -2px 3px rgba(0,0,0,0.35);
+        0 4px 12px rgba(0,0,0,0.45),
+        0 1px 4px rgba(0,0,0,0.25),
+        inset 0 2px 3px rgba(255,255,255,0.25);
     pointer-events: none;
     z-index: 10;
 }
-/* Reflet spéculaire */
-.pin::before {
-    content: '';
-    position: absolute;
-    top: 18%; left: 22%;
-    width: 30%; height: 28%;
-    background: radial-gradient(ellipse, rgba(255,255,255,0.7) 0%, transparent 100%);
-    border-radius: 50%;
-}
-/* Tige + ombre portée sur le post-it */
 .pin::after {
     content: '';
     position: absolute;
-    top: 82%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3.5px;
-    height: 14px;
-    background: linear-gradient(to bottom, #aaa 0%, #555 60%, #333 100%);
-    border-radius: 0 0 2px 2px;
-    box-shadow: 1px 2px 5px rgba(0,0,0,0.5);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.20);
 }
 
-/* ── Carte réponse (style carnet à carreaux) ─────────────────────── */
+/* ── Carte réponse ───────────────────────────────────────────────── */
 .notebook-card {
-    background-color: #fdf8e8;
-    background-image: linear-gradient(#ddd8be 1px, transparent 1px);
-    background-size: 100% 28px;
-    background-position: 0 40px;
-    border-radius: 3px;
-    box-shadow: 0 12px 48px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.06);
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08);
 }
-.tape {
-    position: absolute;
-    top: -13px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 76px;
-    height: 26px;
-    background: rgba(185, 215, 240, 0.62);
-    border-radius: 2px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
+.tape { display: none; }
 
 /* ── Overrides mobile ────────────────────────────────────────────── */
 @media (max-width: 767px) {
@@ -504,20 +518,51 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     .pin {
         width: 20px;
         height: 20px;
-        top: 4px;
+        top: -10px;
     }
 }
 
-/* ── Animations modale ───────────────────────────────────────────── */
-.modal-enter-active { transition: opacity 200ms ease; }
-.modal-enter-active .notebook-card {
-    transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease;
+/* ── Pin hover (mobile — pin dans le bouton) ─────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+    .postit-btn:hover .pin {
+        transform: translateX(-50%) scale(1.2);
+        transition: transform 200ms cubic-bezier(0.23,1,0.32,1);
+    }
 }
-.modal-leave-active { transition: opacity 180ms ease; }
+
+/* ── Backdrop modale ─────────────────────────────────────────────── */
+.modal-backdrop {
+    transition: opacity 220ms ease-out, backdrop-filter 220ms ease-out;
+}
+.modal-enter-from .modal-backdrop,
+.modal-leave-to   .modal-backdrop { opacity: 0; backdrop-filter: blur(0px); }
+
+/* ── Animations modale ───────────────────────────────────────────── */
+.modal-enter-active { transition: opacity 220ms ease-out; }
+.modal-enter-active .notebook-card {
+    transition: transform 260ms cubic-bezier(0.23,1,0.32,1), opacity 220ms ease-out;
+}
+.modal-leave-active { transition: opacity 160ms ease-in; }
 .modal-leave-active .notebook-card {
-    transition: transform 160ms ease, opacity 160ms ease;
+    transition: transform 140ms ease-in, opacity 140ms ease-in;
 }
 .modal-enter-from, .modal-leave-to { opacity: 0; }
-.modal-enter-from .notebook-card { transform: scale(0.87) translateY(12px); opacity: 0; }
-.modal-leave-to .notebook-card    { transform: scale(0.93) translateY(6px); opacity: 0; }
+.modal-enter-from .notebook-card { transform: scale(0.95) translateY(8px); opacity: 0; }
+.modal-leave-to .notebook-card    { transform: scale(0.97) translateY(4px); opacity: 0; }
+
+/* ── Reduced motion ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .cork-shell { transition: none; }
+    .cork-shell:hover { transform: none; }
+    .stagger-item { opacity: 1; transform: none; transition: none; }
+    .postit-pluck { animation: none; }
+    .postit { transition: none; }
+    .modal-backdrop { transition: opacity 100ms ease; }
+    .modal-enter-active,
+    .modal-leave-active { transition: opacity 100ms ease; }
+    .modal-enter-active .notebook-card,
+    .modal-leave-active .notebook-card { transition: opacity 100ms ease; }
+    .modal-enter-from .notebook-card,
+    .modal-leave-to .notebook-card { transform: none; }
+}
 </style>

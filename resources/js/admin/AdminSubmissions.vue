@@ -106,7 +106,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                                     <span v-else class="badge badge-ghost badge-sm">—</span>
                                 </td>
                                 <td class="text-sm text-base-content/60 whitespace-nowrap">{{ fmt(s.completed_at) }}</td>
-                                <td class="font-mono text-xs text-base-content/30 max-w-[100px] truncate">{{ s.id }}</td>
+                                <td class="text-xs text-base-content/30 max-w-[100px] truncate">{{ s.id }}</td>
                             </tr>
                         </tbody>
                     </table>
