@@ -253,19 +253,19 @@ const goToContact = () => { window.location.href = '/contact' }
 .topbar-back-btn {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
-    border: 2px solid #333;
+    border-radius: 0;
+    border: none;
     background: transparent;
-    color: rgba(255,255,255,0.7);
+    color: #e53e3e;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
-    transition: border-color 150ms, color 150ms;
+    transition: color 150ms;
     text-decoration: none;
 }
-.topbar-back-btn:hover { border-color: #666; color: white; }
+.topbar-back-btn:hover { color: #c53030; }
 .topbar-pct {
     font-size: 12px;
     font-weight: 600;

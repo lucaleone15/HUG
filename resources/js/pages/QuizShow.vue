@@ -650,8 +650,9 @@ const goBack = () => {
     width: 36px;
     height: 36px;
     border: none;
+    border-radius: 0;
     background: transparent;
-    color: rgba(255,255,255,0.5);
+    color: #e53e3e;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -659,7 +660,7 @@ const goBack = () => {
     transition: color 150ms;
     flex-shrink: 0;
 }
-.intro-close-btn:hover { color: white; }
+.intro-close-btn:hover { color: #c53030; }
 
 /* ═══════════════════════════════════════════════════════════════════
    INTRO — grid layout
