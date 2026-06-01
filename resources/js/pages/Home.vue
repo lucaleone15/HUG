@@ -57,8 +57,7 @@ const steps = computed(() => [
         <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 py-20 overflow-hidden">
 
             <!-- Image — calque séparé pour Ken Burns -->
-            <div class="hero-bg absolute inset-0"
-                 style="background-image: url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center 35%;"></div>
+            <div class="hero-bg absolute inset-0"></div>
 
             <!-- Scrim directionnel -->
             <div class="absolute inset-0 pointer-events-none"
@@ -69,9 +68,9 @@ const steps = computed(() => [
                     {{ t('home.edition_badge', { year: new Date().getFullYear() }) }}
                 </span>
                 <h1 class="font-extrabold leading-[1.0] tracking-tight text-white mb-7"
-                    style="font-size: clamp(2.75rem, 6vw, 4.5rem);">
+                    style="font-size: clamp(2rem, 6vw, 4.5rem);">
                     <span class="h-line1 block">{{ t('home.hero_line1') }}</span>
-                    <span class="h-line2 block">{{ t('home.hero_line2') }} <span class="h-highlight text-brand">{{ t('home.hero_highlight') }}</span></span>
+                    <span class="h-line2 block"><template v-if="t('home.hero_line2')">{{ t('home.hero_line2') }} </template><span class="h-highlight text-brand">{{ t('home.hero_highlight') }}</span></span>
                 </h1>
                 <p class="h-sub text-white/55 mb-10 leading-relaxed"
                    style="font-size: clamp(1rem, 1.5vw, 1.075rem); max-width: 42ch;">
@@ -250,8 +249,15 @@ const steps = computed(() => [
 <style scoped>
 /* ── Hero : Ken Burns ──────────────────────────────────────────────────── */
 .hero-bg {
+    background-image: url('/images/home-background.webp');
+    background-size: cover;
+    background-position: 68% center;
     animation: hero-zoom 8s cubic-bezier(0.25, 0, 0, 1) forwards;
     will-change: transform;
+}
+/* Sur mobile, recentre pour que la goutte reste visible */
+@media (max-width: 640px) {
+    .hero-bg { background-position: 80% center; }
 }
 @keyframes hero-zoom {
     from { transform: scale(1.06); }
