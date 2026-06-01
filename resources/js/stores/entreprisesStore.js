@@ -2,9 +2,9 @@ import { ref } from 'vue'
 import { useApi } from '../composables/useApi.js'
 
 const entreprises = ref([])
-const loading     = ref(false)
-const error       = ref(null)
-const loaded      = ref(false)
+const loading = ref(false)
+const error = ref(null)
+const loaded = ref(false)
 
 export function useEntreprisesStore() {
     const api = useApi()
@@ -13,16 +13,16 @@ export function useEntreprisesStore() {
         if (loaded.value) return
 
         loading.value = true
-        error.value   = null
+        error.value = null
 
         try {
-            const res         = await api.get('/admin/entreprises?per_page=100')
+            const res = await api.get('/admin/entreprises?per_page=100')
             entreprises.value = res.data
-            loaded.value      = true
+            loaded.value = true
         } catch (e) {
             error.value = e.message ?? 'Erreur inconnue'
         } finally {
-            loading.value = false
+            loading.value = falseS
         }
     }
 

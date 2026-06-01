@@ -54,6 +54,7 @@ class ReportController extends Controller
             'employee_count' => $entreprise->employee_count,
             'contact_name'   => $entreprise->contact_name,
             'contact_email'  => $entreprise->contact_email,
+            'logo_data_uri'  => $this->logoToDataUri($entreprise->logo_url),
         ];
 
         $participationData = [
@@ -95,6 +96,28 @@ class ReportController extends Controller
             'participation' => $participationData,
             'behavior'      => $behaviorData,
         ]);
+    }
+
+    /**
+     * Convertit le logo d'une entreprise (URL storage) en data URI base64.
+     * DomPDF ne peut pas résoudre les URLs relatives — on lit le fichier local.
+     */
+    private function logoToDataUri(?string $logoUrl): ?string
+    {
+        if (!$logoUrl) return null;
+
+        $localPath = public_path(parse_url($logoUrl, PHP_URL_PATH));
+        if (!file_exists($localPath)) return null;
+
+        $ext  = strtolower(pathinfo($localPath, PATHINFO_EXTENSION));
+        $mime = match ($ext) {
+            'png'  => 'image/png',
+            'webp' => 'image/webp',
+            'gif'  => 'image/gif',
+            default => 'image/jpeg',
+        };
+
+        return 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($localPath));
     }
 
     /**
