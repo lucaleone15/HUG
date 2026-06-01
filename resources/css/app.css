@@ -195,4 +195,33 @@
     --color-error-content:   #C8040E;  /* Rouge erreur — foncé / hover             */
     --color-info:            #04BDFB;  /* Bleu info — base                         */
     --color-info-content:    #0497C8;  /* Bleu info — foncé / hover                */
+    --color-warning:         #B8620A;  /* Orange avertissement                     */
+
+    /* ─── Quiz — fond sombre ─────────────────────────────────────────────────── */
+    --color-quiz-bg:             #0D0D0D;
+    --color-quiz-track:          #2A2A2A;
+    --color-quiz-control-border: #333333;
+    --color-quiz-control-hover:  #666666;
+
+    /* ─── Document / Dossier — système papier parchemin ─────────────────────── */
+    --color-doc-paper:        #EDE4C8;
+    --color-doc-paper-light:  #F0E8D0;
+    --color-doc-folder:       #C9A96E;
+    --color-doc-border:       #C4B080;
+    --color-doc-border-alt:   #C4A674;
+    --color-doc-border-dark:  #9A7A40;
+
+    /* ─── Document — échelle d'encre ────────────────────────────────────────── */
+    --color-doc-ink:       #1A1A1A;
+    --color-doc-ink-deep:  #5A4A30;
+    --color-doc-ink-mid:   #7A6A50;
+    --color-doc-ink-muted: #8A7A60;
+
+    /* ─── Document — teintes composites (rgba) ──────────────────────────────── */
+    --color-doc-tape:         rgba(210, 200, 175, 0.55);
+    --color-doc-glow-warm:    rgba(200, 165,  90, 0.10);
+    --color-doc-glow-cool:    rgba(175, 140,  75, 0.07);
+    --color-doc-check-hover:  rgba(180, 155, 100, 0.15);
+    --color-doc-check-on:     rgba(180, 155, 100, 0.20);
+    --color-doc-lines-shadow: rgba( 90,  70,  40, 0.15);
 }
