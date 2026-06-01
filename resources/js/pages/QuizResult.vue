@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sendAnalytics } from '../composables/useAnalytics.js'
 import BaseButton from '../components/ui/BaseButton.vue'
@@ -18,7 +18,13 @@ const copied          = ref(false)
 const messageCopied   = ref(false)
 const shareUrl        = `${window.location.origin}/c/${props.entreprise.slug}`
 const dossierCode     = 'SANG-' + new Date().getFullYear().toString().slice(-2)
-const intakeYear      = new Date().getFullYear()
+
+const formattedDate = computed(() => {
+    if (!props.entreprise.rdv_date) return null
+    return new Date(props.entreprise.rdv_date).toLocaleDateString('fr-CH', {
+        day: 'numeric', month: 'long', year: 'numeric',
+    })
+})
 
 const onRdvClick = () => sendAnalytics('rdv_clicked', props.entreprise.id, null, {})
 
@@ -39,29 +45,30 @@ const whatsappHref = computed(() => {
     const text = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
     return `https://wa.me/?text=${text}`
 })
-
-onMounted(() => {
-    sendAnalytics('quiz_completed', props.entreprise.id, null, { is_eligible: eligible })
-})
 </script>
 
 <template>
 <div class="result-root">
 
-    <!-- ── Top bar ───────────────────────────────────────────────────────── -->
+    <!-- ── Top bar (progress at 100%) ──────────────────────────────────────── -->
     <header class="result-topbar">
-        <a href="/" class="topbar-back-btn" aria-label="Retour à l'accueil">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </a>
-        <span class="result-topbar-label">Dossier clôturé — résultat</span>
+        <div class="topbar-progress" aria-hidden="true">
+            <div class="topbar-progress-fill"></div>
+        </div>
+        <div class="topbar-controls">
+            <a href="/" class="topbar-back-btn" :aria-label="t('result.back_home')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <span class="topbar-pct">100%</span>
+        </div>
     </header>
 
-    <!-- ── Main ──────────────────────────────────────────────────────────── -->
+    <!-- ── Main ──────────────────────────────────────────────────────────────── -->
     <main class="result-main">
 
-        <!-- DOSSIER AGENT card -->
+        <!-- Dossier Agent card -->
         <div class="dossier-wrapper">
 
             <!-- Tab desktop -->
@@ -78,117 +85,73 @@ onMounted(() => {
 
                 <!-- Card header -->
                 <div class="dossier-header">
-                    <h1 class="dossier-title">DOSSIER AGENT</h1>
+                    <h1 class="dossier-title">Dossier Agent</h1>
                 </div>
                 <div class="dossier-rule"></div>
 
-                <!-- Two-column body -->
+                <!-- Body: narrative left, portrait right -->
                 <div class="dossier-body">
 
-                    <!-- LEFT: form fields -->
-                    <div class="dossier-fields">
-                        <div class="df">
-                            <span class="df-key">NAME :</span>
-                            <span class="df-line"></span>
-                        </div>
-                        <div class="df">
-                            <span class="df-key">D.O.B. :</span>
-                            <span class="df-val df-muted">__ / __ / ____</span>
-                        </div>
-                        <div class="df">
-                            <span class="df-key">PLACE OF BIRTH :</span>
-                            <span class="df-line"></span>
-                        </div>
-                        <div class="df">
-                            <span class="df-key">ETHNICITY :</span>
-                            <span class="df-line"></span>
-                        </div>
-                        <div class="df-row">
-                            <div class="df flex-1">
-                                <span class="df-key">AGE :</span>
-                                <span class="df-line"></span>
+                    <!-- LEFT: narrative text + reasons + action inside dossier -->
+                    <div class="dossier-narrative">
+                        <template v-if="eligible">
+                            <p class="narrative-text">{{ t('result.eligible_narrative') }}</p>
+                            <!-- RDV button inside dossier -->
+                            <div v-if="entreprise.rdv_url" class="dossier-action-block">
+                                <p v-if="formattedDate" class="dossier-action-date">
+                                    {{ t('entreprise.collect_date') }} : <strong>{{ formattedDate }}</strong>
+                                </p>
+                                <a :href="entreprise.rdv_url" target="_blank" rel="noopener noreferrer"
+                                   class="dossier-action-btn dossier-action-btn--rdv"
+                                   @click="onRdvClick">
+                                    {{ t('result.rdv_cta') }}
+                                </a>
                             </div>
-                            <div class="df flex-1">
-                                <span class="df-key">SEX :</span>
-                                <span class="df-line"></span>
+                        </template>
+                        <template v-else>
+                            <p class="narrative-text">{{ t('result.ineligible_narrative_p1') }}</p>
+                            <div v-if="reasons.length > 0" class="dossier-reasons">
+                                <p class="dossier-reasons-title">{{ t('result.ineligible_reasons_title') }} :</p>
+                                <ul class="dossier-reasons-list">
+                                    <li v-for="(r, i) in reasons" :key="i" class="dossier-reason-item">
+                                        <span class="reason-bullet">•</span>
+                                        <span>{{ r }}</span>
+                                    </li>
+                                </ul>
+                                <!-- Contact link inside dossier -->
+                                <div class="dossier-action-block">
+                                    <a href="/contact" class="dossier-action-btn dossier-action-btn--contact">
+                                        {{ t('result.contact_box_cta') }}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="df-row">
-                            <div class="df flex-1">
-                                <span class="df-key">HAIR :</span>
-                                <span class="df-line"></span>
-                            </div>
-                            <div class="df flex-1">
-                                <span class="df-key">EYES :</span>
-                                <span class="df-line"></span>
-                            </div>
-                        </div>
-                        <div class="df-row">
-                            <div class="df flex-1">
-                                <span class="df-key">HEIGHT :</span>
-                                <span class="df-line"></span>
-                            </div>
-                            <div class="df flex-1">
-                                <span class="df-key">WEIGHT :</span>
-                                <span class="df-line"></span>
-                            </div>
-                        </div>
-                        <div class="dossier-rule my-2"></div>
-                        <div class="df">
-                            <span class="df-key">STATUS :</span>
-                            <span :class="['df-status', eligible ? 'df-status--ok' : 'df-status--ko']">
-                                {{ eligible ? 'ÉLIGIBLE AU DON' : 'NON ÉLIGIBLE AU DON' }}
-                            </span>
-                        </div>
-                        <div class="dossier-rule my-2"></div>
-                        <div class="df">
-                            <span class="df-key">LOCATION :</span>
-                            <span class="df-val">GENÈVE — SUISSE</span>
-                        </div>
-                        <div class="dossier-rule my-2"></div>
-                        <div class="df">
-                            <span class="df-key">INTAKE DATE :</span>
-                            <span class="df-val df-muted">__ / __ / {{ intakeYear }}</span>
-                        </div>
+                            <p v-if="needsEvaluation" class="narrative-text narrative-text--gap narrative-text--info">
+                                {{ t('result.needs_evaluation_message') }}
+                            </p>
+                            <p class="narrative-text narrative-text--gap">{{ t('result.ineligible_narrative_p2') }}</p>
+                        </template>
                     </div>
 
-                    <!-- RIGHT: illustration + fingerprints -->
+                    <!-- RIGHT: portrait + fingerprints -->
                     <div class="dossier-right-col">
+
                         <!-- Photo frame -->
                         <div class="photo-frame">
-                            <svg viewBox="0 0 140 190" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                                <rect width="140" height="190" fill="#E4D8B8"/>
-                                <!-- Body -->
-                                <path d="M18 150 L32 115 Q70 106 108 115 L122 150 L122 190 L18 190 Z" fill="#4A4A4A"/>
-                                <!-- Shirt collar -->
-                                <path d="M57 115 L70 126 L83 115" fill="none" stroke="#E4D8B8" stroke-width="3"/>
-                                <!-- Neck -->
-                                <rect x="62" y="107" width="16" height="13" fill="#C4A078" rx="1"/>
-                                <!-- Head -->
-                                <ellipse cx="70" cy="78" rx="30" ry="32" fill="#C4A078"/>
-                                <!-- Ears -->
-                                <ellipse cx="40" cy="78" rx="5" ry="7" fill="#C4A078"/>
-                                <ellipse cx="100" cy="78" rx="5" ry="7" fill="#C4A078"/>
-                                <!-- Flat cap -->
-                                <path d="M39 60 Q70 38 101 60 L101 66 Q70 48 39 66 Z" fill="#2A1608"/>
-                                <rect x="37" y="60" width="66" height="11" rx="2" fill="#2A1608"/>
-                                <!-- Eyes -->
-                                <ellipse cx="58" cy="82" rx="5" ry="4.5" fill="#3A2008"/>
-                                <ellipse cx="82" cy="79" rx="4" ry="3.5" fill="#3A2008"/>
-                                <!-- Eye highlights -->
-                                <circle cx="60" cy="80.5" r="1.5" fill="white" opacity="0.6"/>
-                                <circle cx="83.5" cy="77.5" r="1.2" fill="white" opacity="0.6"/>
-                                <!-- Nose hint -->
-                                <path d="M70 88 Q67 95 62 97 Q70 99 78 97 Q73 95 70 88" fill="none" stroke="#9A7050" stroke-width="1.2"/>
-                                <!-- Mouth -->
-                                <path d="M62 105 Q70 109 78 105" stroke="#7A5030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                            <div class="photo-tape"></div>
+                            <svg viewBox="0 0 140 165" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+                                <rect width="140" height="165" fill="#EDE8D4"/>
+                                <!-- body / shoulders -->
+                                <path d="M8 148 L22 110 Q70 100 118 110 L132 148 L132 165 L8 165 Z" fill="#1A1A1A"/>
+                                <!-- neck -->
+                                <rect x="62" y="102" width="16" height="12" fill="#1A1A1A" rx="1"/>
+                                <!-- head -->
+                                <circle cx="70" cy="68" r="34" fill="#1A1A1A"/>
                             </svg>
-                            <p class="photo-caption">CONFIDENTIEL — USAGE INTERNE</p>
                         </div>
 
                         <!-- Fingerprints -->
                         <div class="fp-box">
-                            <p class="fp-title">EMPREINTES DIGITALES</p>
+                            <p class="fp-title">Empreintes digitales</p>
                             <div class="fp-pair">
                                 <div class="fp-item">
                                     <svg viewBox="0 0 56 64" fill="none" stroke="#2A1A0A" stroke-width="0.9" class="fp-svg">
@@ -206,7 +169,7 @@ onMounted(() => {
                                         <path d="M9 43c2 8 10 16 19 17M47 43c-2 8-10 16-19 17"/>
                                         <path d="M4 35c1 10 11 22 24 24M52 35c-1 10-11 22-24 24"/>
                                     </svg>
-                                    <p class="fp-label">INDEX GAUCHE</p>
+                                    <p class="fp-label">Index gauche</p>
                                 </div>
                                 <div class="fp-item">
                                     <svg viewBox="0 0 56 64" fill="none" stroke="#2A1A0A" stroke-width="0.9" class="fp-svg">
@@ -224,105 +187,42 @@ onMounted(() => {
                                         <path d="M9 43c2 8 10 16 19 17M47 43c-2 8-10 16-19 17"/>
                                         <path d="M4 35c1 10 11 22 24 24M52 35c-1 10-11 22-24 24"/>
                                     </svg>
-                                    <p class="fp-label">INDEX DROITE</p>
+                                    <p class="fp-label">Index droite</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div><!-- /dossier-right-col -->
+                </div><!-- /dossier-body -->
 
-                <!-- STAMP (absolute, diagonal) -->
-                <div :class="['agent-stamp', eligible ? 'agent-stamp--recruited' : 'agent-stamp--closed']">
-                    {{ eligible ? 'AGENT RECRUTÉ' : 'DOSSIER CLASSÉ' }}
+                <!-- Eligibility stamp (diagonal, absolute) -->
+                <div :class="['agent-stamp', eligible ? 'agent-stamp--eligible' : 'agent-stamp--ineligible']">
+                    {{ eligible ? t('result.stamp_eligible') : t('result.stamp_ineligible') }}
                 </div>
 
             </div><!-- /dossier-card -->
         </div><!-- /dossier-wrapper -->
 
-        <!-- ── CTA section ─────────────────────────────────────────────── -->
+        <!-- ── CTA section ─────────────────────────────────────────────────── -->
         <div class="result-cta-section">
 
-            <template v-if="eligible">
-                <p v-if="entreprise.rdv_date" class="result-date-hint">
-                    {{ t('entreprise.collect_date') }} :
-                    <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
-                </p>
-                <BaseButton v-if="entreprise.rdv_url"
-                    variant="primary" :full="true"
-                    :href="entreprise.rdv_url"
-                    target="_blank" rel="noopener noreferrer"
-                    @click="onRdvClick"
-                >
-                    Prendre rendez-vous
-                </BaseButton>
-                <a href="/" class="result-link">{{ t('result.back_home') }}</a>
-            </template>
-
-            <template v-else>
-                <!-- Raisons -->
-                <div v-if="reasons.length > 0" class="result-reasons">
-                    <p class="reasons-title">{{ t('result.ineligible_reasons_title') }}</p>
-                    <ul class="reasons-list">
-                        <li v-for="(r, i) in reasons" :key="i" class="reason-item">
-                            <span class="reason-bullet">•</span>
-                            <span>{{ r }}</span>
-                        </li>
-                    </ul>
+            <template v-if="!eligible">
+                <div class="share-row">
+                    <button class="share-action-btn" @click="copyLink">
+                        {{ copied ? t('result.referral_copied') : t('result.referral_colleague') }}
+                    </button>
+                    <button class="share-action-btn" @click="copyEmailMessage">
+                        {{ messageCopied ? t('result.referral_message_copied') : t('result.share_mail') }}
+                    </button>
+                    <a :href="whatsappHref" target="_blank" rel="noopener noreferrer" class="share-action-btn">
+                        {{ t('result.referral_whatsapp') }}
+                    </a>
                 </div>
-
-                <!-- Contact -->
-                <div v-if="reasons.length > 0" class="result-box">
-                    <p class="box-title">{{ t('result.contact_box_title') }}</p>
-                    <p class="box-body">{{ t('result.contact_box_message') }}</p>
-                    <BaseButton variant="outline" :full="true" href="/contact">{{ t('result.contact_box_cta') }}</BaseButton>
-                </div>
-
-                <!-- Needs evaluation -->
-                <div v-if="needsEvaluation" class="result-box result-box--info">
-                    <p class="box-title">{{ t('result.needs_evaluation_title') }}</p>
-                    <p class="box-body">{{ t('result.needs_evaluation_message') }}</p>
-                </div>
-
-                <!-- Referral -->
-                <div class="result-box">
-                    <p class="box-title">{{ t('result.referral_title') }}</p>
-                    <p class="box-body">{{ t('result.referral_subtitle') }}</p>
-                    <div class="share-link-row">
-                        <span class="share-url">{{ shareUrl }}</span>
-                        <button class="share-copy-btn"
-                            :class="copied ? 'share-copy-btn--done' : ''"
-                            @click="copyLink">
-                            {{ copied ? t('result.referral_copied') : t('result.referral_copy') }}
-                        </button>
-                    </div>
-                    <div class="share-btns">
-                        <button class="result-outline-btn"
-                            :class="messageCopied ? 'result-outline-btn--done' : ''"
-                            @click="copyEmailMessage">
-                            {{ messageCopied ? t('result.referral_message_copied') : t('result.referral_email') }}
-                        </button>
-                        <a :href="whatsappHref" target="_blank" rel="noopener noreferrer"
-                            class="result-outline-btn result-outline-btn--whatsapp">
-                            {{ t('result.referral_whatsapp') }}
-                        </a>
-                    </div>
-                </div>
-
-                <a href="/" class="result-link">{{ t('result.back_home') }}</a>
             </template>
 
         </div>
 
     </main>
-
-    <!-- Progress bar (100%) at the bottom -->
-    <div class="result-bottom-bar" aria-hidden="true">
-        <div class="result-progress-bar-bottom">
-            <div class="result-progress-fill-bottom"></div>
-        </div>
-        <span class="result-pct">100%</span>
-    </div>
 
 </div>
 </template>
@@ -336,10 +236,10 @@ onMounted(() => {
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes stamp-land {
-    0%   { opacity: 0; transform: translateX(-50%) rotate(-18deg) scale(1.18); }
-    55%  { opacity: 1; transform: translateX(-50%) rotate(-10deg) scale(0.96); }
-    75%  { transform: translateX(-50%) rotate(-13deg) scale(1.01); }
-    100% { opacity: 0.9; transform: translateX(-50%) rotate(-12deg) scale(1); }
+    0%   { opacity: 0; transform: translate(-50%, -50%) rotate(-18deg) scale(1.2); }
+    55%  { opacity: 1; transform: translate(-50%, -50%) rotate(-11deg) scale(0.96); }
+    75%  { transform: translate(-50%, -50%) rotate(-14deg) scale(1.01); }
+    100% { opacity: 0.92; transform: translate(-50%, -50%) rotate(-13deg) scale(1); }
 }
 @keyframes cta-enter {
     from { opacity: 0; transform: translateY(16px); }
@@ -359,18 +259,33 @@ onMounted(() => {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TOPBAR
+   TOPBAR (progress bar + controls row — mirrors QuizShow)
 ═══════════════════════════════════════════════════════════════════ */
 .result-topbar {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    background: #0D0D0D;
-    border-bottom: 1px solid #1A1A1A;
+    flex-direction: column;
     position: sticky;
     top: 0;
     z-index: 10;
+    background: #0D0D0D;
+    border-bottom: 1px solid #1A1A1A;
+}
+.topbar-progress {
+    width: 100%;
+    height: 3px;
+    background: #2A2A2A;
+    flex-shrink: 0;
+}
+.topbar-progress-fill {
+    width: 100%;
+    height: 100%;
+    background: #D32C37;
+}
+.topbar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
 }
 .topbar-back-btn {
     width: 36px;
@@ -388,11 +303,13 @@ onMounted(() => {
     text-decoration: none;
 }
 .topbar-back-btn:hover { border-color: #666; color: white; }
-.result-topbar-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.06em;
+.topbar-pct {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    min-width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -403,11 +320,11 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 16px 32px;
-    gap: 24px;
+    padding: 16px 16px 48px;
+    gap: 28px;
 }
 @media (min-width: 1024px) {
-    .result-main { padding: 24px 32px 48px; }
+    .result-main { padding: 24px 32px 56px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -451,6 +368,7 @@ onMounted(() => {
     margin-bottom: 4px;
 }
 
+/* ── Card header ──────────────────────────────────────────────── */
 .dossier-header {
     padding: 20px 24px 10px;
     text-align: center;
@@ -458,12 +376,13 @@ onMounted(() => {
 .dossier-title {
     font-size: 1.5rem;
     font-weight: 900;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     color: #1A1A1A;
+    text-transform: uppercase;
 }
 @media (min-width: 1024px) {
     .dossier-header { padding: 28px 32px 12px; }
-    .dossier-title { font-size: 2rem; }
+    .dossier-title  { font-size: 2rem; }
 }
 
 .dossier-rule {
@@ -475,91 +394,139 @@ onMounted(() => {
     .dossier-rule { margin: 0 32px; }
 }
 
-/* ── Two-column body ──────────────────────────────────────────── */
+/* ── Body layout ─────────────────────────────────────────────── */
 .dossier-body {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 16px 24px 24px;
+    padding: 20px 24px 120px;
     gap: 20px;
 }
 @media (min-width: 768px) {
     .dossier-body {
         grid-template-columns: 1fr auto;
-        padding: 20px 32px 32px;
-        gap: 32px;
+        padding: 24px 32px 140px;
+        gap: 36px;
     }
 }
 
-/* ── Fields ───────────────────────────────────────────────────── */
-.dossier-fields {
+/* ── Narrative text (left) ───────────────────────────────────── */
+.dossier-narrative {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    flex: 1;
+    gap: 14px;
 }
-.df {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #C4A870;
-    min-height: 28px;
+
+.narrative-text {
+    font-size: 13px;
+    color: #3A2A1A;
+    line-height: 1.75;
+    font-style: italic;
 }
-.df-row {
-    display: flex;
-    gap: 16px;
+@media (min-width: 768px) {
+    .narrative-text { font-size: 14px; }
 }
-.df-key {
+.narrative-text--gap { margin-top: 4px; }
+.narrative-text--info {
+    color: #2A5A8A;
+    font-style: italic;
+}
+
+/* Reasons inside dossier */
+.dossier-reasons {
+    margin-top: 2px;
+}
+.dossier-reasons-title {
     font-size: 11px;
     font-weight: 700;
-    color: #5A4A30;
+    color: #7A5A30;
     letter-spacing: 0.04em;
-    white-space: nowrap;
-    flex-shrink: 0;
+    margin-bottom: 6px;
 }
-.df-line {
-    flex: 1;
+.dossier-reasons-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-.df-val {
+.dossier-reason-item {
+    display: flex;
+    gap: 7px;
     font-size: 12px;
-    font-weight: 600;
-    color: #3A2A1A;
-    letter-spacing: 0.05em;
+    color: #4A3A2A;
+    line-height: 1.5;
+    font-style: italic;
 }
-.df-muted { color: #9A8A6A; }
-.df-status {
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 0.04em;
+.reason-bullet {
+    color: #D32C37;
+    flex-shrink: 0;
+    margin-top: 1px;
 }
-.df-status--ok  { color: #1A6A2A; }
-.df-status--ko  { color: #8A1A1A; }
+
+/* ── Action block inside dossier ─────────────────────────────── */
+.dossier-action-block {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.dossier-action-date {
+    font-size: 11px;
+    color: #6A5A40;
+    font-style: italic;
+}
+.dossier-action-btn {
+    display: inline-block;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    text-decoration: none;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    text-align: center;
+    transition: opacity 150ms ease;
+}
+.dossier-action-btn:hover { opacity: 0.85; }
+.dossier-action-btn--rdv {
+    background: #D32C37;
+    color: white;
+    box-shadow: 0 3px 0 #921d24;
+}
+.dossier-action-btn--contact {
+    background: #3A2A1A;
+    color: #F0E8D0;
+}
 
 /* ── Right column ─────────────────────────────────────────────── */
 .dossier-right-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
 }
 @media (min-width: 768px) {
-    .dossier-right-col { width: 200px; }
+    .dossier-right-col { width: 210px; flex-shrink: 0; }
 }
 
+/* ── Photo frame ─────────────────────────────────────────────── */
 .photo-frame {
     border: 1.5px solid #C4A870;
-    background: #E4D8B8;
+    background: #EDE8D4;
     overflow: hidden;
     position: relative;
 }
-.photo-caption {
-    font-size: 8px;
-    color: #8A7A60;
-    text-align: center;
-    padding: 4px;
-    background: #D4C8A0;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+.photo-tape {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 14px;
+    background: rgba(180,170,150,0.6);
+    border-radius: 2px;
+    z-index: 2;
 }
 
 /* ── Fingerprints ─────────────────────────────────────────────── */
@@ -576,6 +543,8 @@ onMounted(() => {
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 8px;
+    border-bottom: 1px solid #C4A870;
+    padding-bottom: 6px;
 }
 .fp-pair {
     display: flex;
@@ -591,40 +560,45 @@ onMounted(() => {
 .fp-svg { width: 52px; height: 60px; }
 .fp-label {
     font-size: 8px;
-    font-weight: 700;
+    font-weight: 600;
     color: #7A6A50;
     text-align: center;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
 }
 
-/* ── Stamp ────────────────────────────────────────────────────── */
+/* ── Eligibility stamp (centered in dossier) ────────────────────── */
 .agent-stamp {
     position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-12deg);
-    border: 4px solid #D32C37;
-    color: #D32C37;
+    top: 50%;
+    left: 46%;
+    transform: translate(-50%, -50%) rotate(-13deg);
+    border: 3.5px solid currentColor;
+    padding: 12px 30px;
     font-size: 1.75rem;
     font-weight: 900;
-    letter-spacing: 0.06em;
-    padding: 10px 24px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     pointer-events: none;
     z-index: 5;
     white-space: nowrap;
-    opacity: 0.9;
+    opacity: 0.92;
     animation: stamp-land 560ms cubic-bezier(0.23,1,0.32,1) both 440ms;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
 }
 @media (min-width: 768px) {
-    .agent-stamp { font-size: 2.25rem; bottom: 100px; }
+    .agent-stamp { font-size: 2.25rem; padding: 14px 36px; left: 44%; }
 }
-.agent-stamp--closed {
-    border-color: #555;
-    color: #555;
-    transform: translateX(-50%) rotate(-12deg);
+/* Double border via pseudo-element */
+.agent-stamp::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1.5px solid currentColor;
+    pointer-events: none;
 }
+.agent-stamp--eligible   { color: #2A8A3A; }
+.agent-stamp--ineligible { color: #D32C37; }
 
 /* ═══════════════════════════════════════════════════════════════════
    CTA SECTION
@@ -634,161 +608,63 @@ onMounted(() => {
     max-width: 900px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-    animation: cta-enter 560ms cubic-bezier(0.23,1,0.32,1) both 200ms;
+    align-items: center;
+    gap: 12px;
+    animation: cta-enter 560ms cubic-bezier(0.23,1,0.32,1) both 300ms;
 }
 
 .result-date-hint {
-    text-align: center;
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
-}
-
-.result-link {
-    display: block;
-    text-align: center;
-    font-size: 14px;
-    color: rgba(255,255,255,0.4);
-    text-decoration: none;
-    padding: 8px;
-}
-.result-link:hover { color: rgba(255,255,255,0.7); }
-
-.result-reasons {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 4px;
-    padding: 16px 20px;
-}
-.reasons-title {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
     color: rgba(255,255,255,0.5);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+    text-align: center;
 }
-.reasons-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.reason-item {
-    display: flex;
-    gap: 8px;
-    font-size: 14px;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.55;
-}
-.reason-bullet { color: #D32C37; flex-shrink: 0; }
 
-.result-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 4px;
-    padding: 16px 20px;
+/* Share buttons row (non-eligible) */
+.share-row {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
 }
-.result-box--info { border-color: rgba(4,189,251,0.2); background: rgba(4,189,251,0.04); }
-.box-title { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.9); }
-.box-body  { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+@media (min-width: 640px) {
+    .share-row { flex-direction: row; gap: 12px; }
+}
 
-.share-link-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 6px;
-    padding: 8px 12px;
-}
-.share-url {
+.share-action-btn {
     flex: 1;
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.share-copy-btn {
+    display: block;
     background: #D32C37;
     color: white;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background 150ms;
-}
-.share-copy-btn:hover { background: #A9232C; }
-.share-copy-btn--done { background: #04C852; }
-.share-copy-btn--done:hover { background: #04C852; }
-
-.share-btns { display: flex; gap: 8px; }
-.result-outline-btn {
-    flex: 1;
-    background: transparent;
-    color: rgba(255,255,255,0.7);
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 4px;
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: 600;
     font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 40px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    transition: border-color 150ms, color 150ms;
-    display: block;
+    transition: background 150ms ease, transform 180ms cubic-bezier(0.23,1,0.32,1);
+    box-shadow: 0 3px 0 #921d24, 0 4px 12px rgba(211,44,55,0.25);
 }
-.result-outline-btn:hover { border-color: rgba(255,255,255,0.5); color: white; }
-.result-outline-btn--done { border-color: #04C852; color: #04C852; }
-.result-outline-btn--whatsapp:hover { border-color: #25D366; color: #25D366; }
-
-/* ═══════════════════════════════════════════════════════════════════
-   BOTTOM PROGRESS
-═══════════════════════════════════════════════════════════════════ */
-.result-bottom-bar {
-    position: sticky;
-    bottom: 0;
-    background: #0D0D0D;
-    border-top: 1px solid #1A1A1A;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.share-action-btn:hover {
+    background: #C02030;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #7a1820, 0 6px 16px rgba(211,44,55,0.3);
 }
-.result-progress-bar-bottom {
-    flex: 1;
-    height: 4px;
-    background: #2A2A2A;
-    border-radius: 2px;
-    overflow: hidden;
-}
-.result-progress-fill-bottom {
-    width: 100%;
-    height: 100%;
-    background: #D32C37;
-    border-radius: 2px;
-}
-.result-pct {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.45);
-    min-width: 36px;
-    text-align: right;
+.share-action-btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 1px 0 #921d24, 0 2px 6px rgba(211,44,55,0.15);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
    REDUCED MOTION
 ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-    .result-outline-btn { transition: none; }
-    .dossier-card, .agent-stamp, .result-cta-section {
-        animation: none;
-        opacity: 1;
-        transform: translateX(-50%) rotate(-12deg);
-    }
-    .dossier-card, .result-cta-section { transform: none; }
+    .dossier-card { animation: none; opacity: 1; }
+    .agent-stamp  { animation: none; opacity: 0.92; transform: translate(-50%, -50%) rotate(-13deg); }
+    .result-cta-section { animation: none; opacity: 1; }
+    .share-action-btn   { transition: background 120ms ease; }
+    .share-action-btn:hover, .share-action-btn:active { transform: none; box-shadow: none; }
 }
 </style>
