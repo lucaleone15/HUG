@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { sendAnalytics } from '../composables/useAnalytics.js'
 import { countries } from '../data/countries.js'
 import { COUNTRY_REGION_MAP } from '../data/countryRegions.js'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t } = useI18n()
 
@@ -25,7 +26,7 @@ const splitQ = (text) => {
     if (words.length <= 3) return { main: '', accent: text }
     const accentCount = Math.min(Math.max(2, Math.floor(words.length * 0.3)), 5)
     const at = words.length - accentCount
-    return { main: words.slice(0, at).join(' ') + ' ', accent: words.slice(at).join(' ') }
+    return { main: words.slice(0, at).join(' ') + ' ', accent: words.slice(at).join(' ') }
 }
 
 const pad = (n) => String(n ?? 0).padStart(2, '0')
@@ -164,77 +165,57 @@ const goBack = () => {
     <!-- ══════════════════════════════════════════════════════════════════════ -->
     <Transition name="q-fade" mode="out-in">
     <div v-if="phase === 'intro'" key="intro" class="quiz-intro">
+        <div class="intro-grid">
 
-        <!-- Mobile layout -->
-        <div class="lg:hidden flex flex-col min-h-screen">
-
-            <!-- Folder visual -->
-            <div class="flex-1 flex items-center justify-center p-8">
-                <div class="folder-card mx-auto">
-                    <div class="folder-clip"></div>
-                    <div class="folder-inner">
-                        <div class="folder-confidential-stamp">CONFIDENTIEL</div>
-                        <div v-if="entreprise.logo_url" class="flex justify-center mb-3">
-                            <img :src="entreprise.logo_url" :alt="entreprise.name" class="h-10 object-contain">
+            <!-- ── Left / Top: case file form ────────────────────── -->
+            <div class="intro-case">
+                <div class="dossier-v-grain" aria-hidden="true"></div>
+                <div class="intro-case-inner">
+                    <div class="ic-field ic-field--code">
+                        <span class="ic-key">N° dossier</span>
+                        <span class="ic-code">{{ dossierCode }}</span>
+                    </div>
+                    <div class="ic-field">
+                        <span class="ic-key">Établissement</span>
+                        <div v-if="entreprise.logo_url" class="ic-logo">
+                            <img :src="entreprise.logo_url" :alt="entreprise.name">
                         </div>
-                        <p class="folder-dossier-no">DOSSIER NO. {{ dossierCode }}</p>
-                        <p class="folder-status">STATUT : EN ATTENTE</p>
+                        <span v-else class="ic-val">{{ entreprise.name }}</span>
+                    </div>
+                    <div class="ic-field-row">
+                        <div class="ic-field">
+                            <span class="ic-key">Année</span>
+                            <span class="ic-val">{{ new Date().getFullYear() }}</span>
+                        </div>
+                        <div class="ic-field">
+                            <span class="ic-key">Référent</span>
+                            <span class="ic-val">CTS Genève</span>
+                        </div>
+                    </div>
+                    <div class="ic-field ic-field--status">
+                        <span class="ic-key">Statut</span>
+                        <span class="ic-status">En attente</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Bureau content -->
-            <div class="bureau-panel px-6 pb-10 pt-2">
+            <!-- ── Right / Bottom: narrative ─────────────────────── -->
+            <div class="intro-bureau">
                 <div class="accès-badge">{{ t('quiz.intro_badge') }}</div>
-                <h1 class="bureau-title">{{ t('quiz.intro_title') }}</h1>
-                <p class="bureau-dept">{{ t('quiz.intro_dept') }}</p>
-                <div class="bureau-rule"></div>
-                <p class="bureau-body">{{ t('quiz.intro_p1') }}</p>
-                <p class="bureau-body mt-3">{{ t('quiz.intro_p2') }}</p>
-                <p class="bureau-accent">{{ t('quiz.intro_accent') }}</p>
-                <button class="quiz-cta-btn" @click="startQuiz">{{ t('quiz.intro_cta') }}</button>
-            </div>
-        </div>
-
-        <!-- Desktop layout -->
-        <div class="hidden lg:grid grid-cols-2 min-h-screen">
-
-            <!-- Left: folder visual -->
-            <div class="flex items-center justify-center bg-[#0D0D0D] p-16">
-                <div class="folder-card-lg">
-                    <div class="folder-clip-lg"></div>
-                    <div class="folder-inner-lg">
-                        <p class="folder-republic">RÉPUBLIQUE ET CANTON DE GENÈVE</p>
-                        <p class="folder-hospital">HÔPITAUX UNIVERSITAIRES DE GENÈVE<br>CENTRE DE TRANSFUSION SANGUINE</p>
-                        <!-- Company logo stamp -->
-                        <div class="folder-stamp-box">
-                            <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="h-12 object-contain mx-auto">
-                            <p v-else class="text-center text-sm font-bold text-gray-700">{{ entreprise.name }}</p>
-                        </div>
-                        <h2 class="folder-dossier-title">DOSSIER<br>{{ dossierCode }}</h2>
-                        <div class="folder-confidential-stamp-lg">CONFIDENTIEL</div>
-                        <div class="folder-meta">
-                            <p>DATE D'OUVERTURE : __ / __ / {{ new Date().getFullYear() }}</p>
-                            <p>INSPECTEUR ASSIGNÉ : CTS</p>
-                            <p>STATUT : EN ATTENTE</p>
-                        </div>
-                    </div>
+                <h1 class="intro-title">{{ t('quiz.intro_title') }}</h1>
+                <p class="intro-dept">{{ t('quiz.intro_dept') }}</p>
+                <div class="intro-rule"></div>
+                <p class="intro-body">{{ t('quiz.intro_p1') }}</p>
+                <p class="intro-body intro-body--gap">{{ t('quiz.intro_p2') }}</p>
+                <p class="intro-accent">{{ t('quiz.intro_accent') }}</p>
+                <div class="intro-cta-wrap">
+                    <BaseButton variant="primary" :full="true" @click="startQuiz">
+                        {{ t('quiz.intro_cta') }}
+                    </BaseButton>
                 </div>
             </div>
 
-            <!-- Right: bureau text -->
-            <div class="bureau-panel-lg flex flex-col justify-center px-16 py-12">
-                <div class="accès-badge mb-6">{{ t('quiz.intro_badge') }}</div>
-                <h1 class="bureau-title-lg">{{ t('quiz.intro_title') }}</h1>
-                <p class="bureau-dept-lg">{{ t('quiz.intro_dept') }}</p>
-                <div class="bureau-rule-lg"></div>
-                <p class="bureau-body-lg">{{ t('quiz.intro_p1') }}</p>
-                <p class="bureau-body-lg mt-4">{{ t('quiz.intro_p2') }}</p>
-                <p class="bureau-accent-lg">{{ t('quiz.intro_accent') }}</p>
-                <button class="quiz-cta-btn mt-8" @click="startQuiz">{{ t('quiz.intro_cta') }}</button>
-            </div>
         </div>
-
     </div>
     </Transition>
 
@@ -260,15 +241,15 @@ const goBack = () => {
             <div v-else class="w-9 h-9"></div>
 
             <!-- Piece reference (mobile) / Dossier label (desktop) -->
-            <span v-if="currentQuestion" class="font-mono text-xs text-white/50 tracking-wider px-2">
+            <span v-if="currentQuestion" class="topbar-ref">
                 <span class="lg:hidden">{{ t('quiz.piece_label') }} #{{ pad(currentQuestion.order) }} / {{ total }}</span>
                 <span class="hidden lg:inline">{{ t('quiz.dossier_label') }} {{ dossierCode }}</span>
             </span>
-            <span v-else class="font-mono text-xs text-white/50 px-2 hidden lg:inline">{{ t('quiz.dossier_label') }} {{ dossierCode }}</span>
+            <span v-else class="topbar-ref hidden lg:inline">{{ t('quiz.dossier_label') }} {{ dossierCode }}</span>
         </header>
 
         <!-- ── Main content ─────────────────────────────────────────────── -->
-        <main class="flex-1 flex flex-col items-center px-4 py-4 lg:py-6 lg:px-8 overflow-x-hidden">
+        <main class="flex-1 flex flex-col items-center px-4 py-6 lg:py-10 lg:px-8 overflow-x-hidden">
 
             <Transition name="q-slide" mode="out-in">
 
@@ -305,13 +286,12 @@ const goBack = () => {
 
                                 <!-- Piece reference -->
                                 <p class="piece-ref">
-                                    {{ t('quiz.piece_label') }} #{{ pad(currentQuestion.order) }}
-                                    // {{ currentQuestion.category.toUpperCase() }}
+                                    {{ t('quiz.piece_label') }} #{{ pad(currentQuestion.order) }} / {{ pad(total) }}
                                 </p>
                                 <div class="panel-divider"></div>
 
-                                <!-- Question number -->
-                                <p class="question-num-label">{{ t('quiz.question_label') }} {{ pad(currentQuestion.order) }}</p>
+                                <!-- Category label -->
+                                <p class="category-label">{{ currentQuestion.category }}</p>
 
                                 <!-- Question text with red accent on last words -->
                                 <h2 class="question-text">
@@ -332,24 +312,6 @@ const goBack = () => {
                                     <p v-else class="hint-text">{{ currentQuestion.hint }}</p>
                                 </div>
 
-                                <!-- Fingerprint (decorative) -->
-                                <div class="fingerprint" aria-hidden="true">
-                                    <svg viewBox="0 0 80 96" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12">
-                                        <path d="M40 8C22 8 8 22 8 40c0 8 3 16 8 22"/>
-                                        <path d="M40 14C25 14 14 25 14 40c0 7 2.5 13 6.5 18"/>
-                                        <path d="M40 20C28 20 20 28 20 40c0 6 2 11 5 15.5"/>
-                                        <path d="M40 26C31 26 26 31 26 40c0 4.5 1.5 8.5 4 11.5"/>
-                                        <path d="M40 32C34 32 32 34 32 40c0 3 1 5.5 2.5 7.5"/>
-                                        <path d="M40 38c-1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2"/>
-                                        <path d="M40 8c18 0 32 14 32 32 0 8-3 16-8 22"/>
-                                        <path d="M40 14c15 0 26 11 26 26 0 7-2.5 13-6.5 18"/>
-                                        <path d="M40 20c12 0 20 8 20 20 0 6-2 11-5 15.5"/>
-                                        <path d="M40 26c9 0 14 5 14 14 0 4.5-1.5 8.5-4 11.5"/>
-                                        <path d="M40 32c6 0 8 2 8 8 0 3-1 5.5-2.5 7.5"/>
-                                        <path d="M20 62c4 8 12 14 20 16M60 62c-4 8-12 14-20 16"/>
-                                        <path d="M14 50c2 12 14 26 26 28M66 50c-2 12-14 26-26 28"/>
-                                    </svg>
-                                </div>
                             </div>
 
                             <!-- ▌RIGHT PANEL — Answers ▐ -->
@@ -386,7 +348,7 @@ const goBack = () => {
                                                 </svg>
                                             </span>
                                             <div class="check-text">
-                                                <span class="check-label-text">{{ item.label.toUpperCase() }}</span>
+                                                <span class="check-label-text">{{ item.label }}</span>
                                                 <span v-if="item.sublabel" class="check-sublabel-text">{{ item.sublabel }}</span>
                                             </div>
                                         </label>
@@ -418,7 +380,7 @@ const goBack = () => {
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                                     </svg>
                                                 </span>
-                                                <span class="check-label-text">{{ item.label.toUpperCase() }}</span>
+                                                <span class="check-label-text">{{ item.label }}</span>
                                             </label>
                                             <select v-if="birthSelected.includes(item.id)"
                                                 class="quiz-select mt-1"
@@ -449,7 +411,7 @@ const goBack = () => {
                                         <div v-for="(trip, i) in travelTrips" :key="i" class="travel-trip">
                                             <div class="trip-header">
                                                 <span class="trip-num">{{ t('quiz.travel_trip') }} {{ i + 1 }}</span>
-                                                <button class="trip-remove" @click="removeTrip(i)">✕</button>
+                                                <button class="trip-remove" @click="removeTrip(i)" :aria-label="`Supprimer voyage ${i + 1}`">✕</button>
                                             </div>
                                             <label class="quiz-field-label">{{ t('quiz.travel_region') }} {{ i + 1 }}</label>
                                             <select class="quiz-select" :value="trip.country"
@@ -485,7 +447,7 @@ const goBack = () => {
                                     </div>
                                 </template>
 
-                                <!-- PIÈCE À CONVICTION bottom stamp -->
+                                <!-- Pièce à conviction stamp -->
                                 <div class="conviction-stamp">
                                     <span>{{ t('quiz.piece_label') }}</span>
                                 </div>
@@ -497,44 +459,96 @@ const goBack = () => {
 
                 <!-- ── COMPLETE screen ──────────────────────────────────── -->
                 <div v-else-if="isComplete" key="complete" class="document-wrapper w-full max-w-5xl">
-                    <div class="document-card complete-card">
-                        <div class="tape-strip mx-auto lg:hidden"></div>
-                        <div class="complete-inner">
-                            <div class="complete-check">
-                                <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10">
-                                    <circle cx="12" cy="12" r="11" fill="#D32C37" opacity="0.12"/>
-                                    <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#D32C37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <p class="piece-ref mb-2">{{ t('quiz.piece_label') }} #{{ pad(total) }} // FIN D'INTERROGATOIRE</p>
-                            <h2 class="question-text mb-2">
-                                <span>{{ splitQ(t('quiz.complete_title')).main }}</span>
-                                <span class="question-accent">{{ splitQ(t('quiz.complete_title')).accent }}</span>
-                            </h2>
-                            <p class="hint-text mb-6">{{ t('quiz.complete_subtitle') }}</p>
-                            <form :action="`/c/${entreprise.slug}/quiz`" method="POST" ref="formRef">
-                                <input type="hidden" name="_token" :value="csrfToken">
-                                <template v-for="(value, key) in answers" :key="key">
-                                    <template v-if="Array.isArray(value)">
-                                        <input v-for="item in value" :key="item" type="hidden" :name="`answers[${key}][]`" :value="item">
-                                    </template>
-                                    <template v-else-if="value !== null && typeof value === 'object'">
-                                        <input type="hidden" :name="`answers[${key}]`" :value="JSON.stringify(value)">
-                                    </template>
-                                    <template v-else>
-                                        <input type="hidden" :name="`answers[${key}]`" :value="value">
-                                    </template>
-                                </template>
-                                <button type="submit" class="quiz-btn quiz-btn--red">
-                                    {{ t('quiz.submit').toUpperCase() }}
-                                </button>
-                            </form>
-                        </div>
+
+                    <!-- Document tab (desktop) -->
+                    <div class="hidden lg:flex document-tab justify-end">
+                        <span class="doc-tab-inner">N° {{ dossierCode }}</span>
                     </div>
-                </div>
+
+                    <div class="document-card">
+
+                        <!-- Tape (mobile only) -->
+                        <div class="lg:hidden flex justify-center pt-1 pb-2">
+                            <div class="tape-strip"></div>
+                        </div>
+
+                        <!-- Two-panel layout — mirrors the question card -->
+                        <div class="document-body">
+
+                            <!-- LEFT: Confirmation visuelle -->
+                            <div class="doc-left">
+                                <div class="classified-stamp classified-stamp--complete">
+                                    <span class="classified-title">DOSSIER COMPLET</span>
+                                    <span class="classified-sub">{{ t('quiz.piece_label') }} #{{ pad(total) }}</span>
+                                </div>
+
+                                <p class="piece-ref">
+                                    {{ t('quiz.piece_label') }} #{{ pad(total) }} / {{ pad(total) }}
+                                </p>
+                                <div class="panel-divider"></div>
+
+                                <p class="category-label">{{ dossierCode }}</p>
+
+                                <h2 class="question-text">
+                                    <span>{{ splitQ(t('quiz.complete_title')).main }}</span>
+                                    <span class="question-accent">{{ splitQ(t('quiz.complete_title')).accent }}</span>
+                                </h2>
+
+                                <!-- Fingerprint decorative -->
+                                <div class="fingerprint" aria-hidden="true">
+                                    <svg viewBox="0 0 80 96" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12">
+                                        <path d="M40 8C22 8 8 22 8 40c0 8 3 16 8 22"/>
+                                        <path d="M40 14C25 14 14 25 14 40c0 7 2.5 13 6.5 18"/>
+                                        <path d="M40 20C28 20 20 28 20 40c0 6 2 11 5 15.5"/>
+                                        <path d="M40 26C31 26 26 31 26 40c0 4.5 1.5 8.5 4 11.5"/>
+                                        <path d="M40 32C34 32 32 34 32 40c0 3 1 5.5 2.5 7.5"/>
+                                        <path d="M40 38c-1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2"/>
+                                        <path d="M40 8c18 0 32 14 32 32 0 8-3 16-8 22"/>
+                                        <path d="M40 14c15 0 26 11 26 26 0 7-2.5 13-6.5 18"/>
+                                        <path d="M40 20c12 0 20 8 20 20 0 6-2 11-5 15.5"/>
+                                        <path d="M40 26c9 0 14 5 14 14 0 4.5-1.5 8.5-4 11.5"/>
+                                        <path d="M40 32c6 0 8 2 8 8 0 3-1 5.5-2.5 7.5"/>
+                                        <path d="M20 62c4 8 12 14 20 16M60 62c-4 8-12 14-20 16"/>
+                                        <path d="M14 50c2 12 14 26 26 28M66 50c-2 12-14 26-26 28"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT: Subtitle + CTA -->
+                            <div class="doc-right">
+                                <p class="your-answer-label">{{ t('quiz.complete_cta_label') }}</p>
+                                <p class="hint-text mb-6">{{ t('quiz.complete_subtitle') }}</p>
+
+                                <form :action="`/c/${entreprise.slug}/quiz`" method="POST" ref="formRef">
+                                    <input type="hidden" name="_token" :value="csrfToken">
+                                    <template v-for="(value, key) in answers" :key="key">
+                                        <template v-if="Array.isArray(value)">
+                                            <input v-for="item in value" :key="item" type="hidden" :name="`answers[${key}][]`" :value="item">
+                                        </template>
+                                        <template v-else-if="value !== null && typeof value === 'object'">
+                                            <input type="hidden" :name="`answers[${key}]`" :value="JSON.stringify(value)">
+                                        </template>
+                                        <template v-else>
+                                            <input type="hidden" :name="`answers[${key}]`" :value="value">
+                                        </template>
+                                    </template>
+                                    <BaseButton variant="primary" :full="true" type="submit">
+                                        {{ t('quiz.submit') }}
+                                    </BaseButton>
+                                </form>
+
+                                <div class="conviction-stamp mt-auto">
+                                    <span>{{ t('quiz.piece_label') }}</span>
+                                </div>
+                            </div>
+
+                        </div><!-- /document-body -->
+                    </div><!-- /document-card -->
+                </div><!-- /document-wrapper -->
 
             </Transition>
         </main>
+
         <!-- ── Barre de progression (bas) ─────────────────────────────── -->
         <footer class="quiz-bottom-bar">
             <div class="quiz-progress-track">
@@ -554,9 +568,37 @@ const goBack = () => {
 ═══════════════════════════════════════════════════════════════════ */
 .quiz-root {
     min-height: 100vh;
-    background-color: #0D0D0D;
+    background-color: #0C0C0C;
     color: #fff;
-    font-family: inherit;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    position: relative;
+}
+/* Film grain overlay on dark backgrounds */
+.quiz-root::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.022;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 200px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════════════════════════ */
+@keyframes quiz-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes folder-arrive {
+    from { opacity: 0; transform: translateY(-28px) scale(0.93); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes tape-draw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -566,42 +608,173 @@ const goBack = () => {
 .q-fade-leave-active { transition: opacity 200ms ease; }
 .q-fade-enter-from, .q-fade-leave-to { opacity: 0; }
 
-.q-slide-enter-active { transition: opacity 220ms cubic-bezier(0.23,1,0.32,1), transform 220ms cubic-bezier(0.23,1,0.32,1); }
-.q-slide-leave-active { transition: opacity 140ms ease, transform 140ms ease; }
-.q-slide-enter-from   { opacity: 0; transform: translateY(10px); }
-.q-slide-leave-to     { opacity: 0; transform: translateY(-6px); }
+.q-slide-enter-active { transition: opacity 260ms cubic-bezier(0.23,1,0.32,1), transform 260ms cubic-bezier(0.23,1,0.32,1); }
+.q-slide-leave-active { transition: opacity 160ms ease, transform 160ms ease; }
+.q-slide-enter-from   { opacity: 0; transform: translateY(12px) scale(0.99); }
+.q-slide-leave-to     { opacity: 0; transform: translateY(-8px) scale(1.005); }
 
 /* ═══════════════════════════════════════════════════════════════════
-   INTRO — common
+   INTRO — grid layout
+═══════════════════════════════════════════════════════════════════ */
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100svh;
+}
+@media (min-width: 1024px) {
+    .intro-grid { grid-template-columns: 44fr 56fr; }
+}
+
+/* ── Case file panel ───────────────────────────────────────────── */
+.intro-case {
+    background: #060606;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5rem 1.5rem 2rem;
+    order: 2;
+}
+@media (min-width: 1024px) {
+    .intro-case {
+        justify-content: center;
+        padding: 4.5rem 3.5rem;
+        order: 1;
+    }
+}
+.intro-case::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(211,44,55,0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.intro-case-inner {
+    position: relative;
+    z-index: 1;
+    animation: quiz-rise 580ms cubic-bezier(0.23,1,0.32,1) both 60ms;
+}
+
+.ic-field {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 0.9rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+@media (min-width: 1024px) {
+    .ic-field { padding: 1.1rem 0; }
+}
+.ic-field--code { border-bottom-color: rgba(255,255,255,0.09); }
+.ic-field--status { border-bottom: none; padding-bottom: 0; }
+
+.ic-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ic-field-row .ic-field {
+    border-bottom: none;
+}
+@media (min-width: 1024px) {
+    .ic-field-row .ic-field:first-child {
+        border-right: 1px solid rgba(255,255,255,0.06);
+        padding-right: 1.5rem;
+    }
+    .ic-field-row .ic-field:last-child { padding-left: 1.5rem; }
+}
+
+.ic-key {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+.ic-code {
+    font-size: clamp(2.5rem, 4vw, 5rem);
+    font-weight: 900;
+    color: #F0EAE0;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+.ic-val {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+}
+.ic-logo img {
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
+    display: block;
+}
+@media (min-width: 1024px) {
+    .ic-logo img { height: 34px; }
+}
+.ic-status {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.04em;
+}
+
+/* ── Grain (shared) ────────────────────────────────────────────── */
+.dossier-v-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 200px;
+    opacity: 0.035;
+    pointer-events: none;
+}
+
+/* ── Bureau narrative panel ────────────────────────────────────── */
+.intro-bureau {
+    background: #0D0D0D;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 1.5rem 2.5rem;
+    order: 1;
+}
+@media (min-width: 1024px) {
+    .intro-bureau {
+        padding: 5rem 5rem 5rem 4rem;
+        order: 2;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INTRO — common elements
 ═══════════════════════════════════════════════════════════════════ */
 .accès-badge {
     display: inline-block;
-    border: 2px solid #D32C37;
+    border: 1.5px solid rgba(211,44,55,0.55);
     color: #D32C37;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.2em;
-    padding: 5px 14px;
-    margin-bottom: 1rem;
+    padding: 4px 12px;
+    margin-bottom: 1.25rem;
     text-transform: uppercase;
 }
 
-.quiz-cta-btn {
-    display: block;
-    width: 100%;
-    background: #D32C37;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 1rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 150ms ease, transform 140ms cubic-bezier(0.23,1,0.32,1);
-    margin-top: 2rem;
-}
-.quiz-cta-btn:hover { background: #A9232C; }
-.quiz-cta-btn:active { transform: scale(0.97); }
+/* ── Intro entry stagger ───────────────────────────────────────── */
+.accès-badge     { animation: quiz-rise 420ms cubic-bezier(0.23,1,0.32,1) both 120ms; }
+.intro-title     { animation: quiz-rise 520ms cubic-bezier(0.23,1,0.32,1) both 180ms; }
+.intro-dept      { animation: quiz-rise 380ms cubic-bezier(0.23,1,0.32,1) both 260ms; }
+.intro-rule      { animation: quiz-rise 280ms cubic-bezier(0.23,1,0.32,1) both 320ms; }
+.intro-body      { animation: quiz-rise 400ms cubic-bezier(0.23,1,0.32,1) both 380ms; }
+.intro-body--gap { animation-delay: 440ms; }
+.intro-accent    { animation: quiz-rise 400ms cubic-bezier(0.23,1,0.32,1) both 520ms; }
+.intro-cta-wrap  { animation: quiz-rise 480ms cubic-bezier(0.23,1,0.32,1) both 620ms; }
 
 /* ── Folder visual ─────────────────────────────────────────────── */
 .folder-card {
@@ -611,6 +784,7 @@ const goBack = () => {
     padding: 20px 16px 24px;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    animation: folder-arrive 580ms cubic-bezier(0.23,1,0.32,1) both 40ms;
 }
 .folder-clip {
     width: 36px;
@@ -660,67 +834,46 @@ const goBack = () => {
     margin-top: 2px;
 }
 
-/* ── Bureau text (mobile) ──────────────────────────────────────── */
-.bureau-panel {
-    background: #0D0D0D;
-    border-top: 1px solid #222;
-}
-.bureau-title {
-    font-size: 2rem;
+/* ── Bureau narrative content ──────────────────────────────────── */
+.intro-title {
+    font-size: clamp(1.9rem, 3.5vw, 3.25rem);
     font-weight: 900;
-    line-height: 1.1;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.5rem;
-}
-.bureau-dept {
-    font-size: 11px;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-family: monospace;
-    margin-bottom: 1rem;
-}
-.bureau-rule {
-    height: 1px;
-    background: #333;
-    margin: 1rem 0;
-}
-.bureau-body { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.6; }
-.bureau-accent {
-    font-size: 17px;
-    font-weight: 700;
-    color: #D32C37;
-    margin-top: 1.25rem;
-    font-style: italic;
-}
-
-/* ── Bureau text (desktop) ─────────────────────────────────────── */
-.bureau-panel-lg { background: #111; }
-.bureau-title-lg {
-    font-size: 3.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
     line-height: 1.05;
+    text-transform: uppercase;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
+    max-width: 16ch;
 }
-.bureau-dept-lg {
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.18em;
+.intro-dept {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    font-family: monospace;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
-.bureau-rule-lg { height: 1px; background: #333; margin: 1.25rem 0; }
-.bureau-body-lg { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.7; }
-.bureau-accent-lg {
-    font-size: 20px;
-    font-weight: 700;
+.intro-rule {
+    width: 40px;
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+    margin-bottom: 1.5rem;
+}
+.intro-body {
+    font-size: clamp(0.88rem, 1.4vw, 1rem);
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 46ch;
+}
+.intro-body--gap { margin-top: 0.75rem; }
+.intro-accent {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    font-weight: 800;
     color: #D32C37;
-    margin-top: 1.5rem;
-    font-style: italic;
+    margin-top: 1.75rem;
+    max-width: 36ch;
+}
+.intro-cta-wrap {
+    margin-top: 2.5rem;
+    max-width: 360px;
 }
 
 /* ── Desktop folder (large) ────────────────────────────────────── */
@@ -732,6 +885,7 @@ const goBack = () => {
     padding: 28px 24px 32px;
     box-shadow: 0 40px 80px rgba(0,0,0,0.7);
     position: relative;
+    animation: folder-arrive 620ms cubic-bezier(0.23,1,0.32,1) both;
 }
 .folder-clip-lg {
     width: 48px;
@@ -755,7 +909,6 @@ const goBack = () => {
 }
 .folder-republic {
     font-size: 9px;
-    font-family: monospace;
     color: #6A5A40;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -763,7 +916,6 @@ const goBack = () => {
 }
 .folder-hospital {
     font-size: 9px;
-    font-family: monospace;
     color: #6A5A40;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -777,11 +929,10 @@ const goBack = () => {
     background: white;
 }
 .folder-dossier-title {
-    font-family: monospace;
     font-size: 2rem;
     font-weight: 900;
     color: #1A1A1A;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
     margin-bottom: 12px;
     line-height: 1.1;
@@ -798,7 +949,6 @@ const goBack = () => {
     margin: 8px 0 16px;
 }
 .folder-meta {
-    font-family: monospace;
     font-size: 9px;
     color: #7A6A50;
     text-transform: uppercase;
@@ -838,6 +988,15 @@ const goBack = () => {
     transition: border-color 150ms, color 150ms;
 }
 .topbar-back-btn:hover { border-color: #666; color: white; }
+.topbar-ref {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex: 1;
+    text-align: center;
+}
 
 /* ── Bottom progress bar ──────────────────────────────────────── */
 .quiz-bottom-bar {
@@ -874,18 +1033,6 @@ const goBack = () => {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   QUIZ — DOSSIER LABEL
-═══════════════════════════════════════════════════════════════════ */
-.dossier-label-text {
-    font-family: monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    DOCUMENT — wrapper & tab
 ═══════════════════════════════════════════════════════════════════ */
 .document-wrapper { position: relative; }
@@ -900,7 +1047,6 @@ const goBack = () => {
     display: inline-block;
     background: #EDE4C8;
     color: #7A6A50;
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -914,10 +1060,16 @@ const goBack = () => {
    DOCUMENT — card
 ═══════════════════════════════════════════════════════════════════ */
 .document-card {
-    background: #EDE4C8;
+    background:
+        radial-gradient(ellipse 70% 40% at 25% 12%, rgba(200,165,90,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 45% at 78% 85%, rgba(175,140,75,0.07) 0%, transparent 70%),
+        #EBE1C4;
     color: #1A1A1A;
     border-radius: 4px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    box-shadow:
+        0 2px 0 rgba(255,255,255,0.04) inset,
+        0 40px 90px rgba(0,0,0,0.85),
+        0 8px 20px rgba(0,0,0,0.4);
     overflow: hidden;
     position: relative;
 }
@@ -929,6 +1081,8 @@ const goBack = () => {
     border-radius: 2px;
     display: block;
     margin-bottom: 8px;
+    transform-origin: left center;
+    animation: tape-draw 380ms cubic-bezier(0.23,1,0.32,1) both 80ms;
 }
 
 .document-body {
@@ -963,44 +1117,46 @@ const goBack = () => {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 2px solid #D32C37;
-    padding: 6px 12px;
+    background: #D32C37;
+    padding: 5px 11px 4px;
     align-self: flex-start;
+    transform: rotate(-2deg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.classified-stamp--complete {
+    background: #5A4A30;
 }
 .classified-title {
     font-size: 12px;
     font-weight: 900;
-    color: #D32C37;
-    letter-spacing: 0.15em;
+    color: white;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 .classified-sub {
     font-size: 9px;
-    color: #D32C37;
-    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .piece-ref {
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     color: #D32C37;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 .panel-divider {
     height: 1px;
     background: #C4B080;
 }
-.question-num-label {
-    font-family: monospace;
-    font-size: 11px;
+.category-label {
+    font-size: 12px;
     font-weight: 600;
-    color: #8A7A60;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    color: #9A8870;
+    letter-spacing: 0.01em;
 }
 .question-text {
     font-size: 1.4rem;
@@ -1016,19 +1172,17 @@ const goBack = () => {
 
 .hint-block { margin-top: 4px; }
 .hint-label {
-    font-family: monospace;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 800;
     color: #8A7A60;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 6px;
 }
 .hint-text {
     font-size: 13px;
-    color: #5A4A30;
-    line-height: 1.55;
-    font-style: italic;
+    color: #6A5840;
+    line-height: 1.6;
 }
 .hint-list { padding-left: 0; list-style: none; }
 .hint-list-item {
@@ -1062,51 +1216,67 @@ const goBack = () => {
 }
 
 .your-answer-label {
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     color: #8A7A60;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .answers-stack { display: flex; flex-direction: column; gap: 10px; }
 
-.choose-hint {
-    font-family: monospace;
-    font-size: 9px;
-    color: #A09070;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-align: center;
-    margin-top: 4px;
-}
-
-/* ── Quiz buttons ─────────────────────────────────────────────── */
+/* ── Quiz buttons (in-document answer choices) ────────────────── */
 .quiz-btn {
     display: block;
     width: 100%;
     padding: 14px 20px;
     font-size: 15px;
     font-weight: 700;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
     text-align: center;
     border: none;
     cursor: pointer;
-    border-radius: 8px;
-    transition: background 140ms ease, opacity 120ms ease, transform 140ms cubic-bezier(0.23,1,0.32,1);
+    border-radius: 3px;
+    transition: background 120ms ease, transform 180ms cubic-bezier(0.23,1,0.32,1), box-shadow 180ms cubic-bezier(0.23,1,0.32,1), opacity 120ms ease;
 }
-.quiz-btn:active { transform: scale(0.97); }
-.quiz-btn--dark { background: #1A1A1A; color: white; }
-.quiz-btn--dark:hover { background: #000; }
-.quiz-btn--red { background: #D32C37; color: white; }
-.quiz-btn--red:hover { background: #A9232C; }
+.quiz-btn:hover { transform: translateY(-2px); }
+.quiz-btn:active { transform: translateY(1px) scale(0.98); }
+.quiz-btn--dark {
+    background: #191919;
+    color: white;
+    box-shadow: 0 3px 0 #000, 0 4px 10px rgba(0,0,0,0.22);
+}
+.quiz-btn--dark:hover {
+    background: #111;
+    box-shadow: 0 4px 0 #000, 0 6px 14px rgba(0,0,0,0.28);
+}
+.quiz-btn--dark:active { box-shadow: 0 1px 0 #000, 0 2px 6px rgba(0,0,0,0.15); }
+.quiz-btn--red {
+    background: #D32C37;
+    color: white;
+    box-shadow: 0 3px 0 #921d24, 0 4px 10px rgba(211,44,55,0.22);
+}
+.quiz-btn--red:hover {
+    background: #C02030;
+    box-shadow: 0 4px 0 #7a1820, 0 6px 16px rgba(211,44,55,0.3);
+}
+.quiz-btn--red:active { box-shadow: 0 1px 0 #921d24, 0 2px 6px rgba(211,44,55,0.15); }
 .quiz-btn--outline {
     background: transparent;
     color: #1A1A1A;
-    border: 2px solid #1A1A1A;
+    border: 1.5px solid rgba(26,26,26,0.5);
+    box-shadow: none;
 }
-.quiz-btn--outline:hover { background: rgba(0,0,0,0.05); }
-.quiz-btn--selected { opacity: 0.6; }
+.quiz-btn--outline:hover {
+    background: rgba(0,0,0,0.04);
+    border-color: #1A1A1A;
+}
+.quiz-btn--selected {
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
+}
+.quiz-btn--selected:hover { transform: none; box-shadow: none; }
 
 /* ── Checklist ──────────────────────────────────────────────────── */
 .checklist-grid { display: flex; flex-direction: column; gap: 6px; }
@@ -1114,7 +1284,7 @@ const goBack = () => {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 12px 14px;
+    padding: 11px 14px;
     border: 1.5px solid #C4B080;
     cursor: pointer;
     transition: background 120ms ease;
@@ -1135,8 +1305,8 @@ const goBack = () => {
 }
 .check-box--on { background: #1A1A1A; color: white; }
 .check-text { display: flex; flex-direction: column; gap: 2px; }
-.check-label-text { font-size: 12px; font-weight: 700; color: #1A1A1A; letter-spacing: 0.04em; }
-.check-sublabel-text { font-size: 11px; color: #7A6A50; }
+.check-label-text { font-size: 14px; font-weight: 600; color: #1A1A1A; }
+.check-sublabel-text { font-size: 12px; color: #7A6A50; }
 
 /* ── Travel ───────────────────────────────────────────────────── */
 .travel-list { display: flex; flex-direction: column; gap: 12px; }
@@ -1153,7 +1323,7 @@ const goBack = () => {
 .trip-remove { background: none; border: none; color: #D32C37; font-size: 14px; cursor: pointer; padding: 0 4px; }
 .trip-region-tag { font-size: 11px; color: #7A6A50; }
 .trip-warning { font-size: 11px; color: #B8620A; background: rgba(184,98,10,0.08); padding: 6px 10px; border-radius: 2px; }
-.quiz-field-label { font-size: 11px; font-weight: 600; color: #7A6A50; text-transform: uppercase; letter-spacing: 0.08em; }
+.quiz-field-label { font-size: 11px; font-weight: 600; color: #7A6A50; letter-spacing: 0.05em; }
 .quiz-select, .quiz-input {
     width: 100%;
     background: rgba(255,255,255,0.4);
@@ -1161,6 +1331,7 @@ const goBack = () => {
     border-radius: 2px;
     padding: 8px 10px;
     font-size: 13px;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
     color: #1A1A1A;
     outline: none;
 }
@@ -1170,28 +1341,35 @@ const goBack = () => {
 .conviction-stamp {
     align-self: flex-end;
     margin-top: auto;
-    border: 1.5px solid #D32C37;
-    color: #D32C37;
+    background: #D32C37;
+    color: white;
     font-size: 9px;
     font-weight: 800;
-    letter-spacing: 0.12em;
-    padding: 4px 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 9px;
     text-transform: uppercase;
-    font-family: monospace;
     text-align: center;
+    transform: rotate(1deg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
-
-/* ── Complete card ────────────────────────────────────────────── */
-.complete-card { padding: 32px 28px; }
-.complete-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0; }
-.complete-check { margin-bottom: 16px; }
 
 /* ═══════════════════════════════════════════════════════════════════
    REDUCED MOTION
 ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
     .q-fade-enter-active, .q-fade-leave-active,
-    .q-slide-enter-active, .q-slide-leave-active,
-    .quiz-btn, .quiz-progress-fill { transition: none; }
+    .q-slide-enter-active, .q-slide-leave-active { transition: opacity 100ms ease; }
+    .q-slide-enter-from, .q-slide-leave-to { transform: none; }
+    .quiz-btn { transition: background 120ms ease; }
+    .quiz-btn:hover, .quiz-btn:active { transform: none; box-shadow: inherit; }
+    .quiz-progress-fill { transition: none; }
+    .intro-case-inner,
+    .accès-badge, .intro-title, .intro-dept, .intro-rule,
+    .intro-body, .intro-accent, .intro-cta-wrap, .tape-strip {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    .quiz-root::after { display: none; }
 }
 </style>

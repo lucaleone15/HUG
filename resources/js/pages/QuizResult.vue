@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sendAnalytics } from '../composables/useAnalytics.js'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t } = useI18n()
 
@@ -54,13 +55,8 @@ onMounted(() => {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
         </a>
-        <span class="result-topbar-label">DOSSIER CLÔTURÉ — RÉSULTAT</span>
+        <span class="result-topbar-label">Dossier clôturé — résultat</span>
     </header>
-
-    <!-- Progress bar full (résultat = 100%) -->
-    <div class="result-progress-bar" aria-hidden="true">
-        <div class="result-progress-fill"></div>
-    </div>
 
     <!-- ── Main ──────────────────────────────────────────────────────────── -->
     <main class="result-main">
@@ -252,14 +248,14 @@ onMounted(() => {
                     {{ t('entreprise.collect_date') }} :
                     <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
                 </p>
-                <a v-if="entreprise.rdv_url"
+                <BaseButton v-if="entreprise.rdv_url"
+                    variant="primary" :full="true"
                     :href="entreprise.rdv_url"
                     target="_blank" rel="noopener noreferrer"
-                    class="result-main-btn"
                     @click="onRdvClick"
                 >
                     Prendre rendez-vous
-                </a>
+                </BaseButton>
                 <a href="/" class="result-link">{{ t('result.back_home') }}</a>
             </template>
 
@@ -279,7 +275,7 @@ onMounted(() => {
                 <div v-if="reasons.length > 0" class="result-box">
                     <p class="box-title">{{ t('result.contact_box_title') }}</p>
                     <p class="box-body">{{ t('result.contact_box_message') }}</p>
-                    <a href="/contact" class="result-outline-btn">{{ t('result.contact_box_cta') }}</a>
+                    <BaseButton variant="outline" :full="true" href="/contact">{{ t('result.contact_box_cta') }}</BaseButton>
                 </div>
 
                 <!-- Needs evaluation -->
@@ -333,6 +329,24 @@ onMounted(() => {
 
 <style scoped>
 /* ═══════════════════════════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════════════════════════ */
+@keyframes dossier-enter {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes stamp-land {
+    0%   { opacity: 0; transform: translateX(-50%) rotate(-18deg) scale(1.18); }
+    55%  { opacity: 1; transform: translateX(-50%) rotate(-10deg) scale(0.96); }
+    75%  { transform: translateX(-50%) rotate(-13deg) scale(1.01); }
+    100% { opacity: 0.9; transform: translateX(-50%) rotate(-12deg) scale(1); }
+}
+@keyframes cta-enter {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    ROOT
 ═══════════════════════════════════════════════════════════════════ */
 .result-root {
@@ -341,6 +355,7 @@ onMounted(() => {
     color: white;
     display: flex;
     flex-direction: column;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -374,21 +389,10 @@ onMounted(() => {
 }
 .topbar-back-btn:hover { border-color: #666; color: white; }
 .result-topbar-label {
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     color: rgba(255,255,255,0.4);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-}
-.result-progress-bar {
-    height: 3px;
-    background: #1A1A1A;
-}
-.result-progress-fill {
-    height: 100%;
-    width: 100%;
-    background: #D32C37;
+    letter-spacing: 0.06em;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -419,7 +423,6 @@ onMounted(() => {
     display: inline-block;
     background: #EDE4C8;
     color: #7A6A50;
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -436,6 +439,7 @@ onMounted(() => {
     box-shadow: 0 30px 80px rgba(0,0,0,0.8);
     overflow: hidden;
     position: relative;
+    animation: dossier-enter 700ms cubic-bezier(0.23,1,0.32,1) both;
 }
 
 .tape-strip {
@@ -452,10 +456,9 @@ onMounted(() => {
     text-align: center;
 }
 .dossier-title {
-    font-family: monospace;
     font-size: 1.5rem;
     font-weight: 900;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     color: #1A1A1A;
 }
 @media (min-width: 1024px) {
@@ -507,11 +510,10 @@ onMounted(() => {
     gap: 16px;
 }
 .df-key {
-    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     color: #5A4A30;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -519,7 +521,6 @@ onMounted(() => {
     flex: 1;
 }
 .df-val {
-    font-family: monospace;
     font-size: 12px;
     font-weight: 600;
     color: #3A2A1A;
@@ -527,10 +528,9 @@ onMounted(() => {
 }
 .df-muted { color: #9A8A6A; }
 .df-status {
-    font-family: monospace;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
 }
 .df-status--ok  { color: #1A6A2A; }
 .df-status--ko  { color: #8A1A1A; }
@@ -553,7 +553,6 @@ onMounted(() => {
     position: relative;
 }
 .photo-caption {
-    font-family: monospace;
     font-size: 8px;
     color: #8A7A60;
     text-align: center;
@@ -570,11 +569,10 @@ onMounted(() => {
     background: #E4D8B8;
 }
 .fp-title {
-    font-family: monospace;
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 800;
     color: #5A4A30;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 8px;
@@ -592,11 +590,11 @@ onMounted(() => {
 }
 .fp-svg { width: 52px; height: 60px; }
 .fp-label {
-    font-family: monospace;
-    font-size: 7px;
+    font-size: 8px;
+    font-weight: 700;
     color: #7A6A50;
     text-align: center;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
 }
 
@@ -608,16 +606,16 @@ onMounted(() => {
     transform: translateX(-50%) rotate(-12deg);
     border: 4px solid #D32C37;
     color: #D32C37;
-    font-family: monospace;
     font-size: 1.75rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     padding: 10px 24px;
     text-transform: uppercase;
     pointer-events: none;
     z-index: 5;
     white-space: nowrap;
     opacity: 0.9;
+    animation: stamp-land 560ms cubic-bezier(0.23,1,0.32,1) both 440ms;
 }
 @media (min-width: 768px) {
     .agent-stamp { font-size: 2.25rem; bottom: 100px; }
@@ -638,6 +636,7 @@ onMounted(() => {
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
+    animation: cta-enter 560ms cubic-bezier(0.23,1,0.32,1) both 200ms;
 }
 
 .result-date-hint {
@@ -645,22 +644,6 @@ onMounted(() => {
     font-size: 14px;
     color: rgba(255,255,255,0.55);
 }
-
-.result-main-btn {
-    display: block;
-    width: 100%;
-    background: #D32C37;
-    color: white;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 16px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: background 150ms ease, transform 140ms cubic-bezier(0.23,1,0.32,1);
-}
-.result-main-btn:hover { background: #A9232C; }
-.result-main-btn:active { transform: scale(0.97); }
 
 .result-link {
     display: block;
@@ -673,39 +656,41 @@ onMounted(() => {
 .result-link:hover { color: rgba(255,255,255,0.7); }
 
 .result-reasons {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 16px 20px;
 }
 .reasons-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     margin-bottom: 10px;
 }
 .reasons-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .reason-item {
     display: flex;
     gap: 8px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.55;
 }
 .reason-bullet { color: #D32C37; flex-shrink: 0; }
 
 .result-box {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
-.result-box--info { border-color: rgba(4,189,251,0.3); background: rgba(4,189,251,0.05); }
-.box-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); }
-.box-body  { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+.result-box--info { border-color: rgba(4,189,251,0.2); background: rgba(4,189,251,0.04); }
+.box-title { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.9); }
+.box-body  { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
 
 .share-link-row {
     display: flex;
@@ -719,7 +704,6 @@ onMounted(() => {
     flex: 1;
     font-size: 11px;
     color: rgba(255,255,255,0.4);
-    font-family: monospace;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -746,10 +730,11 @@ onMounted(() => {
     background: transparent;
     color: rgba(255,255,255,0.7);
     border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 10px 14px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
+    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
@@ -798,6 +783,12 @@ onMounted(() => {
    REDUCED MOTION
 ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-    .result-main-btn { transition: none; }
+    .result-outline-btn { transition: none; }
+    .dossier-card, .agent-stamp, .result-cta-section {
+        animation: none;
+        opacity: 1;
+        transform: translateX(-50%) rotate(-12deg);
+    }
+    .dossier-card, .result-cta-section { transform: none; }
 }
 </style>
