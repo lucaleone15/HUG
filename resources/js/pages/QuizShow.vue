@@ -160,12 +160,20 @@ const goBack = () => {
     <Transition name="q-fade" mode="out-in">
     <div v-if="phase === 'intro'" key="intro" class="quiz-intro">
 
-        <!-- Close button (both) -->
-        <button class="intro-close-btn" @click="closeQuiz" :aria-label="t('quiz.back')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
+        <!-- Logo HUG + bouton fermer -->
+        <div class="intro-topbar">
+            <div class="topbar-brand">
+                <img :src="'/images/hug-logo_blanc.svg'" alt="HUG" class="topbar-hug-logo">
+                <span class="topbar-brand-sep">×</span>
+                <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="topbar-ent-logo">
+                <span v-else class="topbar-ent-name">{{ entreprise.name }}</span>
+            </div>
+            <button class="intro-close-btn" @click="closeQuiz" :aria-label="t('quiz.back')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
 
         <!-- Bureau narrative + dossier (all screens) -->
         <div class="intro-grid">
@@ -223,18 +231,28 @@ const goBack = () => {
             </div>
             <!-- Controls row -->
             <div class="topbar-controls">
-                <button
-                    v-if="answeredActive.length > 0 && !isComplete"
-                    class="topbar-back-btn"
-                    :title="t('quiz.back')"
-                    @click="goBack"
-                    aria-label="Question précédente"
-                >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div v-else class="topbar-spacer"></div>
+                <!-- Gauche : back + co-branding -->
+                <div class="topbar-left">
+                    <button
+                        v-if="answeredActive.length > 0 && !isComplete"
+                        class="topbar-back-btn"
+                        :title="t('quiz.back')"
+                        @click="goBack"
+                        aria-label="Question précédente"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div v-else class="topbar-spacer"></div>
+                    <div class="topbar-brand">
+                        <img :src="'/images/hug-logo_blanc.svg'" alt="HUG" class="topbar-hug-logo">
+                        <span class="topbar-brand-sep">×</span>
+                        <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="topbar-ent-logo">
+                        <span v-else class="topbar-ent-name">{{ entreprise.name }}</span>
+                    </div>
+                </div>
+                <!-- Droite : progression -->
                 <span class="topbar-pct">{{ progress }}%</span>
             </div>
         </header>
@@ -255,21 +273,13 @@ const goBack = () => {
                         <span class="doc-tab-inner">N° {{ dossierCode }}</span>
                     </div>
 
+                    <!-- Tape (outside the card so overflow:hidden ne la coupe pas) -->
+                    <div class="tape-anchor">
+                        <div class="tape-strip"></div>
+                    </div>
+
                     <!-- The paper document -->
                     <div class="document-card">
-
-                        <!-- Tape (always visible, mobile prominent) -->
-                        <div class="flex justify-center pt-1 pb-0">
-                            <div class="tape-strip"></div>
-                        </div>
-
-                        <!-- Mobile only: HUG decoration -->
-                        <div class="lg:hidden mobile-card-header">
-                            <div class="hug-deco" aria-hidden="true">
-                                <div class="hug-paper-lines"></div>
-                                <span class="hug-logo-text">HUG</span>
-                            </div>
-                        </div>
 
                         <!-- Desktop header -->
                         <div class="hidden lg:block document-card-header">
@@ -326,15 +336,16 @@ const goBack = () => {
                                 <!-- ── yes_no ── -->
                                 <template v-if="!currentQuestion.type || currentQuestion.type === 'yes_no'">
                                     <div class="answers-stack">
-                                        <button
+                                        <BaseButton
                                             v-for="(opt, i) in currentQuestion.options"
                                             :key="opt.id"
-                                            :class="['quiz-btn', i === 0 ? 'quiz-btn--dark' : 'quiz-btn--red',
-                                                     answers[currentQuestion.id] === opt.id ? 'quiz-btn--selected' : '']"
+                                            :variant="i === 0 ? 'dark' : 'primary'"
+                                            :full="true"
+                                            :class="answers[currentQuestion.id] === opt.id ? 'opacity-40' : ''"
                                             @click="selectAnswer(opt.id)"
                                         >
                                             {{ opt.label }}
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                     <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
@@ -360,16 +371,16 @@ const goBack = () => {
                                         </label>
                                     </div>
                                     <div class="answers-stack mt-3">
-                                        <button v-if="checklistSelected.length > 0"
-                                            class="quiz-btn quiz-btn--red"
+                                        <BaseButton v-if="checklistSelected.length > 0"
+                                            variant="primary" :full="true"
                                             @click="confirmChecklist">
                                             {{ t('quiz.checklist_confirm', { n: checklistSelected.length }) }}
-                                        </button>
-                                        <button v-for="opt in currentQuestion.options" :key="opt.id"
-                                            class="quiz-btn quiz-btn--dark"
+                                        </BaseButton>
+                                        <BaseButton v-for="opt in currentQuestion.options" :key="opt.id"
+                                            variant="dark" :full="true"
                                             @click="selectAnswer(opt.id)">
                                             {{ opt.label }}
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                     <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
@@ -399,16 +410,16 @@ const goBack = () => {
                                         </div>
                                     </div>
                                     <div class="answers-stack mt-3">
-                                        <button v-if="birthSelected.length > 0"
-                                            class="quiz-btn quiz-btn--red"
+                                        <BaseButton v-if="birthSelected.length > 0"
+                                            variant="primary" :full="true"
                                             @click="confirmBirth">
                                             {{ t('quiz.birth_confirm') }}
-                                        </button>
-                                        <button v-for="opt in currentQuestion.options" :key="opt.id"
-                                            class="quiz-btn quiz-btn--dark"
+                                        </BaseButton>
+                                        <BaseButton v-for="opt in currentQuestion.options" :key="opt.id"
+                                            variant="dark" :full="true"
                                             @click="selectAnswer(opt.id)">
                                             {{ opt.label }}
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                     <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
@@ -441,17 +452,17 @@ const goBack = () => {
                                         </div>
                                     </div>
                                     <div class="answers-stack mt-2">
-                                        <button class="quiz-btn quiz-btn--outline" @click="addTrip">
+                                        <BaseButton variant="outline" :full="true" @click="addTrip">
                                             {{ t('quiz.travel_add') }}
-                                        </button>
-                                        <button v-if="travelTripsValid" class="quiz-btn quiz-btn--red" @click="confirmTravel">
+                                        </BaseButton>
+                                        <BaseButton v-if="travelTripsValid" variant="primary" :full="true" @click="confirmTravel">
                                             {{ t('quiz.travel_confirm') }}
-                                        </button>
-                                        <button v-for="opt in currentQuestion.options" :key="opt.id"
-                                            class="quiz-btn quiz-btn--dark"
+                                        </BaseButton>
+                                        <BaseButton v-for="opt in currentQuestion.options" :key="opt.id"
+                                            variant="dark" :full="true"
                                             @click="selectAnswer(opt.id)">
                                             {{ opt.label }}
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                     <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
@@ -470,12 +481,12 @@ const goBack = () => {
                         <span class="doc-tab-inner">N° {{ dossierCode }}</span>
                     </div>
 
-                    <div class="document-card">
+                    <!-- Tape -->
+                    <div class="tape-anchor">
+                        <div class="tape-strip"></div>
+                    </div>
 
-                        <!-- Tape (mobile only) -->
-                        <div class="lg:hidden flex justify-center pt-1 pb-2">
-                            <div class="tape-strip"></div>
-                        </div>
+                    <div class="document-card">
 
                         <!-- Document header (desktop only) -->
                         <div class="hidden lg:block document-card-header">
@@ -563,8 +574,8 @@ const goBack = () => {
 ═══════════════════════════════════════════════════════════════════ */
 .quiz-root {
     min-height: 100vh;
-    background-color: #0C0C0C;
-    color: #fff;
+    background-color: var(--color-quiz-bg);
+    color: white;
     font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
     position: relative;
 }
@@ -613,16 +624,29 @@ const goBack = () => {
 .q-slide-leave-to     { opacity: 0; transform: translateY(-8px) scale(1.005); }
 
 /* ═══════════════════════════════════════════════════════════════════
-   INTRO — close button
+   INTRO — topbar (logo + close)
 ═══════════════════════════════════════════════════════════════════ */
 .quiz-intro {
     position: relative;
 }
-.intro-close-btn {
+.intro-topbar {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+}
+.intro-hug-logo {
+    height: 24px;
+    width: auto;
+    opacity: 0.85;
+    animation: quiz-rise 400ms cubic-bezier(0.23,1,0.32,1) both 80ms;
+}
+.intro-close-btn {
     width: 36px;
     height: 36px;
     border: none;
@@ -633,6 +657,7 @@ const goBack = () => {
     justify-content: center;
     cursor: pointer;
     transition: color 150ms;
+    flex-shrink: 0;
 }
 .intro-close-btn:hover { color: white; }
 
@@ -650,7 +675,7 @@ const goBack = () => {
 
 /* ── Bureau narrative panel ────────────────────────────────────── */
 .intro-bureau {
-    background: #0D0D0D;
+    background: var(--color-quiz-bg);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -662,18 +687,18 @@ const goBack = () => {
     .intro-bureau {
         padding: 5rem 5rem 4rem 5rem;
         min-height: auto;
-        justify-content: space-between;
+        justify-content: center;
     }
 }
 
 /* ── Dossier folder panel (desktop only) ───────────────────────── */
 .intro-dossier {
     display: none;
-    background: #0D0D0D;
+    background: var(--color-quiz-bg);
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    padding: 4rem 3rem 4rem;
+    justify-content: center;
+    padding: 4rem 3rem;
     order: 2;
 }
 @media (min-width: 1024px) {
@@ -684,7 +709,7 @@ const goBack = () => {
 .dossier-folder {
     width: 100%;
     max-width: 400px;
-    background: #C9A96E;
+    background: var(--color-doc-folder);
     border-radius: 8px;
     padding: 20px 18px 24px;
     box-shadow: 0 40px 80px rgba(0,0,0,0.75);
@@ -692,7 +717,7 @@ const goBack = () => {
     position: relative;
 }
 .dossier-folder-inner {
-    background: #F0E8D0;
+    background: var(--color-doc-paper-light);
     border-radius: 4px;
     padding: 18px 16px;
     position: relative;
@@ -700,15 +725,15 @@ const goBack = () => {
 .dossier-republic {
     font-size: 8px;
     font-weight: 700;
-    color: #5A4A30;
+    color: var(--color-doc-ink-deep);
     letter-spacing: 0.04em;
     padding-bottom: 8px;
-    border-bottom: 1px solid #C4B080;
+    border-bottom: 1px solid var(--color-doc-border);
     margin-bottom: 4px;
 }
 .dossier-hospital {
     font-size: 8px;
-    color: #7A6A50;
+    color: var(--color-doc-ink-mid);
     letter-spacing: 0.03em;
     line-height: 1.6;
     margin-bottom: 14px;
@@ -717,8 +742,8 @@ const goBack = () => {
     position: absolute;
     top: 14px;
     right: 14px;
-    border: 2px solid #D32C37;
-    color: #D32C37;
+    border: 2px solid var(--color-brand);
+    color: var(--color-brand);
     font-size: 10px;
     font-weight: 900;
     letter-spacing: 0.12em;
@@ -728,7 +753,7 @@ const goBack = () => {
     line-height: 1;
 }
 .dossier-logo-stamp {
-    border: 1.5px solid #C4A674;
+    border: 1.5px solid var(--color-doc-border-alt);
     background: white;
     padding: 16px 12px;
     margin: 0 0 14px;
@@ -745,14 +770,14 @@ const goBack = () => {
 .dossier-logo-text {
     font-size: 15px;
     font-weight: 800;
-    color: #1A1A1A;
+    color: var(--color-doc-ink);
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
 .dossier-folder-title {
     font-size: 1.6rem;
     font-weight: 900;
-    color: #1A1A1A;
+    color: var(--color-doc-ink);
     text-transform: uppercase;
     line-height: 1.1;
     letter-spacing: 0.02em;
@@ -760,10 +785,10 @@ const goBack = () => {
 }
 .dossier-folder-meta {
     font-size: 8px;
-    color: #7A6A50;
+    color: var(--color-doc-ink-mid);
     letter-spacing: 0.03em;
     line-height: 2;
-    border-top: 1px solid #C4B080;
+    border-top: 1px solid var(--color-doc-border);
     padding-top: 8px;
 }
 
@@ -773,8 +798,8 @@ const goBack = () => {
 .accès-badge {
     display: inline-block;
     align-self: flex-start;
-    border: 1.5px solid #D32C37;
-    color: #D32C37;
+    border: 1.5px solid var(--color-brand);
+    color: var(--color-brand);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.18em;
@@ -814,7 +839,7 @@ const goBack = () => {
 .intro-accent {
     font-size: clamp(1rem, 1.5vw, 1.1rem);
     font-weight: 800;
-    color: #D32C37;
+    color: var(--color-brand);
     margin-top: 1.75rem;
     max-width: 36ch;
 }
@@ -837,18 +862,18 @@ const goBack = () => {
     position: sticky;
     top: 0;
     z-index: 10;
-    background: #0D0D0D;
-    border-bottom: 1px solid #1A1A1A;
+    background: var(--color-quiz-bg);
+    border-bottom: 1px solid var(--color-doc-ink);
 }
 .topbar-progress {
     width: 100%;
     height: 3px;
-    background: #2A2A2A;
+    background: var(--color-quiz-track);
     flex-shrink: 0;
 }
 .topbar-progress-fill {
     height: 100%;
-    background: #D32C37;
+    background: var(--color-brand);
     transition: width 400ms cubic-bezier(0.23,1,0.32,1);
 }
 .topbar-controls {
@@ -866,7 +891,7 @@ const goBack = () => {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 2px solid #333;
+    border: 2px solid var(--color-quiz-control-border);
     background: transparent;
     color: rgba(255,255,255,0.7);
     display: flex;
@@ -876,7 +901,41 @@ const goBack = () => {
     flex-shrink: 0;
     transition: border-color 150ms, color 150ms;
 }
-.topbar-back-btn:hover { border-color: #666; color: white; }
+.topbar-back-btn:hover { border-color: var(--color-quiz-control-hover); color: white; }
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.topbar-hug-logo {
+    height: 20px;
+    width: auto;
+    opacity: 0.75;
+}
+.topbar-brand-sep {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+}
+.topbar-ent-logo {
+    height: 18px;
+    max-width: 80px;
+    object-fit: contain;
+    opacity: 0.75;
+    filter: brightness(0) invert(1);
+}
+.topbar-ent-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
 .topbar-pct {
     font-size: 12px;
     font-weight: 600;
@@ -899,14 +958,14 @@ const goBack = () => {
 }
 .doc-tab-inner {
     display: inline-block;
-    background: #EDE4C8;
-    color: #7A6A50;
+    background: var(--color-doc-paper);
+    color: var(--color-doc-ink-mid);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
     padding: 5px 16px;
     border-radius: 4px 4px 0 0;
-    border: 1px solid #C4B080;
+    border: 1px solid var(--color-doc-border);
     border-bottom: none;
 }
 
@@ -915,10 +974,10 @@ const goBack = () => {
 ═══════════════════════════════════════════════════════════════════ */
 .document-card {
     background:
-        radial-gradient(ellipse 70% 40% at 25% 12%, rgba(200,165,90,0.1) 0%, transparent 70%),
-        radial-gradient(ellipse 55% 45% at 78% 85%, rgba(175,140,75,0.07) 0%, transparent 70%),
-        #EBE1C4;
-    color: #1A1A1A;
+        radial-gradient(ellipse 70% 40% at 25% 12%, var(--color-doc-glow-warm) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 45% at 78% 85%, var(--color-doc-glow-cool) 0%, transparent 70%),
+        var(--color-doc-paper);
+    color: var(--color-doc-ink);
     border-radius: 4px;
     box-shadow:
         0 2px 0 rgba(255,255,255,0.04) inset,
@@ -928,14 +987,27 @@ const goBack = () => {
     position: relative;
 }
 
+.tape-anchor {
+    display: flex;
+    justify-content: center;
+    height: 0;
+    position: relative;
+    z-index: 2;
+}
+.tape-anchor .tape-strip {
+    position: absolute;
+    top: -10px;
+}
 .tape-strip {
-    width: 72px;
-    height: 14px;
-    background: rgba(180,170,150,0.6);
+    width: 80px;
+    height: 20px;
+    background: var(--color-doc-tape);
     border-radius: 2px;
-    display: block;
-    margin-bottom: 8px;
-    transform-origin: left center;
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        inset 0 -1px 0 rgba(0,0,0,0.06);
+    transform-origin: center center;
     animation: tape-draw 380ms cubic-bezier(0.23,1,0.32,1) both 80ms;
 }
 
@@ -947,7 +1019,7 @@ const goBack = () => {
 @media (min-width: 1024px) {
     .document-body {
         grid-template-columns: 1fr 1fr;
-        border-top: 1px solid #C4B080;
+        border-top: 1px solid var(--color-doc-border);
     }
 }
 
@@ -963,7 +1035,7 @@ const goBack = () => {
 @media (min-width: 1024px) {
     .doc-left {
         padding: 28px 28px 32px;
-        border-right: 1px solid #C4B080;
+        border-right: 1px solid var(--color-doc-border);
     }
 }
 
@@ -971,14 +1043,14 @@ const goBack = () => {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
-    background: #D32C37;
+    background: var(--color-brand);
     padding: 5px 11px 4px;
     align-self: flex-start;
     transform: rotate(-2deg);
     box-shadow: 0 1px 3px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .classified-stamp--complete {
-    background: #5A4A30;
+    background: var(--color-doc-ink-deep);
 }
 .classified-title {
     font-size: 12px;
@@ -998,25 +1070,25 @@ const goBack = () => {
 .piece-ref {
     font-size: 11px;
     font-weight: 700;
-    color: #D32C37;
+    color: var(--color-brand);
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 .panel-divider {
     height: 1px;
-    background: #C4B080;
+    background: var(--color-doc-border);
 }
 .category-label {
     font-size: 12px;
     font-weight: 600;
-    color: #9A8870;
+    color: var(--color-doc-ink-muted);
     letter-spacing: 0.01em;
 }
 .question-text {
     font-size: 1.4rem;
     font-weight: 800;
     line-height: 1.25;
-    color: #1A1A1A;
+    color: var(--color-doc-ink);
     letter-spacing: -0.01em;
 }
 @media (min-width: 1024px) {
@@ -1027,22 +1099,22 @@ const goBack = () => {
 .hint-label {
     font-size: 10px;
     font-weight: 800;
-    color: #8A7A60;
+    color: var(--color-doc-ink-muted);
     letter-spacing: 0.04em;
     margin-bottom: 6px;
 }
 .hint-text {
     font-size: 13px;
-    color: #6A5840;
+    color: var(--color-doc-ink-mid);
     line-height: 1.6;
 }
 .hint-list { padding-left: 0; list-style: none; }
 .hint-list-item {
     font-size: 13px;
-    color: #5A4A30;
+    color: var(--color-doc-ink-deep);
     padding: 2px 0;
 }
-.hint-list-item::before { content: '• '; color: #D32C37; }
+.hint-list-item::before { content: '• '; color: var(--color-brand); }
 
 .fingerprint {
     position: absolute;
@@ -1050,7 +1122,7 @@ const goBack = () => {
     left: 12px;
     width: 80px;
     height: 96px;
-    color: #8A7A60;
+    color: var(--color-doc-ink-muted);
     pointer-events: none;
     opacity: 0.7;
 }
@@ -1061,7 +1133,7 @@ const goBack = () => {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #EDE4C8;
+    background: var(--color-doc-paper);
 }
 @media (min-width: 1024px) {
     .doc-right { padding: 28px 28px 32px; }
@@ -1070,65 +1142,12 @@ const goBack = () => {
 .your-answer-label {
     font-size: 11px;
     font-weight: 700;
-    color: #8A7A60;
+    color: var(--color-doc-ink-muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .answers-stack { display: flex; flex-direction: column; gap: 10px; }
-
-/* ── Quiz buttons (in-document answer choices) ────────────────── */
-.quiz-btn {
-    display: block;
-    width: 100%;
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: background 120ms ease, transform 180ms cubic-bezier(0.23,1,0.32,1), box-shadow 180ms cubic-bezier(0.23,1,0.32,1), opacity 120ms ease;
-}
-.quiz-btn:hover { transform: translateY(-2px); }
-.quiz-btn:active { transform: translateY(1px) scale(0.98); }
-.quiz-btn--dark {
-    background: #191919;
-    color: white;
-    box-shadow: 0 3px 0 #000, 0 4px 10px rgba(0,0,0,0.22);
-}
-.quiz-btn--dark:hover {
-    background: #111;
-    box-shadow: 0 4px 0 #000, 0 6px 14px rgba(0,0,0,0.28);
-}
-.quiz-btn--dark:active { box-shadow: 0 1px 0 #000, 0 2px 6px rgba(0,0,0,0.15); }
-.quiz-btn--red {
-    background: #D32C37;
-    color: white;
-    box-shadow: 0 3px 0 #921d24, 0 4px 10px rgba(211,44,55,0.22);
-}
-.quiz-btn--red:hover {
-    background: #C02030;
-    box-shadow: 0 4px 0 #7a1820, 0 6px 16px rgba(211,44,55,0.3);
-}
-.quiz-btn--red:active { box-shadow: 0 1px 0 #921d24, 0 2px 6px rgba(211,44,55,0.15); }
-.quiz-btn--outline {
-    background: transparent;
-    color: #1A1A1A;
-    border: 1.5px solid rgba(26,26,26,0.5);
-    box-shadow: none;
-}
-.quiz-btn--outline:hover {
-    background: rgba(0,0,0,0.04);
-    border-color: #1A1A1A;
-}
-.quiz-btn--selected {
-    opacity: 0.45;
-    transform: none;
-    box-shadow: none;
-}
-.quiz-btn--selected:hover { transform: none; box-shadow: none; }
 
 /* ── Checklist ──────────────────────────────────────────────────── */
 .checklist-grid { display: flex; flex-direction: column; gap: 6px; }
@@ -1137,17 +1156,17 @@ const goBack = () => {
     align-items: flex-start;
     gap: 10px;
     padding: 11px 14px;
-    border: 1.5px solid #C4B080;
+    border: 1.5px solid var(--color-doc-border);
     cursor: pointer;
     transition: background 120ms ease;
     border-radius: 2px;
 }
-.check-item:hover { background: rgba(180,155,100,0.15); }
-.check-item--on { background: rgba(180,155,100,0.2); border-color: #9A7A40; }
+.check-item:hover { background: var(--color-doc-check-hover); }
+.check-item--on { background: var(--color-doc-check-on); border-color: var(--color-doc-border-dark); }
 .check-box {
     width: 18px;
     height: 18px;
-    border: 2px solid #1A1A1A;
+    border: 2px solid var(--color-doc-ink);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -1155,15 +1174,15 @@ const goBack = () => {
     border-radius: 2px;
     margin-top: 1px;
 }
-.check-box--on { background: #1A1A1A; color: white; }
+.check-box--on { background: var(--color-doc-ink); color: white; }
 .check-text { display: flex; flex-direction: column; gap: 2px; }
-.check-label-text { font-size: 14px; font-weight: 600; color: #1A1A1A; }
-.check-sublabel-text { font-size: 12px; color: #7A6A50; }
+.check-label-text { font-size: 14px; font-weight: 600; color: var(--color-doc-ink); }
+.check-sublabel-text { font-size: 12px; color: var(--color-doc-ink-mid); }
 
 /* ── Travel ───────────────────────────────────────────────────── */
 .travel-list { display: flex; flex-direction: column; gap: 12px; }
 .travel-trip {
-    border: 1.5px solid #C4B080;
+    border: 1.5px solid var(--color-doc-border);
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -1171,23 +1190,23 @@ const goBack = () => {
     border-radius: 2px;
 }
 .trip-header { display: flex; justify-content: space-between; align-items: center; }
-.trip-num { font-size: 11px; font-weight: 700; color: #7A6A50; text-transform: uppercase; letter-spacing: 0.08em; }
-.trip-remove { background: none; border: none; color: #D32C37; font-size: 14px; cursor: pointer; padding: 0 4px; }
-.trip-region-tag { font-size: 11px; color: #7A6A50; }
-.trip-warning { font-size: 11px; color: #B8620A; background: rgba(184,98,10,0.08); padding: 6px 10px; border-radius: 2px; }
-.quiz-field-label { font-size: 11px; font-weight: 600; color: #7A6A50; letter-spacing: 0.05em; }
+.trip-num { font-size: 11px; font-weight: 700; color: var(--color-doc-ink-mid); text-transform: uppercase; letter-spacing: 0.08em; }
+.trip-remove { background: none; border: none; color: var(--color-brand); font-size: 14px; cursor: pointer; padding: 0 4px; }
+.trip-region-tag { font-size: 11px; color: var(--color-doc-ink-mid); }
+.trip-warning { font-size: 11px; color: var(--color-warning); background: color-mix(in srgb, var(--color-warning) 8%, transparent); padding: 6px 10px; border-radius: 2px; }
+.quiz-field-label { font-size: 11px; font-weight: 600; color: var(--color-doc-ink-mid); letter-spacing: 0.05em; }
 .quiz-select, .quiz-input {
     width: 100%;
     background: rgba(255,255,255,0.4);
-    border: 1.5px solid #C4B080;
+    border: 1.5px solid var(--color-doc-border);
     border-radius: 2px;
     padding: 8px 10px;
     font-size: 13px;
     font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
-    color: #1A1A1A;
+    color: var(--color-doc-ink);
     outline: none;
 }
-.quiz-select:focus, .quiz-input:focus { border-color: #8A7A60; }
+.quiz-select:focus, .quiz-input:focus { border-color: var(--color-doc-ink-muted); }
 
 
 
@@ -1205,7 +1224,7 @@ const goBack = () => {
 .hug-deco {
     width: 56px;
     height: 64px;
-    background: #C4A674;
+    background: var(--color-doc-border-alt);
     border-radius: 3px;
     display: flex;
     flex-direction: column;
@@ -1222,7 +1241,7 @@ const goBack = () => {
     left: 5px;
     right: 5px;
     bottom: 22px;
-    background: #F0E8D0;
+    background: var(--color-doc-paper-light);
     border-radius: 1px;
 }
 .hug-paper-lines::after {
@@ -1231,13 +1250,13 @@ const goBack = () => {
     position: absolute;
     top: 5px; left: 4px; right: 4px;
     height: 2px;
-    background: rgba(90,70,40,0.15);
-    box-shadow: 0 5px 0 rgba(90,70,40,0.1), 0 10px 0 rgba(90,70,40,0.08);
+    background: var(--color-doc-lines-shadow);
+    box-shadow: 0 5px 0 var(--color-doc-lines-shadow), 0 10px 0 var(--color-doc-lines-shadow);
 }
 .hug-logo-text {
     font-size: 11px;
     font-weight: 900;
-    color: #F0E8D0;
+    color: var(--color-doc-paper-light);
     letter-spacing: 0.06em;
     z-index: 1;
 }
@@ -1248,9 +1267,9 @@ const goBack = () => {
     font-family: 'Courier New', monospace;
     font-size: 13px;
     font-weight: 700;
-    color: #8A7A60;
+    color: var(--color-doc-ink-muted);
     letter-spacing: 0.08em;
-    border-bottom: 1px solid #C4B080;
+    border-bottom: 1px solid var(--color-doc-border);
     text-transform: uppercase;
 }
 
@@ -1263,7 +1282,7 @@ const goBack = () => {
     max-height: 38px;
     max-width: 130px;
     object-fit: contain;
-    border: 1px solid #C4B080;
+    border: 1px solid var(--color-doc-border);
     padding: 5px 9px;
     background: white;
     border-radius: 2px;
@@ -1272,7 +1291,7 @@ const goBack = () => {
 /* ── Choose hint text ─────────────────────────────────────────── */
 .choose-hint-text {
     font-size: 11px;
-    color: #A09080;
+    color: var(--color-doc-ink-muted);
     font-style: italic;
     text-align: center;
     margin-top: 4px;
@@ -1285,8 +1304,6 @@ const goBack = () => {
     .q-fade-enter-active, .q-fade-leave-active,
     .q-slide-enter-active, .q-slide-leave-active { transition: opacity 100ms ease; }
     .q-slide-enter-from, .q-slide-leave-to { transform: none; }
-    .quiz-btn { transition: background 120ms ease; }
-    .quiz-btn:hover, .quiz-btn:active { transform: none; box-shadow: inherit; }
     .topbar-progress-fill { transition: none; }
     .accès-badge, .intro-title, .intro-dept, .intro-rule,
     .intro-body, .intro-accent, .intro-cta-wrap, .tape-strip,

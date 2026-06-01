@@ -14,8 +14,7 @@ const props = defineProps({
 const eligible        = props.submission?.is_eligible ?? false
 const reasons         = props.submission?.disqualification_reasons ?? []
 const needsEvaluation = props.submission?.needs_evaluation ?? false
-const copied          = ref(false)
-const messageCopied   = ref(false)
+const copied = ref(false)
 const shareUrl        = `${window.location.origin}/c/${props.entreprise.slug}`
 const dossierCode     = 'SANG-' + new Date().getFullYear().toString().slice(-2)
 
@@ -26,25 +25,40 @@ const formattedDate = computed(() => {
     })
 })
 
-const onRdvClick = () => sendAnalytics('rdv_clicked', props.entreprise.id, null, {})
+const onRdvClick = () => {
+    sendAnalytics('rdv_clicked', props.entreprise.id, null, {})
+    window.open(props.entreprise.rdv_url || 'https://www.onedoc.ch', '_blank', 'noopener,noreferrer')
+}
 
 const copyLink = async () => {
-    await navigator.clipboard.writeText(shareUrl)
+    try {
+        await navigator.clipboard.writeText(shareUrl)
+    } catch {
+        const el = document.createElement('input')
+        el.value = shareUrl
+        el.style.position = 'fixed'
+        el.style.opacity = '0'
+        document.body.appendChild(el)
+        el.select()
+        document.execCommand('copy')
+        document.body.removeChild(el)
+    }
     copied.value = true
     setTimeout(() => { copied.value = false }, 2000)
 }
 
-const copyEmailMessage = async () => {
-    const text = t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl })
-    await navigator.clipboard.writeText(text)
-    messageCopied.value = true
-    setTimeout(() => { messageCopied.value = false }, 2000)
+const openMail = () => {
+    const subject = encodeURIComponent(`Don du sang — ${props.entreprise.name}`)
+    const body    = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
+    window.location.href = `mailto:?subject=${subject}&body=${body}`
 }
 
-const whatsappHref = computed(() => {
+const openWhatsapp = () => {
     const text = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
-    return `https://wa.me/?text=${text}`
-})
+    window.open(`https://wa.me/?text=${text}`, '_blank', 'noopener,noreferrer')
+}
+
+const goToContact = () => { window.location.href = '/contact' }
 </script>
 
 <template>
@@ -58,7 +72,7 @@ const whatsappHref = computed(() => {
         <div class="topbar-controls">
             <a href="/" class="topbar-back-btn" :aria-label="t('result.back_home')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </a>
             <span class="topbar-pct">100%</span>
@@ -72,7 +86,7 @@ const whatsappHref = computed(() => {
         <div class="dossier-wrapper">
 
             <!-- Tab desktop -->
-            <div class="hidden lg:flex justify-end pr-14 mb-[-1px] relative z-10">
+            <div class="hidden lg:flex justify-end pr-14 mb-[-1px] relative z-[1]">
                 <span class="doc-tab-inner">N° {{ dossierCode }}</span>
             </div>
 
@@ -85,7 +99,7 @@ const whatsappHref = computed(() => {
 
                 <!-- Card header -->
                 <div class="dossier-header">
-                    <h1 class="dossier-title">Dossier Agent</h1>
+                    <h1 class="dossier-title">Dossier Enquête</h1>
                 </div>
                 <div class="dossier-rule"></div>
 
@@ -97,15 +111,13 @@ const whatsappHref = computed(() => {
                         <template v-if="eligible">
                             <p class="narrative-text">{{ t('result.eligible_narrative') }}</p>
                             <!-- RDV button inside dossier -->
-                            <div v-if="entreprise.rdv_url" class="dossier-action-block">
+                            <div class="dossier-action-block">
                                 <p v-if="formattedDate" class="dossier-action-date">
                                     {{ t('entreprise.collect_date') }} : <strong>{{ formattedDate }}</strong>
                                 </p>
-                                <a :href="entreprise.rdv_url" target="_blank" rel="noopener noreferrer"
-                                   class="dossier-action-btn dossier-action-btn--rdv"
-                                   @click="onRdvClick">
+                                <BaseButton variant="primary" class="!rounded-sm" @click="onRdvClick">
                                     {{ t('result.rdv_cta') }}
-                                </a>
+                                </BaseButton>
                             </div>
                         </template>
                         <template v-else>
@@ -118,79 +130,33 @@ const whatsappHref = computed(() => {
                                         <span>{{ r }}</span>
                                     </li>
                                 </ul>
-                                <!-- Contact link inside dossier -->
-                                <div class="dossier-action-block">
-                                    <a href="/contact" class="dossier-action-btn dossier-action-btn--contact">
-                                        {{ t('result.contact_box_cta') }}
-                                    </a>
-                                </div>
                             </div>
                             <p v-if="needsEvaluation" class="narrative-text narrative-text--gap narrative-text--info">
                                 {{ t('result.needs_evaluation_message') }}
                             </p>
                             <p class="narrative-text narrative-text--gap">{{ t('result.ineligible_narrative_p2') }}</p>
+                            <div class="dossier-action-block">
+                                <BaseButton variant="dark" class="!rounded-sm" @click="goToContact">
+                                    {{ t('result.contact_box_cta') }}
+                                </BaseButton>
+                            </div>
                         </template>
                     </div>
 
-                    <!-- RIGHT: portrait + fingerprints -->
-                    <div class="dossier-right-col">
+                    <!-- RIGHT: portrait + fingerprints (masqué sur mobile) -->
+                    <div class="dossier-right-col hidden md:flex flex-col gap-[10px]">
 
                         <!-- Photo frame -->
                         <div class="photo-frame">
                             <div class="photo-tape"></div>
-                            <svg viewBox="0 0 140 165" xmlns="http://www.w3.org/2000/svg" class="w-full block">
-                                <rect width="140" height="165" fill="#EDE8D4"/>
-                                <!-- body / shoulders -->
-                                <path d="M8 148 L22 110 Q70 100 118 110 L132 148 L132 165 L8 165 Z" fill="#1A1A1A"/>
-                                <!-- neck -->
-                                <rect x="62" y="102" width="16" height="12" fill="#1A1A1A" rx="1"/>
-                                <!-- head -->
-                                <circle cx="70" cy="68" r="34" fill="#1A1A1A"/>
-                            </svg>
-                        </div>
-
-                        <!-- Fingerprints -->
-                        <div class="fp-box">
-                            <p class="fp-title">Empreintes digitales</p>
-                            <div class="fp-pair">
-                                <div class="fp-item">
-                                    <svg viewBox="0 0 56 64" fill="none" stroke="#2A1A0A" stroke-width="0.9" class="fp-svg">
-                                        <path d="M28 4C14 4 4 14 4 28c0 6 2 11 5 15"/>
-                                        <path d="M28 8C16 8 8 16 8 28c0 5 1.5 9 4 12.5"/>
-                                        <path d="M28 12C18 12 12 18 12 28c0 4 1 7 3 10"/>
-                                        <path d="M28 16C20 16 16 20 16 28c0 3 0.8 5.5 2 7.5"/>
-                                        <path d="M28 20C22 20 20 22 20 28c0 2 0.5 3.5 1.5 5"/>
-                                        <circle cx="28" cy="28" r="1.8" fill="#2A1A0A"/>
-                                        <path d="M28 4C42 4 52 14 52 28c0 6-2 11-5 15"/>
-                                        <path d="M28 8C40 8 48 16 48 28c0 5-1.5 9-4 12.5"/>
-                                        <path d="M28 12C38 12 44 18 44 28c0 4-1 7-3 10"/>
-                                        <path d="M28 16C36 16 40 20 40 28c0 3-0.8 5.5-2 7.5"/>
-                                        <path d="M28 20C34 20 36 22 36 28c0 2-0.5 3.5-1.5 5"/>
-                                        <path d="M9 43c2 8 10 16 19 17M47 43c-2 8-10 16-19 17"/>
-                                        <path d="M4 35c1 10 11 22 24 24M52 35c-1 10-11 22-24 24"/>
-                                    </svg>
-                                    <p class="fp-label">Index gauche</p>
-                                </div>
-                                <div class="fp-item">
-                                    <svg viewBox="0 0 56 64" fill="none" stroke="#2A1A0A" stroke-width="0.9" class="fp-svg">
-                                        <path d="M28 4C14 4 4 14 4 28c0 6 2 11 5 15"/>
-                                        <path d="M28 8C16 8 8 16 8 28c0 5 1.5 9 4 12.5"/>
-                                        <path d="M28 12C18 12 12 18 12 28c0 4 1 7 3 10"/>
-                                        <path d="M28 16C20 16 16 20 16 28c0 3 0.8 5.5 2 7.5"/>
-                                        <path d="M28 20C22 20 20 22 20 28c0 2 0.5 3.5 1.5 5"/>
-                                        <circle cx="28" cy="28" r="1.8" fill="#2A1A0A"/>
-                                        <path d="M28 4C42 4 52 14 52 28c0 6-2 11-5 15"/>
-                                        <path d="M28 8C40 8 48 16 48 28c0 5-1.5 9-4 12.5"/>
-                                        <path d="M28 12C38 12 44 18 44 28c0 4-1 7-3 10"/>
-                                        <path d="M28 16C36 16 40 20 40 28c0 3-0.8 5.5-2 7.5"/>
-                                        <path d="M28 20C34 20 36 22 36 28c0 2-0.5 3.5-1.5 5"/>
-                                        <path d="M9 43c2 8 10 16 19 17M47 43c-2 8-10 16-19 17"/>
-                                        <path d="M4 35c1 10 11 22 24 24M52 35c-1 10-11 22-24 24"/>
-                                    </svg>
-                                    <p class="fp-label">Index droite</p>
-                                </div>
+                            <div class="photo-icon-wrap">
+                                <svg viewBox="4 8 56 50" preserveAspectRatio="xMidYMax meet" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="photo-icon">
+                                    <circle cx="32" cy="22" r="13"/>
+                                    <path d="M6 58c0-14.359 11.641-26 26-26s26 11.641 26 26H6z"/>
+                                </svg>
                             </div>
                         </div>
+
 
                     </div><!-- /dossier-right-col -->
                 </div><!-- /dossier-body -->
@@ -200,27 +166,24 @@ const whatsappHref = computed(() => {
                     {{ eligible ? t('result.stamp_eligible') : t('result.stamp_ineligible') }}
                 </div>
 
+                <!-- ── Boutons de partage intégrés dans le dossier ── -->
+                <template v-if="!eligible">
+                    <div class="dossier-rule"></div>
+                    <div class="dossier-share">
+                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="copyLink">
+                            {{ copied ? t('result.referral_copied') : t('result.referral_colleague') }}
+                        </BaseButton>
+                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="openMail">
+                            {{ t('result.share_mail') }}
+                        </BaseButton>
+                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="openWhatsapp">
+                            {{ t('result.referral_whatsapp') }}
+                        </BaseButton>
+                    </div>
+                </template>
+
             </div><!-- /dossier-card -->
         </div><!-- /dossier-wrapper -->
-
-        <!-- ── CTA section ─────────────────────────────────────────────────── -->
-        <div class="result-cta-section">
-
-            <template v-if="!eligible">
-                <div class="share-row">
-                    <button class="share-action-btn" @click="copyLink">
-                        {{ copied ? t('result.referral_copied') : t('result.referral_colleague') }}
-                    </button>
-                    <button class="share-action-btn" @click="copyEmailMessage">
-                        {{ messageCopied ? t('result.referral_message_copied') : t('result.share_mail') }}
-                    </button>
-                    <a :href="whatsappHref" target="_blank" rel="noopener noreferrer" class="share-action-btn">
-                        {{ t('result.referral_whatsapp') }}
-                    </a>
-                </div>
-            </template>
-
-        </div>
 
     </main>
 
@@ -236,10 +199,10 @@ const whatsappHref = computed(() => {
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes stamp-land {
-    0%   { opacity: 0; transform: translate(-50%, -50%) rotate(-18deg) scale(1.2); }
-    55%  { opacity: 1; transform: translate(-50%, -50%) rotate(-11deg) scale(0.96); }
-    75%  { transform: translate(-50%, -50%) rotate(-14deg) scale(1.01); }
-    100% { opacity: 0.92; transform: translate(-50%, -50%) rotate(-13deg) scale(1); }
+    0%   { opacity: 0; transform: rotate(3deg) scale(1.2); }
+    55%  { opacity: 1; transform: rotate(10deg) scale(0.96); }
+    75%  { transform: rotate(6deg) scale(1.01); }
+    100% { opacity: 0.92; transform: rotate(8deg) scale(1); }
 }
 @keyframes cta-enter {
     from { opacity: 0; transform: translateY(16px); }
@@ -266,7 +229,7 @@ const whatsappHref = computed(() => {
     flex-direction: column;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 20;
     background: #0D0D0D;
     border-bottom: 1px solid #1A1A1A;
 }
@@ -398,13 +361,13 @@ const whatsappHref = computed(() => {
 .dossier-body {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 20px 24px 120px;
+    padding: 20px 24px 28px;
     gap: 20px;
 }
 @media (min-width: 768px) {
     .dossier-body {
         grid-template-columns: 1fr auto;
-        padding: 24px 32px 140px;
+        padding: 24px 32px 28px;
         gap: 36px;
     }
 }
@@ -475,39 +438,11 @@ const whatsappHref = computed(() => {
     color: #6A5A40;
     font-style: italic;
 }
-.dossier-action-btn {
-    display: inline-block;
-    padding: 10px 22px;
-    font-size: 13px;
-    font-weight: 700;
-    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
-    text-decoration: none;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    text-align: center;
-    transition: opacity 150ms ease;
-}
-.dossier-action-btn:hover { opacity: 0.85; }
-.dossier-action-btn--rdv {
-    background: #D32C37;
-    color: white;
-    box-shadow: 0 3px 0 #921d24;
-}
-.dossier-action-btn--contact {
-    background: #3A2A1A;
-    color: #F0E8D0;
-}
 
 /* ── Right column ─────────────────────────────────────────────── */
 .dossier-right-col {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-}
-@media (min-width: 768px) {
-    .dossier-right-col { width: 210px; flex-shrink: 0; }
+    width: 210px;
+    flex-shrink: 0;
 }
 
 /* ── Photo frame ─────────────────────────────────────────────── */
@@ -516,6 +451,23 @@ const whatsappHref = computed(() => {
     background: #EDE8D4;
     overflow: hidden;
     position: relative;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.photo-icon-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.photo-icon {
+    width: 100%;
+    height: 100%;
+    color: #8A7A60;
+    opacity: 0.45;
 }
 .photo-tape {
     position: absolute;
@@ -529,53 +481,16 @@ const whatsappHref = computed(() => {
     z-index: 2;
 }
 
-/* ── Fingerprints ─────────────────────────────────────────────── */
-.fp-box {
-    border: 1.5px solid #C4A870;
-    padding: 10px;
-    background: #E4D8B8;
-}
-.fp-title {
-    font-size: 9px;
-    font-weight: 800;
-    color: #5A4A30;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #C4A870;
-    padding-bottom: 6px;
-}
-.fp-pair {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-.fp-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-.fp-svg { width: 52px; height: 60px; }
-.fp-label {
-    font-size: 8px;
-    font-weight: 600;
-    color: #7A6A50;
-    text-align: center;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-}
 
-/* ── Eligibility stamp (centered in dossier) ────────────────────── */
+/* ── Eligibility stamp (bottom of dossier, in reserved padding zone) ── */
 .agent-stamp {
     position: absolute;
-    top: 50%;
-    left: 46%;
-    transform: translate(-50%, -50%) rotate(-13deg);
-    border: 3.5px solid currentColor;
-    padding: 12px 30px;
-    font-size: 1.75rem;
+    top: 18px;
+    right: 20px;
+    transform: rotate(8deg);
+    border: 2.5px solid currentColor;
+    padding: 8px 20px;
+    font-size: 1.25rem;
     font-weight: 900;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -587,7 +502,7 @@ const whatsappHref = computed(() => {
     font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
 }
 @media (min-width: 768px) {
-    .agent-stamp { font-size: 2.25rem; padding: 14px 36px; left: 44%; }
+    .agent-stamp { font-size: 1.75rem; padding: 10px 28px; top: 24px; right: 28px; border-width: 3px; }
 }
 /* Double border via pseudo-element */
 .agent-stamp::before {
@@ -600,71 +515,26 @@ const whatsappHref = computed(() => {
 .agent-stamp--eligible   { color: #2A8A3A; }
 .agent-stamp--ineligible { color: #D32C37; }
 
-/* ═══════════════════════════════════════════════════════════════════
-   CTA SECTION
-═══════════════════════════════════════════════════════════════════ */
-.result-cta-section {
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    animation: cta-enter 560ms cubic-bezier(0.23,1,0.32,1) both 300ms;
-}
-
-.result-date-hint {
-    font-size: 13px;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-}
-
-/* Share buttons row (non-eligible) */
-.share-row {
+/* ── Share inside dossier ──────────────────────────────────────── */
+.dossier-share {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 100%;
+    padding: 20px 24px 24px;
 }
 @media (min-width: 640px) {
-    .share-row { flex-direction: row; gap: 12px; }
+    .dossier-share { flex-direction: row; padding: 20px 32px 28px; }
 }
 
-.share-action-btn {
-    flex: 1;
-    display: block;
-    background: #D32C37;
-    color: white;
-    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 16px 20px;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: background 150ms ease, transform 180ms cubic-bezier(0.23,1,0.32,1);
-    box-shadow: 0 3px 0 #921d24, 0 4px 12px rgba(211,44,55,0.25);
-}
-.share-action-btn:hover {
-    background: #C02030;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 0 #7a1820, 0 6px 16px rgba(211,44,55,0.3);
-}
-.share-action-btn:active {
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 0 1px 0 #921d24, 0 2px 6px rgba(211,44,55,0.15);
-}
+
+
 
 /* ═══════════════════════════════════════════════════════════════════
    REDUCED MOTION
 ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
     .dossier-card { animation: none; opacity: 1; }
-    .agent-stamp  { animation: none; opacity: 0.92; transform: translate(-50%, -50%) rotate(-13deg); }
+    .agent-stamp  { animation: none; opacity: 0.92; transform: rotate(8deg); }
     .result-cta-section { animation: none; opacity: 1; }
-    .share-action-btn   { transition: background 120ms ease; }
-    .share-action-btn:hover, .share-action-btn:active { transform: none; box-shadow: none; }
 }
 </style>
