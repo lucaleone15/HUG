@@ -14,7 +14,7 @@
 
   {{-- ── HEADER ──────────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#111111;padding:18px 32px;">
+    <td style="background:#E30613;padding:18px 32px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="vertical-align:middle;">
@@ -30,7 +30,7 @@
 
   {{-- ── TYPE / STATUT ────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#1A1A1A;padding:9px 32px;border-top:1px solid #2A2A2A;">
+    <td style="background:#C5000E;padding:9px 32px;border-top:1px solid #A8000C;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.14em;text-transform:uppercase;">
@@ -52,11 +52,11 @@
       </p>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto 28px;">
         <tr>
-          <td style="border:2px solid #D32C37;padding:8px 22px;">
+          <td style="border:2px solid #E30613;padding:8px 22px;">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="border:1px solid rgba(211,44,55,0.5);padding:5px 14px;">
-                  <span style="font-size:12px;font-weight:900;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;">
+                <td style="border:1px solid rgba(227,6,19,0.5);padding:5px 14px;">
+                  <span style="font-size:12px;font-weight:900;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;">
                     {{ __('mail.contact_new_message') }}
                   </span>
                 </td>
@@ -77,15 +77,15 @@
   {{-- ── EXPÉDITEUR ───────────────────────────────────────────────── --}}
   <tr>
     <td style="background:#ffffff;padding:32px 32px 24px;">
-      <p style="margin:0 0 14px;font-size:9px;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
+      <p style="margin:0 0 14px;font-size:9px;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
         {{ __('mail.contact_from') }}
       </p>
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-left:3px solid #D32C37;background:#fafafa;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-left:3px solid #E30613;background:#fafafa;">
         <tr>
           <td style="padding:14px 18px;">
             <p style="margin:0 0 4px;font-size:15px;font-weight:800;color:#111111;">{{ $senderName }}</p>
             <a href="mailto:{{ $senderEmail }}"
-               style="color:#D32C37;font-size:13px;font-weight:600;text-decoration:none;">
+               style="color:#E30613;font-size:13px;font-weight:600;text-decoration:none;">
               {{ $senderEmail }}
             </a>
           </td>
@@ -115,9 +115,9 @@
     <td style="background:#ffffff;padding:0 32px 40px;">
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <td style="background:#D32C37;">
+          <td style="background:#E30613;border-radius:6px;overflow:hidden;">
             <a href="mailto:{{ $senderEmail }}"
-               style="display:inline-block;background:#D32C37;color:#ffffff;text-decoration:none;padding:14px 28px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">
+               style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:14px 28px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;border-radius:6px;">
               {{ __('mail.contact_reply_cta', ['name' => $senderName]) }}
             </a>
           </td>
@@ -128,7 +128,7 @@
 
   {{-- ── FOOTER ───────────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#D32C37;padding:28px 32px;">
+    <td style="background:#E30613;padding:28px 32px;">
       <p style="margin:0 0 4px;font-size:12px;font-weight:900;color:#ffffff;letter-spacing:0.1em;text-transform:uppercase;">
         {{ __('mail.footer_org') }}
       </p>

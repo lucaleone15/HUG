@@ -22,7 +22,7 @@
 
   {{-- ── HEADER ──────────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#111111;padding:18px 32px;">
+    <td style="background:#E30613;padding:18px 32px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="vertical-align:middle;">
@@ -46,7 +46,7 @@
 
   {{-- ── STATUT ───────────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#1A1A1A;padding:9px 32px;border-top:1px solid #2A2A2A;">
+    <td style="background:#C5000E;padding:9px 32px;border-top:1px solid #A8000C;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.14em;text-transform:uppercase;">
@@ -72,11 +72,11 @@
       </p>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto 32px;">
         <tr>
-          <td style="border:2px solid #D32C37;padding:8px 22px;">
+          <td style="border:2px solid #E30613;padding:8px 22px;">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="border:1px solid rgba(211,44,55,0.5);padding:5px 14px;">
-                  <span style="font-size:12px;font-weight:900;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;">
+                <td style="border:1px solid rgba(227,6,19,0.5);padding:5px 14px;">
+                  <span style="font-size:12px;font-weight:900;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;">
                     {{ __('mail.hero_stamp') }}
                   </span>
                 </td>
@@ -97,7 +97,7 @@
   {{-- ── ACTIVATION ───────────────────────────────────────────────── --}}
   <tr>
     <td style="background:#ffffff;padding:40px 32px 36px;">
-      <p style="margin:0 0 14px;font-size:9px;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
+      <p style="margin:0 0 14px;font-size:9px;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
         {{ __('mail.activation_section') }}
       </p>
       <h2 style="margin:0 0 28px;font-size:26px;font-weight:900;color:#111111;line-height:1.15;">
@@ -109,13 +109,13 @@
       <p style="margin:0 0 28px;font-size:14px;color:#555555;line-height:1.75;">
         {!! __('mail.confirmation_body', ['name' => '<strong style="color:#111111;">' . e($entreprise->name) . '</strong>']) !!}
       </p>
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;border-left:3px solid #D32C37;background:#fafafa;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;border-left:3px solid #E30613;background:#fafafa;">
         <tr>
           <td style="padding:14px 18px;">
             <p style="margin:0 0 5px;font-size:9px;color:#aaaaaa;text-transform:uppercase;letter-spacing:0.14em;font-weight:700;">
               {{ __('mail.confirmation_link_label') }}
             </p>
-            <a href="{{ $pageUrl }}" style="color:#D32C37;font-size:13px;font-weight:600;text-decoration:none;word-break:break-all;">
+            <a href="{{ $pageUrl }}" style="color:#E30613;font-size:13px;font-weight:600;text-decoration:none;word-break:break-all;">
               {{ $pageUrl }}
             </a>
           </td>
@@ -123,9 +123,9 @@
       </table>
       <table cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
         <tr>
-          <td style="background:#D32C37;">
+          <td style="background:#E30613;border-radius:6px;overflow:hidden;">
             <a href="{{ $pageUrl }}"
-               style="display:inline-block;background:#D32C37;color:#ffffff;text-decoration:none;padding:14px 28px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">
+               style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:14px 28px;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;border-radius:6px;">
               {{ __('mail.cta_access_page') }}
             </a>
           </td>
@@ -143,7 +143,7 @@
   {{-- ── KIT DE COMMUNICATION ─────────────────────────────────────── --}}
   <tr>
     <td style="background:#111111;padding:40px 32px;">
-      <p style="margin:0 0 10px;font-size:9px;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
+      <p style="margin:0 0 10px;font-size:9px;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
         {{ __('mail.kit_section') }}
       </p>
       <h2 style="margin:0 0 8px;font-size:26px;font-weight:900;color:#ffffff;line-height:1.15;">
@@ -158,14 +158,14 @@
         <tr><td style="padding:20px 24px;">
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
             <tr>
-              <td><span style="font-size:9px;color:#D32C37;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">{{ __('mail.step1_priority') }}</span></td>
+              <td><span style="font-size:9px;color:#E30613;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">{{ __('mail.step1_priority') }}</span></td>
               <td style="text-align:right;"><span style="font-size:9px;color:#999999;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:#f0f0f0;padding:3px 9px;">{{ __('mail.step_label') }} 01</span></td>
             </tr>
           </table>
           <h3 style="margin:0 0 8px;font-size:15px;font-weight:800;color:#111111;">{{ __('mail.step1_title') }}</h3>
           <p style="margin:0 0 16px;font-size:12px;color:#666666;line-height:1.65;">{{ __('mail.step1_body') }}</p>
           <a href="{{ $pageUrl }}"
-             style="display:inline-block;background:#D32C37;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">
+             style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border-radius:6px;">
             {{ __('mail.step1_cta') }} →
           </a>
         </td></tr>
@@ -183,7 +183,7 @@
           <h3 style="margin:0 0 8px;font-size:15px;font-weight:800;color:#111111;">{{ __('mail.step2_title') }}</h3>
           <p style="margin:0 0 16px;font-size:12px;color:#666666;line-height:1.65;">{{ __('mail.step2_body') }}</p>
           <a href="{{ $adminUrl }}"
-             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">
+             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border-radius:6px;">
             {{ __('mail.step2_cta') }} →
           </a>
         </td></tr>
@@ -201,7 +201,7 @@
           <h3 style="margin:0 0 8px;font-size:15px;font-weight:800;color:#111111;">{{ __('mail.step3_title') }}</h3>
           <p style="margin:0 0 16px;font-size:12px;color:#666666;line-height:1.65;">{{ __('mail.step3_body') }}</p>
           <a href="{{ $adminUrl }}"
-             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">
+             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border-radius:6px;">
             {{ __('mail.step3_cta') }} →
           </a>
         </td></tr>
@@ -223,7 +223,7 @@
             </h2>
           </td>
           <td style="text-align:right;vertical-align:middle;">
-            <span style="font-size:9px;color:#D32C37;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid #D32C37;padding:4px 10px;white-space:nowrap;">
+            <span style="font-size:9px;color:#E30613;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid #E30613;padding:4px 10px;white-space:nowrap;">
               {{ __('mail.recap_badge') }}
             </span>
           </td>
@@ -237,7 +237,7 @@
         @if($dateFormatted)
         <tr>
           <td style="padding:13px 0;border-bottom:1px solid #C4B080;font-size:9px;color:#8A7A60;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;">{{ __('mail.recap_date') }}</td>
-          <td style="padding:13px 0 13px 16px;border-bottom:1px solid #C4B080;font-size:13px;font-weight:700;color:#D32C37;">{{ $dateFormatted }}</td>
+          <td style="padding:13px 0 13px 16px;border-bottom:1px solid #C4B080;font-size:13px;font-weight:700;color:#E30613;">{{ $dateFormatted }}</td>
         </tr>
         @endif
         @if($entreprise->contact_name)
@@ -253,7 +253,7 @@
   {{-- ── RÉFÉRENT ─────────────────────────────────────────────────── --}}
   <tr>
     <td style="background:#111111;padding:40px 32px;">
-      <p style="margin:0 0 10px;font-size:9px;color:#D32C37;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
+      <p style="margin:0 0 10px;font-size:9px;color:#E30613;letter-spacing:0.22em;text-transform:uppercase;font-weight:700;">
         {{ __('mail.referent_section') }}
       </p>
       <h2 style="margin:0 0 28px;font-size:22px;font-weight:900;color:#ffffff;line-height:1.2;">
@@ -265,7 +265,7 @@
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td width="44" height="44" align="center" valign="middle"
-                    style="background:#D32C37;border-radius:22px;width:44px;height:44px;">
+                    style="background:#E30613;border-radius:22px;width:44px;height:44px;">
                   <span style="font-size:13px;font-weight:900;color:#ffffff;letter-spacing:0.04em;">FF</span>
                 </td>
               </tr>
@@ -301,7 +301,7 @@
 
   {{-- ── FOOTER ───────────────────────────────────────────────────── --}}
   <tr>
-    <td style="background:#D32C37;padding:32px 32px 28px;">
+    <td style="background:#E30613;padding:32px 32px 28px;">
       <p style="margin:0 0 5px;font-size:12px;font-weight:900;color:#ffffff;letter-spacing:0.1em;text-transform:uppercase;">
         HUG × {{ strtoupper($entreprise->name) }} · DOSSIER {{ $dossierCode }}
       </p>
