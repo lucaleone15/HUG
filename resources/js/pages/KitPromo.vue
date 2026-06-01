@@ -51,7 +51,7 @@ const items = computed(() => [
                     <ul class="divide-y divide-base-200">
                         <li v-for="item in items" :key="item.num"
                             class="flex items-center gap-5 py-4">
-                            <span class="font-mono text-xs text-base-content/30 shrink-0 w-5">{{ item.num }}</span>
+                            <span class="text-xs text-base-content/30 shrink-0 w-5">{{ item.num }}</span>
                             <span class="text-sm font-medium text-base-content/70">{{ item.label }}</span>
                         </li>
                     </ul>

@@ -203,7 +203,7 @@ const clearLogo = () => {
                                 <!-- Champ texte — soumet la valeur -->
                                 <input type="text" name="primary_color" v-model="primaryColor"
                                     maxlength="7" required
-                                    class="flex-1 px-3 py-2 text-sm font-mono outline-none bg-transparent"
+                                    class="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     placeholder="#RRGGBB">
                             </div>
                             <span v-if="errors?.primary_color" class="text-error text-xs">{{ errors.primary_color[0] }}</span>
@@ -230,7 +230,7 @@ const clearLogo = () => {
                                 </label>
                                 <input type="text" name="secondary_color" v-model="secondaryColor"
                                     maxlength="7"
-                                    class="flex-1 px-3 py-2 text-sm font-mono outline-none bg-transparent"
+                                    class="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     placeholder="#RRGGBB">
                             </div>
                         </div>

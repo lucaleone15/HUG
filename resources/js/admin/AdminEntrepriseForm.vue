@@ -144,7 +144,7 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_slug') }}</span></div>
-                        <input v-model="form.slug" type="text" class="input input-bordered input-sm font-mono"
+                        <input v-model="form.slug" type="text" class="input input-bordered input-sm"
                             :class="fieldError('slug') ? 'input-error' : ''" :placeholder="t('admin.form_slug_placeholder')">
                         <div v-if="fieldError('slug')" class="label"><span class="label-text-alt text-error">{{ fieldError('slug') }}</span></div>
                     </label>
@@ -204,7 +204,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                         <div class="flex items-center gap-3 flex-wrap">
                             <input type="color" v-model="form.primary_color"
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
-                            <span class="badge text-white font-mono text-xs px-3 py-3"
+                            <span class="badge text-white text-xs px-3 py-3"
                                 :style="`background:${form.primary_color}`">{{ form.primary_color }}</span>
                         </div>
                     </div>
@@ -217,7 +217,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                         <div v-if="form.secondary_color" class="flex items-center gap-3 flex-wrap">
                             <input type="color" v-model="form.secondary_color"
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
-                            <span class="badge text-white font-mono text-xs px-3 py-3"
+                            <span class="badge text-white text-xs px-3 py-3"
                                 :style="`background:${form.secondary_color}`">{{ form.secondary_color }}</span>
                             <button type="button" class="btn btn-ghost btn-xs text-base-content/40"
                                 @click="form.secondary_color = ''">{{ t('admin.form_color_remove') }}</button>
