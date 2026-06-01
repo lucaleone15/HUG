@@ -18,16 +18,10 @@ const props = defineProps({
 const phase = ref('intro')   // 'intro' | 'quiz'
 const dossierCode = 'SANG-' + new Date().getFullYear().toString().slice(-2)
 
+const closeQuiz = () => window.history.back()
+
 const startQuiz = () => { phase.value = 'quiz' }
 
-// ─── Question text split (main + red accent = last ~30% of words) ───────────
-const splitQ = (text) => {
-    const words = text.trim().split(/\s+/)
-    if (words.length <= 3) return { main: '', accent: text }
-    const accentCount = Math.min(Math.max(2, Math.floor(words.length * 0.3)), 5)
-    const at = words.length - accentCount
-    return { main: words.slice(0, at).join(' ') + ' ', accent: words.slice(at).join(' ') }
-}
 
 const pad = (n) => String(n ?? 0).padStart(2, '0')
 
@@ -165,53 +159,50 @@ const goBack = () => {
     <!-- ══════════════════════════════════════════════════════════════════════ -->
     <Transition name="q-fade" mode="out-in">
     <div v-if="phase === 'intro'" key="intro" class="quiz-intro">
+
+        <!-- Close button (both) -->
+        <button class="intro-close-btn" @click="closeQuiz" :aria-label="t('quiz.back')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- Bureau narrative + dossier (all screens) -->
         <div class="intro-grid">
 
-            <!-- ── Left / Top: case file form ────────────────────── -->
-            <div class="intro-case">
-                <div class="dossier-v-grain" aria-hidden="true"></div>
-                <div class="intro-case-inner">
-                    <div class="ic-field ic-field--code">
-                        <span class="ic-key">N° dossier</span>
-                        <span class="ic-code">{{ dossierCode }}</span>
-                    </div>
-                    <div class="ic-field">
-                        <span class="ic-key">Établissement</span>
-                        <div v-if="entreprise.logo_url" class="ic-logo">
-                            <img :src="entreprise.logo_url" :alt="entreprise.name">
-                        </div>
-                        <span v-else class="ic-val">{{ entreprise.name }}</span>
-                    </div>
-                    <div class="ic-field-row">
-                        <div class="ic-field">
-                            <span class="ic-key">Année</span>
-                            <span class="ic-val">{{ new Date().getFullYear() }}</span>
-                        </div>
-                        <div class="ic-field">
-                            <span class="ic-key">Référent</span>
-                            <span class="ic-val">CTS Genève</span>
-                        </div>
-                    </div>
-                    <div class="ic-field ic-field--status">
-                        <span class="ic-key">Statut</span>
-                        <span class="ic-status">En attente</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── Right / Bottom: narrative ─────────────────────── -->
+            <!-- Left: bureau narrative -->
             <div class="intro-bureau">
-                <div class="accès-badge">{{ t('quiz.intro_badge') }}</div>
-                <h1 class="intro-title">{{ t('quiz.intro_title') }}</h1>
-                <p class="intro-dept">{{ t('quiz.intro_dept') }}</p>
-                <div class="intro-rule"></div>
-                <p class="intro-body">{{ t('quiz.intro_p1') }}</p>
-                <p class="intro-body intro-body--gap">{{ t('quiz.intro_p2') }}</p>
-                <p class="intro-accent">{{ t('quiz.intro_accent') }}</p>
+                <div class="intro-bureau-content">
+                    <div class="accès-badge">{{ t('quiz.intro_badge') }}</div>
+                    <h1 class="intro-title">{{ t('quiz.intro_title') }}</h1>
+                    <p class="intro-body">{{ t('quiz.intro_p1') }}</p>
+                    <p class="intro-body intro-body--gap">{{ t('quiz.intro_p2') }}</p>
+                </div>
                 <div class="intro-cta-wrap">
                     <BaseButton variant="primary" :full="true" @click="startQuiz">
                         {{ t('quiz.intro_cta') }}
                     </BaseButton>
+                </div>
+            </div>
+
+            <!-- Right: dossier folder (desktop only) -->
+            <div class="intro-dossier" aria-hidden="true">
+                <div class="dossier-folder">
+                    <div class="dossier-folder-inner">
+                        <p class="dossier-republic">République et canton de Genève</p>
+                        <p class="dossier-hospital">Hôpitaux universitaires de Genève<br>Centre de transfusion sanguine</p>
+                        <div class="dossier-confidential-badge">CONFIDENTIAL</div>
+                        <div class="dossier-logo-stamp">
+                            <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="dossier-logo-img">
+                            <span v-else class="dossier-logo-text">{{ entreprise.name }}</span>
+                        </div>
+                        <p class="dossier-folder-title">DOSSIER<br>{{ dossierCode }}</p>
+                        <div class="dossier-folder-meta">
+                            <p>Date d'ouverture : _ / _ / {{ new Date().getFullYear() }}</p>
+                            <p>Inspecteur assigné : CTS</p>
+                            <p>Statut : en attente</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -226,30 +217,30 @@ const goBack = () => {
 
         <!-- ── Top bar ────────────────────────────────────────────────────── -->
         <header class="quiz-topbar">
-            <!-- Back button -->
-            <button
-                v-if="answeredActive.length > 0 && !isComplete"
-                class="topbar-back-btn"
-                :title="t('quiz.back')"
-                @click="goBack"
-                aria-label="Question précédente"
-            >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
-            <div v-else class="w-9 h-9"></div>
-
-            <!-- Piece reference (mobile) / Dossier label (desktop) -->
-            <span v-if="currentQuestion" class="topbar-ref">
-                <span class="lg:hidden">{{ t('quiz.piece_label') }} #{{ pad(currentQuestion.order) }} / {{ total }}</span>
-                <span class="hidden lg:inline">{{ t('quiz.dossier_label') }} {{ dossierCode }}</span>
-            </span>
-            <span v-else class="topbar-ref hidden lg:inline">{{ t('quiz.dossier_label') }} {{ dossierCode }}</span>
+            <!-- Progress bar strip (full width) -->
+            <div class="topbar-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+                <div class="topbar-progress-fill" :style="`width: ${progress}%`"></div>
+            </div>
+            <!-- Controls row -->
+            <div class="topbar-controls">
+                <button
+                    v-if="answeredActive.length > 0 && !isComplete"
+                    class="topbar-back-btn"
+                    :title="t('quiz.back')"
+                    @click="goBack"
+                    aria-label="Question précédente"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div v-else class="topbar-spacer"></div>
+                <span class="topbar-pct">{{ progress }}%</span>
+            </div>
         </header>
 
         <!-- ── Main content ─────────────────────────────────────────────── -->
-        <main class="flex-1 flex flex-col items-center px-4 py-6 lg:py-10 lg:px-8 overflow-x-hidden">
+        <main class="quiz-main flex-1 flex flex-col items-center px-4 py-6 lg:py-10 lg:px-8 overflow-x-hidden">
 
             <Transition name="q-slide" mode="out-in">
 
@@ -267,9 +258,22 @@ const goBack = () => {
                     <!-- The paper document -->
                     <div class="document-card">
 
-                        <!-- Tape (mobile only) -->
-                        <div class="lg:hidden flex justify-center pt-1 pb-2">
+                        <!-- Tape (always visible, mobile prominent) -->
+                        <div class="flex justify-center pt-1 pb-0">
                             <div class="tape-strip"></div>
+                        </div>
+
+                        <!-- Mobile only: HUG decoration -->
+                        <div class="lg:hidden mobile-card-header">
+                            <div class="hug-deco" aria-hidden="true">
+                                <div class="hug-paper-lines"></div>
+                                <span class="hug-logo-text">HUG</span>
+                            </div>
+                        </div>
+
+                        <!-- Desktop header -->
+                        <div class="hidden lg:block document-card-header">
+                            DOSSIER {{ dossierCode }}
                         </div>
 
                         <!-- Two-panel grid (single col on mobile, two cols on desktop) -->
@@ -278,26 +282,20 @@ const goBack = () => {
                             <!-- ▌LEFT PANEL — Question ▐ -->
                             <div class="doc-left">
 
-                                <!-- Classified stamp -->
+                                <!-- Classified stamp (all screens) -->
                                 <div class="classified-stamp">
                                     <span class="classified-title">{{ t('quiz.classified_header') }}</span>
                                     <span class="classified-sub">{{ t('quiz.classified_sub') }} {{ dossierCode }}</span>
                                 </div>
 
-                                <!-- Piece reference -->
-                                <p class="piece-ref">
-                                    {{ t('quiz.piece_label') }} #{{ pad(currentQuestion.order) }} / {{ pad(total) }}
-                                </p>
+                                <!-- Question reference -->
+                                <p class="piece-ref">Question {{ pad(currentQuestion.order) }}</p>
                                 <div class="panel-divider"></div>
 
-                                <!-- Category label -->
-                                <p class="category-label">{{ currentQuestion.category }}</p>
+                                <!-- Category label: desktop only -->
+                                <p class="hidden lg:block category-label">{{ currentQuestion.category }}</p>
 
-                                <!-- Question text with red accent on last words -->
-                                <h2 class="question-text">
-                                    <span>{{ splitQ(currentQuestion.content).main }}</span>
-                                    <span class="question-accent">{{ splitQ(currentQuestion.content).accent }}</span>
-                                </h2>
+                                <h2 class="question-text">{{ currentQuestion.content }}</h2>
 
                                 <!-- Hint / Inspector note -->
                                 <div v-if="currentQuestion.hint" class="hint-block">
@@ -317,9 +315,16 @@ const goBack = () => {
                             <!-- ▌RIGHT PANEL — Answers ▐ -->
                             <div class="doc-right">
 
-                                <!-- ── yes_no ──────────────────────────── -->
+                                <!-- Company logo stamp (desktop only) -->
+                                <div v-if="entreprise.logo_url" class="hidden lg:flex doc-logo-wrap">
+                                    <img :src="entreprise.logo_url" :alt="entreprise.name" class="doc-logo-img">
+                                </div>
+
+                                <!-- "Votre réponse" label: desktop only -->
+                                <p class="your-answer-label hidden lg:block">{{ t('quiz.your_answer') }}</p>
+
+                                <!-- ── yes_no ── -->
                                 <template v-if="!currentQuestion.type || currentQuestion.type === 'yes_no'">
-                                    <p class="your-answer-label">{{ t('quiz.your_answer') }}</p>
                                     <div class="answers-stack">
                                         <button
                                             v-for="(opt, i) in currentQuestion.options"
@@ -331,9 +336,10 @@ const goBack = () => {
                                             {{ opt.label }}
                                         </button>
                                     </div>
+                                    <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
 
-                                <!-- ── checklist ───────────────────────── -->
+                                <!-- ── checklist ── -->
                                 <template v-else-if="currentQuestion.type === 'checklist'">
                                     <div class="checklist-grid">
                                         <label
@@ -365,9 +371,10 @@ const goBack = () => {
                                             {{ opt.label }}
                                         </button>
                                     </div>
+                                    <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
 
-                                <!-- ── birth_check ─────────────────────── -->
+                                <!-- ── birth_check ── -->
                                 <template v-else-if="currentQuestion.type === 'birth_check'">
                                     <div class="checklist-grid">
                                         <div v-for="item in currentQuestion.items" :key="item.id">
@@ -403,9 +410,10 @@ const goBack = () => {
                                             {{ opt.label }}
                                         </button>
                                     </div>
+                                    <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
 
-                                <!-- ── travel_check ────────────────────── -->
+                                <!-- ── travel_check ── -->
                                 <template v-else-if="currentQuestion.type === 'travel_check'">
                                     <div class="travel-list">
                                         <div v-for="(trip, i) in travelTrips" :key="i" class="travel-trip">
@@ -445,12 +453,9 @@ const goBack = () => {
                                             {{ opt.label }}
                                         </button>
                                     </div>
+                                    <p class="choose-hint-text">{{ t('quiz.choose_hint') }}</p>
                                 </template>
 
-                                <!-- Pièce à conviction stamp -->
-                                <div class="conviction-stamp">
-                                    <span>{{ t('quiz.piece_label') }}</span>
-                                </div>
 
                             </div><!-- /doc-right -->
                         </div><!-- /document-body -->
@@ -472,27 +477,27 @@ const goBack = () => {
                             <div class="tape-strip"></div>
                         </div>
 
+                        <!-- Document header (desktop only) -->
+                        <div class="hidden lg:block document-card-header">
+                            DOSSIER {{ dossierCode }}
+                        </div>
+
                         <!-- Two-panel layout — mirrors the question card -->
                         <div class="document-body">
 
                             <!-- LEFT: Confirmation visuelle -->
                             <div class="doc-left">
                                 <div class="classified-stamp classified-stamp--complete">
-                                    <span class="classified-title">DOSSIER COMPLET</span>
-                                    <span class="classified-sub">{{ t('quiz.piece_label') }} #{{ pad(total) }}</span>
+                                    <span class="classified-title">Dossier complet</span>
+                                    <span class="classified-sub">{{ dossierCode }}</span>
                                 </div>
 
-                                <p class="piece-ref">
-                                    {{ t('quiz.piece_label') }} #{{ pad(total) }} / {{ pad(total) }}
-                                </p>
+                                <p class="piece-ref">Question {{ pad(total) }}</p>
                                 <div class="panel-divider"></div>
 
                                 <p class="category-label">{{ dossierCode }}</p>
 
-                                <h2 class="question-text">
-                                    <span>{{ splitQ(t('quiz.complete_title')).main }}</span>
-                                    <span class="question-accent">{{ splitQ(t('quiz.complete_title')).accent }}</span>
-                                </h2>
+                                <h2 class="question-text">{{ t('quiz.complete_title') }}</h2>
 
                                 <!-- Fingerprint decorative -->
                                 <div class="fingerprint" aria-hidden="true">
@@ -537,9 +542,6 @@ const goBack = () => {
                                     </BaseButton>
                                 </form>
 
-                                <div class="conviction-stamp mt-auto">
-                                    <span>{{ t('quiz.piece_label') }}</span>
-                                </div>
                             </div>
 
                         </div><!-- /document-body -->
@@ -549,13 +551,6 @@ const goBack = () => {
             </Transition>
         </main>
 
-        <!-- ── Barre de progression (bas) ─────────────────────────────── -->
-        <footer class="quiz-bottom-bar">
-            <div class="quiz-progress-track">
-                <div class="quiz-progress-fill" :style="`width: ${progress}%`"></div>
-            </div>
-            <span class="quiz-progress-pct">{{ progress }}%</span>
-        </footer>
 
     </div><!-- /quiz-screen -->
 
@@ -592,6 +587,10 @@ const goBack = () => {
     from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes badge-rise {
+    from { opacity: 0; transform: translateY(14px) rotate(-10deg); }
+    to   { opacity: 1; transform: translateY(0) rotate(-10deg); }
+}
 @keyframes folder-arrive {
     from { opacity: 0; transform: translateY(-28px) scale(0.93); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -614,6 +613,30 @@ const goBack = () => {
 .q-slide-leave-to     { opacity: 0; transform: translateY(-8px) scale(1.005); }
 
 /* ═══════════════════════════════════════════════════════════════════
+   INTRO — close button
+═══════════════════════════════════════════════════════════════════ */
+.quiz-intro {
+    position: relative;
+}
+.intro-close-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 20;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 150ms;
+}
+.intro-close-btn:hover { color: white; }
+
+/* ═══════════════════════════════════════════════════════════════════
    INTRO — grid layout
 ═══════════════════════════════════════════════════════════════════ */
 .intro-grid {
@@ -622,117 +645,7 @@ const goBack = () => {
     min-height: 100svh;
 }
 @media (min-width: 1024px) {
-    .intro-grid { grid-template-columns: 44fr 56fr; }
-}
-
-/* ── Case file panel ───────────────────────────────────────────── */
-.intro-case {
-    background: #060606;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 2.5rem 1.5rem 2rem;
-    order: 2;
-}
-@media (min-width: 1024px) {
-    .intro-case {
-        justify-content: center;
-        padding: 4.5rem 3.5rem;
-        order: 1;
-    }
-}
-.intro-case::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 50%;
-    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(211,44,55,0.04) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.intro-case-inner {
-    position: relative;
-    z-index: 1;
-    animation: quiz-rise 580ms cubic-bezier(0.23,1,0.32,1) both 60ms;
-}
-
-.ic-field {
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding: 0.9rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-@media (min-width: 1024px) {
-    .ic-field { padding: 1.1rem 0; }
-}
-.ic-field--code { border-bottom-color: rgba(255,255,255,0.09); }
-.ic-field--status { border-bottom: none; padding-bottom: 0; }
-
-.ic-field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.ic-field-row .ic-field {
-    border-bottom: none;
-}
-@media (min-width: 1024px) {
-    .ic-field-row .ic-field:first-child {
-        border-right: 1px solid rgba(255,255,255,0.06);
-        padding-right: 1.5rem;
-    }
-    .ic-field-row .ic-field:last-child { padding-left: 1.5rem; }
-}
-
-.ic-key {
-    font-size: 10px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-.ic-code {
-    font-size: clamp(2.5rem, 4vw, 5rem);
-    font-weight: 900;
-    color: #F0EAE0;
-    letter-spacing: -0.02em;
-    line-height: 1;
-}
-.ic-val {
-    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-    font-weight: 700;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.01em;
-    line-height: 1.3;
-}
-.ic-logo img {
-    height: 28px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.5;
-    display: block;
-}
-@media (min-width: 1024px) {
-    .ic-logo img { height: 34px; }
-}
-.ic-status {
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.28);
-    letter-spacing: 0.04em;
-}
-
-/* ── Grain (shared) ────────────────────────────────────────────── */
-.dossier-v-grain {
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    background-size: 200px;
-    opacity: 0.035;
-    pointer-events: none;
+    .intro-grid { grid-template-columns: 56fr 44fr; }
 }
 
 /* ── Bureau narrative panel ────────────────────────────────────── */
@@ -741,14 +654,117 @@ const goBack = () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3rem 1.5rem 2.5rem;
+    padding: 5rem 1.75rem 3.5rem;
     order: 1;
+    min-height: 100svh;
 }
 @media (min-width: 1024px) {
     .intro-bureau {
-        padding: 5rem 5rem 5rem 4rem;
-        order: 2;
+        padding: 5rem 5rem 4rem 5rem;
+        min-height: auto;
+        justify-content: space-between;
     }
+}
+
+/* ── Dossier folder panel (desktop only) ───────────────────────── */
+.intro-dossier {
+    display: none;
+    background: #0D0D0D;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 4rem 3rem 4rem;
+    order: 2;
+}
+@media (min-width: 1024px) {
+    .intro-dossier { display: flex; }
+}
+
+/* ── Dossier folder card ────────────────────────────────────────── */
+.dossier-folder {
+    width: 100%;
+    max-width: 400px;
+    background: #C9A96E;
+    border-radius: 8px;
+    padding: 20px 18px 24px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.75);
+    animation: folder-arrive 620ms cubic-bezier(0.23,1,0.32,1) both;
+    position: relative;
+}
+.dossier-folder-inner {
+    background: #F0E8D0;
+    border-radius: 4px;
+    padding: 18px 16px;
+    position: relative;
+}
+.dossier-republic {
+    font-size: 8px;
+    font-weight: 700;
+    color: #5A4A30;
+    letter-spacing: 0.04em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #C4B080;
+    margin-bottom: 4px;
+}
+.dossier-hospital {
+    font-size: 8px;
+    color: #7A6A50;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+.dossier-confidential-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    border: 2px solid #D32C37;
+    color: #D32C37;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    padding: 3px 8px;
+    transform: rotate(5deg);
+    text-transform: uppercase;
+    line-height: 1;
+}
+.dossier-logo-stamp {
+    border: 1.5px solid #C4A674;
+    background: white;
+    padding: 16px 12px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 72px;
+}
+.dossier-logo-img {
+    max-height: 48px;
+    max-width: 200px;
+    object-fit: contain;
+}
+.dossier-logo-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1A1A1A;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.dossier-folder-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #1A1A1A;
+    text-transform: uppercase;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+}
+.dossier-folder-meta {
+    font-size: 8px;
+    color: #7A6A50;
+    letter-spacing: 0.03em;
+    line-height: 2;
+    border-top: 1px solid #C4B080;
+    padding-top: 8px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -756,18 +772,20 @@ const goBack = () => {
 ═══════════════════════════════════════════════════════════════════ */
 .accès-badge {
     display: inline-block;
-    border: 1.5px solid rgba(211,44,55,0.55);
+    align-self: flex-start;
+    border: 1.5px solid #D32C37;
     color: #D32C37;
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     padding: 4px 12px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
+    transform: rotate(-10deg);
 }
 
 /* ── Intro entry stagger ───────────────────────────────────────── */
-.accès-badge     { animation: quiz-rise 420ms cubic-bezier(0.23,1,0.32,1) both 120ms; }
+.accès-badge     { animation: badge-rise 420ms cubic-bezier(0.23,1,0.32,1) both 120ms; }
 .intro-title     { animation: quiz-rise 520ms cubic-bezier(0.23,1,0.32,1) both 180ms; }
 .intro-dept      { animation: quiz-rise 380ms cubic-bezier(0.23,1,0.32,1) both 260ms; }
 .intro-rule      { animation: quiz-rise 280ms cubic-bezier(0.23,1,0.32,1) both 320ms; }
@@ -776,86 +794,15 @@ const goBack = () => {
 .intro-accent    { animation: quiz-rise 400ms cubic-bezier(0.23,1,0.32,1) both 520ms; }
 .intro-cta-wrap  { animation: quiz-rise 480ms cubic-bezier(0.23,1,0.32,1) both 620ms; }
 
-/* ── Folder visual ─────────────────────────────────────────────── */
-.folder-card {
-    width: 220px;
-    background: #C4A674;
-    border-radius: 8px;
-    padding: 20px 16px 24px;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    animation: folder-arrive 580ms cubic-bezier(0.23,1,0.32,1) both 40ms;
-}
-.folder-clip {
-    width: 36px;
-    height: 20px;
-    background: #888;
-    border-radius: 4px 4px 0 0;
-    margin: -20px auto 12px;
-    position: relative;
-}
-.folder-clip::after {
-    content: '';
-    position: absolute;
-    inset: 3px 6px;
-    background: #0D0D0D;
-    border-radius: 2px;
-}
-.folder-inner {
-    background: #EDE4C8;
-    border-radius: 4px;
-    padding: 12px;
-    text-align: center;
-}
-.folder-confidential-stamp {
-    display: inline-block;
-    border: 2px solid #D32C37;
-    color: #D32C37;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 0.15em;
-    padding: 3px 8px;
-    margin-bottom: 8px;
-    transform: rotate(-4deg);
-}
-.folder-dossier-no {
-    font-size: 9px;
-    font-weight: 700;
-    color: #5A4A30;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 8px;
-}
-.folder-status {
-    font-size: 8px;
-    color: #8A7A60;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-top: 2px;
-}
 
 /* ── Bureau narrative content ──────────────────────────────────── */
 .intro-title {
     font-size: clamp(1.9rem, 3.5vw, 3.25rem);
     font-weight: 900;
     line-height: 1.05;
-    text-transform: uppercase;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
-    max-width: 16ch;
-}
-.intro-dept {
-    font-size: 11px;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-}
-.intro-rule {
-    width: 40px;
-    height: 1px;
-    background: rgba(255,255,255,0.12);
-    margin-bottom: 1.5rem;
+    white-space: nowrap;
 }
 .intro-body {
     font-size: clamp(0.88rem, 1.4vw, 1rem);
@@ -871,107 +818,49 @@ const goBack = () => {
     margin-top: 1.75rem;
     max-width: 36ch;
 }
+.intro-bureau-content {
+    display: flex;
+    flex-direction: column;
+}
 .intro-cta-wrap {
     margin-top: 2.5rem;
     max-width: 360px;
 }
 
-/* ── Desktop folder (large) ────────────────────────────────────── */
-.folder-card-lg {
-    width: 100%;
-    max-width: 480px;
-    background: #C4A674;
-    border-radius: 10px;
-    padding: 28px 24px 32px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.7);
-    position: relative;
-    animation: folder-arrive 620ms cubic-bezier(0.23,1,0.32,1) both;
-}
-.folder-clip-lg {
-    width: 48px;
-    height: 26px;
-    background: #8A8A8A;
-    border-radius: 5px 5px 0 0;
-    margin: -28px auto 16px;
-    position: relative;
-}
-.folder-clip-lg::after {
-    content: '';
-    position: absolute;
-    inset: 4px 8px;
-    background: #C4A674;
-    border-radius: 3px;
-}
-.folder-inner-lg {
-    background: #F0E8D0;
-    border-radius: 4px;
-    padding: 20px;
-}
-.folder-republic {
-    font-size: 9px;
-    color: #6A5A40;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-}
-.folder-hospital {
-    font-size: 9px;
-    color: #6A5A40;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    line-height: 1.5;
-}
-.folder-stamp-box {
-    border: 1.5px solid #C4A674;
-    padding: 12px;
-    margin-bottom: 16px;
-    background: white;
-}
-.folder-dossier-title {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #1A1A1A;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    line-height: 1.1;
-}
-.folder-confidential-stamp-lg {
-    display: inline-block;
-    border: 3px solid #CC1B27;
-    color: #CC1B27;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 0.15em;
-    padding: 6px 14px;
-    transform: rotate(-8deg);
-    margin: 8px 0 16px;
-}
-.folder-meta {
-    font-size: 9px;
-    color: #7A6A50;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.8;
-    border-top: 1px solid #C4A874;
-    padding-top: 10px;
-    margin-top: 8px;
-}
 
 /* ═══════════════════════════════════════════════════════════════════
    QUIZ — TOP BAR
 ═══════════════════════════════════════════════════════════════════ */
 .quiz-topbar {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
+    flex-direction: column;
     position: sticky;
     top: 0;
     z-index: 10;
     background: #0D0D0D;
     border-bottom: 1px solid #1A1A1A;
+}
+.topbar-progress {
+    width: 100%;
+    height: 3px;
+    background: #2A2A2A;
+    flex-shrink: 0;
+}
+.topbar-progress-fill {
+    height: 100%;
+    background: #D32C37;
+    transition: width 400ms cubic-bezier(0.23,1,0.32,1);
+}
+.topbar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+}
+.topbar-spacer {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
 }
 .topbar-back-btn {
     width: 36px;
@@ -988,42 +877,7 @@ const goBack = () => {
     transition: border-color 150ms, color 150ms;
 }
 .topbar-back-btn:hover { border-color: #666; color: white; }
-.topbar-ref {
-    font-size: 12px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    flex: 1;
-    text-align: center;
-}
-
-/* ── Bottom progress bar ──────────────────────────────────────── */
-.quiz-bottom-bar {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    background: #0D0D0D;
-    border-top: 1px solid #1A1A1A;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.quiz-progress-track {
-    flex: 1;
-    height: 4px;
-    background: #2A2A2A;
-    border-radius: 2px;
-    overflow: hidden;
-}
-.quiz-progress-fill {
-    height: 100%;
-    background: #D32C37;
-    border-radius: 2px;
-    transition: width 400ms cubic-bezier(0.23,1,0.32,1);
-}
-.quiz-progress-pct {
+.topbar-pct {
     font-size: 12px;
     font-weight: 600;
     color: rgba(255,255,255,0.45);
@@ -1168,15 +1022,13 @@ const goBack = () => {
 @media (min-width: 1024px) {
     .question-text { font-size: 1.75rem; }
 }
-.question-accent { color: #D32C37; }
 
 .hint-block { margin-top: 4px; }
 .hint-label {
     font-size: 10px;
     font-weight: 800;
     color: #8A7A60;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
     margin-bottom: 6px;
 }
 .hint-text {
@@ -1337,20 +1189,93 @@ const goBack = () => {
 }
 .quiz-select:focus, .quiz-input:focus { border-color: #8A7A60; }
 
-/* ── Conviction stamp ─────────────────────────────────────────── */
-.conviction-stamp {
-    align-self: flex-end;
-    margin-top: auto;
-    background: #D32C37;
-    color: white;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    padding: 3px 9px;
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE — card header (HUG decoration + stamp)
+═══════════════════════════════════════════════════════════════════ */
+.mobile-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 8px 16px 4px;
+}
+
+/* HUG paper decoration */
+.hug-deco {
+    width: 56px;
+    height: 64px;
+    background: #C4A674;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 8px;
+    position: relative;
+    transform: rotate(-3deg);
+    box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
+}
+.hug-paper-lines {
+    position: absolute;
+    top: 6px;
+    left: 5px;
+    right: 5px;
+    bottom: 22px;
+    background: #F0E8D0;
+    border-radius: 1px;
+}
+.hug-paper-lines::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 5px; left: 4px; right: 4px;
+    height: 2px;
+    background: rgba(90,70,40,0.15);
+    box-shadow: 0 5px 0 rgba(90,70,40,0.1), 0 10px 0 rgba(90,70,40,0.08);
+}
+.hug-logo-text {
+    font-size: 11px;
+    font-weight: 900;
+    color: #F0E8D0;
+    letter-spacing: 0.06em;
+    z-index: 1;
+}
+
+/* ── Document card header (desktop) ──────────────────────────── */
+.document-card-header {
+    padding: 10px 28px 9px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #8A7A60;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #C4B080;
     text-transform: uppercase;
+}
+
+/* ── Company logo in doc-right ────────────────────────────────── */
+.doc-logo-wrap {
+    justify-content: flex-end;
+    margin-bottom: 2px;
+}
+.doc-logo-img {
+    max-height: 38px;
+    max-width: 130px;
+    object-fit: contain;
+    border: 1px solid #C4B080;
+    padding: 5px 9px;
+    background: white;
+    border-radius: 2px;
+}
+
+/* ── Choose hint text ─────────────────────────────────────────── */
+.choose-hint-text {
+    font-size: 11px;
+    color: #A09080;
+    font-style: italic;
     text-align: center;
-    transform: rotate(1deg);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    margin-top: 4px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1362,10 +1287,10 @@ const goBack = () => {
     .q-slide-enter-from, .q-slide-leave-to { transform: none; }
     .quiz-btn { transition: background 120ms ease; }
     .quiz-btn:hover, .quiz-btn:active { transform: none; box-shadow: inherit; }
-    .quiz-progress-fill { transition: none; }
-    .intro-case-inner,
+    .topbar-progress-fill { transition: none; }
     .accès-badge, .intro-title, .intro-dept, .intro-rule,
-    .intro-body, .intro-accent, .intro-cta-wrap, .tape-strip {
+    .intro-body, .intro-accent, .intro-cta-wrap, .tape-strip,
+    .dossier-folder {
         animation: none;
         opacity: 1;
         transform: none;
