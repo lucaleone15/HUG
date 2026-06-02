@@ -33,18 +33,24 @@
           <td style="vertical-align:middle;">
             <img src="{{ config('app.url') }}/images/hug-logo_blanc.svg" alt="HUG" height="26" style="display:block;">
           </td>
+          @if($entreprise->logo_url)
           <td style="text-align:center;vertical-align:middle;color:rgba(255,255,255,0.35);font-size:15px;font-weight:300;width:40px;">×</td>
           <td style="text-align:right;vertical-align:middle;">
-            @if($entreprise->logo_url)
-              @php $logoAbsUrl = str_starts_with($entreprise->logo_url, 'http') ? $entreprise->logo_url : config('app.url') . $entreprise->logo_url; @endphp
-              <img src="{{ $logoAbsUrl }}" alt="{{ $entreprise->name }}" height="26"
-                   style="display:block;margin-left:auto;filter:brightness(0) invert(1);">
-            @else
-              <span style="color:#ffffff;font-size:13px;font-weight:700;">
-                {{ $entreprise->name }}
-              </span>
-            @endif
+            @php $logoAbsUrl = (substr($entreprise->logo_url, 0, 4) === 'http') ? $entreprise->logo_url : config('app.url') . $entreprise->logo_url; @endphp
+            <table cellpadding="0" cellspacing="0" style="margin-left:auto;">
+              <tr>
+                <td style="background:#ffffff;border-radius:6px;padding:5px 10px;vertical-align:middle;">
+                  <img src="{{ $logoAbsUrl }}" alt="{{ $entreprise->name }}" height="22"
+                       style="display:block;">
+                </td>
+              </tr>
+            </table>
           </td>
+          @else
+          <td style="text-align:right;vertical-align:middle;">
+            <span style="color:#ffffff;font-size:13px;font-weight:700;">{{ $entreprise->name }}</span>
+          </td>
+          @endif
         </tr>
       </table>
     </td>
