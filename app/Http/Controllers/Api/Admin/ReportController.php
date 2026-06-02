@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\AnalyticsEvent;
 use App\Models\Entreprise;
 use App\Models\Submission;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Spatie\Browsershot\Browsershot;
+use Symfony\Component\Process\Process;
 
 class ReportController extends Controller
 {
@@ -45,7 +48,10 @@ class ReportController extends Controller
             ->whereNotNull('metadata')
             ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(metadata, "$.last_question_index")) as q_index, COUNT(*) as total')
             ->groupBy('q_index')
-            ->pluck('total', 'q_index');
+            ->pluck('total', 'q_index')
+            ->filter(fn($_, $k) => is_numeric($k) && $k !== null)
+            ->sortKeys()
+            ->toArray();
 
         $entrepriseData = [
             'id'             => $entreprise->id,
@@ -54,7 +60,7 @@ class ReportController extends Controller
             'employee_count' => $entreprise->employee_count,
             'contact_name'   => $entreprise->contact_name,
             'contact_email'  => $entreprise->contact_email,
-            'logo_data_uri'  => $this->logoToDataUri($entreprise->logo_url),
+            'logo_url'       => $entreprise->logo_url,
         ];
 
         $participationData = [
@@ -77,18 +83,51 @@ class ReportController extends Controller
         ];
 
         if ($request->format === 'pdf') {
-            $pdf = Pdf::loadView('pdf.report', [
+            set_time_limit(120);
+
+            // Stocker les données en cache pour le second serveur
+            $token = Str::uuid()->toString();
+            Cache::put("report_preview:{$token}", [
                 'entreprise'    => $entrepriseData,
                 'participation' => $participationData,
                 'behavior'      => $behaviorData,
-                'generatedAt'   => now()->format('d.m.Y'),
+                'generatedAt'   => now()->locale($locale)->isoFormat('D MMMM YYYY'),
                 'tr'            => trans('pdf'),
-                'logoSrc'       => $this->svgToPngDataUri(
-                    public_path('images/hug-logo.svg')
-                ),
-            ])->setPaper('a4', 'portrait');
+            ], now()->addMinutes(2));
 
-            return $pdf->download("rapport-{$entreprise->slug}.pdf");
+            // Second serveur PHP sur un port libre pour éviter le deadlock
+            $port   = 8099;
+            $server = new Process(
+                ['php', 'artisan', 'serve', "--port={$port}", '--host=127.0.0.1'],
+                base_path()
+            );
+            $server->start();
+            usleep(2_000_000); // 2s pour que le serveur démarre
+
+            try {
+                $url = "http://127.0.0.1:{$port}/report-preview/{$token}";
+
+                $pdf = Browsershot::url($url)
+                    ->setChromePath('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+                    ->setNodeModulePath(base_path('node_modules'))
+                    ->windowSize(794, 1122)
+                    ->waitForSelector('.rp-footer')
+                    ->timeout(60)
+                    ->format('A4')
+                    ->noSandbox()
+                    ->showBackground()
+                    ->margins(0, 0, 0, 0)
+                    ->pages('1')
+                    ->pdf();
+            } finally {
+                $server->stop();
+                Cache::forget("report_preview:{$token}");
+            }
+
+            return response($pdf, 200, [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => "attachment; filename=\"rapport-{$entreprise->slug}.pdf\"",
+            ]);
         }
 
         return response()->json([
@@ -98,41 +137,4 @@ class ReportController extends Controller
         ]);
     }
 
-    /**
-     * Convertit le logo d'une entreprise (URL storage) en data URI base64.
-     * DomPDF ne peut pas résoudre les URLs relatives — on lit le fichier local.
-     */
-    private function logoToDataUri(?string $logoUrl): ?string
-    {
-        if (!$logoUrl) return null;
-
-        $localPath = public_path(parse_url($logoUrl, PHP_URL_PATH));
-        if (!file_exists($localPath)) return null;
-
-        $ext  = strtolower(pathinfo($localPath, PATHINFO_EXTENSION));
-        $mime = match ($ext) {
-            'png'  => 'image/png',
-            'webp' => 'image/webp',
-            'gif'  => 'image/gif',
-            default => 'image/jpeg',
-        };
-
-        return 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($localPath));
-    }
-
-    /**
-     * Rasterise an SVG to PNG via Imagick and return a base64 data URI.
-     * DomPDF handles PNG img tags reliably; inline SVG with CSS classes does not work.
-     */
-    private function svgToPngDataUri(string $path): string
-    {
-        $imagick = new \Imagick();
-        $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
-        $imagick->setResolution(144, 144);
-        $imagick->readImageBlob(file_get_contents($path));
-        $imagick->setImageFormat('png32');
-        $imagick->resizeImage(300, 0, \Imagick::FILTER_LANCZOS, 1);
-
-        return 'data:image/png;base64,' . base64_encode($imagick->getImageBlob());
-    }
 }
