@@ -69,7 +69,7 @@ const message      = ref(props.old?.message || '')
                         {{ t('contact.subtitle') }}
                     </p>
                     <div class="space-y-1">
-                        <p class="text-xs uppercase tracking-[0.2em] text-base-content/35 mb-2">Email</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-base-content/35 mb-2">{{ t('contact.email_label') }}</p>
                         <a href="mailto:info@donnez-votre-sang.ch"
                            class="text-sm font-medium hover:text-brand"
                            style="transition: color 150ms ease;">

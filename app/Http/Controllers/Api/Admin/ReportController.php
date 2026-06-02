@@ -9,11 +9,8 @@ use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Spatie\Browsershot\Browsershot;
-use Symfony\Component\Process\Process;
 
 class ReportController extends Controller
 {
@@ -85,44 +82,24 @@ class ReportController extends Controller
         if ($request->format === 'pdf') {
             set_time_limit(120);
 
-            // Stocker les données en cache pour le second serveur
-            $token = Str::uuid()->toString();
-            Cache::put("report_preview:{$token}", [
+            $html = view('pdf.report-preview', [
                 'entreprise'    => $entrepriseData,
                 'participation' => $participationData,
                 'behavior'      => $behaviorData,
                 'generatedAt'   => now()->locale($locale)->isoFormat('D MMMM YYYY'),
                 'tr'            => trans('pdf'),
-            ], now()->addMinutes(2));
+            ])->render();
 
-            // Second serveur PHP sur un port libre pour éviter le deadlock
-            $port   = 8099;
-            $server = new Process(
-                ['php', 'artisan', 'serve', "--port={$port}", '--host=127.0.0.1'],
-                base_path()
-            );
-            $server->start();
-            usleep(2_000_000); // 2s pour que le serveur démarre
-
-            try {
-                $url = "http://127.0.0.1:{$port}/report-preview/{$token}";
-
-                $pdf = Browsershot::url($url)
-                    ->setChromePath('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
-                    ->setNodeModulePath(base_path('node_modules'))
-                    ->windowSize(794, 1122)
-                    ->waitForSelector('.rp-footer')
-                    ->timeout(60)
-                    ->format('A4')
-                    ->noSandbox()
-                    ->showBackground()
-                    ->margins(0, 0, 0, 0)
-                    ->pages('1')
-                    ->pdf();
-            } finally {
-                $server->stop();
-                Cache::forget("report_preview:{$token}");
-            }
+            $pdf = Browsershot::html($html)
+                ->setChromePath('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+                ->setNodeModulePath(base_path('node_modules'))
+                ->windowSize(794, 1122)
+                ->format('A4')
+                ->noSandbox()
+                ->showBackground()
+                ->margins(0, 0, 0, 0)
+                ->pages('1')
+                ->pdf();
 
             return response($pdf, 200, [
                 'Content-Type'        => 'application/pdf',
@@ -136,5 +113,4 @@ class ReportController extends Controller
             'behavior'      => $behaviorData,
         ]);
     }
-
 }

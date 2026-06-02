@@ -38,7 +38,7 @@
     $convRate = $pct($rdv, $el);
     $e2eRate = $pct($rdv, $qs);
     $score = round(($partRate + $eligRate + $convRate) / 3);
-    $perf = $score >= 65 ? 'Excellente' : ($score >= 45 ? 'Bonne' : ($score >= 25 ? 'Modérée' : 'Faible'));
+    $perf = $score >= 65 ? $tr['perf_excellent'] : ($score >= 45 ? $tr['perf_bon'] : ($score >= 25 ? $tr['perf_moyen'] : $tr['perf_faible']));
 
     // Nombre de diagnostics actifs (pour gérer l'espace — doit être après $convRate)
 $diagCount = 2 + ($convRate >= 70 ? 1 : 0);
@@ -70,7 +70,7 @@ $obj2027Rdv = $fmt(round(((($emp * 0.25 * $eligRate) / 100) * $convRate) / 100))
 $lives = $rdv * 3;
 
 // Durée contexte
-$durCtx = $dur ? ($dur < 120 ? 'Très rapide' : ($dur < 180 ? 'Concis' : ($dur < 300 ? 'Optimal' : 'Long'))) : '—';
+$durCtx = $dur ? ($dur < 120 ? $tr['dur_very_fast'] : ($dur < 180 ? $tr['dur_concise'] : ($dur < 300 ? $tr['dur_optimal'] : $tr['dur_long']))) : '—';
 $durPct = $dur ? min(round(($dur / 600) * 100), 100) : 0;
 $durCirc = round(($durPct / 100) * 163.4, 1); // 2π×26 ≈ 163.4
 
@@ -1209,7 +1209,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                                 <div class="gval">{{ $r['val'] }}<s>%</s></div>
                                 <div class="gbadge"
                                     style="background:{{ $col }}1A;color:{{ $col }}">
-                                    {{ $r['val'] >= 70 ? 'Excellent' : ($r['val'] >= 50 ? 'Bon' : ($r['val'] >= 30 ? 'Moyen' : 'Faible')) }}
+                                    {{ $r['val'] >= 70 ? $tr['badge_excellent'] : ($r['val'] >= 50 ? $tr['badge_bon'] : ($r['val'] >= 30 ? $tr['badge_moyen'] : $tr['badge_faible'])) }}
                                 </div>
                             </div>
                         </div>
@@ -1351,7 +1351,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
             {{-- Entonnoir SVG --}}
             <div class="blk">
-                <div class="sh">{{ $tr['section_participation'] }} — entonnoir</div>
+                <div class="sh">{{ $tr['section_participation'] }}</div>
                 <div class="funnel-wrap" style="padding:6px 12px;min-height:0">
                     @php
                         $fw = 240;
@@ -1415,7 +1415,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                                 letter-spacing="-0.5">{{ $fmt($st['val']) }}</text>
                             <text x="{{ $fw / 2 }}" y="{{ $y + 45 }}" text-anchor="middle"
                                 fill="rgba(255,255,255,.65)" font-size="6.5"
-                                font-family="Cooper Hewitt,sans-serif">{{ $st['pct'] }}% du total</text>
+                                font-family="Cooper Hewitt,sans-serif">{{ $st['pct'] }}{{ $tr['funnel_pct_of_total'] }}</text>
                             @if ($st['drop'] !== null && $st['drop'] > 0)
                                 @php $ay=$y+$sH; @endphp
                                 <line x1="{{ $fw / 2 }}" y1="{{ $ay }}"
@@ -1456,7 +1456,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                             font-family="Cooper Hewitt,sans-serif">secondes</text>
                     </svg>
                     <div class="dur-text">
-                        <div class="dur-lbl">{{ $tr['dur_quiz_label'] }}</div>
+                        <div class="dur-lbl">{{ $tr['avg_duration'] }}</div>
                         <div
                             style="font-size:36px;font-weight:800;color:#111;letter-spacing:-1.5px;line-height:1;margin-bottom:1px">
                             {{ $dur ?? '—' }}<span style="font-size:16px;font-weight:400;color:#999">s</span></div>
@@ -1593,28 +1593,28 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                             <div class="vbf" style="height:{{ min($partRate, 100) }}%"></div>
                         </div>
                         <div class="vbv">{{ $partRate }}<s>%</s></div>
-                        <div class="vbl">Part.</div>
+                        <div class="vbl">{{ $tr['vbl_part'] }}</div>
                     </div>
                     <div class="vb">
                         <div class="vbt">
                             <div class="vbf" style="height:{{ min($eligRate, 100) }}%"></div>
                         </div>
                         <div class="vbv">{{ $eligRate }}<s>%</s></div>
-                        <div class="vbl">Élig.</div>
+                        <div class="vbl">{{ $tr['vbl_elig'] }}</div>
                     </div>
                     <div class="vb">
                         <div class="vbt">
                             <div class="vbf" style="height:{{ min($convRate, 100) }}%"></div>
                         </div>
                         <div class="vbv">{{ $convRate }}<s>%</s></div>
-                        <div class="vbl">Conv.</div>
+                        <div class="vbl">{{ $tr['vbl_conv'] }}</div>
                     </div>
                     <div class="vb">
                         <div class="vbt">
                             <div class="vbfe" style="height:{{ min($e2eRate, 100) }}%"></div>
                         </div>
                         <div class="vbv vbve">{{ $e2eRate }}<s>%</s></div>
-                        <div class="vbl">E2E</div>
+                        <div class="vbl">{{ $tr['vbl_e2e'] }}</div>
                     </div>
                 </div>
                 <div class="d3sep"></div>
@@ -1623,7 +1623,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                 <div class="f4">
                     <div class="f4i"><span class="f4n">{{ $fmt($sub) }}</span><span
                             class="f4l">{{ $tr['synth_soumissions'] }}</span><span
-                            class="f4x">{{ $compRate }}% {{ $tr['of_started'] }}</span></div>
+                            class="f4x">{{ $compRate }}% {{ $tr['kpi_completion'] }}</span></div>
                     <div class="f4i"><span class="f4n">{{ $fmt($el) }}</span><span
                             class="f4l">{{ $tr['eligible'] }}</span><span class="f4x">{{ $eligRate }}%
                             {{ $tr['kpi_eligibility_sub'] }}</span></div>
@@ -1755,7 +1755,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                 {{-- Footer dark --}}
                 <div class="d3ft">
                     <img src="{{ $logoBlanc }}" alt="HUG" style="height:18px;width:auto;opacity:.5">
-                    <div class="d3url">donnez-votre-sang.ch</div>
+                    <div class="d3url">{{ $tr['footer_site'] }}</div>
                 </div>
 
             </div>
@@ -1770,19 +1770,19 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             <img src="{{ $logoBlanc }}" alt="HUG" style="height:22px;width:auto;opacity:.6;flex-shrink:0">
             <div>
                 <div
-                    style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em">
-                    HUG – Hôpitaux Universitaires de Genève · Centre de Transfusion Sanguine</div>
+                    style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,.5)">
+                    {{ $tr['footer_hug'] }}</div>
                 <div style="font-size:6.5px;font-weight:300;color:rgba(255,255,255,.25);margin-top:1px">
-                    donnez-votre-sang.ch</div>
+                    {{ $tr['footer_site'] }}</div>
             </div>
         </div>
         <div style="text-align:center">
-            <div style="font-size:7px;font-weight:300;color:rgba(255,255,255,.4)">donnez-votre-sang.ch</div>
+            <div style="font-size:7px;font-weight:300;color:rgba(255,255,255,.4)">{{ $tr['footer_site'] }}</div>
         </div>
         <div style="text-align:right">
-            <div style="font-size:9px;font-weight:700;color:#E8001C;letter-spacing:.1em">{{ $dc }}</div>
-            <div style="font-size:6.5px;font-weight:300;color:rgba(255,255,255,.3);margin-top:1px">Généré le
-                {{ $generatedAt }}</div>
+            <div style="font-size:9px;font-weight:700;color:#E8001C">{{ $dc }}</div>
+            <div style="font-size:6.5px;font-weight:300;color:rgba(255,255,255,.3);margin-top:1px">
+                {{ $tr['generated_at'] }} {{ $generatedAt }}</div>
         </div>
     </div>
 

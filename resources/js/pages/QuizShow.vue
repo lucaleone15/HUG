@@ -199,12 +199,12 @@ const goBack = () => {
                     <div class="dossier-folder-inner">
                         <p class="dossier-republic">{{ t('quiz.dossier_republic') }}</p>
                         <p class="dossier-hospital">{{ t('quiz.dossier_hospital_name') }}<br>{{ t('quiz.dossier_hospital_dept') }}</p>
-                        <div class="dossier-confidential-badge">CONFIDENTIAL</div>
+                        <div class="dossier-confidential-badge">{{ t('quiz.dossier_confidential') }}</div>
                         <div class="dossier-logo-stamp">
                             <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="dossier-logo-img">
                             <span v-else class="dossier-logo-text">{{ entreprise.name }}</span>
                         </div>
-                        <p class="dossier-folder-title">DOSSIER<br>{{ dossierCode }}</p>
+                        <p class="dossier-folder-title">{{ t('quiz.dossier_word') }}<br>{{ dossierCode }}</p>
                         <div class="dossier-folder-meta">
                             <p>{{ t('quiz.dossier_open_date') }} : _ / _ / {{ new Date().getFullYear() }}</p>
                             <p>{{ t('quiz.dossier_inspector') }}</p>
