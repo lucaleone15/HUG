@@ -22,7 +22,7 @@ export function useEntreprisesStore() {
         } catch (e) {
             error.value = e.message ?? 'Erreur inconnue'
         } finally {
-            loading.value = falseS
+            loading.value = false
         }
     }
 
