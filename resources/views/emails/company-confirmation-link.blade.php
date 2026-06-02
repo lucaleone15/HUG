@@ -36,7 +36,8 @@
           <td style="text-align:center;vertical-align:middle;color:rgba(255,255,255,0.35);font-size:15px;font-weight:300;width:40px;">×</td>
           <td style="text-align:right;vertical-align:middle;">
             @if($entreprise->logo_url)
-              <img src="{{ $entreprise->logo_url }}" alt="{{ $entreprise->name }}" height="26"
+              @php $logoAbsUrl = str_starts_with($entreprise->logo_url, 'http') ? $entreprise->logo_url : config('app.url') . $entreprise->logo_url; @endphp
+              <img src="{{ $logoAbsUrl }}" alt="{{ $entreprise->name }}" height="26"
                    style="display:block;margin-left:auto;filter:brightness(0) invert(1);">
             @else
               <span style="color:#ffffff;font-size:13px;font-weight:700;">
@@ -183,7 +184,7 @@
           <h3 style="margin:0 0 8px;font-size:15px;font-weight:800;color:#111111;">{{ __('mail.step2_title') }}</h3>
           <p style="margin:0 0 16px;font-size:12px;color:#666666;line-height:1.65;">{{ __('mail.step2_body') }}</p>
           <a href="{{ $adminUrl }}"
-             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
+             style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
             {{ __('mail.step2_cta') }} →
           </a>
         </td></tr>
@@ -201,7 +202,7 @@
           <h3 style="margin:0 0 8px;font-size:15px;font-weight:800;color:#111111;">{{ __('mail.step3_title') }}</h3>
           <p style="margin:0 0 16px;font-size:12px;color:#666666;line-height:1.65;">{{ __('mail.step3_body') }}</p>
           <a href="{{ $adminUrl }}"
-             style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
+             style="display:inline-block;background:#E30613;color:#ffffff;text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
             {{ __('mail.step3_cta') }} →
           </a>
         </td></tr>
