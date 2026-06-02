@@ -212,7 +212,15 @@
         "intro_card_p1": "Per scoprirlo, dobbiamo prima esaminare il tuo fascicolo. Passerai un breve interrogatorio di routine.",
         "intro_card_p2": "Rispondi onestamente a questa breve serie di domande per verificare immediatamente la tua idoneità alla donazione di sangue.",
         "birth_confirm": "Confermare",
-        "complete_cta_label": "Il tuo fascicolo"
+        "complete_cta_label": "Il tuo fascicolo",
+        "question_label":     "Domanda",
+        "dossier_republic":   "Repubblica e Cantone di Ginevra",
+        "dossier_hospital_name": "Ospedali Universitari di Ginevra",
+        "dossier_hospital_dept": "Centro Trasfusionale",
+        "dossier_open_date":  "Data di apertura",
+        "dossier_inspector":  "Ispettore assegnato: CTS",
+        "dossier_status":     "Stato: in attesa",
+        "complete_dossier_label": "Fascicolo completo"
     },
     "result": {
         "eligible_title": "Siete idonei alla donazione!",
@@ -242,7 +250,8 @@
         "referral_message_copied": "Copiato!",
         "referral_whatsapp": "Condividi su WhatsApp",
         "referral_email_subject": "Partecipate alla campagna di donazione del sangue: {company}",
-        "referral_email_body": "Ciao,\n\nPartecipo alla campagna di donazione del sangue organizzata da {company} in collaborazione con HUG e CTS Ginevra.\n\nVerificate in 2 minuti se siete idonei alla donazione di sangue:\n{url}\n\nGrazie!"
+        "referral_email_body": "Ciao,\n\nPartecipo alla campagna di donazione del sangue organizzata da {company} in collaborazione con HUG e CTS Ginevra.\n\nVerificate in 2 minuti se siete idonei alla donazione di sangue:\n{url}\n\nGrazie!",
+        "dossier_title": "Fascicolo d'indagine"
     },
     "inscription": {
         "title": "Iscrivere la mia azienda",

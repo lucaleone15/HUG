@@ -6,7 +6,9 @@ import LangSwitcher from '../components/ui/LangSwitcher.vue'
 import CorkboardFaq from '../components/ui/CorkboardFaq.vue'
 import { sendAnalytics, getDevice } from '../composables/useAnalytics.js'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const DATE_LOCALES = { fr: 'fr-CH', de: 'de-CH', it: 'it-CH', en: 'en-GB' }
 
 const hugLogoError = ref(false)
 
@@ -182,7 +184,7 @@ const updateCountdown = () => {
                     </div>
                     <p v-if="entreprise.rdv_date" class="text-sm text-base-content/40 mt-3 text-center">
                         {{ t('entreprise.collect_date') }} :
-                        <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString('fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
+                        <strong>{{ new Date(entreprise.rdv_date).toLocaleDateString(DATE_LOCALES[locale] ?? 'fr-CH', { day: 'numeric', month: 'long', year: 'numeric' }) }}</strong>
                     </p>
                 </div>
                 <div v-else class="aspect-[4/3] rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative page-hero-visual"

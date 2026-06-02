@@ -32,4 +32,5 @@ export async function setLocale(locale) {
     await loadLocaleMessages(locale)
     i18n.global.locale.value = locale
     localStorage.setItem('locale', locale)
+    document.cookie = `locale=${locale}; path=/; max-age=31536000; SameSite=Lax`
 }

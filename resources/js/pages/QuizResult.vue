@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+const DATE_LOCALES = { fr: 'fr-CH', de: 'de-CH', it: 'it-CH', en: 'en-GB' }
 import { sendAnalytics } from '../composables/useAnalytics.js'
 import BaseButton from '../components/ui/BaseButton.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = defineProps({
     entreprise: Object,
@@ -20,7 +22,8 @@ const dossierCode     = 'SANG-' + new Date().getFullYear().toString().slice(-2)
 
 const formattedDate = computed(() => {
     if (!props.entreprise.rdv_date) return null
-    return new Date(props.entreprise.rdv_date).toLocaleDateString('fr-CH', {
+    const dateLocale = DATE_LOCALES[locale.value] ?? 'fr-CH'
+    return new Date(props.entreprise.rdv_date).toLocaleDateString(dateLocale, {
         day: 'numeric', month: 'long', year: 'numeric',
     })
 })
@@ -48,7 +51,7 @@ const copyLink = async () => {
 }
 
 const openMail = () => {
-    const subject = encodeURIComponent(`Don du sang — ${props.entreprise.name}`)
+    const subject = encodeURIComponent(t('result.referral_email_subject', { company: props.entreprise.name }))
     const body    = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
     window.location.href = `mailto:?subject=${subject}&body=${body}`
 }
@@ -99,7 +102,7 @@ const goToContact = () => { window.location.href = '/contact' }
 
                 <!-- Card header -->
                 <div class="dossier-header">
-                    <h1 class="dossier-title">Dossier Enquête</h1>
+                    <h1 class="dossier-title">{{ t('result.dossier_title') }}</h1>
                 </div>
                 <div class="dossier-rule"></div>
 

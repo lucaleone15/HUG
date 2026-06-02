@@ -212,7 +212,15 @@
         "intro_card_label":   "Introduction",
         "intro_card_title":   "Êtes-vous apte à sauver une vie aujourd'hui ?",
         "intro_card_p1":      "Pour le découvrir, nous devons d'abord examiner votre dossier. Vous allez passer un rapide interrogatoire de routine.",
-        "intro_card_p2":      "Répondez honnêtement à cette courte série de questions pour vérifier immédiatement votre éligibilité au don de sang."
+        "intro_card_p2":      "Répondez honnêtement à cette courte série de questions pour vérifier immédiatement votre éligibilité au don de sang.",
+        "question_label":     "Question",
+        "dossier_republic":   "République et canton de Genève",
+        "dossier_hospital_name": "Hôpitaux universitaires de Genève",
+        "dossier_hospital_dept": "Centre de transfusion sanguine",
+        "dossier_open_date":  "Date d'ouverture",
+        "dossier_inspector":  "Inspecteur assigné : CTS",
+        "dossier_status":     "Statut : en attente",
+        "complete_dossier_label": "Dossier complet"
     },
     "result": {
         "eligible_title": "Vous êtes éligible au don !",
@@ -242,7 +250,8 @@
         "referral_message_copied": "Copié !",
         "referral_whatsapp": "Partager sur WhatsApp",
         "referral_email_subject": "Participez à la campagne Don du Sang : {company}",
-        "referral_email_body": "Bonjour,\n\nJe participe à la campagne Don du Sang organisée par {company} en partenariat avec les HUG et le CTS Genève.\n\nVérifiez en 2 minutes si vous êtes éligible au don de sang :\n{url}\n\nMerci !"
+        "referral_email_body": "Bonjour,\n\nJe participe à la campagne Don du Sang organisée par {company} en partenariat avec les HUG et le CTS Genève.\n\nVérifiez en 2 minutes si vous êtes éligible au don de sang :\n{url}\n\nMerci !",
+        "dossier_title": "Dossier Enquête"
     },
     "inscription": {
         "title": "Inscrire mon entreprise",

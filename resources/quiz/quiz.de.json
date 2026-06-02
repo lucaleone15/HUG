@@ -1,0 +1,771 @@
+{
+  "title": "Eignungsquiz für die Blutspende",
+  "version": "2.0.0",
+  "source": "Questionnaire CTS HUG — Transfusion CRS Suisse — ANH-Art7.6v3 - 1er fév. 2026",
+  "types_note": "Types utilisés : yes_no | checklist (items[], options[aucun]) | travel_check (risk_map) | birth_check (items[], risk_map). QuizController@store doit être mis à jour pour gérer checklist/travel_check/birth_check.",
+  "questions": [
+
+    {
+      "id": "q1",
+      "category": "Allgemein",
+      "content": "Sind Sie zwischen 18 und 75 Jahre alt?",
+      "hint": "Die Blutspende steht in der Schweiz erwachsenen Personen bis 75 Jahre offen.",
+      "type": "yes_no",
+      "order": 1,
+      "options": [
+        { "id": "q1_oui", "label": "Ja", "is_disqualifying": false },
+        {
+          "id": "q1_non",
+          "label": "Nein",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Blutspende ist Personen zwischen 18 und 75 Jahren vorbehalten. Sie erfüllen das erforderliche Alterskriterium nicht."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q2",
+      "category": "Allgemeine Gesundheit",
+      "content": "Wiegen Sie mehr als 50 kg?",
+      "hint": "Ein Mindestgewicht von 50 kg ist erforderlich, um Ihre Sicherheit während der Blutentnahme zu gewährleisten.",
+      "type": "yes_no",
+      "order": 2,
+      "options": [
+        { "id": "q2_oui", "label": "Ja", "is_disqualifying": false },
+        {
+          "id": "q2_non",
+          "label": "Nein",
+          "is_disqualifying": true,
+          "disqualification_reason": "Aus Sicherheitsgründen ist bei der Blutentnahme ein Mindestgewicht von 50 kg erforderlich."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q3",
+      "category": "Allgemeine Gesundheit",
+      "content": "Fühlen Sie sich heute gesund?",
+      "hint": "Keine ungewöhnliche Müdigkeit, kein Fieber oder Unwohlsein heute.",
+      "type": "yes_no",
+      "order": 3,
+      "options": [
+        { "id": "q3_oui", "label": "Ja", "is_disqualifying": false },
+        {
+          "id": "q3_non",
+          "label": "Nein",
+          "is_disqualifying": true,
+          "disqualification_reason": "Am Tag der Blutspende müssen Sie sich vollkommen gesund fühlen. Kommen Sie zurück, wenn es Ihnen besser geht."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q4",
+      "category": "Frühere Spende",
+      "content": "Haben Sie schon einmal Blut gespendet?",
+      "hint": "Dies hilft uns, den Abstand seit Ihrer letzten Spende zu prüfen.",
+      "type": "yes_no",
+      "order": 4,
+      "options": [
+        { "id": "q4_oui", "label": "Ja", "is_disqualifying": false },
+        { "id": "q4_non", "label": "Nein, das ist das erste Mal", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q5",
+      "category": "Frühere Spende",
+      "content": "Liegt Ihre letzte Blutspende mehr als 8 Wochen zurück (Männer) bzw. mehr als 12 Wochen (Frauen)?",
+      "hint": "Dieser Abstand ermöglicht es Ihrem Körper, seine Reserven zwischen zwei Spenden wieder aufzufüllen.",
+      "type": "yes_no",
+      "order": 5,
+      "options": [
+        { "id": "q5_oui", "label": "Ja, der Abstand ist eingehalten", "is_disqualifying": false },
+        {
+          "id": "q5_non",
+          "label": "Nein, meine letzte Spende war kürzer zurück",
+          "is_disqualifying": true,
+          "disqualification_reason": "Der Mindestabstand zwischen zwei Blutspenden muss eingehalten werden: 8 Wochen für Männer, 12 Wochen für Frauen. Kommen Sie zurück, wenn dieser Abstand abgelaufen ist."
+        }
+      ],
+      "conditions": [
+        { "depends_on": "q4", "expects": "q4_oui" }
+      ]
+    },
+
+    {
+      "id": "q6",
+      "category": "Kürzliche Zahnarztbehandlung",
+      "content": "Hatten Sie in den letzten 14 Tagen eine Zahnarztbehandlung oder einen zahnärztlichen Eingriff?",
+      "hint": "Beispiele: Zahnsteinentfernung, Extraktion, Füllung, Wurzelkanalbehandlung, Kroneneinsetzen, Zahnfleischbehandlung, professionelles Bleichen.",
+      "type": "yes_no",
+      "order": 6,
+      "options": [
+        {
+          "id": "q6_oui",
+          "label": "Ja",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Zahnarztbehandlung in den letzten 14 Tagen erfordert eine Wartezeit vor der Blutspende, aufgrund des Risikos einer vorübergehenden Bakteriämie (Eintritt von Mundbakterien in den Blutkreislauf)."
+        },
+        { "id": "q6_non", "label": "Nein", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q7",
+      "category": "Kürzliche medizinische Behandlung",
+      "content": "Trifft eines der folgenden Symptome oder Behandlungen in den letzten 4 Wochen auf Sie zu?",
+      "hint": "Wählen Sie alles Zutreffende aus. Im Zweifelsfall teilen Sie es dem medizinischen Personal mit.",
+      "type": "checklist",
+      "order": 7,
+      "items": [
+        {
+          "id": "q7_fievre",
+          "label": "Fieber über 38 °C",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein kürzliches Fieber (in den letzten 4 Wochen) erfordert eine Wartezeit von 4 Wochen nach Normalisierung der Temperatur vor der Blutspende."
+        },
+        {
+          "id": "q7_rhume",
+          "label": "Erkältung, Grippe oder Atemwegsinfektion",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine kürzliche Atemwegsinfektion erfordert eine Wartezeit von 4 Wochen nach vollständiger Genesung vor der Blutspende."
+        },
+        {
+          "id": "q7_diarrhee",
+          "label": "Durchfall oder Magen-Darm-Infektion",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine kürzliche Magen-Darm-Infektion erfordert eine Wartezeit von 4 Wochen nach der Genesung vor der Blutspende."
+        },
+        {
+          "id": "q7_soins_med",
+          "label": "Arztbesuch oder medizinische Behandlung (ausser Zahnarztbehandlung)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Kürzliche medizinische Behandlungen können je nach Art eine Wartezeit erfordern. Das medizinische Personal beurteilt Ihre Situation."
+        },
+        {
+          "id": "q7_antibiotiques",
+          "label": "Einnahme von Antibiotika",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine kürzliche Antibiotikabehandlung erfordert eine Wartezeit von 4 Wochen nach Abschluss der Behandlung vor der Blutspende."
+        }
+      ],
+      "options": [
+        { "id": "q7_aucun", "label": "Keine dieser Situationen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q8",
+      "category": "Medikamente",
+      "content": "Haben Sie in den letzten 4 Wochen Medikamente eingenommen, auch ohne Rezept?",
+      "hint": "Tabletten, Injektionen, Zäpfchen, Pflaster, Nasensprays... Falls ja, beurteilt das medizinische Personal die Vereinbarkeit mit der Blutspende.",
+      "type": "yes_no",
+      "order": 8,
+      "options": [
+        { "id": "q8_oui", "label": "Ja", "is_disqualifying": false },
+        { "id": "q8_non", "label": "Nein", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q9",
+      "category": "Medikamente mit Kontraindikationen",
+      "content": "Haben Sie eines der folgenden Medikamente innerhalb der angegebenen Zeiträume eingenommen?",
+      "hint": "Diese Behandlungen führen unabhängig von Ihrem aktuellen Gesundheitszustand zu einer vorübergehenden oder dauerhaften Kontraindikation zur Blutspende.",
+      "type": "checklist",
+      "order": 9,
+      "items": [
+        {
+          "id": "q9_prostate_cheveux",
+          "label": "Behandlung gegen Prostataprobleme oder Haarausfall",
+          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® — letzte 6 Monate",
+          "timeframe": "6 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme von Medikamenten gegen Prostataprobleme oder Haarausfall (Finasterid, Dutasterid) in den letzten 6 Monaten ist wegen des teratogenen Risikos für weibliche Empfängerinnen eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_isotretinoine",
+          "label": "Behandlung gegen schwere Akne oder Ekzem",
+          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® — letzte 4 Wochen",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "Isotretinoin (Roaccutan®...) ist teratogen. Die Einnahme in den letzten 4 Wochen ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_neuropsych",
+          "label": "Psychiatrische oder neurologische Behandlung",
+          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (Lithium, Topiramat, Antikonvulsiva) — letzte 4 Wochen",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme von psychiatrischen oder neurologischen Medikamenten (Lithium, Topiramat, Antikonvulsiva) in den letzten 4 Wochen ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_endometriose",
+          "label": "Behandlung gegen Endometriose",
+          "sublabel": "Lucrin Depot® — letzte 2 Monate",
+          "timeframe": "2 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme von Endometriose-Medikamenten (Lucrin Depot®) in den letzten 2 Monaten ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_vih_sang",
+          "label": "HIV-antiretrovirale Therapie (PrEP / PEP) oder aus Blut gewonnene Medikamente",
+          "sublabel": "Truvada®, Isentress®, Prezista® — letzte 4 Monate",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme einer antiretroviralen Therapie (PrEP/PEP) oder aus Blut gewonnener Medikamente in den letzten 4 Monaten ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_methotrexate",
+          "label": "Zytostatikum gegen Psoriasis oder Arthritis",
+          "sublabel": "Méthotrexate® — letzte 6 Monate",
+          "timeframe": "6 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme von Methotrexat® in den letzten 6 Monaten ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q9_retinoides_long",
+          "label": "Behandlung gegen schwere Psoriasis oder Basalzellkarzinom",
+          "sublabel": "Neotigason®, Acicutan®, Erivedge® — letzte 3 Jahre",
+          "timeframe": "3 dernières années",
+          "is_disqualifying": true,
+          "disqualification_reason": "Die Einnahme von Neotigason®, Acicutan® oder Erivedge® in den letzten 3 Jahren ist aufgrund des sehr langfristigen teratogenen Risikos eine dauerhafte Kontraindikation zur Blutspende."
+        }
+      ],
+      "options": [
+        { "id": "q9_aucun", "label": "Keines dieser Medikamente", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q10",
+      "category": "Impfungen & Immuntherapie",
+      "content": "Trifft eine der folgenden Situationen auf Sie zu?",
+      "hint": "Bestimmte Impfungen und Behandlungen erfordern eine Wartezeit vor der Blutspende.",
+      "type": "checklist",
+      "order": 10,
+      "items": [
+        {
+          "id": "q10_vaccin_4sem",
+          "label": "Jede Impfung in den letzten 4 Wochen (welche bitte dem medizinischen Personal mitteilen)",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine kürzliche Impfung (in den letzten 4 Wochen) erfordert eine Wartezeit vor der Blutspende. Die genaue Wartezeit hängt vom Impfstoff ab."
+        },
+        {
+          "id": "q10_rage_tetanos",
+          "label": "Tollwut- oder Tetanusimpfung in den letzten 12 Monaten",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Tollwut- oder Tetanusimpfung in den letzten 12 Monaten ist vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q10_immunotherapie",
+          "label": "Immuntherapie auf Basis von menschlichen oder tierischen Zellen oder Serum (zu irgendeinem Zeitpunkt in Ihrem Leben)",
+          "timeframe": "À tout moment",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Immuntherapie auf Basis von menschlichen oder tierischen Produkten kann eine Kontraindikation zur Blutspende darstellen. Bitte informieren Sie das medizinische Personal zur Beurteilung."
+        }
+      ],
+      "options": [
+        { "id": "q10_aucun", "label": "Keine dieser Situationen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q11",
+      "category": "Schwerwiegende Vorerkrankungen",
+      "content": "Leiden oder litten Sie an einer der folgenden Erkrankungen?",
+      "hint": "Diese Vorerkrankungen können zu einer vorübergehenden oder dauerhaften Kontraindikation führen. Im Zweifelsfall wenden Sie sich an das medizinische Personal.",
+      "type": "checklist",
+      "order": 11,
+      "items": [
+        {
+          "id": "q11_cardio",
+          "label": "Herz-Kreislauf-Erkrankung: schwere arterielle Hypertonie, Herzinfarkt, Herzinsuffizienz, Angina pectoris",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine schwere Herz-Kreislauf-Erkrankung kann eine Kontraindikation zur Blutspende darstellen. Das medizinische Personal beurteilt Ihre Situation."
+        },
+        {
+          "id": "q11_pulmonaire",
+          "label": "Schwere Lungenerkrankung: unkontrolliertes Asthma, COPD, Ateminsuffizienz, Lungenembolie",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine schwere Lungenerkrankung kann eine Kontraindikation zur Blutspende darstellen."
+        },
+        {
+          "id": "q11_avc",
+          "label": "Schlaganfall (Apoplex), transitorische ischämische Attacke (TIA) oder ungeklärter Bewusstseinsverlust",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein Schlaganfall, eine TIA oder ein ungeklärter Bewusstseinsverlust ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q11_diabete",
+          "label": "Diabetes (Typ 1, Typ 2 oder Gestationsdiabetes)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Diabetes kann je nach Typ und Behandlung eine Kontraindikation zur Blutspende darstellen. Das medizinische Personal beurteilt Ihre Situation."
+        },
+        {
+          "id": "q11_sang_coag",
+          "label": "Blut- oder Gerinnungserkrankung: chronische Anämie, Hämophilie, Thrombozytopenie, Thrombose, Sichelzellkrankheit",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Blut- oder Gerinnungserkrankung ist eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q11_cancer",
+          "label": "Krebs oder bösartiger Tumor (aktuell oder früher, jeder Art)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Bestimmte Krebserkrankungen in der Vorgeschichte können eine Kontraindikation zur Blutspende darstellen. Das medizinische Personal beurteilt Ihre Situation nach Art und Behandlungsdatum."
+        },
+        {
+          "id": "q11_renal",
+          "label": "Nierenerkrankung: chronische Niereninsuffizienz, Nephropathie",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Nierenerkrankung kann eine Kontraindikation zur Blutspende darstellen."
+        },
+        {
+          "id": "q11_neuro",
+          "label": "Neurologische Erkrankung oder Epilepsie (einschliesslich Krampfanfälle)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine neurologische Erkrankung oder Epilepsie kann eine Kontraindikation zur Blutspende darstellen."
+        },
+        {
+          "id": "q11_foie",
+          "label": "Lebererkrankung: chronische Hepatitis, Zirrhose, Steatohepatitis",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Lebererkrankung kann eine Kontraindikation zur Blutspende darstellen."
+        },
+        {
+          "id": "q11_osteoporose",
+          "label": "Schwere Osteoporose",
+          "is_disqualifying": true,
+          "disqualification_reason": "Schwere Osteoporose kann eine Kontraindikation zur Blutspende darstellen."
+        },
+        {
+          "id": "q11_allergie_severe",
+          "label": "Schwere Allergie oder anaphylaktischer Schock (Medikamente, Lebensmittel, Insektenstiche...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine schwere Allergie oder ein anaphylaktischer Schock in der Vorgeschichte kann eine Kontraindikation zur Blutspende darstellen. Das medizinische Personal beurteilt Ihre Situation."
+        }
+      ],
+      "options": [
+        { "id": "q11_aucun", "label": "Keine dieser Erkrankungen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q12",
+      "category": "Krankenhausaufenthalte & Eingriffe",
+      "content": "Wurden Sie in den letzten 3 Jahren hospitalisiert, operiert oder waren Sie an einem Unfall beteiligt, der medizinische Versorgung erforderte?",
+      "hint": "Dies umfasst: jede Operation (ambulant oder mit Hospitalisation), jeden Krankenhausaufenthalt von mehr als 24 Stunden und jeden Unfall mit medizinischer Versorgung (Knochenbruch, schwere Verletzung usw.). Ein einfacher Notaufnahmebesuch ohne Hospitalisation ist nicht betroffen.",
+      "type": "yes_no",
+      "order": 12,
+      "options": [
+        {
+          "id": "q12_oui",
+          "label": "Ja",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Hospitalisation, Operation oder ein schwerer Unfall in den letzten 3 Jahren erfordert vor der Blutspende eine ärztliche Beurteilung. Bitte teilen Sie dem medizinischen Personal die Art des Eingriffs mit."
+        },
+        { "id": "q12_non", "label": "Nein", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q13",
+      "category": "Bluttransfusion",
+      "content": "Haben Sie in den letzten 4 Monaten eine Bluttransfusion oder ein Blutprodukt erhalten?",
+      "hint": "Das Erhalten von Blut oder Blutprodukten von einem anderen Spender erfordert eine Wartezeit.",
+      "type": "yes_no",
+      "order": 13,
+      "options": [
+        {
+          "id": "q13_oui",
+          "label": "Ja",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Bluttransfusion in den letzten 4 Monaten ist aufgrund des Risikos der Übertragung von Infektionserregern vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        { "id": "q13_non", "label": "Nein", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q14",
+      "category": "Permanente Kontraindikationen",
+      "content": "Trifft eine der folgenden Situationen auf Sie zu?",
+      "hint": "Diese Vorgeschichten führen zu einer endgültigen und dauerhaften Kontraindikation zur Blutspende.",
+      "type": "checklist",
+      "order": 14,
+      "items": [
+        {
+          "id": "q14_greffe_tissu",
+          "label": "Transplantation von menschlichem oder tierischem Gewebe (Hornhaut, Herzklappen, Haut, Knochen...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Transplantation von menschlichem oder tierischem Gewebe ist eine dauerhafte Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q14_transplantation",
+          "label": "Organtransplantation (Niere, Leber, Herz, Lunge, Pankreas...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Organtransplantation ist eine dauerhafte Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q14_op_cerveau_etranger",
+          "label": "Im Ausland durchgeführte Operation am Gehirn oder Rückenmark",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine im Ausland durchgeführte Operation am Gehirn oder Rückenmark ist aufgrund des Risikos der Übertragung der Creutzfeldt-Jakob-Krankheit eine dauerhafte Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q14_hormone_croissance",
+          "label": "Behandlung mit Wachstumshormonen oder Hormoninjektionen zur Fruchtbarkeitsbehandlung vor dem 01.01.1986",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Behandlung mit Wachstumshormonen vor 1986 ist aufgrund des Risikos der Creutzfeldt-Jakob-Krankheit (frühere hypophysäre Zubereitung) eine dauerhafte Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q14_creutzfeldt",
+          "label": "Mögliches Risiko der Creutzfeldt-Jakob-Krankheit bei Ihnen oder in Ihrer nächsten Familie (auch im Zweifelsfall)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein Risiko der Creutzfeldt-Jakob-Krankheit (bei Ihnen oder in Ihrer Familie) ist eine dauerhafte Kontraindikation zur Blutspende."
+        }
+      ],
+      "options": [
+        { "id": "q14_aucun", "label": "Keine dieser Situationen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q15",
+      "category": "Kürzliche Reisen",
+      "content": "Haben Sie in den letzten 6 Monaten die Schweiz verlassen?",
+      "hint": "Bestimmte Reiseziele weisen Infektionsrisiken auf (Malaria, Zika, Ebola, Chagas...), die eine Wartezeit nach der Rückkehr erfordern.",
+      "type": "travel_check",
+      "order": 15,
+      "data_schema": {
+        "answer_format": "{ trips: [{ country: string, region: string, departure_date: string, return_date: string }] } | { no_travel: true }",
+        "evaluation": "Für jede Reise die Region mit der risk_map vergleichen. Wenn die Region ein Risikogebiet ist UND die Rückkehr weniger als waiting_period_months Monate zurückliegt, ist is_disqualifying = true."
+      },
+      "risk_map": {
+        "Afrique subsaharienne": {
+          "countries_examples": ["Nigeria", "Ghana", "Kenia", "Tansania", "Mosambik", "DR Kongo", "Kamerun", "Elfenbeinküste", "Senegal", "Äthiopien", "Uganda", "Simbabwe", "Sambia", "Angola", "Madagaskar", "Malawi", "Mali", "Guinea", "Liberia", "Sierra Leone"],
+          "diseases": ["Malaria", "Ebola", "Gelbfieber", "Afrikanische Trypanosomiasis (Schlafkrankheit)"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Reise in die Subsahara-Afrika in den letzten 6 Monaten ist aufgrund des Malaria-Risikos und anderer endemischer Tropenkrankheiten vorübergehend eine Kontraindikation zur Blutspende. Wartezeit: 6 Monate nach der Rückkehr."
+        },
+        "Afrique du Nord": {
+          "countries_examples": ["Marokko", "Algerien", "Tunesien", "Ägypten", "Libyen", "Mauretanien"],
+          "diseases": ["Leishmaniose", "Bilharziose (Schistosomiasis)"],
+          "waiting_period_months": 3,
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Reise nach Nordafrika kann je nach besuchten Gebieten aufgrund der Risiken von Leishmaniose oder Bilharziose eine Wartezeit erfordern."
+        },
+        "Amérique centrale et du Sud": {
+          "countries_examples": ["Brasilien", "Kolumbien", "Mexiko", "Peru", "Bolivien", "Venezuela", "Ecuador", "Guatemala", "Honduras", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Paraguay", "Argentinien (Norden)", "Französisch-Guayana"],
+          "diseases": ["Malaria", "Zika-Virus", "Chagas-Krankheit", "Gelbfieber", "Dengue-Fieber"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Reise nach Mittel- oder Südamerika in den letzten 6 Monaten ist aufgrund der Risiken von Malaria, Chagas-Krankheit und Zika-Virus vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        "Asie du Sud et du Sud-Est": {
+          "countries_examples": ["Indien", "Pakistan", "Bangladesch", "Sri Lanka", "Myanmar", "Thailand", "Vietnam", "Kambodscha", "Laos", "Philippinen", "Indonesien", "Malaysia", "Osttimor"],
+          "diseases": ["Malaria", "Dengue-Fieber", "Zika-Virus", "Hämorrhagisches Fieber"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Reise nach Süd- oder Südostasien in den letzten 6 Monaten ist aufgrund der Risiken von Malaria und anderen Tropenkrankheiten vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        "Moyen-Orient (zones à risque)": {
+          "countries_examples": ["Jemen", "Irak", "Syrien", "Sudan", "Südsudan", "Eritrea", "Dschibuti"],
+          "diseases": ["Leishmaniose", "Malaria", "Krim-Kongo-Hämorrhagisches Fieber"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Reise in bestimmte Gebiete des Nahen Ostens in den letzten 6 Monaten kann je nach besuchten Regionen vorübergehend eine Kontraindikation zur Blutspende darstellen."
+        },
+        "Europe (hors Suisse) et pays à faible risque": {
+          "countries_examples": ["Frankreich", "Deutschland", "Italien", "Spanien", "Portugal", "Österreich", "Belgien", "Niederlande", "USA", "Kanada", "Australien", "Neuseeland", "Japan", "Südkorea"],
+          "diseases": [],
+          "waiting_period_months": 0,
+          "is_disqualifying": false,
+          "disqualification_reason": null
+        }
+      },
+      "options": [
+        { "id": "q15_non", "label": "Nein, ich habe die Schweiz in den letzten 6 Monaten nicht verlassen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q16",
+      "category": "Geografische Herkunft",
+      "content": "Trifft eine der folgenden Situationen auf Sie zu?",
+      "hint": "Bestimmte geografische Herkünfte können zusätzliche Tests im Zusammenhang mit endemischen Krankheiten erfordern.",
+      "type": "birth_check",
+      "order": 16,
+      "data_schema": {
+        "answer_format": "{ items: string[], countries: string[] } | { none: true }",
+        "evaluation": "Wenn ein Element ausgewählt ist, needs_evaluation = true setzen. Die angegebenen Länder mit der risk_map vergleichen, um potenzielle zu testende Krankheiten zu identifizieren."
+      },
+      "risk_map": {
+        "Afrique subsaharienne": {
+          "diseases": ["Sichelzellkrankheit (Träger)", "Malaria (asymptomatischer Träger)", "Hepatitis B (chronischer Träger)", "Chagas-Krankheit (Zentralafrika)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "Zusätzliche Tests (Sichelzell-Screening, Hepatitis B) können je nach Herkunftsland erforderlich sein. Das medizinische Personal beurteilt Ihre Situation."
+        },
+        "Amérique centrale et du Sud": {
+          "diseases": ["Chagas-Krankheit (asymptomatischer Träger)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "Ein Chagas-Krankheit-Screening-Test kann je nach Herkunftsland oder Kinheitsland erforderlich sein."
+        },
+        "Asie du Sud-Est": {
+          "diseases": ["Hepatitis B (chronischer Träger)", "Thalassämie (Träger)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "Zusätzliche Tests können je nach Herkunftsland erforderlich sein. Das medizinische Personal beurteilt Ihre Situation."
+        }
+      },
+      "items": [
+        {
+          "id": "q16_naissance_hors_suisse",
+          "label": "Ich bin ausserhalb der Schweiz geboren, aufgewachsen oder habe dort mehr als 6 Monate gelebt — Land angeben",
+          "is_disqualifying": false,
+          "needs_evaluation": true
+        },
+        {
+          "id": "q16_mere_extra_europeenne",
+          "label": "Meine Mutter ist in einem aussereuropäischen Land geboren, aufgewachsen oder hat dort mehr als 6 Monate gelebt — Land angeben",
+          "is_disqualifying": false,
+          "needs_evaluation": true
+        }
+      ],
+      "options": [
+        { "id": "q16_aucun", "label": "Nein, weder ich noch meine Mutter entsprechen diesen Situationen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q17",
+      "category": "Infektionskrankheiten (Vorgeschichte)",
+      "content": "Haben Sie jemals an einer der folgenden Infektionskrankheiten gelitten?",
+      "hint": "Diese Krankheiten können eine Wartezeit oder eine ärztliche Beurteilung vor der Blutspende erfordern.",
+      "type": "checklist",
+      "order": 17,
+      "items": [
+        { "id": "q17_toxoplasmose", "label": "Toxoplasmose", "is_disqualifying": true, "disqualification_reason": "Eine Toxoplasmose in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern. Bitte teilen Sie das Datum dem medizinischen Personal mit." },
+        { "id": "q17_mononucleose", "label": "Infektiöse Mononukleose (Pfeiffersches Drüsenfieber, EBV)", "is_disqualifying": true, "disqualification_reason": "Eine Mononukleose in der Vorgeschichte kann je nach Erkrankungsdatum eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_amibiase", "label": "Amöbiasis (Amöbenruhr)", "is_disqualifying": true, "disqualification_reason": "Eine Amöbiasis in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_shigellose", "label": "Shigellose (bakterielle Ruhr)", "is_disqualifying": true, "disqualification_reason": "Eine Shigellose in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_fsme", "label": "FSME — Frühsommer-Meningoenzephalitis", "is_disqualifying": true, "disqualification_reason": "Eine FSME in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_bilharziose", "label": "Bilharziose (Schistosomiasis)", "is_disqualifying": true, "disqualification_reason": "Eine Bilharziose in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q17_gonorrhee", "label": "Gonorrhoe (bakterielle STI)", "is_disqualifying": true, "disqualification_reason": "Eine Gonorrhoe in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_osteomyelite", "label": "Osteomyelitis (Knocheninfektion)", "is_disqualifying": true, "disqualification_reason": "Eine Osteomyelitis in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q17_fievre_rhum", "label": "Rheumatisches Fieber", "is_disqualifying": true, "disqualification_reason": "Rheumatisches Fieber in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_tuberculose", "label": "Tuberkulose (pulmonal oder extrapulmonal)", "is_disqualifying": true, "disqualification_reason": "Eine Tuberkulose in der Vorgeschichte erfordert eine gründliche ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q17_fievre_recurrente", "label": "Rückfallfieber (Borreliose)", "is_disqualifying": true, "disqualification_reason": "Rückfallfieber in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q17_fievre_q", "label": "Q-Fieber (Coxiella burnetii)", "is_disqualifying": true, "disqualification_reason": "Q-Fieber in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q17_guillain_barre", "label": "Guillain-Barré-Syndrom", "is_disqualifying": true, "disqualification_reason": "Ein Guillain-Barré-Syndrom in der Vorgeschichte kann eine Kontraindikation zur Blutspende darstellen." }
+      ],
+      "options": [
+        { "id": "q17_aucun", "label": "Keine dieser Krankheiten", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q18",
+      "category": "Schwere Infektionskrankheiten (verlängerte Kontraindikation)",
+      "content": "Haben Sie sich jemals mit einer der folgenden schweren Infektionskrankheiten angesteckt?",
+      "hint": "Diese Krankheiten führen aufgrund des Übertragungsrisikos auf den Empfänger zu einer verlängerten oder dauerhaften Kontraindikation.",
+      "type": "checklist",
+      "order": 18,
+      "items": [
+        { "id": "q18_paludisme", "label": "Malaria", "is_disqualifying": true, "disqualification_reason": "Malaria in der Vorgeschichte ist für 3 Jahre nach vollständig dokumentierter Genesung eine Kontraindikation zur Blutspende." },
+        { "id": "q18_chagas", "label": "Chagas-Krankheit (amerikanische Trypanosomiasis)", "is_disqualifying": true, "disqualification_reason": "Chagas-Krankheit in der Vorgeschichte ist aufgrund des Übertragungsrisikos durch Blut eine dauerhafte Kontraindikation zur Blutspende." },
+        { "id": "q18_brucellose", "label": "Brucellose", "is_disqualifying": true, "disqualification_reason": "Brucellose in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q18_echinococcose", "label": "Echinokokkose (Hydatidzyste)", "is_disqualifying": true, "disqualification_reason": "Echinokokkose in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q18_leishmaniose", "label": "Leishmaniose (kutane, viszerale oder mukosale Form)", "is_disqualifying": true, "disqualification_reason": "Leishmaniose in der Vorgeschichte kann aufgrund des Übertragungsrisikos durch Blut eine Kontraindikation zur Blutspende darstellen." },
+        { "id": "q18_lymphogranulome", "label": "Lymphogranuloma venereum (LGV, Chlamydia L1/L2/L3)", "is_disqualifying": true, "disqualification_reason": "LGV in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
+        { "id": "q18_filariose", "label": "Filariose (lymphatisch oder okulär)", "is_disqualifying": true, "disqualification_reason": "Filariose in der Vorgeschichte kann eine Kontraindikation zur Blutspende darstellen." },
+        { "id": "q18_babesiose", "label": "Babesiose", "is_disqualifying": true, "disqualification_reason": "Babesiose in der Vorgeschichte ist für einen längeren Zeitraum eine Kontraindikation zur Blutspende." },
+        { "id": "q18_ebola", "label": "Ebola-Virus-Erkrankung oder Aufenthalt in einem aktiven Ebola-Epidemiegebiet", "is_disqualifying": true, "disqualification_reason": "Ebola in der Vorgeschichte oder ein Aufenthalt in einem aktiven Epidemiegebiet ist eine dauerhafte Kontraindikation zur Blutspende." },
+        { "id": "q18_autre_grave", "label": "Andere schwere, nicht aufgeführte Infektion (bitte dem medizinischen Personal mitteilen)", "is_disqualifying": true, "disqualification_reason": "Eine schwere Infektion in der Vergangenheit kann eine Kontraindikation zur Blutspende darstellen. Bitte teilen Sie dem medizinischen Personal die Krankheit zur Beurteilung mit." }
+      ],
+      "options": [
+        { "id": "q18_aucun", "label": "Keine dieser Krankheiten", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q19",
+      "category": "Kürzliche Infektionsexpositionen",
+      "content": "Trifft eine der folgenden Situationen in den letzten 4 Wochen auf Sie zu?",
+      "hint": "Diese kürzlichen Expositionen können vorübergehend eine Kontraindikation zur Blutspende darstellen.",
+      "type": "checklist",
+      "order": 19,
+      "items": [
+        {
+          "id": "q19_tique",
+          "label": "Zeckenstich",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein Zeckenstich in den letzten 4 Wochen erfordert eine Wartezeit vor der Blutspende, aufgrund des Risikos einer Borreliose (Lyme-Borreliose) oder Frühsommer-Meningoenzephalitis."
+        },
+        {
+          "id": "q19_contact_infectieux",
+          "label": "Enger Kontakt mit einer Person, die an einer ansteckenden Infektionskrankheit leidet (Krankheit dem medizinischen Personal mitteilen)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein kürzlicher Kontakt mit einer ansteckenden Person kann je nach betreffender Krankheit eine Wartezeit erfordern."
+        }
+      ],
+      "options": [
+        { "id": "q19_aucun", "label": "Keine dieser Situationen", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q20",
+      "category": "Kürzliche Körpereingriffe",
+      "content": "Haben Sie sich in den letzten 4 Monaten einem der folgenden Eingriffe unterzogen?",
+      "hint": "Diese Eingriffe sind mit einem Risiko der Übertragung von Infektionserregern durch Blut oder Instrumente verbunden.",
+      "type": "checklist",
+      "order": 20,
+      "items": [
+        { "id": "q20_tatouage", "label": "Tätowierung", "is_disqualifying": true, "disqualification_reason": "Eine Tätowierung in den letzten 4 Monaten ist aufgrund des Risikos der Übertragung von Hepatitis oder anderen Infektionen vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q20_piercing", "label": "Piercing", "is_disqualifying": true, "disqualification_reason": "Ein Piercing in den letzten 4 Monaten ist vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q20_maquillage_permanent", "label": "Permanent-Make-up oder Microblading", "is_disqualifying": true, "disqualification_reason": "Permanent-Make-up oder Microblading in den letzten 4 Monaten ist vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q20_acupuncture", "label": "Akupunkturbehandlung", "is_disqualifying": true, "disqualification_reason": "Eine Akupunkturbehandlung in den letzten 4 Monaten kann vorübergehend eine Kontraindikation zur Blutspende darstellen, wenn die Nadeln nicht als Einwegnadeln zertifiziert waren." },
+        { "id": "q20_epilation_electrique", "label": "Elektrische Epilation", "is_disqualifying": true, "disqualification_reason": "Eine elektrische Epilation in den letzten 4 Monaten kann vorübergehend eine Kontraindikation zur Blutspende darstellen." },
+        { "id": "q20_gastroscopie", "label": "Gastroskopie oder Koloskopie", "is_disqualifying": true, "disqualification_reason": "Eine Gastroskopie oder Koloskopie in den letzten 4 Monaten ist aufgrund des Risikos der Übertragung von Infektionen vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q20_sangsues", "label": "Verwendung von medizinischen Blutegeln", "is_disqualifying": true, "disqualification_reason": "Die Verwendung von medizinischen Blutegeln in den letzten 4 Monaten ist vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q20_contact_sang", "label": "Kontakt mit fremdem Blut: versehentlicher Nadelstich, Spritzer in die Augen, den Mund oder auf eine offene Wunde", "is_disqualifying": true, "disqualification_reason": "Kontakt mit fremdem Blut in den letzten 4 Monaten ist aufgrund des Risikos der Übertragung von HIV, Hepatitis B/C oder anderen Infektionen vorübergehend eine Kontraindikation zur Blutspende." }
+      ],
+      "options": [
+        { "id": "q20_aucun", "label": "Keiner dieser Eingriffe", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q21",
+      "category": "HIV, Hepatitis & STIs",
+      "content": "Wurden Sie jemals positiv auf eine der folgenden Krankheiten getestet?",
+      "hint": "Diese Krankheiten führen zu einer endgültigen und dauerhaften Kontraindikation zur Blutspende.",
+      "type": "checklist",
+      "order": 21,
+      "items": [
+        { "id": "q21_vih", "label": "HIV / Aids", "is_disqualifying": true, "disqualification_reason": "Eine HIV-Infektion ist eine dauerhafte Kontraindikation zur Blutspende." },
+        { "id": "q21_hepatite_b", "label": "Hepatitis B", "is_disqualifying": true, "disqualification_reason": "Hepatitis B (auch in der Vergangenheit) ist eine dauerhafte Kontraindikation zur Blutspende." },
+        { "id": "q21_hepatite_c", "label": "Hepatitis C", "is_disqualifying": true, "disqualification_reason": "Hepatitis C (auch wenn geheilt) ist eine dauerhafte Kontraindikation zur Blutspende." },
+        { "id": "q21_syphilis", "label": "Syphilis", "is_disqualifying": true, "disqualification_reason": "Syphilis in der Vorgeschichte ist vorübergehend eine Kontraindikation zur Blutspende. Bitte informieren Sie das medizinische Personal zur Beurteilung." }
+      ],
+      "options": [
+        { "id": "q21_aucun", "label": "Nein, keine dieser Krankheiten", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q22",
+      "category": "Riskantes Sexualverhalten",
+      "content": "Trifft eine der folgenden Situationen auf Sie zu?",
+      "hint": "Diese Situationen erhöhen vorübergehend das Risiko der Übertragung von Infektionen während des Serokonversionsfensters.",
+      "type": "checklist",
+      "order": 22,
+      "items": [
+        {
+          "id": "q22_partenaire_recents",
+          "label": "Neuer Sexualpartner, Partnerwechsel oder mehr als 2 Partner in den letzten 4 Monaten",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein neuer Partner, ein Partnerwechsel oder mehr als 2 Partner in den letzten 4 Monaten erfordert aufgrund des Risikos von STIs im Serokonversionsfenster eine Wartezeit."
+        },
+        {
+          "id": "q22_rapport_remunere",
+          "label": "Sexuelle Beziehungen gegen Entgelt (Geld, Drogen oder andere Leistungen) in den letzten 12 Monaten",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexuelle Beziehungen gegen Entgelt in den letzten 12 Monaten sind aufgrund eines erhöhten Risikos der STI-Exposition vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q22_partenaire_ist",
+          "label": "In den letzten 12 Monaten Partner mit Hepatitis B/C, Zika-Virus oder selbst einer Risikosituation ausgesetzt (STI, HIV…)",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Ein Partner mit Hepatitis B/C, Zika oder einer Risikosituation in den letzten 12 Monaten ist vorübergehend eine Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q22_partenaire_pays_risque",
+          "label": "In den letzten 4 Monaten Sexualverkehr mit einem Partner, der sich mehr als 6 Monate in einem Land mit hoher HIV-, Hepatitis-B- oder -C-Prävalenz aufgehalten hat",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexualverkehr mit einem Partner aus einem Hochprävalenzland in den letzten 4 Monaten erfordert eine Wartezeit."
+        }
+      ],
+      "options": [
+        { "id": "q22_aucun", "label": "Keine dieser Situationen trifft auf mich zu", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q23",
+      "category": "Drogenkonsum",
+      "content": "Trifft eine der folgenden Situationen auf Sie zu?",
+      "hint": "Der Konsum von injizierbaren oder synthetischen Drogen erhöht das Risiko der Übertragung von Blutinfektionen erheblich.",
+      "type": "checklist",
+      "order": 23,
+      "items": [
+        {
+          "id": "q23_injection",
+          "label": "Drogeninjektion (auch einmal im Leben, auch weit zurückliegend)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Der frühere oder gegenwärtige Konsum von injizierbaren Drogen ist aufgrund des hohen Risikos der Übertragung von HIV und Hepatitis B und C durch Blut eine dauerhafte Kontraindikation zur Blutspende."
+        },
+        {
+          "id": "q23_synthese",
+          "label": "Sexuelle Beziehungen unter dem Einfluss von synthetischen Drogen in den letzten 12 Monaten",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexuelle Beziehungen unter synthetischen Drogen in den letzten 12 Monaten sind aufgrund eines erhöhten Risikos der STI-Exposition vorübergehend eine Kontraindikation zur Blutspende."
+        }
+      ],
+      "options": [
+        { "id": "q23_aucun", "label": "Nein, keine dieser Situationen trifft auf mich zu", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q24",
+      "category": "Schwangerschaft",
+      "content": "Sind Sie derzeit schwanger oder waren Sie es in den letzten 6 Monaten?",
+      "hint": "Schwangerschaft und Stillen sind aus Sicherheitsgründen für die Mutter vorübergehend eine Kontraindikation zur Blutspende.",
+      "type": "yes_no",
+      "order": 24,
+      "options": [
+        {
+          "id": "q24_oui",
+          "label": "Ja",
+          "is_disqualifying": true,
+          "disqualification_reason": "Eine Schwangerschaft oder eine kürzliche Entbindung (in den letzten 6 Monaten) ist vorübergehend eine Kontraindikation zur Blutspende. Sie können 6 Monate nach der Entbindung und nach dem Abstillen wieder spenden."
+        },
+        { "id": "q24_non", "label": "Nein", "is_disqualifying": false }
+      ],
+      "conditions": []
+    }
+
+  ]
+}

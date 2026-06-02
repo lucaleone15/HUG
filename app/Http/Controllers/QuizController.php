@@ -139,8 +139,15 @@ class QuizController extends Controller
 
     private function loadQuiz(): array
     {
-        return Cache::rememberForever('quiz', fn () =>
-            json_decode(file_get_contents(resource_path('quiz/quiz.json')), true)
+        $locale = app()->getLocale();
+        $path   = resource_path("quiz/quiz.{$locale}.json");
+
+        if (! file_exists($path)) {
+            $path = resource_path('quiz/quiz.json');
+        }
+
+        return Cache::rememberForever("quiz_{$locale}", fn () =>
+            json_decode(file_get_contents($path), true)
         );
     }
 

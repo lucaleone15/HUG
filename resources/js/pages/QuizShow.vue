@@ -197,8 +197,8 @@ const goBack = () => {
             <div class="intro-dossier" aria-hidden="true">
                 <div class="dossier-folder">
                     <div class="dossier-folder-inner">
-                        <p class="dossier-republic">République et canton de Genève</p>
-                        <p class="dossier-hospital">Hôpitaux universitaires de Genève<br>Centre de transfusion sanguine</p>
+                        <p class="dossier-republic">{{ t('quiz.dossier_republic') }}</p>
+                        <p class="dossier-hospital">{{ t('quiz.dossier_hospital_name') }}<br>{{ t('quiz.dossier_hospital_dept') }}</p>
                         <div class="dossier-confidential-badge">CONFIDENTIAL</div>
                         <div class="dossier-logo-stamp">
                             <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="dossier-logo-img">
@@ -206,9 +206,9 @@ const goBack = () => {
                         </div>
                         <p class="dossier-folder-title">DOSSIER<br>{{ dossierCode }}</p>
                         <div class="dossier-folder-meta">
-                            <p>Date d'ouverture : _ / _ / {{ new Date().getFullYear() }}</p>
-                            <p>Inspecteur assigné : CTS</p>
-                            <p>Statut : en attente</p>
+                            <p>{{ t('quiz.dossier_open_date') }} : _ / _ / {{ new Date().getFullYear() }}</p>
+                            <p>{{ t('quiz.dossier_inspector') }}</p>
+                            <p>{{ t('quiz.dossier_status') }}</p>
                         </div>
                     </div>
                 </div>
@@ -299,7 +299,7 @@ const goBack = () => {
                                 </div>
 
                                 <!-- Question reference -->
-                                <p class="piece-ref">Question {{ pad(currentQuestion.order) }}</p>
+                                <p class="piece-ref">{{ t('quiz.question_label') }} {{ pad(currentQuestion.order) }}</p>
                                 <div class="panel-divider"></div>
 
                                 <!-- Category label: desktop only -->
@@ -499,11 +499,10 @@ const goBack = () => {
                             <!-- LEFT: Confirmation visuelle -->
                             <div class="doc-left">
                                 <div class="classified-stamp classified-stamp--complete">
-                                    <span class="classified-title">Dossier complet</span>
+                                    <span class="classified-title">{{ t('quiz.complete_dossier_label') }}</span>
                                     <span class="classified-sub">{{ dossierCode }}</span>
                                 </div>
 
-                                <p class="piece-ref">Question {{ pad(total) }}</p>
                                 <div class="panel-divider"></div>
 
                                 <p class="category-label">{{ dossierCode }}</p>

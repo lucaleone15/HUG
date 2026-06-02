@@ -212,7 +212,15 @@
         "intro_card_p1": "To find out, we need to examine your file first. You will go through a quick routine interrogation.",
         "intro_card_p2": "Answer honestly to this short series of questions to immediately verify your eligibility to donate blood.",
         "birth_confirm": "Confirm",
-        "complete_cta_label": "Your dossier"
+        "complete_cta_label": "Your dossier",
+        "question_label":     "Question",
+        "dossier_republic":   "Republic and Canton of Geneva",
+        "dossier_hospital_name": "Geneva University Hospitals",
+        "dossier_hospital_dept": "Blood Transfusion Centre",
+        "dossier_open_date":  "Opening date",
+        "dossier_inspector":  "Assigned inspector: CTS",
+        "dossier_status":     "Status: pending",
+        "complete_dossier_label": "Complete file"
     },
     "result": {
         "eligible_title": "You are eligible to donate!",
@@ -242,7 +250,8 @@
         "referral_message_copied": "Copied!",
         "referral_whatsapp": "Share on WhatsApp",
         "referral_email_subject": "Take part in the Blood Donation campaign: {company}",
-        "referral_email_body": "Hi,\n\nI'm taking part in the Blood Donation campaign organised by {company} in partnership with HUG and CTS Geneva.\n\nCheck in 2 minutes whether you're eligible to donate blood:\n{url}\n\nThank you!"
+        "referral_email_body": "Hi,\n\nI'm taking part in the Blood Donation campaign organised by {company} in partnership with HUG and CTS Geneva.\n\nCheck in 2 minutes whether you're eligible to donate blood:\n{url}\n\nThank you!",
+        "dossier_title": "Investigation File"
     },
     "inscription": {
         "title": "Register my company",
