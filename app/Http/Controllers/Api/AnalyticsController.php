@@ -17,7 +17,7 @@ class AnalyticsController extends Controller
                 'type'          => 'required|in:' . implode(',', AnalyticsEvent::TYPES),
                 'entreprise_id' => 'nullable|exists:entreprises,id',
                 'session_token' => 'nullable|string|max:36',
-                'metadata'      => 'nullable|array',
+                'metadata'      => 'nullable|array|max:20',
             ]);
 
             AnalyticsEvent::create($data);

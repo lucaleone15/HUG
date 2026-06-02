@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 
-const token = ref(localStorage.getItem('admin_token') ?? null)
-const user  = ref(JSON.parse(localStorage.getItem('admin_user') ?? 'null'))
+const token = ref(sessionStorage.getItem('admin_token') ?? null)
+const user  = ref(JSON.parse(sessionStorage.getItem('admin_user') ?? 'null'))
 
 export function useAuth() {
     const isAuthenticated = computed(() => !!token.value)
@@ -10,11 +10,11 @@ export function useAuth() {
         token.value = t
         user.value  = u
         if (t) {
-            localStorage.setItem('admin_token', t)
-            localStorage.setItem('admin_user', JSON.stringify(u))
+            sessionStorage.setItem('admin_token', t)
+            sessionStorage.setItem('admin_user', JSON.stringify(u))
         } else {
-            localStorage.removeItem('admin_token')
-            localStorage.removeItem('admin_user')
+            sessionStorage.removeItem('admin_token')
+            sessionStorage.removeItem('admin_user')
         }
     }
 

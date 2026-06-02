@@ -23,7 +23,7 @@ class ContactController extends Controller
         $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
-            'type'    => 'required|string',
+            'type'    => 'required|string|in:type_general,type_partnership,type_technical,type_eligibility,type_other',
             'message' => 'required|string|max:5000',
         ]);
 

@@ -30,7 +30,7 @@ class InscriptionController extends Controller
             'primary_color'   => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'secondary_color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'logo'            => 'nullable|image|max:2048',
-            'logo_url'        => 'nullable|string|max:2048',
+            'logo_url'        => 'nullable|url|max:2048',
             'wants_trophy'    => 'boolean',
         ]);
 

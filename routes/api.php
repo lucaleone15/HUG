@@ -22,9 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // --- Public ---
-Route::get('/leaderboard', [LeaderboardController::class, 'index']);
-Route::get('/stats',       [StatsController::class,      'index']);
-Route::post('/analytics',  [AnalyticsController::class,  'store']);
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->middleware('throttle:60,1');
+Route::get('/stats',       [StatsController::class,      'index'])->middleware('throttle:60,1');
+Route::post('/analytics',  [AnalyticsController::class,  'store'])->middleware('throttle:120,1');
 
 // --- Admin ---
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
