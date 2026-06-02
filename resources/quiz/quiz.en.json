@@ -1,0 +1,771 @@
+{
+  "title": "Blood Donation Eligibility Quiz",
+  "version": "2.0.0",
+  "source": "Questionnaire CTS HUG — Transfusion CRS Suisse — ANH-Art7.6v3 - 1er fév. 2026",
+  "types_note": "Types utilisés : yes_no | checklist (items[], options[aucun]) | travel_check (risk_map) | birth_check (items[], risk_map). QuizController@store doit être mis à jour pour gérer checklist/travel_check/birth_check.",
+  "questions": [
+
+    {
+      "id": "q1",
+      "category": "General",
+      "content": "Are you between 18 and 75 years old?",
+      "hint": "Blood donation is open to adults between 18 and 75 years old in Switzerland.",
+      "type": "yes_no",
+      "order": 1,
+      "options": [
+        { "id": "q1_oui", "label": "Yes", "is_disqualifying": false },
+        {
+          "id": "q1_non",
+          "label": "No",
+          "is_disqualifying": true,
+          "disqualification_reason": "Blood donation is reserved for people aged 18 to 75. You do not meet the required age criteria."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q2",
+      "category": "General Health",
+      "content": "Do you weigh more than 50 kg?",
+      "hint": "A minimum weight of 50 kg is required to ensure your safety during donation.",
+      "type": "yes_no",
+      "order": 2,
+      "options": [
+        { "id": "q2_oui", "label": "Yes", "is_disqualifying": false },
+        {
+          "id": "q2_non",
+          "label": "No",
+          "is_disqualifying": true,
+          "disqualification_reason": "A minimum weight of 50 kg is required for safety reasons during blood collection."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q3",
+      "category": "General Health",
+      "content": "Do you feel in good health today?",
+      "hint": "No unusual fatigue, fever or discomfort today.",
+      "type": "yes_no",
+      "order": 3,
+      "options": [
+        { "id": "q3_oui", "label": "Yes", "is_disqualifying": false },
+        {
+          "id": "q3_non",
+          "label": "No",
+          "is_disqualifying": true,
+          "disqualification_reason": "You must be in perfect health on the day of donation. Come back when you feel better."
+        }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q4",
+      "category": "Previous Donation",
+      "content": "Have you donated blood before?",
+      "hint": "This helps us check the interval since your last donation.",
+      "type": "yes_no",
+      "order": 4,
+      "options": [
+        { "id": "q4_oui", "label": "Yes", "is_disqualifying": false },
+        { "id": "q4_non", "label": "No, this is my first time", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q5",
+      "category": "Previous Donation",
+      "content": "Was your last blood donation more than 8 weeks ago (men) or more than 12 weeks ago (women)?",
+      "hint": "This interval allows your body to replenish its reserves between two donations.",
+      "type": "yes_no",
+      "order": 5,
+      "options": [
+        { "id": "q5_oui", "label": "Yes, the interval has been respected", "is_disqualifying": false },
+        {
+          "id": "q5_non",
+          "label": "No, my last donation was more recent",
+          "is_disqualifying": true,
+          "disqualification_reason": "The minimum interval between two donations must be respected: 8 weeks for men, 12 weeks for women. Come back when this interval has elapsed."
+        }
+      ],
+      "conditions": [
+        { "depends_on": "q4", "expects": "q4_oui" }
+      ]
+    },
+
+    {
+      "id": "q6",
+      "category": "Recent Dental Care",
+      "content": "In the last 14 days, have you had a dental treatment or procedure?",
+      "hint": "Examples: scaling, extraction, filling, root canal treatment, crown placement, gum care, professional whitening.",
+      "type": "yes_no",
+      "order": 6,
+      "options": [
+        {
+          "id": "q6_oui",
+          "label": "Yes",
+          "is_disqualifying": true,
+          "disqualification_reason": "A dental treatment in the last 14 days requires a waiting period before donation, due to the risk of transient bacteraemia (passage of oral bacteria into the bloodstream)."
+        },
+        { "id": "q6_non", "label": "No", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q7",
+      "category": "Recent Medical Care",
+      "content": "In the last 4 weeks, does any of these symptoms or treatments apply to you?",
+      "hint": "Select all that apply. If in doubt, report it to the medical staff.",
+      "type": "checklist",
+      "order": 7,
+      "items": [
+        {
+          "id": "q7_fievre",
+          "label": "Fever above 38°C",
+          "is_disqualifying": true,
+          "disqualification_reason": "A recent fever (in the last 4 weeks) requires a waiting period of 4 weeks after temperature returns to normal before donating."
+        },
+        {
+          "id": "q7_rhume",
+          "label": "Cold, flu or respiratory tract infection",
+          "is_disqualifying": true,
+          "disqualification_reason": "A recent respiratory infection requires a waiting period of 4 weeks after full recovery before donating."
+        },
+        {
+          "id": "q7_diarrhee",
+          "label": "Diarrhoea or gastroenteritis",
+          "is_disqualifying": true,
+          "disqualification_reason": "A recent gastroenteritis requires a waiting period of 4 weeks after recovery before donating."
+        },
+        {
+          "id": "q7_soins_med",
+          "label": "Medical consultation or medical care (excluding dental care)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Recent medical care may require a waiting period depending on its nature. The medical staff will assess your situation."
+        },
+        {
+          "id": "q7_antibiotiques",
+          "label": "Use of antibiotics",
+          "is_disqualifying": true,
+          "disqualification_reason": "A recent course of antibiotics requires a waiting period of 4 weeks after the end of treatment before donating blood."
+        }
+      ],
+      "options": [
+        { "id": "q7_aucun", "label": "None of these situations", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q8",
+      "category": "Medications",
+      "content": "In the last 4 weeks, have you taken any medication, even without a prescription?",
+      "hint": "Tablets, injections, suppositories, patches, nasal sprays... If yes, the medical staff will assess compatibility with donation.",
+      "type": "yes_no",
+      "order": 8,
+      "options": [
+        { "id": "q8_oui", "label": "Yes", "is_disqualifying": false },
+        { "id": "q8_non", "label": "No", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q9",
+      "category": "Medications with Contraindications",
+      "content": "Have you taken any of the following medications within the indicated timeframes?",
+      "hint": "These treatments result in a temporary or permanent contraindication to donation, regardless of your current health status.",
+      "type": "checklist",
+      "order": 9,
+      "items": [
+        {
+          "id": "q9_prostate_cheveux",
+          "label": "Prostate or hair loss treatment",
+          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® — last 6 months",
+          "timeframe": "6 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking prostate or hair loss medications (finasteride, dutasteride) in the last 6 months contraindicates donation due to the teratogenic risk for female recipients."
+        },
+        {
+          "id": "q9_isotretinoine",
+          "label": "Severe acne or eczema treatment",
+          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® — last 4 weeks",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "Isotretinoin (Roaccutan®...) is teratogenic. Taking it in the last 4 weeks contraindicates donation."
+        },
+        {
+          "id": "q9_neuropsych",
+          "label": "Psychiatric or neurological treatment",
+          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (lithium, topiramate, anticonvulsants) — last 4 weeks",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking psychiatric or neurological medications (lithium, topiramate, anticonvulsants) in the last 4 weeks contraindicates donation."
+        },
+        {
+          "id": "q9_endometriose",
+          "label": "Endometriosis treatment",
+          "sublabel": "Lucrin Depot® — last 2 months",
+          "timeframe": "2 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking endometriosis medication (Lucrin Depot®) in the last 2 months contraindicates donation."
+        },
+        {
+          "id": "q9_vih_sang",
+          "label": "HIV antiretroviral therapy (PrEP / PEP) or blood-derived medications",
+          "sublabel": "Truvada®, Isentress®, Prezista® — last 4 months",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking antiretroviral therapy (PrEP/PEP) or blood-derived medications in the last 4 months contraindicates donation."
+        },
+        {
+          "id": "q9_methotrexate",
+          "label": "Cytostatic for psoriasis or arthritis",
+          "sublabel": "Méthotrexate® — last 6 months",
+          "timeframe": "6 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking Méthotrexate® in the last 6 months contraindicates donation."
+        },
+        {
+          "id": "q9_retinoides_long",
+          "label": "Treatment for severe psoriasis or basal cell carcinoma",
+          "sublabel": "Neotigason®, Acicutan®, Erivedge® — last 3 years",
+          "timeframe": "3 dernières années",
+          "is_disqualifying": true,
+          "disqualification_reason": "Taking Neotigason®, Acicutan® or Erivedge® in the last 3 years permanently contraindicates donation due to the very long-term teratogenic risk."
+        }
+      ],
+      "options": [
+        { "id": "q9_aucun", "label": "None of these medications", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q10",
+      "category": "Vaccines & Immunotherapy",
+      "content": "Does any of these situations apply to you?",
+      "hint": "Certain vaccines and treatments require a waiting period before donation.",
+      "type": "checklist",
+      "order": 10,
+      "items": [
+        {
+          "id": "q10_vaccin_4sem",
+          "label": "Any vaccine received in the last 4 weeks (specify which to medical staff)",
+          "timeframe": "4 dernières semaines",
+          "is_disqualifying": true,
+          "disqualification_reason": "A recent vaccine (in the last 4 weeks) requires a waiting period before donation. The exact delay varies depending on the vaccine."
+        },
+        {
+          "id": "q10_rage_tetanos",
+          "label": "Rabies or tetanus vaccine in the last 12 months",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "A rabies or tetanus vaccine in the last 12 months temporarily contraindicates donation."
+        },
+        {
+          "id": "q10_immunotherapie",
+          "label": "Immunotherapy based on human or animal cells or serum (at any time in your life)",
+          "timeframe": "À tout moment",
+          "is_disqualifying": true,
+          "disqualification_reason": "Immunotherapy based on human or animal products may contraindicate donation. Please inform the medical staff for assessment."
+        }
+      ],
+      "options": [
+        { "id": "q10_aucun", "label": "None of these situations", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q11",
+      "category": "Serious Medical History",
+      "content": "Do you suffer or have you suffered from any of these diseases?",
+      "hint": "These medical histories may result in a temporary or permanent contraindication. If in doubt, consult the medical staff.",
+      "type": "checklist",
+      "order": 11,
+      "items": [
+        {
+          "id": "q11_cardio",
+          "label": "Cardiovascular disease: severe arterial hypertension, myocardial infarction, heart failure, angina pectoris",
+          "is_disqualifying": true,
+          "disqualification_reason": "A serious cardiovascular disease may contraindicate donation. Medical staff will assess your situation."
+        },
+        {
+          "id": "q11_pulmonaire",
+          "label": "Severe lung disease: uncontrolled asthma, COPD, respiratory failure, pulmonary embolism",
+          "is_disqualifying": true,
+          "disqualification_reason": "Severe lung disease may contraindicate blood donation."
+        },
+        {
+          "id": "q11_avc",
+          "label": "Stroke (CVA), transient ischaemic attack (TIA) or unexplained loss of consciousness",
+          "is_disqualifying": true,
+          "disqualification_reason": "A stroke, TIA or unexplained loss of consciousness contraindicates blood donation."
+        },
+        {
+          "id": "q11_diabete",
+          "label": "Diabetes (type 1, type 2, or gestational)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Diabetes may contraindicate donation depending on the type and treatment. Medical staff will assess your situation."
+        },
+        {
+          "id": "q11_sang_coag",
+          "label": "Blood or coagulation disorder: chronic anaemia, haemophilia, thrombocytopenia, thrombosis, sickle cell disease",
+          "is_disqualifying": true,
+          "disqualification_reason": "A blood or coagulation disorder contraindicates blood donation."
+        },
+        {
+          "id": "q11_cancer",
+          "label": "Cancer or malignant tumour (current or past, of any type)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Some cancer histories may contraindicate donation. Medical staff will assess your situation based on the type and date of treatment."
+        },
+        {
+          "id": "q11_renal",
+          "label": "Kidney disease: chronic kidney failure, nephropathy",
+          "is_disqualifying": true,
+          "disqualification_reason": "Kidney disease may contraindicate blood donation."
+        },
+        {
+          "id": "q11_neuro",
+          "label": "Neurological disease or epilepsy (including seizures)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Neurological disease or epilepsy may contraindicate blood donation."
+        },
+        {
+          "id": "q11_foie",
+          "label": "Liver disease: chronic hepatitis, cirrhosis, steatohepatitis",
+          "is_disqualifying": true,
+          "disqualification_reason": "Liver disease may contraindicate blood donation."
+        },
+        {
+          "id": "q11_osteoporose",
+          "label": "Severe osteoporosis",
+          "is_disqualifying": true,
+          "disqualification_reason": "Severe osteoporosis may contraindicate blood donation."
+        },
+        {
+          "id": "q11_allergie_severe",
+          "label": "Severe allergy or anaphylactic shock (medications, food, insect stings...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "A severe allergy or history of anaphylactic shock may contraindicate donation. Medical staff will assess your situation."
+        }
+      ],
+      "options": [
+        { "id": "q11_aucun", "label": "None of these diseases", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q12",
+      "category": "Hospitalisations & Procedures",
+      "content": "In the last 3 years, have you been hospitalised, had surgery or been involved in an accident requiring medical care?",
+      "hint": "This includes: any surgery (outpatient or with hospitalisation), any hospitalisation of more than 24 hours, and any accident with medical care (fracture, significant injury, etc.). A simple emergency room visit without hospitalisation is not concerned.",
+      "type": "yes_no",
+      "order": 12,
+      "options": [
+        {
+          "id": "q12_oui",
+          "label": "Yes",
+          "is_disqualifying": true,
+          "disqualification_reason": "A hospitalisation, operation or serious accident in the last 3 years requires a medical assessment before donation. Please specify the nature of the procedure to the medical staff."
+        },
+        { "id": "q12_non", "label": "No", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q13",
+      "category": "Blood Transfusion",
+      "content": "Have you received a blood transfusion or blood-derived product in the last 4 months?",
+      "hint": "Receiving blood or blood products from another donor requires a waiting period.",
+      "type": "yes_no",
+      "order": 13,
+      "options": [
+        {
+          "id": "q13_oui",
+          "label": "Yes",
+          "is_disqualifying": true,
+          "disqualification_reason": "A blood transfusion in the last 4 months temporarily contraindicates donation, due to the risk of transmission of infectious agents."
+        },
+        { "id": "q13_non", "label": "No", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q14",
+      "category": "Permanent Contraindications",
+      "content": "Does any of these situations apply to you?",
+      "hint": "These histories result in a definitive and permanent contraindication to blood donation.",
+      "type": "checklist",
+      "order": 14,
+      "items": [
+        {
+          "id": "q14_greffe_tissu",
+          "label": "Transplant of human or animal tissue (cornea, heart valve, skin, bone...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "A transplant of human or animal tissue permanently contraindicates blood donation."
+        },
+        {
+          "id": "q14_transplantation",
+          "label": "Organ transplant (kidney, liver, heart, lung, pancreas...)",
+          "is_disqualifying": true,
+          "disqualification_reason": "An organ transplant permanently contraindicates blood donation."
+        },
+        {
+          "id": "q14_op_cerveau_etranger",
+          "label": "Brain or spinal cord operation performed abroad",
+          "is_disqualifying": true,
+          "disqualification_reason": "A brain or spinal cord operation performed abroad permanently contraindicates donation, due to the risk of transmitting Creutzfeldt-Jakob disease."
+        },
+        {
+          "id": "q14_hormone_croissance",
+          "label": "Growth hormone treatment or hormonal injections for infertility before 01.01.1986",
+          "is_disqualifying": true,
+          "disqualification_reason": "Treatment with growth hormone before 1986 permanently contraindicates donation due to the risk of Creutzfeldt-Jakob disease (former pituitary-derived preparation)."
+        },
+        {
+          "id": "q14_creutzfeldt",
+          "label": "Possible risk of Creutzfeldt-Jakob disease affecting you or your immediate family (even in case of doubt)",
+          "is_disqualifying": true,
+          "disqualification_reason": "A risk of Creutzfeldt-Jakob disease (for you or in your family) permanently contraindicates blood donation."
+        }
+      ],
+      "options": [
+        { "id": "q14_aucun", "label": "None of these situations", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q15",
+      "category": "Recent Travel",
+      "content": "In the last 6 months, have you travelled outside Switzerland?",
+      "hint": "Certain destinations present infectious risks (malaria, Zika, Ebola, Chagas...) requiring a waiting period after return.",
+      "type": "travel_check",
+      "order": 15,
+      "data_schema": {
+        "answer_format": "{ trips: [{ country: string, region: string, departure_date: string, return_date: string }] } | { no_travel: true }",
+        "evaluation": "For each trip, compare the region with risk_map. If the region is at risk AND the return date is less than waiting_period_months months ago, is_disqualifying = true."
+      },
+      "risk_map": {
+        "Afrique subsaharienne": {
+          "countries_examples": ["Nigeria", "Ghana", "Kenya", "Tanzania", "Mozambique", "DR Congo", "Cameroon", "Ivory Coast", "Senegal", "Ethiopia", "Uganda", "Zimbabwe", "Zambia", "Angola", "Madagascar", "Malawi", "Mali", "Guinea", "Liberia", "Sierra Leone"],
+          "diseases": ["Malaria", "Ebola", "Yellow fever", "African trypanosomiasis (sleeping sickness)"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Travel to sub-Saharan Africa in the last 6 months temporarily contraindicates donation due to the risk of malaria and other endemic tropical diseases. Waiting period: 6 months after return."
+        },
+        "Afrique du Nord": {
+          "countries_examples": ["Morocco", "Algeria", "Tunisia", "Egypt", "Libya", "Mauritania"],
+          "diseases": ["Leishmaniasis", "Bilharziasis (Schistosomiasis)"],
+          "waiting_period_months": 3,
+          "is_disqualifying": true,
+          "disqualification_reason": "Travel to North Africa may require a waiting period depending on areas visited, due to the risks of leishmaniasis or bilharziasis."
+        },
+        "Amérique centrale et du Sud": {
+          "countries_examples": ["Brazil", "Colombia", "Mexico", "Peru", "Bolivia", "Venezuela", "Ecuador", "Guatemala", "Honduras", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Paraguay", "Argentina (north)", "French Guiana"],
+          "diseases": ["Malaria", "Zika virus", "Chagas disease", "Yellow fever", "Dengue"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Travel to Central or South America in the last 6 months temporarily contraindicates donation due to the risks of malaria, Chagas disease and Zika virus."
+        },
+        "Asie du Sud et du Sud-Est": {
+          "countries_examples": ["India", "Pakistan", "Bangladesh", "Sri Lanka", "Myanmar", "Thailand", "Vietnam", "Cambodia", "Laos", "Philippines", "Indonesia", "Malaysia", "East Timor"],
+          "diseases": ["Malaria", "Dengue", "Zika virus", "Haemorrhagic fever"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Travel to South or Southeast Asia in the last 6 months temporarily contraindicates donation due to the risks of malaria and other tropical diseases."
+        },
+        "Moyen-Orient (zones à risque)": {
+          "countries_examples": ["Yemen", "Iraq", "Syria", "Sudan", "South Sudan", "Eritrea", "Djibouti"],
+          "diseases": ["Leishmaniasis", "Malaria", "Crimean-Congo haemorrhagic fever"],
+          "waiting_period_months": 6,
+          "is_disqualifying": true,
+          "disqualification_reason": "Travel to certain areas of the Middle East in the last 6 months may temporarily contraindicate donation depending on the regions visited."
+        },
+        "Europe (hors Suisse) et pays à faible risque": {
+          "countries_examples": ["France", "Germany", "Italy", "Spain", "Portugal", "Austria", "Belgium", "Netherlands", "USA", "Canada", "Australia", "New Zealand", "Japan", "South Korea"],
+          "diseases": [],
+          "waiting_period_months": 0,
+          "is_disqualifying": false,
+          "disqualification_reason": null
+        }
+      },
+      "options": [
+        { "id": "q15_non", "label": "No, I have not travelled outside Switzerland in the last 6 months", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q16",
+      "category": "Geographic Origins",
+      "content": "Does any of these situations apply to you?",
+      "hint": "Certain geographic origins may require additional tests related to endemic diseases.",
+      "type": "birth_check",
+      "order": 16,
+      "data_schema": {
+        "answer_format": "{ items: string[], countries: string[] } | { none: true }",
+        "evaluation": "If an item is selected, mark needs_evaluation = true. Compare the stated countries with risk_map to identify potential diseases to test."
+      },
+      "risk_map": {
+        "Afrique subsaharienne": {
+          "diseases": ["Sickle cell disease (carrier)", "Malaria (asymptomatic carrier)", "Hepatitis B (chronic carrier)", "Chagas disease (Central Africa)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "Additional tests (sickle cell screening, hepatitis B) may be required depending on the country of origin. Medical staff will assess your situation."
+        },
+        "Amérique centrale et du Sud": {
+          "diseases": ["Chagas disease (asymptomatic carrier)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "A Chagas disease screening test may be required depending on the country of origin or childhood residence."
+        },
+        "Asie du Sud-Est": {
+          "diseases": ["Hepatitis B (chronic carrier)", "Thalassaemia (carrier)"],
+          "needs_evaluation": true,
+          "disqualification_reason": "Additional tests may be required depending on the country of origin. Medical staff will assess your situation."
+        }
+      },
+      "items": [
+        {
+          "id": "q16_naissance_hors_suisse",
+          "label": "I was born outside Switzerland, grew up there or lived there for more than 6 months — specify the country",
+          "is_disqualifying": false,
+          "needs_evaluation": true
+        },
+        {
+          "id": "q16_mere_extra_europeenne",
+          "label": "My mother was born in a non-European country, grew up there or lived there for more than 6 months — specify the country",
+          "is_disqualifying": false,
+          "needs_evaluation": true
+        }
+      ],
+      "options": [
+        { "id": "q16_aucun", "label": "No, neither I nor my mother correspond to these situations", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q17",
+      "category": "Infectious Diseases (History)",
+      "content": "Have you ever suffered from any of these infectious diseases?",
+      "hint": "These diseases may require a waiting period or medical assessment before donation.",
+      "type": "checklist",
+      "order": 17,
+      "items": [
+        { "id": "q17_toxoplasmose", "label": "Toxoplasmosis", "is_disqualifying": true, "disqualification_reason": "A history of toxoplasmosis may require a waiting period before donation. Please specify the date to the medical staff." },
+        { "id": "q17_mononucleose", "label": "Infectious mononucleosis (glandular fever, EBV)", "is_disqualifying": true, "disqualification_reason": "A history of mononucleosis may require a waiting period before donation depending on the date of illness." },
+        { "id": "q17_amibiase", "label": "Amoebiasis (amoebic dysentery)", "is_disqualifying": true, "disqualification_reason": "A history of amoebiasis may require a waiting period before donation." },
+        { "id": "q17_shigellose", "label": "Shigellosis (bacillary dysentery)", "is_disqualifying": true, "disqualification_reason": "A history of shigellosis may require a waiting period before donation." },
+        { "id": "q17_fsme", "label": "TBE — Tick-borne meningoencephalitis", "is_disqualifying": true, "disqualification_reason": "A history of TBE may require a waiting period before donation." },
+        { "id": "q17_bilharziose", "label": "Bilharziasis (schistosomiasis)", "is_disqualifying": true, "disqualification_reason": "A history of bilharziasis requires a medical assessment before donation." },
+        { "id": "q17_gonorrhee", "label": "Gonorrhoea (bacterial STI)", "is_disqualifying": true, "disqualification_reason": "A history of gonorrhoea may require a waiting period before donation." },
+        { "id": "q17_osteomyelite", "label": "Osteomyelitis (bone infection)", "is_disqualifying": true, "disqualification_reason": "A history of osteomyelitis requires a medical assessment before donation." },
+        { "id": "q17_fievre_rhum", "label": "Rheumatic fever", "is_disqualifying": true, "disqualification_reason": "A history of rheumatic fever may require a waiting period before donation." },
+        { "id": "q17_tuberculose", "label": "Tuberculosis (pulmonary or extra-pulmonary)", "is_disqualifying": true, "disqualification_reason": "A history of tuberculosis requires a thorough medical assessment before donation." },
+        { "id": "q17_fievre_recurrente", "label": "Relapsing fever (borreliosis)", "is_disqualifying": true, "disqualification_reason": "A history of relapsing fever requires a medical assessment before donation." },
+        { "id": "q17_fievre_q", "label": "Q fever (Coxiella burnetii)", "is_disqualifying": true, "disqualification_reason": "A history of Q fever requires a medical assessment before donation." },
+        { "id": "q17_guillain_barre", "label": "Guillain-Barré syndrome", "is_disqualifying": true, "disqualification_reason": "A history of Guillain-Barré syndrome may contraindicate donation." }
+      ],
+      "options": [
+        { "id": "q17_aucun", "label": "None of these diseases", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q18",
+      "category": "Serious Infectious Diseases (Extended Contraindication)",
+      "content": "Have you ever contracted any of these serious infectious diseases?",
+      "hint": "These diseases result in an extended or permanent contraindication due to the risk of transmission to the recipient.",
+      "type": "checklist",
+      "order": 18,
+      "items": [
+        { "id": "q18_paludisme", "label": "Malaria", "is_disqualifying": true, "disqualification_reason": "A history of malaria contraindicates donation for 3 years after fully documented recovery." },
+        { "id": "q18_chagas", "label": "Chagas disease (American trypanosomiasis)", "is_disqualifying": true, "disqualification_reason": "A history of Chagas disease permanently contraindicates donation due to the risk of transmission to the recipient via blood." },
+        { "id": "q18_brucellose", "label": "Brucellosis", "is_disqualifying": true, "disqualification_reason": "A history of brucellosis requires a medical assessment before donation." },
+        { "id": "q18_echinococcose", "label": "Echinococcosis (hydatid cyst)", "is_disqualifying": true, "disqualification_reason": "A history of echinococcosis requires a medical assessment before donation." },
+        { "id": "q18_leishmaniose", "label": "Leishmaniasis (cutaneous, visceral or mucosal)", "is_disqualifying": true, "disqualification_reason": "A history of leishmaniasis may contraindicate donation due to the risk of transmission via blood." },
+        { "id": "q18_lymphogranulome", "label": "Lymphogranuloma venereum (LGV, Chlamydia L1/L2/L3)", "is_disqualifying": true, "disqualification_reason": "A history of LGV requires a medical assessment before donation." },
+        { "id": "q18_filariose", "label": "Filariasis (lymphatic or ocular)", "is_disqualifying": true, "disqualification_reason": "A history of filariasis may contraindicate donation." },
+        { "id": "q18_babesiose", "label": "Babesiosis", "is_disqualifying": true, "disqualification_reason": "A history of babesiosis contraindicates donation for an extended period." },
+        { "id": "q18_ebola", "label": "Ebola virus disease, or stay in an active Ebola epidemic zone", "is_disqualifying": true, "disqualification_reason": "A history of Ebola or a stay in an active epidemic zone permanently contraindicates donation." },
+        { "id": "q18_autre_grave", "label": "Other serious infection not listed (specify to medical staff)", "is_disqualifying": true, "disqualification_reason": "A past serious infection may contraindicate donation. Please specify the disease to the medical staff for assessment." }
+      ],
+      "options": [
+        { "id": "q18_aucun", "label": "None of these diseases", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q19",
+      "category": "Recent Infectious Exposures",
+      "content": "In the last 4 weeks, does any of these situations apply to you?",
+      "hint": "These recent exposures may temporarily contraindicate donation.",
+      "type": "checklist",
+      "order": 19,
+      "items": [
+        {
+          "id": "q19_tique",
+          "label": "Tick bite",
+          "is_disqualifying": true,
+          "disqualification_reason": "A tick bite in the last 4 weeks requires a waiting period before donation, due to the risk of Lyme disease or tick-borne encephalitis."
+        },
+        {
+          "id": "q19_contact_infectieux",
+          "label": "Close contact with a person with a contagious infectious disease (specify the disease to medical staff)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Recent contact with a contagious person may require a waiting period depending on the disease in question."
+        }
+      ],
+      "options": [
+        { "id": "q19_aucun", "label": "None of these situations", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q20",
+      "category": "Recent Body Procedures",
+      "content": "In the last 4 months, have you undergone any of these procedures?",
+      "hint": "These procedures carry a risk of transmission of infectious agents through blood or instruments.",
+      "type": "checklist",
+      "order": 20,
+      "items": [
+        { "id": "q20_tatouage", "label": "Tattoo", "is_disqualifying": true, "disqualification_reason": "A tattoo in the last 4 months temporarily contraindicates donation, due to the risk of transmitting hepatitis or other infections." },
+        { "id": "q20_piercing", "label": "Piercing", "is_disqualifying": true, "disqualification_reason": "A piercing in the last 4 months temporarily contraindicates donation." },
+        { "id": "q20_maquillage_permanent", "label": "Permanent makeup or Microblading", "is_disqualifying": true, "disqualification_reason": "Permanent makeup or microblading in the last 4 months temporarily contraindicates donation." },
+        { "id": "q20_acupuncture", "label": "Acupuncture treatment", "is_disqualifying": true, "disqualification_reason": "Acupuncture treatment in the last 4 months may temporarily contraindicate donation if the needles were not certified single-use." },
+        { "id": "q20_epilation_electrique", "label": "Electrolysis hair removal", "is_disqualifying": true, "disqualification_reason": "Electrolysis hair removal in the last 4 months may temporarily contraindicate donation." },
+        { "id": "q20_gastroscopie", "label": "Gastroscopy or colonoscopy", "is_disqualifying": true, "disqualification_reason": "A gastroscopy or colonoscopy in the last 4 months temporarily contraindicates donation due to the risk of transmitting infections." },
+        { "id": "q20_sangsues", "label": "Use of medical leeches", "is_disqualifying": true, "disqualification_reason": "The use of medical leeches in the last 4 months temporarily contraindicates donation." },
+        { "id": "q20_contact_sang", "label": "Contact with foreign blood: accidental needle prick, splash in eyes, mouth or on an open wound", "is_disqualifying": true, "disqualification_reason": "Contact with foreign blood in the last 4 months temporarily contraindicates donation due to the risk of transmitting HIV, hepatitis B/C or other infections." }
+      ],
+      "options": [
+        { "id": "q20_aucun", "label": "None of these procedures", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q21",
+      "category": "HIV, Hepatitis & STIs",
+      "content": "Have you ever tested positive for any of these diseases?",
+      "hint": "These diseases result in a definitive and permanent contraindication to blood donation.",
+      "type": "checklist",
+      "order": 21,
+      "items": [
+        { "id": "q21_vih", "label": "HIV / AIDS", "is_disqualifying": true, "disqualification_reason": "HIV infection permanently contraindicates blood donation." },
+        { "id": "q21_hepatite_b", "label": "Hepatitis B", "is_disqualifying": true, "disqualification_reason": "Hepatitis B (even past) permanently contraindicates blood donation." },
+        { "id": "q21_hepatite_c", "label": "Hepatitis C", "is_disqualifying": true, "disqualification_reason": "Hepatitis C (even cured) permanently contraindicates blood donation." },
+        { "id": "q21_syphilis", "label": "Syphilis", "is_disqualifying": true, "disqualification_reason": "A history of syphilis temporarily contraindicates donation. Please inform the medical staff for assessment." }
+      ],
+      "options": [
+        { "id": "q21_aucun", "label": "No, none of these diseases", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q22",
+      "category": "At-Risk Sexual Behaviours",
+      "content": "Does any of these situations apply to you?",
+      "hint": "These situations temporarily increase the risk of transmitting infections during the seroconversion window.",
+      "type": "checklist",
+      "order": 22,
+      "items": [
+        {
+          "id": "q22_partenaire_recents",
+          "label": "New sexual partner, change of partner, or more than 2 partners in the last 4 months",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "A new partner, change of partner or more than 2 partners in the last 4 months requires a waiting period due to the risk of STIs during the seroconversion window."
+        },
+        {
+          "id": "q22_rapport_remunere",
+          "label": "Sexual relations for payment (money, drugs or other services) in the last 12 months",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexual relations for payment in the last 12 months temporarily contraindicate donation due to an increased risk of STI exposure."
+        },
+        {
+          "id": "q22_partenaire_ist",
+          "label": "In the last 12 months, partner with hepatitis B/C, Zika virus, or themselves exposed to a risk situation (STI, HIV…)",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "A partner with hepatitis B/C, Zika or exposed to a risk situation in the last 12 months temporarily contraindicates donation."
+        },
+        {
+          "id": "q22_partenaire_pays_risque",
+          "label": "In the last 4 months, sexual relations with a partner who stayed more than 6 months in a country with high prevalence of HIV, hepatitis B or C",
+          "timeframe": "4 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexual relations with a partner returning from a high-prevalence country in the last 4 months require a waiting period."
+        }
+      ],
+      "options": [
+        { "id": "q22_aucun", "label": "None of these situations apply to me", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q23",
+      "category": "Drug Use",
+      "content": "Does any of these situations apply to you?",
+      "hint": "The use of injectable or synthetic drugs significantly increases the risk of transmitting blood-borne infections.",
+      "type": "checklist",
+      "order": 23,
+      "items": [
+        {
+          "id": "q23_injection",
+          "label": "Drug injection (even once in your lifetime, even long ago)",
+          "is_disqualifying": true,
+          "disqualification_reason": "Past or present use of injectable drugs permanently contraindicates blood donation, due to the high risk of transmitting HIV and hepatitis B and C via the bloodstream."
+        },
+        {
+          "id": "q23_synthese",
+          "label": "Sexual relations under the influence of synthetic drugs in the last 12 months",
+          "timeframe": "12 derniers mois",
+          "is_disqualifying": true,
+          "disqualification_reason": "Sexual relations under synthetic drugs in the last 12 months temporarily contraindicate donation due to an increased risk of STI exposure."
+        }
+      ],
+      "options": [
+        { "id": "q23_aucun", "label": "No, none of these situations apply to me", "is_disqualifying": false }
+      ],
+      "conditions": []
+    },
+
+    {
+      "id": "q24",
+      "category": "Pregnancy",
+      "content": "Are you currently pregnant or have you been in the last 6 months?",
+      "hint": "Pregnancy and breastfeeding temporarily contraindicate donation for the mother's safety.",
+      "type": "yes_no",
+      "order": 24,
+      "options": [
+        {
+          "id": "q24_oui",
+          "label": "Yes",
+          "is_disqualifying": true,
+          "disqualification_reason": "Pregnancy or a recent birth (within the last 6 months) temporarily contraindicates blood donation. You may donate again 6 months after delivery and after stopping breastfeeding."
+        },
+        { "id": "q24_non", "label": "No", "is_disqualifying": false }
+      ],
+      "conditions": []
+    }
+
+  ]
+}

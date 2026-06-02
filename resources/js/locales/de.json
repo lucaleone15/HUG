@@ -212,7 +212,15 @@
         "intro_card_p1": "Um es herauszufinden, müssen wir zuerst Ihre Akte prüfen. Sie werden ein kurzes Routineverhör durchlaufen.",
         "intro_card_p2": "Antworten Sie ehrlich auf diese kurze Fragenreihe, um sofort Ihre Eignung zur Blutspende zu überprüfen.",
         "birth_confirm": "Bestätigen",
-        "complete_cta_label": "Ihre Akte"
+        "complete_cta_label": "Ihre Akte",
+        "question_label":     "Frage",
+        "dossier_republic":   "Republik und Kanton Genf",
+        "dossier_hospital_name": "Universitätsspitäler Genf",
+        "dossier_hospital_dept": "Bluttransfusionszentrum",
+        "dossier_open_date":  "Eröffnungsdatum",
+        "dossier_inspector":  "Zugewiesener Inspektor: CTS",
+        "dossier_status":     "Status: ausstehend",
+        "complete_dossier_label": "Vollständige Akte"
     },
     "result": {
         "eligible_title": "Sie sind spendeberechtigt!",
@@ -242,7 +250,8 @@
         "referral_message_copied": "Kopiert!",
         "referral_whatsapp": "Auf WhatsApp teilen",
         "referral_email_subject": "Nehmen Sie an der Blutspendekampagne teil: {company}",
-        "referral_email_body": "Hallo,\n\nIch nehme an der Blutspendekampagne von {company} in Zusammenarbeit mit HUG und CTS Genf teil.\n\nPrüfen Sie in 2 Minuten, ob Sie zur Blutspende berechtigt sind:\n{url}\n\nVielen Dank!"
+        "referral_email_body": "Hallo,\n\nIch nehme an der Blutspendekampagne von {company} in Zusammenarbeit mit HUG und CTS Genf teil.\n\nPrüfen Sie in 2 Minuten, ob Sie zur Blutspende berechtigt sind:\n{url}\n\nVielen Dank!",
+        "dossier_title": "Ermittlungsakte"
     },
     "inscription": {
         "title": "Mein Unternehmen anmelden",
