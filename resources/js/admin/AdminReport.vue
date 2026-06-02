@@ -40,20 +40,8 @@ const downloadPdf = async () => {
     if (!data.value) return
     downloading.value = true
     try {
-        const res = await fetch(`/api/admin/report?entreprise_id=${selectedId.value}&format=pdf&locale=${locale.value}`, {
-            headers: {
-                'Authorization': `Bearer ${token.value}`,
-                'Accept': 'application/pdf',
-            },
-        })
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const blob = await res.blob()
-        const url  = URL.createObjectURL(blob)
-        const a    = document.createElement('a')
-        a.href     = url
-        a.download = `rapport-${data.value.entreprise.slug}.pdf`
-        a.click()
-        URL.revokeObjectURL(url)
+        const res = await api.get(`/admin/report?entreprise_id=${selectedId.value}&format=pdf&locale=${locale.value}`)
+        window.open(res.url, '_blank')
     } catch (e) {
         alert(t('admin.pdf_error') + e.message)
     } finally {

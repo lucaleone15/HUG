@@ -7,6 +7,7 @@ use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\ReportPreviewController;
 use App\Http\Controllers\TropheeController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,6 @@ Route::get('/c/{entreprise}/quiz',        [QuizController::class, 'show'])->name
 Route::post('/c/{entreprise}/quiz',       [QuizController::class, 'store'])->name('quiz.store');
 Route::get('/c/{entreprise}/quiz/result', [QuizController::class, 'result'])->name('quiz.result');
 
+Route::get('/report-preview/{token}', [ReportPreviewController::class, 'show'])->name('report.preview');
 
 Route::get('/{any}', fn() => view('app'))->where('any', '.*');

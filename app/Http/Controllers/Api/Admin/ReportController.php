@@ -9,8 +9,9 @@ use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
@@ -80,30 +81,18 @@ class ReportController extends Controller
         ];
 
         if ($request->format === 'pdf') {
-            set_time_limit(120);
+            $token = Str::uuid()->toString();
 
-            $html = view('pdf.report-preview', [
+            Cache::put("report_preview:{$token}", [
                 'entreprise'    => $entrepriseData,
                 'participation' => $participationData,
                 'behavior'      => $behaviorData,
                 'generatedAt'   => now()->locale($locale)->isoFormat('D MMMM YYYY'),
                 'tr'            => trans('pdf'),
-            ])->render();
+            ], now()->addMinutes(10));
 
-            $pdf = Browsershot::html($html)
-                ->setChromePath('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
-                ->setNodeModulePath(base_path('node_modules'))
-                ->windowSize(794, 1122)
-                ->format('A4')
-                ->noSandbox()
-                ->showBackground()
-                ->margins(0, 0, 0, 0)
-                ->pages('1')
-                ->pdf();
-
-            return response($pdf, 200, [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => "attachment; filename=\"rapport-{$entreprise->slug}.pdf\"",
+            return response()->json([
+                'url' => route('report.preview', $token),
             ]);
         }
 

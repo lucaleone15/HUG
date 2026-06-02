@@ -1786,6 +1786,13 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
         </div>
     </div>
 
+<script>
+    // Déclenche l'impression automatiquement (Ctrl+P → Enregistrer en PDF)
+    window.addEventListener('load', () => {
+        setTimeout(() => window.print(), 500);
+    });
+</script>
+
 </body>
 
 </html>
