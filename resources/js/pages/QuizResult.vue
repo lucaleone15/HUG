@@ -61,7 +61,14 @@ const openWhatsapp = () => {
     window.open(`https://wa.me/?text=${text}`, '_blank', 'noopener,noreferrer')
 }
 
-const goToContact = () => { window.location.href = '/contact' }
+const goToContact = () => {
+    const params = new URLSearchParams()
+    params.set('prefill', '1')
+    if (props.entreprise?.name) params.set('company', props.entreprise.name)
+    if (reasons.length > 0) params.set('reasons', reasons.join('||'))
+    if (needsEvaluation) params.set('needs_eval', '1')
+    window.location.href = `/contact?${params.toString()}`
+}
 </script>
 
 <template>

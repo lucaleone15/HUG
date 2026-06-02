@@ -115,11 +115,16 @@
     "type_partnership": "Partenariat",
     "type_technical": "Support technique",
     "type_other": "Autre",
+    "type_eligibility": "Question d'éligibilité",
     "type_placeholder": "Sélectionner...",
     "message": "Message",
     "submit": "Envoyer",
     "success": "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.",
-    "email_label": "Email"
+    "email_label": "Email",
+    "prefill_intro": "Bonjour,\n\nSuite au quiz d'éligibilité au don du sang pour {company}, je n'ai pas été retenu(e) comme éligible.",
+    "prefill_reasons_label": "Raisons identifiées :",
+    "prefill_needs_eval": "Une évaluation médicale est également recommandée dans mon cas.",
+    "prefill_closing": "Pourriez-vous m'informer des démarches possibles ?\n\nCordialement"
   },
   "entreprise": {
     "quiz_cta": "Vérifier mon éligibilité",

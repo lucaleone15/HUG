@@ -312,12 +312,7 @@ const goBack = () => {
                                     <p class="hint-label">
                                         {{ currentQuestion.type === 'checklist' ? t('quiz.symptoms_label') : t('quiz.inspector_label') }}
                                     </p>
-                                    <ul v-if="currentQuestion.type === 'checklist'" class="hint-list">
-                                        <li v-for="item in currentQuestion.items" :key="item.id" class="hint-list-item">
-                                            {{ item.label }}
-                                        </li>
-                                    </ul>
-                                    <p v-else class="hint-text">{{ currentQuestion.hint }}</p>
+                                    <p class="hint-text">{{ currentQuestion.hint }}</p>
                                 </div>
 
                             </div>
