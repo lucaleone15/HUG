@@ -29,10 +29,32 @@ const hasErrors = computed(() => Object.keys(props.errors).length > 0)
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? ''
 
-const types = ['type_general', 'type_partnership', 'type_technical', 'type_other']
+const types = ['type_general', 'type_partnership', 'type_technical', 'type_eligibility', 'type_other']
 
 const selectedType = ref(props.old?.type || '')
 const message      = ref(props.old?.message || '')
+
+if (!props.old?.type && !props.old?.message) {
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('prefill') === '1') {
+        selectedType.value = 'type_eligibility'
+        const company = urlParams.get('company') || ''
+        const rawReasons = urlParams.get('reasons') || ''
+        const parsedReasons = rawReasons ? rawReasons.split('||').filter(Boolean) : []
+        const needsEval = urlParams.get('needs_eval') === '1'
+
+        let msg = t('contact.prefill_intro', { company })
+        if (parsedReasons.length > 0) {
+            msg += '\n\n' + t('contact.prefill_reasons_label')
+            parsedReasons.forEach(r => { msg += '\n• ' + r })
+        }
+        if (needsEval) {
+            msg += '\n\n' + t('contact.prefill_needs_eval')
+        }
+        msg += '\n\n' + t('contact.prefill_closing')
+        message.value = msg
+    }
+}
 </script>
 
 <template>

@@ -115,11 +115,16 @@
     "type_partnership": "Partenariato",
     "type_technical": "Supporto tecnico",
     "type_other": "Altro",
+    "type_eligibility": "Questione di idoneità",
     "type_placeholder": "Selezionare...",
     "message": "Messaggio",
     "submit": "Inviare",
     "success": "Il vostro messaggio è stato inviato. Vi risponderemo al più presto.",
-    "email_label": "Email"
+    "email_label": "Email",
+    "prefill_intro": "Buongiorno,\n\nIn seguito al quiz di idoneità per la donazione di sangue di {company}, non sono stato/a ritenuto/a idoneo/a.",
+    "prefill_reasons_label": "Motivi identificati:",
+    "prefill_needs_eval": "Nel mio caso è consigliata anche una valutazione medica.",
+    "prefill_closing": "Potrebbe informarmi sui possibili passi successivi?\n\nCordiali saluti"
   },
   "entreprise": {
     "quiz_cta": "Verificare la mia idoneità",

@@ -115,11 +115,16 @@
     "type_partnership": "Partnership",
     "type_technical": "Technical support",
     "type_other": "Other",
+    "type_eligibility": "Eligibility question",
     "type_placeholder": "Select...",
     "message": "Message",
     "submit": "Send",
     "success": "Your message has been sent. We will get back to you as soon as possible.",
-    "email_label": "Email"
+    "email_label": "Email",
+    "prefill_intro": "Hello,\n\nFollowing the blood donation eligibility quiz for {company}, I was not found eligible.",
+    "prefill_reasons_label": "Identified reasons:",
+    "prefill_needs_eval": "A medical evaluation is also recommended in my case.",
+    "prefill_closing": "Could you please inform me of the next possible steps?\n\nKind regards"
   },
   "entreprise": {
     "quiz_cta": "Check my eligibility",

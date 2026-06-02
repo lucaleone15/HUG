@@ -115,11 +115,16 @@
     "type_partnership": "Partnerschaft",
     "type_technical": "Technischer Support",
     "type_other": "Sonstiges",
+    "type_eligibility": "Eignungsfrage",
     "type_placeholder": "Auswählen...",
     "message": "Nachricht",
     "submit": "Senden",
     "success": "Ihre Nachricht wurde gesendet. Wir werden Ihnen so schnell wie möglich antworten.",
-    "email_label": "E-Mail"
+    "email_label": "E-Mail",
+    "prefill_intro": "Guten Tag,\n\nNach dem Eignungstest für die Blutspende von {company} wurde ich als nicht geeignet eingestuft.",
+    "prefill_reasons_label": "Festgestellte Gründe:",
+    "prefill_needs_eval": "In meinem Fall wird auch eine ärztliche Beurteilung empfohlen.",
+    "prefill_closing": "Könnten Sie mich über die nächsten Schritte informieren?\n\nMit freundlichen Grüßen"
   },
   "entreprise": {
     "quiz_cta": "Meine Eignung prüfen",

@@ -61,7 +61,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DcnE87sl.js",
+    "file": "assets/app-CSs4dOkz.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -72,29 +72,29 @@
       "resources/js/locales/it.json"
     ],
     "css": [
-      "assets/app-CJZ0FoXL.css"
+      "assets/app-Blo2YIR1.css"
     ]
   },
   "resources/js/locales/de.json": {
-    "file": "assets/de-BvN5SMsy.js",
+    "file": "assets/de-CxJAkUOd.js",
     "name": "de",
     "src": "resources/js/locales/de.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/en.json": {
-    "file": "assets/en-Dy4NlXCw.js",
+    "file": "assets/en-BG6bLNra.js",
     "name": "en",
     "src": "resources/js/locales/en.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/fr.json": {
-    "file": "assets/fr-DVzuxjVN.js",
+    "file": "assets/fr-DSIX66Hx.js",
     "name": "fr",
     "src": "resources/js/locales/fr.json",
     "isDynamicEntry": true
   },
   "resources/js/locales/it.json": {
-    "file": "assets/it-Ctwtrv8C.js",
+    "file": "assets/it-DJRkzyRa.js",
     "name": "it",
     "src": "resources/js/locales/it.json",
     "isDynamicEntry": true
