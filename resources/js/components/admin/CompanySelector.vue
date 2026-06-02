@@ -20,7 +20,7 @@ defineEmits(['update:modelValue'])
             @change="$emit('update:modelValue', $event.target.value)"
         >
             <option v-if="allLabel" value="">{{ allLabel }}</option>
-            <option v-else value="" disabled>—</option>
+            <option v-else value="" disabled>-</option>
             <option v-for="c in companies" :key="c.id" :value="c.id">{{ c.name }}</option>
         </select>
     </div>

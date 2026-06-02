@@ -1,7 +1,7 @@
 {
   "title": "Eignungsquiz für die Blutspende",
   "version": "2.0.0",
-  "source": "Questionnaire CTS HUG — Transfusion CRS Suisse — ANH-Art7.6v3 - 1er fév. 2026",
+  "source": "Questionnaire CTS HUG : Transfusion CRS Suisse : ANH-Art7.6v3 - 1er fév. 2026",
   "types_note": "Types utilisés : yes_no | checklist (items[], options[aucun]) | travel_check (risk_map) | birth_check (items[], risk_map). QuizController@store doit être mis à jour pour gérer checklist/travel_check/birth_check.",
   "questions": [
 
@@ -186,7 +186,7 @@
         {
           "id": "q9_prostate_cheveux",
           "label": "Behandlung gegen Prostataprobleme oder Haarausfall",
-          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® — letzte 6 Monate",
+          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® : letzte 6 Monate",
           "timeframe": "6 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme von Medikamenten gegen Prostataprobleme oder Haarausfall (Finasterid, Dutasterid) in den letzten 6 Monaten ist wegen des teratogenen Risikos für weibliche Empfängerinnen eine Kontraindikation zur Blutspende."
@@ -194,7 +194,7 @@
         {
           "id": "q9_isotretinoine",
           "label": "Behandlung gegen schwere Akne oder Ekzem",
-          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® — letzte 4 Wochen",
+          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® : letzte 4 Wochen",
           "timeframe": "4 dernières semaines",
           "is_disqualifying": true,
           "disqualification_reason": "Isotretinoin (Roaccutan®...) ist teratogen. Die Einnahme in den letzten 4 Wochen ist eine Kontraindikation zur Blutspende."
@@ -202,7 +202,7 @@
         {
           "id": "q9_neuropsych",
           "label": "Psychiatrische oder neurologische Behandlung",
-          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (Lithium, Topiramat, Antikonvulsiva) — letzte 4 Wochen",
+          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (Lithium, Topiramat, Antikonvulsiva) : letzte 4 Wochen",
           "timeframe": "4 dernières semaines",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme von psychiatrischen oder neurologischen Medikamenten (Lithium, Topiramat, Antikonvulsiva) in den letzten 4 Wochen ist eine Kontraindikation zur Blutspende."
@@ -210,7 +210,7 @@
         {
           "id": "q9_endometriose",
           "label": "Behandlung gegen Endometriose",
-          "sublabel": "Lucrin Depot® — letzte 2 Monate",
+          "sublabel": "Lucrin Depot® : letzte 2 Monate",
           "timeframe": "2 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme von Endometriose-Medikamenten (Lucrin Depot®) in den letzten 2 Monaten ist eine Kontraindikation zur Blutspende."
@@ -218,7 +218,7 @@
         {
           "id": "q9_vih_sang",
           "label": "HIV-antiretrovirale Therapie (PrEP / PEP) oder aus Blut gewonnene Medikamente",
-          "sublabel": "Truvada®, Isentress®, Prezista® — letzte 4 Monate",
+          "sublabel": "Truvada®, Isentress®, Prezista® : letzte 4 Monate",
           "timeframe": "4 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme einer antiretroviralen Therapie (PrEP/PEP) oder aus Blut gewonnener Medikamente in den letzten 4 Monaten ist eine Kontraindikation zur Blutspende."
@@ -226,7 +226,7 @@
         {
           "id": "q9_methotrexate",
           "label": "Zytostatikum gegen Psoriasis oder Arthritis",
-          "sublabel": "Méthotrexate® — letzte 6 Monate",
+          "sublabel": "Méthotrexate® : letzte 6 Monate",
           "timeframe": "6 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme von Methotrexat® in den letzten 6 Monaten ist eine Kontraindikation zur Blutspende."
@@ -234,7 +234,7 @@
         {
           "id": "q9_retinoides_long",
           "label": "Behandlung gegen schwere Psoriasis oder Basalzellkarzinom",
-          "sublabel": "Neotigason®, Acicutan®, Erivedge® — letzte 3 Jahre",
+          "sublabel": "Neotigason®, Acicutan®, Erivedge® : letzte 3 Jahre",
           "timeframe": "3 dernières années",
           "is_disqualifying": true,
           "disqualification_reason": "Die Einnahme von Neotigason®, Acicutan® oder Erivedge® in den letzten 3 Jahren ist aufgrund des sehr langfristigen teratogenen Risikos eine dauerhafte Kontraindikation zur Blutspende."
@@ -538,13 +538,13 @@
       "items": [
         {
           "id": "q16_naissance_hors_suisse",
-          "label": "Ich bin ausserhalb der Schweiz geboren, aufgewachsen oder habe dort mehr als 6 Monate gelebt — Land angeben",
+          "label": "Ich bin ausserhalb der Schweiz geboren, aufgewachsen oder habe dort mehr als 6 Monate gelebt : Land angeben",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
-          "label": "Meine Mutter ist in einem aussereuropäischen Land geboren, aufgewachsen oder hat dort mehr als 6 Monate gelebt — Land angeben",
+          "label": "Meine Mutter ist in einem aussereuropäischen Land geboren, aufgewachsen oder hat dort mehr als 6 Monate gelebt : Land angeben",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -567,7 +567,7 @@
         { "id": "q17_mononucleose", "label": "Infektiöse Mononukleose (Pfeiffersches Drüsenfieber, EBV)", "is_disqualifying": true, "disqualification_reason": "Eine Mononukleose in der Vorgeschichte kann je nach Erkrankungsdatum eine Wartezeit vor der Blutspende erfordern." },
         { "id": "q17_amibiase", "label": "Amöbiasis (Amöbenruhr)", "is_disqualifying": true, "disqualification_reason": "Eine Amöbiasis in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
         { "id": "q17_shigellose", "label": "Shigellose (bakterielle Ruhr)", "is_disqualifying": true, "disqualification_reason": "Eine Shigellose in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
-        { "id": "q17_fsme", "label": "FSME — Frühsommer-Meningoenzephalitis", "is_disqualifying": true, "disqualification_reason": "Eine FSME in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
+        { "id": "q17_fsme", "label": "FSME : Frühsommer-Meningoenzephalitis", "is_disqualifying": true, "disqualification_reason": "Eine FSME in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
         { "id": "q17_bilharziose", "label": "Bilharziose (Schistosomiasis)", "is_disqualifying": true, "disqualification_reason": "Eine Bilharziose in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },
         { "id": "q17_gonorrhee", "label": "Gonorrhoe (bakterielle STI)", "is_disqualifying": true, "disqualification_reason": "Eine Gonorrhoe in der Vorgeschichte kann eine Wartezeit vor der Blutspende erfordern." },
         { "id": "q17_osteomyelite", "label": "Osteomyelitis (Knocheninfektion)", "is_disqualifying": true, "disqualification_reason": "Eine Osteomyelitis in der Vorgeschichte erfordert eine ärztliche Beurteilung vor der Blutspende." },

@@ -24,7 +24,7 @@ onMounted(async () => {
 
 watch(filterEntreprise, execute)
 
-const pct    = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '—'
+const pct    = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '-'
 const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
 
 const funnelKey = {
@@ -76,7 +76,7 @@ const deviceKey = {
                             </div>
                         </div>
                         <div class="mt-3 text-sm text-base-content/50">
-                            {{ t('admin.avg_duration') }} : <strong>{{ data.avg_duration_s ? data.avg_duration_s + 's' : '—' }}</strong>
+                            {{ t('admin.avg_duration') }} : <strong>{{ data.avg_duration_s ? data.avg_duration_s + 's' : '-' }}</strong>
                         </div>
                     </div>
                 </div>

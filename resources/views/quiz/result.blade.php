@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Résultat — ' . $entreprise->name)
+@section('title', 'Résultat : ' . $entreprise->name)
 @section('page', 'QuizResult')
 @php
 $propsJson = json_encode([

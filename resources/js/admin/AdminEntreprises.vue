@@ -178,10 +178,10 @@ const goPage = (n) => {
                     <div class="flex-1 min-w-0">
                         <div class="font-semibold text-sm truncate">{{ e.name }}</div>
                         <div class="text-xs text-base-content/50 mt-0.5">
-                            {{ e.type ? t('inscription.type_' + e.type, e.type) : '—' }}
+                            {{ e.type ? t('inscription.type_' + e.type, e.type) : '-' }}
                             <span v-if="e.employee_count"> · {{ e.employee_count.toLocaleString('fr-CH') }} {{ t('admin.employees') }}</span>
                         </div>
-                        <div class="text-xs font-semibold text-brand mt-1">— {{ t('admin.col_collections').toUpperCase() }}</div>
+                        <div class="text-xs font-semibold text-brand mt-1">{{ t('admin.col_collections').toUpperCase() }}</div>
                     </div>
 
                     <div class="flex flex-col items-end gap-1.5 shrink-0">
@@ -225,17 +225,17 @@ const goPage = (n) => {
                                     </div>
                                 </td>
                                 <td class="text-sm text-base-content/60">
-                                    {{ e.type ? t('inscription.type_' + e.type, e.type) : '—' }}
+                                    {{ e.type ? t('inscription.type_' + e.type, e.type) : '-' }}
                                 </td>
                                 <td class="text-right text-sm tabular-nums">
-                                    {{ e.employee_count ? e.employee_count.toLocaleString('fr-CH') : '—' }}
+                                    {{ e.employee_count ? e.employee_count.toLocaleString('fr-CH') : '-' }}
                                 </td>
-                                <td class="text-right text-sm tabular-nums text-base-content/50">—</td>
+                                <td class="text-right text-sm tabular-nums text-base-content/50">-</td>
                                 <td>
                                     <span v-if="e.is_labelled"
                                         class="badge badge-sm font-semibold"
                                         style="background-color:#d4edda;color:#155724;border:none">2026</span>
-                                    <span v-else class="text-base-content/30 text-sm">—</span>
+                                    <span v-else class="text-base-content/30 text-sm">-</span>
                                 </td>
                                 <td><StatusBadge :entreprise="e" /></td>
                                 <td @click.stop>

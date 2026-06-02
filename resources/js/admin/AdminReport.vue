@@ -49,8 +49,8 @@ const downloadPdf = async () => {
     }
 }
 
-const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '—'
-const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
+const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '-'
+const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
 </script>
 
 <template>
@@ -84,11 +84,11 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                         <div class="divide-y divide-base-200 mt-2">
                             <div class="flex justify-between py-2 text-sm">
                                 <span class="text-base-content/50">{{ t('inscription.contact_name') }}</span>
-                                <span>{{ data.entreprise.contact_name ?? '—' }}</span>
+                                <span>{{ data.entreprise.contact_name ?? '-' }}</span>
                             </div>
                             <div class="flex justify-between py-2 text-sm">
                                 <span class="text-base-content/50">{{ t('inscription.contact_email') }}</span>
-                                <span class="text-xs">{{ data.entreprise.contact_email ?? '—' }}</span>
+                                <span class="text-xs">{{ data.entreprise.contact_email ?? '-' }}</span>
                             </div>
                             <div class="flex justify-between py-2 text-sm">
                                 <span class="text-base-content/50">{{ t('inscription.employee_count') }}</span>
@@ -152,7 +152,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '—'
                         <h2 class="font-semibold mb-3">{{ t('admin.behavior_title') }}</h2>
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-base-content/55">{{ t('admin.avg_duration_stat') }}</span>
-                            <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '—' }}</strong>
+                            <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '-' }}</strong>
                         </div>
                         <div v-if="Object.keys(data.behavior.abandon_by_question ?? {}).length" class="mt-3">
                             <p class="text-xs text-base-content/40 mb-2">{{ t('admin.abandon_by_question') }}</p>

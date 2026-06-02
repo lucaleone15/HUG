@@ -67,11 +67,11 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_sector') }}</span>
-                            <div class="font-medium mt-0.5">{{ e.type ? t('inscription.type_' + e.type) : '—' }}</div>
+                            <div class="font-medium mt-0.5">{{ e.type ? t('inscription.type_' + e.type) : '-' }}</div>
                         </div>
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_employee_count') }}</span>
-                            <div class="font-medium mt-0.5">{{ e.employee_count ?? '—' }}</div>
+                            <div class="font-medium mt-0.5">{{ e.employee_count ?? '-' }}</div>
                         </div>
                     </div>
                 </div>
@@ -106,14 +106,14 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_contact_name') }}</span>
-                            <div class="font-medium mt-0.5">{{ e.contact_name || '—' }}</div>
+                            <div class="font-medium mt-0.5">{{ e.contact_name || '-' }}</div>
                         </div>
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_contact_email') }}</span>
                             <div class="font-medium mt-0.5 break-all">
                                 <a v-if="e.contact_email" :href="`mailto:${e.contact_email}`"
                                     class="link link-hover text-primary">{{ e.contact_email }}</a>
-                                <span v-else>—</span>
+                                <span v-else>-</span>
                             </div>
                         </div>
                     </div>
@@ -151,14 +151,14 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_rdv_date') }}</span>
-                            <div class="font-medium mt-0.5">{{ e.rdv_date || '—' }}</div>
+                            <div class="font-medium mt-0.5">{{ e.rdv_date || '-' }}</div>
                         </div>
                         <div>
                             <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_rdv_url') }}</span>
                             <div class="font-medium mt-0.5">
                                 <a v-if="e.rdv_url" :href="e.rdv_url" target="_blank" rel="noopener"
                                     class="link link-hover text-primary text-xs break-all">{{ e.rdv_url }}</a>
-                                <span v-else>—</span>
+                                <span v-else>-</span>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-base-200 rounded-xl p-4 text-center">
                             <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{ t('admin.col_eligible') }}</div>
-                            <div class="text-2xl font-bold text-emerald-600 tabular-nums">{{ e.eligible_count ?? '—' }}</div>
+                            <div class="text-2xl font-bold text-emerald-600 tabular-nums">{{ e.eligible_count ?? '-' }}</div>
                             <div v-if="e.submission_count" class="text-xs text-base-content/40 mt-0.5">
                                 / {{ e.submission_count }} {{ t('admin.show_submissions') }}
                             </div>
@@ -181,7 +181,7 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                             <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{ t('admin.col_trophy') }}</div>
                             <div class="text-2xl font-bold tabular-nums">
                                 <span v-if="e.trophy_rank" class="text-brand">#{{ e.trophy_rank }}</span>
-                                <span v-else class="text-base-content/30 text-lg">—</span>
+                                <span v-else class="text-base-content/30 text-lg">-</span>
                             </div>
                         </div>
                     </div>

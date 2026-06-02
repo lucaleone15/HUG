@@ -36,7 +36,7 @@ const previousWinners = [
     { year: 2025, name: 'Rolex SA',                            type: 'horlogerie',       eligible: 142, rate: '68 %', color: '#006039', jury: '94 %', employees: 5800, victories: 5 },
     { year: 2024, name: 'Groupe Mutuel',                       type: 'assurance',        eligible: 389, rate: '78 %', color: '#003F87' },
     { year: 2023, name: 'Banque Cantonale de Genève',          type: 'banque',           eligible: 201, rate: '82 %', color: '#00205B' },
-    { year: 2022, name: 'SIG — Services Industriels Genève',   type: 'services_publics', eligible: 310, rate: '71 %', color: '#00A650' },
+    { year: 2022, name: 'SIG : Services Industriels Genève',   type: 'services_publics', eligible: 310, rate: '71 %', color: '#00A650' },
     { year: 2021, name: 'Kudelski Group',                      type: 'technologie',      eligible: 245, rate: '68 %', color: '#C8001A' },
     { year: 2020, name: 'Hôpital de la Tour',                  type: 'sante',            eligible: 433, rate: '74 %', color: '#0072CE' },
     { year: 2019, name: 'Swissquote Bank',                     type: 'fintech',          eligible: 178, rate: '63 %', color: '#FF6600' },

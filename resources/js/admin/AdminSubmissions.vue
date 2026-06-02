@@ -28,7 +28,7 @@ onMounted(async () => {
 
 watch([filterEligible, filterEntreprise], reset)
 
-const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 'short', timeStyle: 'short' }) : '—'
+const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 'short', timeStyle: 'short' }) : '-'
 </script>
 
 <template>
@@ -64,7 +64,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
             <div class="md:hidden card bg-base-100 shadow-sm divide-y divide-base-200">
                 <div v-for="s in data" :key="'m-' + s.id" class="flex items-center gap-3 p-4">
                     <div class="flex-1 min-w-0">
-                        <div class="font-medium text-sm truncate">{{ s.entreprise?.name ?? '—' }}</div>
+                        <div class="font-medium text-sm truncate">{{ s.entreprise?.name ?? '-' }}</div>
                         <div class="text-xs text-base-content/50 mt-0.5">{{ fmt(s.completed_at) }}</div>
                     </div>
                     <span v-if="s.is_eligible === true"
@@ -75,7 +75,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                         class="badge badge-error badge-sm shrink-0 whitespace-nowrap">
                         {{ t('admin.ineligible_badge') }}
                     </span>
-                    <span v-else class="badge badge-ghost badge-sm shrink-0">—</span>
+                    <span v-else class="badge badge-ghost badge-sm shrink-0">-</span>
                 </div>
             </div>
 
@@ -93,7 +93,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                         </thead>
                         <tbody>
                             <tr v-for="s in data" :key="s.id" class="hover">
-                                <td class="font-medium text-sm">{{ s.entreprise?.name ?? '—' }}</td>
+                                <td class="font-medium text-sm">{{ s.entreprise?.name ?? '-' }}</td>
                                 <td class="whitespace-nowrap">
                                     <span v-if="s.is_eligible === true"
                                         class="badge badge-success badge-sm whitespace-nowrap">
@@ -103,7 +103,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                                         class="badge badge-error badge-sm whitespace-nowrap">
                                         {{ t('admin.ineligible_badge') }}
                                     </span>
-                                    <span v-else class="badge badge-ghost badge-sm">—</span>
+                                    <span v-else class="badge badge-ghost badge-sm">-</span>
                                 </td>
                                 <td class="text-sm text-base-content/60 whitespace-nowrap">{{ fmt(s.completed_at) }}</td>
                                 <td class="text-xs text-base-content/30 max-w-[100px] truncate">{{ s.id }}</td>

@@ -18,7 +18,7 @@ const { data, loading, error, execute } = useAsyncData(async () => {
 
 onMounted(execute)
 
-const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
+const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
 
 const usageKpis = computed(() => [
     { label: t('admin.funnel_visitors'),  value: fmt(data.value?.funnel.page_viewed)    },
@@ -48,7 +48,7 @@ const usageKpis = computed(() => [
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_collections_year') }}</div>
-                        <div class="text-3xl font-bold text-brand tabular-nums">—</div>
+                        <div class="text-3xl font-bold text-brand tabular-nums">-</div>
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_donations_total') }}</div>
@@ -59,7 +59,7 @@ const usageKpis = computed(() => [
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_trophy_applications') }}</div>
-                        <div class="text-3xl font-bold text-brand tabular-nums">—</div>
+                        <div class="text-3xl font-bold text-brand tabular-nums">-</div>
                     </div>
                 </div>
             </section>
@@ -111,13 +111,13 @@ const usageKpis = computed(() => [
                                 <tr v-for="(e, i) in data.by_entreprise.slice(0, 5)" :key="e.id" class="hover">
                                     <td class="text-base-content/40 text-xs font-medium">{{ i + 1 }}</td>
                                     <td class="font-medium text-sm">{{ e.name }}</td>
-                                    <td class="hidden sm:table-cell text-base-content/40 text-xs">—</td>
+                                    <td class="hidden sm:table-cell text-base-content/40 text-xs">-</td>
                                     <td class="text-right text-sm">
                                         <span v-if="e.eligibility_rate !== null" class="font-semibold"
                                             :class="e.eligibility_rate >= 0.3 ? 'text-brand' : ''">
                                             {{ (e.eligibility_rate * 100).toFixed(0) }}%
                                         </span>
-                                        <span v-else class="text-base-content/30">—</span>
+                                        <span v-else class="text-base-content/30">-</span>
                                     </td>
                                     <td class="hidden sm:table-cell text-right text-sm font-semibold tabular-nums">{{ fmt(e.eligible_count) }}</td>
                                 </tr>
@@ -159,11 +159,11 @@ const usageKpis = computed(() => [
                                     <td class="hidden sm:table-cell text-right text-base-content/60">{{ fmt(e.submission_count) }}</td>
                                     <td class="text-right">
                                         <span v-if="e.eligibility_rate !== null">{{ (e.eligibility_rate * 100).toFixed(1) }}%</span>
-                                        <span v-else class="text-base-content/30">—</span>
+                                        <span v-else class="text-base-content/30">-</span>
                                     </td>
                                     <td class="hidden md:table-cell text-right">
                                         <span v-if="e.participation_rate !== null">{{ (e.participation_rate * 100).toFixed(1) }}%</span>
-                                        <span v-else class="text-base-content/30">—</span>
+                                        <span v-else class="text-base-content/30">-</span>
                                     </td>
                                 </tr>
                             </tbody>

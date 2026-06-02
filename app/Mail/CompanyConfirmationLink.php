@@ -28,7 +28,7 @@ class CompanyConfirmationLink extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('mail.confirmation_title') . ' — Donnez Votre Sang',
+            subject: __('mail.confirmation_title') . ' : Donnez Votre Sang',
         );
     }
 

@@ -70,7 +70,7 @@ $obj2027Rdv = $fmt(round(((($emp * 0.25 * $eligRate) / 100) * $convRate) / 100))
 $lives = $rdv * 3;
 
 // Durée contexte
-$durCtx = $dur ? ($dur < 120 ? $tr['dur_very_fast'] : ($dur < 180 ? $tr['dur_concise'] : ($dur < 300 ? $tr['dur_optimal'] : $tr['dur_long']))) : '—';
+$durCtx = $dur ? ($dur < 120 ? $tr['dur_very_fast'] : ($dur < 180 ? $tr['dur_concise'] : ($dur < 300 ? $tr['dur_optimal'] : $tr['dur_long']))) : '-';
 $durPct = $dur ? min(round(($dur / 600) * 100), 100) : 0;
 $durCirc = round(($durPct / 100) * 163.4, 1); // 2π×26 ≈ 163.4
 
@@ -84,7 +84,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Rapport {{ $dc }} — {{ $entreprise['name'] }}</title>
+    <title>Rapport {{ $dc }} : {{ $entreprise['name'] }}</title>
     <style>
         @font-face {
             font-family: 'Cooper Hewitt';
@@ -1451,7 +1451,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                             stroke-width="7" stroke-dasharray="{{ $durCirc }} 163.4" stroke-linecap="round"
                             transform="rotate(-90 35 35)" />
                         <text x="35" y="32" text-anchor="middle" font-size="13" font-weight="800" fill="#111"
-                            font-family="Cooper Hewitt,sans-serif">{{ $dur ?? '—' }}</text>
+                            font-family="Cooper Hewitt,sans-serif">{{ $dur ?? '-' }}</text>
                         <text x="35" y="45" text-anchor="middle" font-size="8" font-weight="300" fill="#999"
                             font-family="Cooper Hewitt,sans-serif">secondes</text>
                     </svg>
@@ -1459,7 +1459,7 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                         <div class="dur-lbl">{{ $tr['avg_duration'] }}</div>
                         <div
                             style="font-size:36px;font-weight:800;color:#111;letter-spacing:-1.5px;line-height:1;margin-bottom:1px">
-                            {{ $dur ?? '—' }}<span style="font-size:16px;font-weight:400;color:#999">s</span></div>
+                            {{ $dur ?? '-' }}<span style="font-size:16px;font-weight:400;color:#999">s</span></div>
                         <div class="dur-ctx">{{ $durCtx }}</div>
                     </div>
                 </div>

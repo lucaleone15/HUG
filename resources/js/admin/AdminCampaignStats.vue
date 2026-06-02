@@ -50,7 +50,7 @@ const save = async () => {
 
 const fieldError = (key) => fieldErrors.value[key]?.[0]
 
-const fmt = (n) => n?.toLocaleString('fr-CH') ?? '—'
+const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
 </script>
 
 <template>

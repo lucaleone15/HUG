@@ -76,7 +76,7 @@ const confirmDelete = async () => {
     }
 }
 
-const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('fr-CH') : '—'
+const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('fr-CH') : '-'
 const fieldError = (k) => fieldErrors.value[k]?.[0]
 const isSelf = (admin) => admin.id === currentUser.value?.id
 </script>
@@ -108,7 +108,7 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                                 {{ (admin.name?.[0] || admin.email[0]).toUpperCase() }}
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="font-medium text-sm truncate">{{ admin.name || '—' }}</div>
+                                <div class="font-medium text-sm truncate">{{ admin.name || '-' }}</div>
                                 <div class="text-xs text-base-content/50 truncate">{{ admin.email }}</div>
                                 <div class="text-xs text-base-content/30 mt-0.5">{{ t('admin.settings_admin_since') }} {{ fmt(admin.created_at) }}</div>
                             </div>
@@ -143,7 +143,7 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                                             <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-xs shrink-0">
                                                 {{ (admin.name?.[0] || admin.email[0]).toUpperCase() }}
                                             </div>
-                                            <span class="font-medium text-sm">{{ admin.name || '—' }}</span>
+                                            <span class="font-medium text-sm">{{ admin.name || '-' }}</span>
                                             <span v-if="isSelf(admin)" class="badge badge-ghost badge-xs">{{ t('admin.settings_you') }}</span>
                                         </div>
                                     </td>

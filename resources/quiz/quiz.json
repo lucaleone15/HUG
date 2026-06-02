@@ -1,7 +1,7 @@
 {
   "title": "Quiz d'éligibilité don du sang",
   "version": "2.0.0",
-  "source": "Questionnaire CTS HUG — Transfusion CRS Suisse — ANH-Art7.6v3 - 1er fév. 2026",
+  "source": "Questionnaire CTS HUG : Transfusion CRS Suisse : ANH-Art7.6v3 - 1er fév. 2026",
   "types_note": "Types utilisés : yes_no | checklist (items[], options[aucun]) | travel_check (risk_map) | birth_check (items[], risk_map). QuizController@store doit être mis à jour pour gérer checklist/travel_check/birth_check.",
   "questions": [
 
@@ -186,7 +186,7 @@
         {
           "id": "q9_prostate_cheveux",
           "label": "Traitement contre la prostate ou la chute des cheveux",
-          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® — 6 derniers mois",
+          "sublabel": "Proscar®, Propecia®, Finasterid®, Avodart®, Duodart® : 6 derniers mois",
           "timeframe": "6 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "La prise de médicaments contre la prostate ou la chute des cheveux (finastéride, dutastéride) dans les 6 derniers mois contre-indique le don en raison du risque tératogène pour les receveuses."
@@ -194,7 +194,7 @@
         {
           "id": "q9_isotretinoine",
           "label": "Traitement contre l'acné sévère ou l'eczéma",
-          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® — 4 dernières semaines",
+          "sublabel": "Roaccutan®, Isotretinoin®, Toctino® : 4 dernières semaines",
           "timeframe": "4 dernières semaines",
           "is_disqualifying": true,
           "disqualification_reason": "L'isotrétinoïne (Roaccutan®...) est tératogène. Sa prise dans les 4 dernières semaines contre-indique le don."
@@ -202,7 +202,7 @@
         {
           "id": "q9_neuropsych",
           "label": "Traitement psychiatrique ou neurologique",
-          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (lithium, topiramate, anticonvulsants) — 4 dernières semaines",
+          "sublabel": "Lithiofor®, Topamax®, Convulex®, Tegretol® (lithium, topiramate, anticonvulsants) : 4 dernières semaines",
           "timeframe": "4 dernières semaines",
           "is_disqualifying": true,
           "disqualification_reason": "La prise de médicaments psychiatriques ou neurologiques (lithium, topiramate, anticonvulsants) dans les 4 dernières semaines contre-indique le don."
@@ -210,7 +210,7 @@
         {
           "id": "q9_endometriose",
           "label": "Traitement contre l'endométriose",
-          "sublabel": "Lucrin Depot® — 2 derniers mois",
+          "sublabel": "Lucrin Depot® : 2 derniers mois",
           "timeframe": "2 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "La prise de médicaments contre l'endométriose (Lucrin Depot®) dans les 2 derniers mois contre-indique le don."
@@ -218,7 +218,7 @@
         {
           "id": "q9_vih_sang",
           "label": "Thérapie antirétrovirale VIH (PrEP / PEP) ou médicaments dérivés du sang",
-          "sublabel": "Truvada®, Isentress®, Prezista® — 4 derniers mois",
+          "sublabel": "Truvada®, Isentress®, Prezista® : 4 derniers mois",
           "timeframe": "4 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "La prise d'une thérapie antirétrovirale (PrEP/PEP) ou de médicaments dérivés du sang dans les 4 derniers mois contre-indique le don."
@@ -226,7 +226,7 @@
         {
           "id": "q9_methotrexate",
           "label": "Cytostatique contre le psoriasis ou l'arthrite",
-          "sublabel": "Méthotrexate® — 6 derniers mois",
+          "sublabel": "Méthotrexate® : 6 derniers mois",
           "timeframe": "6 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "La prise de Méthotrexate® dans les 6 derniers mois contre-indique le don."
@@ -234,7 +234,7 @@
         {
           "id": "q9_retinoides_long",
           "label": "Traitement contre le psoriasis sévère ou le carcinome basocellulaire",
-          "sublabel": "Neotigason®, Acicutan®, Erivedge® — 3 dernières années",
+          "sublabel": "Neotigason®, Acicutan®, Erivedge® : 3 dernières années",
           "timeframe": "3 dernières années",
           "is_disqualifying": true,
           "disqualification_reason": "La prise de Neotigason®, Acicutan® ou Erivedge® dans les 3 dernières années contre-indique définitivement le don en raison du risque tératogène à très long terme."
@@ -538,13 +538,13 @@
       "items": [
         {
           "id": "q16_naissance_hors_suisse",
-          "label": "Je suis né(e) hors de Suisse, j'y ai grandi ou j'y ai vécu pendant plus de 6 mois — indiquer le pays",
+          "label": "Je suis né(e) hors de Suisse, j'y ai grandi ou j'y ai vécu pendant plus de 6 mois : indiquer le pays",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
-          "label": "Ma mère est née dans un pays extra-européen, y a grandi ou y a vécu plus de 6 mois — indiquer le pays",
+          "label": "Ma mère est née dans un pays extra-européen, y a grandi ou y a vécu plus de 6 mois : indiquer le pays",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -567,7 +567,7 @@
         { "id": "q17_mononucleose", "label": "Mononucléose infectieuse (maladie du baiser, EBV)", "is_disqualifying": true, "disqualification_reason": "Des antécédents de mononucléose peuvent nécessiter un délai avant le don selon la date de la maladie." },
         { "id": "q17_amibiase", "label": "Amibiase (dysenterie amibienne)", "is_disqualifying": true, "disqualification_reason": "Des antécédents d'amibiase peuvent nécessiter un délai avant le don." },
         { "id": "q17_shigellose", "label": "Shigellose (dysenterie bacillaire)", "is_disqualifying": true, "disqualification_reason": "Des antécédents de shigellose peuvent nécessiter un délai avant le don." },
-        { "id": "q17_fsme", "label": "FSME — Méningo-encéphalite à tiques", "is_disqualifying": true, "disqualification_reason": "Des antécédents de FSME peuvent nécessiter un délai avant le don." },
+        { "id": "q17_fsme", "label": "FSME : Méningo-encéphalite à tiques", "is_disqualifying": true, "disqualification_reason": "Des antécédents de FSME peuvent nécessiter un délai avant le don." },
         { "id": "q17_bilharziose", "label": "Bilharziose (schistosomiase)", "is_disqualifying": true, "disqualification_reason": "Des antécédents de bilharziose nécessitent une évaluation médicale avant le don." },
         { "id": "q17_gonorrhee", "label": "Gonorrhée (IST bactérienne)", "is_disqualifying": true, "disqualification_reason": "Des antécédents de gonorrhée peuvent nécessiter un délai avant le don." },
         { "id": "q17_osteomyelite", "label": "Ostéomyélite (infection osseuse)", "is_disqualifying": true, "disqualification_reason": "Des antécédents d'ostéomyélite nécessitent une évaluation médicale avant le don." },
