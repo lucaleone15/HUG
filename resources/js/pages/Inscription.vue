@@ -152,7 +152,7 @@ const clearLogo = () => {
                                     {{ t('inscription.logo_delete') }}
                                 </button>
                             </div>
-                            <input ref="logoFileRef" type="file" name="logo" accept="image/*"
+                            <input ref="logoFileRef" type="file" name="logo" accept="image/*,.svg"
                                 class="file-input file-input-bordered w-full text-sm"
                                 :class="errors.logo ? 'file-input-error' : ''"
                                 @change="onFileChange">

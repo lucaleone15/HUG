@@ -183,7 +183,7 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                 <label class="form-control">
                     <div class="label"><span class="label-text">{{ t('admin.form_logo_upload') }}</span></div>
-                    <input ref="logoInputRef" type="file" accept="image/*"
+                    <input ref="logoInputRef" type="file" accept="image/*,.svg"
                         class="file-input file-input-bordered file-input-sm w-full"
                         @change="onFileChange">
                     <div class="label"><span class="label-text-alt text-base-content/50">{{ t('admin.form_logo_hint') }}</span></div>
