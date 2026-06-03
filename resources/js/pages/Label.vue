@@ -51,12 +51,12 @@ const colorSwatches = computed(() =>
         <NavBar />
 
         <PageHero
-            :title="t('label.title')"
+            title-html="Label<br>100 pour Sang"
             :subtitle="t('label.subtitle')"
             :cta="{ label: t('label.hero_cta'), href: '/inscription' }"
         >
             <template #visual>
-                <img :src="'/images/label.svg'" alt="Label HUG" class="w-2/3 max-w-xs mx-auto h-auto object-contain" decoding="async" />
+                <img :src="'/images/label-plein.svg'" alt="Label HUG" class="w-2/3 max-w-xs mx-auto h-auto object-contain" decoding="async" />
             </template>
         </PageHero>
 

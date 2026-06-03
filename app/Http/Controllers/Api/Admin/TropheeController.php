@@ -12,8 +12,8 @@ class TropheeController extends Controller
 {
     public function index(): JsonResponse
     {
-        $ranked   = Entreprise::whereNotNull('trophy_rank')->orderBy('trophy_rank')->get();
-        $unranked = Entreprise::whereNull('trophy_rank')->where('is_active', true)->orderBy('name')->get();
+        $ranked   = Entreprise::whereNotNull('trophy_rank')->where('is_public', true)->orderBy('trophy_rank')->get();
+        $unranked = Entreprise::whereNull('trophy_rank')->where('is_active', true)->where('is_public', true)->orderBy('name')->get();
 
         return response()->json([
             'ranked'   => AdminEntrepriseResource::collection($ranked),

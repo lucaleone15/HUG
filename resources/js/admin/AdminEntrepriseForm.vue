@@ -23,6 +23,7 @@ const form = ref({
     secondary_color: '',
     logo_url: '',
     is_active: true, is_labelled: false, is_validated: false,
+    is_public: true,
     wants_trophy: false,
     rdv_url: '',
     rdv_date: '',
@@ -51,6 +52,7 @@ onMounted(async () => {
         form.value.is_active    = !!e.is_active
         form.value.is_labelled  = !!e.is_labelled
         form.value.is_validated = !!e.is_validated
+        form.value.is_public    = e.is_public !== false
         form.value.wants_trophy = !!e.wants_trophy
 
         form.value.rdv_url  = e.rdv_url  ?? ''
@@ -93,6 +95,7 @@ const save = async () => {
         fd.append('is_active',    form.value.is_active    ? '1' : '0')
         fd.append('is_labelled',  form.value.is_labelled  ? '1' : '0')
         fd.append('is_validated', form.value.is_validated ? '1' : '0')
+        fd.append('is_public',    form.value.is_public    ? '1' : '0')
         fd.append('wants_trophy', form.value.wants_trophy ? '1' : '0')
         fd.append('locale', locale.value)
 
@@ -254,6 +257,10 @@ const fieldError = (key) => errors.value[key]?.[0]
                     <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.is_labelled" class="checkbox checkbox-sm">
                         <span class="label-text">{{ t('admin.form_is_labelled') }}</span>
+                    </label>
+                    <label class="label gap-2 cursor-pointer justify-start">
+                        <input type="checkbox" v-model="form.is_public" class="checkbox checkbox-sm">
+                        <span class="label-text">{{ t('admin.form_is_public') }}</span>
                     </label>
                     <label class="label gap-2 cursor-pointer justify-start">
                         <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">

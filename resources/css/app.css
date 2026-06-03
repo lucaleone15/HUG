@@ -89,6 +89,7 @@
 
 /* ─── Button press feedback ──────────────────────────────────────────────── */
 .btn {
+    box-shadow: none;
     transition: transform 140ms var(--ease-out),
                 background-color 150ms ease,
                 box-shadow 150ms ease,
@@ -189,13 +190,13 @@
     --color-brand-dark: #A9232C;  /* Rouge HUG foncé — hover / Brand SECONDARY    */
     --color-site-ink:   #190507;  /* Quasi-noir — footer / Brand BUTTON           */
 
-    --color-success:         #05FA67;  /* Vert succès — base                       */
-    --color-success-content: #04C852;  /* Vert succès — foncé / hover              */
-    --color-error:           #FA0511;  /* Rouge erreur — base                      */
+    --color-success:         #027D33;  /* Vert succès — base         (WCAG AA 5.27:1 sur blanc) */
+    --color-success-content: #016629;  /* Vert succès — foncé / hover (WCAG AA 7.16:1 sur blanc) */
+    --color-error:           #ED0410;  /* Rouge erreur — base         (WCAG AA 4.54:1 sur blanc) */
     --color-error-content:   #C8040E;  /* Rouge erreur — foncé / hover             */
-    --color-info:            #04BDFB;  /* Bleu info — base                         */
+    --color-info:            #0278A0;  /* Bleu info — base            (WCAG AA 5.00:1 sur blanc) */
     --color-info-content:    #0497C8;  /* Bleu info — foncé / hover                */
-    --color-warning:         #B8620A;  /* Orange avertissement                     */
+    --color-warning:         #B56009;  /* Orange avertissement        (WCAG AA 4.52:1 sur blanc) */
 
     /* ─── Quiz — fond sombre ─────────────────────────────────────────────────── */
     --color-quiz-bg:             #0D0D0D;
@@ -214,8 +215,8 @@
     /* ─── Document — échelle d'encre ────────────────────────────────────────── */
     --color-doc-ink:       #1A1A1A;
     --color-doc-ink-deep:  #5A4A30;
-    --color-doc-ink-mid:   #7A6A50;
-    --color-doc-ink-muted: #8A7A60;
+    --color-doc-ink-mid:   #73644B;  /* WCAG AA 4.53:1 sur doc-paper */
+    --color-doc-ink-muted: #71644F;  /* WCAG AA 4.54:1 sur doc-paper */
 
     /* ─── Document — teintes composites (rgba) ──────────────────────────────── */
     --color-doc-tape:         rgba(210, 200, 175, 0.55);

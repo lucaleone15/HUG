@@ -37,6 +37,8 @@ class EntrepriseController extends Controller
                 $query->where('is_validated', false);
             } elseif ($request->status === 'inactive') {
                 $query->where('is_validated', true)->where('is_active', false);
+            } elseif ($request->status === 'private') {
+                $query->where('is_public', false);
             }
         }
 
@@ -82,6 +84,7 @@ class EntrepriseController extends Controller
             'is_validated'    => 'boolean',
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
             'wants_trophy'    => 'boolean',
+            'is_public'       => 'boolean',
             'rdv_url'         => 'nullable|url|max:2048',
             'rdv_date'        => 'nullable|date',
         ]);
@@ -92,7 +95,12 @@ class EntrepriseController extends Controller
             );
         }
 
-        $data['slug'] ??= $this->uniqueSlug(Str::slug($request->name));
+        if (isset($data['is_public']) && ! $data['is_public']) {
+            $data['trophy_rank'] = null;
+        }
+
+        $data['slug']         ??= $this->uniqueSlug(Str::slug($request->name));
+        $data['access_token'] ??= Str::random(48);
 
         $entreprise = Entreprise::create($data);
 
@@ -119,6 +127,7 @@ class EntrepriseController extends Controller
             'is_validated'    => 'boolean',
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
             'wants_trophy'    => 'boolean',
+            'is_public'       => 'boolean',
             'rdv_url'         => 'nullable|url|max:2048',
             'rdv_date'        => 'nullable|date',
         ]);
@@ -131,6 +140,10 @@ class EntrepriseController extends Controller
             $data['logo_url'] = Storage::url(
                 $request->file('logo')->store('logos', 'public')
             );
+        }
+
+        if (isset($data['is_public']) && ! $data['is_public']) {
+            $data['trophy_rank'] = null;
         }
 
         $justValidated = !$entreprise->is_validated && ($data['is_validated'] ?? false);

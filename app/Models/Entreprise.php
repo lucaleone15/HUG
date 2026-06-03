@@ -19,9 +19,11 @@ class Entreprise extends Model
         'contact_name',
         'contact_email',
         'employee_count',
+        'access_token',
         'is_active',
         'is_labelled',
         'is_validated',
+        'is_public',
         'trophy_rank',
         'wants_trophy',
         'rdv_url',
@@ -37,6 +39,7 @@ class Entreprise extends Model
         'is_active' => 'boolean',
         'is_labelled' => 'boolean',
         'is_validated' => 'boolean',
+        'is_public' => 'boolean',
         'trophy_rank' => 'integer',
         'wants_trophy' => 'boolean',
         'rdv_date' => 'date:Y-m-d',
@@ -76,7 +79,7 @@ class Entreprise extends Model
 
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        return 'access_token';
     }
 
     public function submissions(): HasMany

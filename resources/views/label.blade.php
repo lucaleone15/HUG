@@ -5,7 +5,7 @@ $propsJson = json_encode([
     'entreprises' => $entreprises->map(fn($e) => [
         'id'             => $e->id,
         'name'           => $e->name,
-        'slug'           => $e->slug,
+        'access_token'   => $e->access_token,
         'logo_url'       => $e->logo_url,
         'primary_color'  => $e->primary_color,
         'type'           => $e->type,

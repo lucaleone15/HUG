@@ -7,7 +7,7 @@ defineProps({
     entreprise: {
         type: Object,
         required: true,
-        // { name, slug, logo_url, primary_color, employee_count }
+        // { name, access_token, logo_url, primary_color, employee_count }
     },
 })
 </script>
@@ -29,7 +29,7 @@ defineProps({
                 {{ entreprise.employee_count }} {{ t('entreprise.employees') }}
             </p>
             <a
-                :href="`/c/${entreprise.slug}/quiz`"
+                :href="`/c/${entreprise.access_token}/quiz`"
                 class="btn bg-white font-semibold border-none px-8 hero-item"
                 :style="`color: ${entreprise.primary_color}; --delay:${entreprise.logo_url ? 240 : 160}ms`"
             >

@@ -64,7 +64,7 @@ const steps = computed(() => [
                  style="background: linear-gradient(108deg, rgba(25,5,7,0.88) 28%, rgba(25,5,7,0.62) 58%, rgba(25,5,7,0.40) 100%);"></div>
 
             <div class="relative z-10 max-w-5xl mx-auto w-full">
-                <span class="h-badge inline-block text-xs tracking-[0.06em] text-white/35 mb-8">
+                <span class="h-badge inline-block text-xs tracking-[0.06em] text-white/65 mb-8">
                     {{ t('home.edition_badge', { year: new Date().getFullYear() }) }}
                 </span>
                 <h1 class="font-extrabold leading-[1.0] tracking-tight text-white mb-7"
@@ -97,11 +97,11 @@ const steps = computed(() => [
                           style="font-size: clamp(1.75rem, 3vw, 2.5rem);">
                         {{ typeof item.value === 'number' ? item.value.toLocaleString() : item.value }}
                     </span>
-                    <span class="text-white/55 tracking-[0.04em] shrink-0 mx-4"
-                          style="font-size: clamp(0.65rem, 1vw, 0.75rem);">
+                    <span class="text-white/75 tracking-[0.04em] shrink-0 mx-4"
+                          style="font-size: clamp(0.8rem, 1.2vw, 0.9rem);">
                         {{ item.label }}
                     </span>
-                    <span class="text-white/25 shrink-0 mx-3 leading-none" style="font-size: clamp(1.75rem, 3vw, 2.5rem);" aria-hidden="true">·</span>
+                    <span class="text-white/50 shrink-0 mx-3 leading-none" style="font-size: clamp(1.75rem, 3vw, 2.5rem);" aria-hidden="true">·</span>
                 </template>
             </div>
         </div>
@@ -166,8 +166,8 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('trophee.title')" :description="t('trophee.subtitle')" href="/trophee">
                             <template #visual>
-                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-3 transition-colors duration-150">
-                                    <img :src="'/images/trophée.svg'" alt="" class="w-full h-full object-contain transition-[filter] duration-150 group-hover:brightness-0 group-hover:invert" aria-hidden="true" decoding="async" />
+                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-4 transition-colors duration-150">
+                                    <img :src="'/images/trophee-rouge-icon.svg'" alt="" class="h-full w-auto max-w-full transition-[filter] duration-150 group-hover:brightness-0 group-hover:invert" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
                         </ProgrammeRow>
@@ -177,7 +177,7 @@ const steps = computed(() => [
                         <ProgrammeRow :title="t('label.title')" :description="t('label.subtitle')" href="/label">
                             <template #visual>
                                 <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-3 transition-colors duration-150">
-                                    <img :src="'/images/label.svg'" alt="" class="w-full h-full object-contain" aria-hidden="true" decoding="async" />
+                                    <img :src="'/images/label-plein.svg'" alt="" class="w-full h-full object-contain" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
                         </ProgrammeRow>
