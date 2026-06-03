@@ -109,6 +109,7 @@ Champs :
 - rdv_url          string nullable        → lien de réservation CTS
 - rdv_date         date nullable          → date de la collecte
 - type             enum nullable → banque | assurance | industrie | commerce | service | technologie | sante | education | autre
+- locale           string nullable        → locale email (fr | de | it | en)
 - timestamps
 
 Casts  : is_active → boolean, is_labelled → boolean, is_validated → boolean,
@@ -221,6 +222,7 @@ Relations :
 6. create_analytics_events_table             ✅
 7. create_campaign_stats_table               ✅
 8. add_trophy_and_rdv_to_entreprises_table   ✅  (wants_trophy, rdv_url, rdv_date)
+9. add_locale_to_entreprises_table           ✅  (locale : fr | de | it | en)
 ```
 
 ---
@@ -280,12 +282,18 @@ Relations :
 
 ### API Publique — sans auth
 
-| Controller                  | Méthodes                    | Description                                  |
-| --------------------------- | --------------------------- | -------------------------------------------- |
-| `Api\AuthController`        | `login()` `logout()` `me()` | Auth Sanctum admin                           |
-| `Api\StatsController`       | `index()`                   | Stats globales (CampaignStats + Submissions) |
-| `Api\LeaderboardController` | `index()`                   | Classement entreprises                       |
-| `Api\AnalyticsController`   | `store()`                   | Enregistre un event (fire & forget, 204)     |
+| Controller                  | Méthodes  | Description                                  |
+| --------------------------- | --------- | -------------------------------------------- |
+| `Api\AuthController`        | `login()` | Authentification admin — retourne un token Sanctum |
+| `Api\StatsController`       | `index()` | Stats globales (CampaignStats + Submissions) |
+| `Api\LeaderboardController` | `index()` | Classement entreprises                       |
+| `Api\AnalyticsController`   | `store()` | Enregistre un event (fire & forget, 204)     |
+
+### API Auth — `[auth:sanctum]` uniquement
+
+| Controller           | Méthodes           | Description                        |
+| -------------------- | ------------------ | ---------------------------------- |
+| `Api\AuthController` | `logout()` `me()`  | Révoque le token / retourne l'user |
 
 ---
 
@@ -298,7 +306,7 @@ Relations :
 | `Api\Admin\SubmissionController`    | `index()` `show()`  | Lecture seule                             |
 | `Api\Admin\AnalyticsController`     | `index()`           | Dashboard métriques — entonnoir, abandons |
 | `Api\Admin\CampaignStatsController` | `show()` `update()` | Stats d'impact                            |
-| `Api\Admin\ReportController`        | `show()`            | Bilan par entreprise — JSON ou PDF (`?format=pdf` via dompdf) |
+| `Api\Admin\ReportController`        | `show()`            | Bilan par entreprise — JSON ou PDF (`?format=pdf` via dompdf). Expose `logo_data_uri` (PNG base64 via Imagick) pour l'affichage dans le PDF. Méthode privée `logoToDataUri(?string $url)` convertit l'URL storage en data URI. |
 
 ---
 
@@ -378,14 +386,19 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 
 ```php
 // AuthController@login
-$user = User::where('email', $request->email)->firstOrFail();
-if (!Hash::check($request->password, $user->password)) {
+// first() au lieu de firstOrFail() — évite l'énumération d'emails (404 vs 401)
+$user = User::where('email', $request->email)->first();
+
+if (!$user || !Hash::check($request->password, $user->password)) {
     return response()->json(['message' => 'Identifiants invalides'], 401);
 }
 if (!$user->is_admin) {
     return response()->json(['message' => 'Accès réservé aux administrateurs'], 403);
 }
-return response()->json(['token' => $user->createToken('admin-token')->plainTextToken]);
+return response()->json([
+    'token' => $user->createToken('admin-token')->plainTextToken,
+    'user'  => new UserResource($user),
+]);
 
 // Middleware admin — app/Http/Middleware/EnsureUserIsAdmin.php
 public function handle($request, $next) {
