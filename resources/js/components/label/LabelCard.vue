@@ -7,14 +7,14 @@ defineProps({
     entreprise: {
         type: Object,
         required: true,
-        // { id, name, slug, logo_url, primary_color, type, employee_count }
+        // { id, name, access_token, logo_url, primary_color, type, employee_count }
     },
 })
 </script>
 
 <template>
     <a
-        :href="`/c/${entreprise.slug}`"
+        :href="`/c/${entreprise.access_token}`"
         class="card bg-base-100 border border-base-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 overflow-hidden"
         :style="`border-top-color: ${entreprise.primary_color}; border-top-width: 3px; transition: transform 200ms cubic-bezier(0.23,1,0.32,1), box-shadow 200ms cubic-bezier(0.23,1,0.32,1);`"
     >
@@ -22,12 +22,12 @@ defineProps({
             <div class="flex items-center gap-3 mb-3">
                 <div
                     v-if="entreprise.logo_url"
-                    class="bg-white border border-base-200 rounded-lg p-1.5 w-14 h-10 flex items-center justify-center shrink-0"
+                    class="bg-white border border-base-200 rounded-lg p-2 w-20 h-14 flex items-center justify-center shrink-0"
                 >
                     <img
                         :src="entreprise.logo_url"
                         :alt="entreprise.name"
-                        class="max-h-7 max-w-full object-contain"
+                        class="max-h-10 max-w-full object-contain"
                     >
                 </div>
                 <div

@@ -15,8 +15,9 @@ const badge = (e) => {
 </script>
 
 <template>
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center flex-wrap">
         <span class="badge badge-sm" :class="badge(entreprise).cls">{{ badge(entreprise).label }}</span>
+        <span v-if="!entreprise.is_public" class="badge badge-sm badge-neutral">{{ t('admin.status_private') }}</span>
         <span v-if="entreprise.is_labelled" class="badge badge-sm badge-ghost">Label</span>
     </div>
 </template>

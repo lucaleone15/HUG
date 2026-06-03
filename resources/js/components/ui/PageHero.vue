@@ -1,10 +1,11 @@
 <script setup>
 defineProps({
-    title:    { type: String, required: true },
-    subtitle: { type: String, default: null },
-    cta:      { type: Object, default: null }, // { label, href }
-    bgColor:  { type: String, default: null }, // legacy: colored bg + white text
-    light:    { type: Boolean, default: false }, // legacy: base-200 bg
+    title:     { type: String, default: null },
+    titleHtml: { type: String, default: null }, // HTML title, e.g. with <br>
+    subtitle:  { type: String, default: null },
+    cta:       { type: Object, default: null }, // { label, href }
+    bgColor:   { type: String, default: null }, // legacy: colored bg + white text
+    light:     { type: Boolean, default: false }, // legacy: base-200 bg
 })
 </script>
 
@@ -41,7 +42,8 @@ defineProps({
                 <slot name="above" />
                 <h1 class="font-extrabold leading-[0.93] tracking-tight text-base-content mb-5"
                     style="font-size: clamp(2.5rem, 5.5vw, 3.75rem); max-width: 16ch;">
-                    {{ title }}
+                    <span v-if="titleHtml" v-html="titleHtml"></span>
+                    <template v-else>{{ title }}</template>
                 </h1>
                 <p v-if="subtitle" class="text-base-content/55 mb-8 leading-relaxed"
                    style="font-size: clamp(1rem, 1.5vw, 1.075rem); max-width: 44ch;">

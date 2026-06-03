@@ -17,7 +17,7 @@ const eligible        = props.submission?.is_eligible ?? false
 const reasons         = props.submission?.disqualification_reasons ?? []
 const needsEvaluation = props.submission?.needs_evaluation ?? false
 const copied = ref(false)
-const shareUrl        = `${window.location.origin}/c/${props.entreprise.slug}`
+const shareUrl        = `${window.location.origin}/c/${props.entreprise.access_token}`
 const dossierCode     = 'SANG-' + new Date().getFullYear().toString().slice(-2)
 
 const formattedDate = computed(() => {
@@ -80,7 +80,7 @@ const goToContact = () => {
             <div class="topbar-progress-fill"></div>
         </div>
         <div class="topbar-controls">
-            <a href="/" class="topbar-back-btn" :aria-label="t('result.back_home')">
+            <a :href="`/c/${entreprise.access_token}`" class="topbar-back-btn" :aria-label="t('result.back_home')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -371,13 +371,13 @@ const goToContact = () => {
 .dossier-body {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 20px 24px 28px;
+    padding: 28px 28px 36px;
     gap: 20px;
 }
 @media (min-width: 768px) {
     .dossier-body {
         grid-template-columns: 1fr auto;
-        padding: 24px 32px 28px;
+        padding: 32px 36px 40px;
         gap: 36px;
     }
 }
@@ -386,17 +386,17 @@ const goToContact = () => {
 .dossier-narrative {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 20px;
 }
 
 .narrative-text {
-    font-size: 13px;
+    font-size: 14px;
     color: #3A2A1A;
-    line-height: 1.75;
+    line-height: 1.8;
     font-style: italic;
 }
 @media (min-width: 768px) {
-    .narrative-text { font-size: 14px; }
+    .narrative-text { font-size: 15px; }
 }
 .narrative-text--gap { margin-top: 4px; }
 .narrative-text--info {
@@ -444,7 +444,7 @@ const goToContact = () => {
     gap: 8px;
 }
 .dossier-action-date {
-    font-size: 11px;
+    font-size: 13px;
     color: #6A5A40;
     font-style: italic;
 }

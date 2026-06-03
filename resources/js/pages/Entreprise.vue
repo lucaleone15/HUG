@@ -103,7 +103,7 @@ const updateCountdown = () => {
                 <!-- Actions -->
                 <div class="flex items-center gap-2 shrink-0">
                     <a
-                        :href="`/c/${entreprise.slug}/quiz`"
+                        :href="`/c/${entreprise.access_token}/quiz`"
                         class="hidden sm:inline-flex btn btn-sm btn-co border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
                     >
                         {{ t('entreprise.quiz_cta') }}
@@ -126,7 +126,7 @@ const updateCountdown = () => {
                     <span class="text-[0.6rem] tracking-[0.04em] leading-none">HUG</span>
                 </a>
                 <!-- CTA quiz — occupe tout l'espace restant -->
-                <a :href="`/c/${entreprise.slug}/quiz`"
+                <a :href="`/c/${entreprise.access_token}/quiz`"
                    class="flex-1 btn border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
                    :style="`background-color: var(--c1); color: var(--t1);`">
                     {{ t('entreprise.quiz_cta') }}
@@ -150,7 +150,7 @@ const updateCountdown = () => {
                         {{ t('entreprise.hero_description', { company: entreprise.name }) }}
                     </p>
                     <a
-                        :href="`/c/${entreprise.slug}/quiz`"
+                        :href="`/c/${entreprise.access_token}/quiz`"
                         class="btn btn-co border-none font-semibold px-6 md:px-8 rounded-sm uppercase text-sm tracking-wide w-full sm:w-auto"
                     >
                         {{ t('entreprise.quiz_discover') }}
@@ -311,7 +311,7 @@ const updateCountdown = () => {
                         {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
                     </p>
                     <a
-                        :href="`/c/${entreprise.slug}/quiz`"
+                        :href="`/c/${entreprise.access_token}/quiz`"
                         class="btn btn-co border-none font-semibold px-6 md:px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97] w-full md:w-auto"
                     >
                         {{ t('entreprise.quiz_discover') }}

@@ -24,8 +24,19 @@ const types = [
 ]
 
 const selectedType    = ref(props.old?.type || '')
-const primaryColor    = ref(props.old?.primary_color || '')
+const COLOR_DEFAULT   = '#D32C37'
+const primaryColor    = ref(props.old?.primary_color || COLOR_DEFAULT)
 const secondaryColor  = ref(props.old?.secondary_color || '')
+const primaryTouched  = ref(!!props.old?.primary_color)
+const primaryError    = ref(false)
+
+const isPublic     = ref(props.old?.is_public !== '0')
+const wantsTrophy  = ref(props.old?.wants_trophy === '1')
+
+const onIsPublicChange = (e) => {
+    isPublic.value = e.target.checked
+    if (!isPublic.value) wantsTrophy.value = false
+}
 
 const isValidHex = (v) => /^#[0-9A-Fa-f]{6}$/.test(v ?? '')
 const logoPreview     = ref(null)
@@ -40,6 +51,20 @@ const clearLogo = () => {
     logoPreview.value = null
     if (logoFileRef.value) logoFileRef.value.value = ''
 }
+
+const onPrimaryColorChange = (e) => {
+    primaryColor.value = e.target.value
+    primaryTouched.value = true
+    primaryError.value = false
+}
+
+const handleSubmit = (e) => {
+    if (!primaryTouched.value || primaryColor.value === COLOR_DEFAULT) {
+        e.preventDefault()
+        primaryError.value = true
+        document.getElementById('primary-color-field')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+}
 </script>
 
 <template>
@@ -50,9 +75,6 @@ const clearLogo = () => {
         <section class="border-b border-base-200">
             <div class="max-w-5xl mx-auto px-6 py-14 grid md:grid-cols-[1fr_1.4fr] gap-12 items-center">
                 <div class="page-hero-text">
-                    <p class="text-xs uppercase tracking-[0.2em] text-base-content/35 mb-5">
-                        {{ t('inscription.hero_badge') }}
-                    </p>
                     <h1 class="font-extrabold leading-tight text-base-content"
                         style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
                         {{ t('inscription.hero_line1') }}<br>
@@ -104,7 +126,7 @@ const clearLogo = () => {
                     <span>{{ t('inscription.form_errors_banner') }}</span>
                 </div>
 
-                <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
+                <form action="/inscription" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6" @submit="handleSubmit">
                     <input type="hidden" name="_token" :value="csrfToken">
                     <input type="hidden" name="locale" :value="locale">
 
@@ -177,42 +199,53 @@ const clearLogo = () => {
                     <!-- Couleurs -->
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Couleur principale (obligatoire) -->
-                        <div class="flex flex-col gap-1">
+                        <div class="flex flex-col gap-1" id="primary-color-field">
                             <label class="text-sm font-medium">
                                 {{ t('inscription.primary_color') }}<span class="text-error ml-0.5">*</span>
                             </label>
                             <div class="flex items-center rounded-lg overflow-hidden"
-                                 :class="errors?.primary_color ? 'border border-error' : 'border border-base-300'">
-                                <!-- Swatch cliquable — picker toujours présent, invisible -->
-                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300">
+                                 :class="(errors?.primary_color || primaryError) ? 'border border-error' : 'border border-base-300'">
+                                <!-- Swatch cliquable — ouvre le color picker natif -->
+                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" title="Choisir une couleur">
                                     <input type="color"
-                                        :value="isValidHex(primaryColor) ? primaryColor : '#D32C37'"
-                                        @change="e => primaryColor = e.target.value"
+                                        :value="primaryColor"
+                                        @change="onPrimaryColorChange"
                                         class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-none">
-                                    <div class="w-full h-full flex items-center justify-center"
+                                    <div class="w-full h-full flex items-center justify-center transition-opacity"
                                          :style="isValidHex(primaryColor) ? `background-color: ${primaryColor}` : ''"
                                          :class="!isValidHex(primaryColor) ? 'bg-base-200' : ''">
+                                        <!-- Icône pipette quand vide, crayon sur hover quand rempli -->
                                         <svg v-if="!isValidHex(primaryColor)"
-                                             class="w-4 h-4 text-base-content/25" viewBox="0 0 24 24" fill="none"
-                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                             aria-hidden="true">
-                                            <circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3m.08 4h.01"/>
+                                             class="w-4 h-4 text-base-content/50 group-hover:text-base-content/80 transition-colors"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/>
+                                        </svg>
+                                        <svg v-else
+                                             class="w-4 h-4 opacity-0 group-hover:opacity-80 transition-opacity drop-shadow"
+                                             viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"
+                                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/>
                                         </svg>
                                     </div>
                                 </label>
                                 <!-- Champ texte — soumet la valeur -->
                                 <input type="text" name="primary_color" v-model="primaryColor"
-                                    maxlength="7" required
+                                    maxlength="7"
+                                    pattern="#[0-9A-Fa-f]{6}"
+                                    @input="primaryTouched = true; primaryError = false"
                                     class="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     placeholder="#RRGGBB">
                             </div>
+                            <p v-if="primaryError" class="text-error text-xs">Veuillez choisir la couleur de votre entreprise (cliquez sur le carré coloré)</p>
+                            <p v-else class="text-xs text-base-content/45">Cliquez sur le carré pour choisir la couleur de votre entreprise</p>
                             <span v-if="errors?.primary_color" class="text-error text-xs">{{ errors.primary_color[0] }}</span>
                         </div>
                         <!-- Couleur secondaire (optionnelle) -->
                         <div class="flex flex-col gap-1">
                             <label class="text-sm font-medium">{{ t('inscription.secondary_color') }}</label>
                             <div class="flex items-center border border-base-300 rounded-lg overflow-hidden">
-                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300">
+                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" title="Choisir une couleur">
                                     <input type="color"
                                         :value="isValidHex(secondaryColor) ? secondaryColor : '#888888'"
                                         @change="e => secondaryColor = e.target.value"
@@ -220,16 +253,17 @@ const clearLogo = () => {
                                     <div class="w-full h-full flex items-center justify-center"
                                          :style="isValidHex(secondaryColor) ? `background-color: ${secondaryColor}` : ''"
                                          :class="!isValidHex(secondaryColor) ? 'bg-base-200' : ''">
-                                        <svg v-if="!isValidHex(secondaryColor)"
-                                             class="w-4 h-4 text-base-content/25" viewBox="0 0 24 24" fill="none"
-                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                             aria-hidden="true">
-                                            <circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3m.08 4h.01"/>
+                                        <svg class="w-4 h-4 transition-colors"
+                                             :class="isValidHex(secondaryColor) ? 'text-white/70' : 'text-base-content/50'"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/>
                                         </svg>
                                     </div>
                                 </label>
                                 <input type="text" name="secondary_color" v-model="secondaryColor"
                                     maxlength="7"
+                                    pattern="#[0-9A-Fa-f]{6}"
                                     class="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     placeholder="#RRGGBB">
                             </div>
@@ -262,10 +296,22 @@ const clearLogo = () => {
                         required
                     />
 
-                    <!-- Trophée -->
+                    <!-- Visibilité publique -->
+                    <input type="hidden" name="is_public" value="0">
                     <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" name="is_public" value="1" class="checkbox checkbox-sm mt-0.5 shrink-0"
+                               :checked="isPublic" @change="onIsPublicChange">
+                        <div>
+                            <span class="text-sm">{{ t('inscription.is_public') }}</span>
+                            <p class="text-xs text-base-content/40 mt-1">{{ t('inscription.is_public_hint') }}</p>
+                        </div>
+                    </label>
+
+                    <!-- Trophée -->
+                    <label class="flex items-start gap-3 cursor-pointer" :class="!isPublic ? 'opacity-40 cursor-not-allowed' : ''">
                         <input type="checkbox" name="wants_trophy" value="1" class="checkbox checkbox-sm mt-0.5 shrink-0"
-                               :checked="old?.wants_trophy === '1'">
+                               :checked="wantsTrophy" :disabled="!isPublic"
+                               @change="wantsTrophy = $event.target.checked">
                         <div>
                             <span class="text-sm">{{ t('inscription.wants_trophy') }}</span>
                             <p class="text-xs text-base-content/40 mt-1">{{ t('inscription.wants_trophy_hint') }}</p>

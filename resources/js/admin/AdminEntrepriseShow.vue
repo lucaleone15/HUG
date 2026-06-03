@@ -74,6 +74,14 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                             <div class="font-medium mt-0.5">{{ e.employee_count ?? '-' }}</div>
                         </div>
                     </div>
+
+                    <div v-if="e.access_token" class="mt-2">
+                        <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.company_url') }}</span>
+                        <a :href="`/c/${e.access_token}`" target="_blank"
+                           class="block text-xs text-primary hover:underline truncate mt-0.5 font-mono">
+                            {{ `/c/${e.access_token}` }}
+                        </a>
+                    </div>
                 </div>
             </div>
 

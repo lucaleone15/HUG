@@ -11,6 +11,7 @@ class LabelController extends Controller
     {
         $entreprises = Entreprise::where('is_labelled', true)
             ->where('is_active', true)
+            ->where('is_public', true)
             ->get();
 
         return view('label', compact('entreprises'));

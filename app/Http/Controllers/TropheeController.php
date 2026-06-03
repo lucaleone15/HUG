@@ -11,6 +11,7 @@ class TropheeController extends Controller
     {
         $winners = Entreprise::whereNotNull('trophy_rank')
             ->where('is_active', true)
+            ->where('is_public', true)
             ->orderBy('trophy_rank')
             ->get();
 

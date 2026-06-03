@@ -18,7 +18,7 @@ const props = defineProps({
 const phase = ref('intro')   // 'intro' | 'quiz'
 const dossierCode = 'SANG-' + new Date().getFullYear().toString().slice(-2)
 
-const closeQuiz = () => window.history.back()
+const closeQuiz = () => { window.location.href = `/c/${props.entreprise.access_token}` }
 
 const startQuiz = () => { phase.value = 'quiz' }
 
@@ -206,7 +206,7 @@ const goBack = () => {
                         </div>
                         <p class="dossier-folder-title">{{ t('quiz.dossier_word') }}<br>{{ dossierCode }}</p>
                         <div class="dossier-folder-meta">
-                            <p>{{ t('quiz.dossier_open_date') }} : _ / _ / {{ new Date().getFullYear() }}</p>
+                            <p>{{ t('quiz.dossier_open_date') }} : {{ new Date().toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</p>
                             <p>{{ t('quiz.dossier_inspector') }}</p>
                             <p>{{ t('quiz.dossier_status') }}</p>
                         </div>
@@ -504,24 +504,7 @@ const goBack = () => {
 
                                 <h2 class="question-text">{{ t('quiz.complete_title') }}</h2>
 
-                                <!-- Fingerprint decorative -->
-                                <div class="fingerprint" aria-hidden="true">
-                                    <svg viewBox="0 0 80 96" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12">
-                                        <path d="M40 8C22 8 8 22 8 40c0 8 3 16 8 22"/>
-                                        <path d="M40 14C25 14 14 25 14 40c0 7 2.5 13 6.5 18"/>
-                                        <path d="M40 20C28 20 20 28 20 40c0 6 2 11 5 15.5"/>
-                                        <path d="M40 26C31 26 26 31 26 40c0 4.5 1.5 8.5 4 11.5"/>
-                                        <path d="M40 32C34 32 32 34 32 40c0 3 1 5.5 2.5 7.5"/>
-                                        <path d="M40 38c-1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2"/>
-                                        <path d="M40 8c18 0 32 14 32 32 0 8-3 16-8 22"/>
-                                        <path d="M40 14c15 0 26 11 26 26 0 7-2.5 13-6.5 18"/>
-                                        <path d="M40 20c12 0 20 8 20 20 0 6-2 11-5 15.5"/>
-                                        <path d="M40 26c9 0 14 5 14 14 0 4.5-1.5 8.5-4 11.5"/>
-                                        <path d="M40 32c6 0 8 2 8 8 0 3-1 5.5-2.5 7.5"/>
-                                        <path d="M20 62c4 8 12 14 20 16M60 62c-4 8-12 14-20 16"/>
-                                        <path d="M14 50c2 12 14 26 26 28M66 50c-2 12-14 26-26 28"/>
-                                    </svg>
-                                </div>
+
                             </div>
 
                             <!-- RIGHT: Subtitle + CTA -->
@@ -529,7 +512,7 @@ const goBack = () => {
                                 <p class="your-answer-label">{{ t('quiz.complete_cta_label') }}</p>
                                 <p class="hint-text mb-6">{{ t('quiz.complete_subtitle') }}</p>
 
-                                <form :action="`/c/${entreprise.slug}/quiz`" method="POST" ref="formRef">
+                                <form :action="`/c/${entreprise.access_token}/quiz`" method="POST" ref="formRef">
                                     <input type="hidden" name="_token" :value="csrfToken">
                                     <template v-for="(value, key) in answers" :key="key">
                                         <template v-if="Array.isArray(value)">
@@ -678,6 +661,12 @@ const goBack = () => {
     order: 1;
     min-height: 100svh;
 }
+@media (min-width: 640px) {
+    .intro-bureau { padding: 5rem 3rem 3.5rem; }
+}
+@media (min-width: 768px) {
+    .intro-bureau { padding: 5rem 4rem 4rem; }
+}
 @media (min-width: 1024px) {
     .intro-bureau {
         padding: 5rem 5rem 4rem 5rem;
@@ -703,7 +692,7 @@ const goBack = () => {
 /* ── Dossier folder card ────────────────────────────────────────── */
 .dossier-folder {
     width: 100%;
-    max-width: 400px;
+    max-width: 480px;
     background: var(--color-doc-folder);
     border-radius: 8px;
     padding: 20px 18px 24px;
@@ -718,7 +707,7 @@ const goBack = () => {
     position: relative;
 }
 .dossier-republic {
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 700;
     color: var(--color-doc-ink-deep);
     letter-spacing: 0.04em;
@@ -727,7 +716,7 @@ const goBack = () => {
     margin-bottom: 4px;
 }
 .dossier-hospital {
-    font-size: 8px;
+    font-size: 9px;
     color: var(--color-doc-ink-mid);
     letter-spacing: 0.03em;
     line-height: 1.6;
@@ -830,6 +819,9 @@ const goBack = () => {
     line-height: 1.7;
     max-width: 46ch;
 }
+@media (min-width: 640px) and (max-width: 1023px) {
+    .intro-body { max-width: 72ch; }
+}
 .intro-body--gap { margin-top: 0.75rem; }
 .intro-accent {
     font-size: clamp(1rem, 1.5vw, 1.1rem);
@@ -842,9 +834,18 @@ const goBack = () => {
     display: flex;
     flex-direction: column;
 }
+@media (min-width: 640px) and (max-width: 1023px) {
+    .intro-bureau-content {
+        max-width: 680px;
+        width: 100%;
+    }
+}
 .intro-cta-wrap {
     margin-top: 2.5rem;
     max-width: 360px;
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+    .intro-cta-wrap { max-width: 100%; }
 }
 
 
@@ -1074,7 +1075,7 @@ const goBack = () => {
     background: var(--color-doc-border);
 }
 .category-label {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--color-doc-ink-muted);
     letter-spacing: 0.01em;
@@ -1092,14 +1093,14 @@ const goBack = () => {
 
 .hint-block { margin-top: 4px; }
 .hint-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     color: var(--color-doc-ink-muted);
     letter-spacing: 0.04em;
     margin-bottom: 6px;
 }
 .hint-text {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--color-doc-ink-mid);
     line-height: 1.6;
 }
@@ -1135,7 +1136,7 @@ const goBack = () => {
 }
 
 .your-answer-label {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--color-doc-ink-muted);
     letter-spacing: 0.08em;
@@ -1274,11 +1275,11 @@ const goBack = () => {
     margin-bottom: 2px;
 }
 .doc-logo-img {
-    max-height: 38px;
-    max-width: 130px;
+    max-height: 48px;
+    max-width: 160px;
     object-fit: contain;
-    border: 1px solid var(--color-doc-border);
-    padding: 5px 9px;
+    border: 1.5px solid var(--color-doc-border-dark);
+    padding: 8px 12px;
     background: white;
     border-radius: 2px;
 }

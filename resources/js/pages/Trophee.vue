@@ -69,7 +69,7 @@ const criteriaIcons = [
             :cta="{ label: t('nav.inscription'), href: '/inscription' }"
         >
             <template #visual>
-                <img :src="'/images/trophée.svg'" alt="Trophée HUG" class="w-1/2 max-w-[200px] mx-auto h-auto object-contain" decoding="async" />
+                <img :src="'/images/trophee-rouge.svg'" alt="Trophée HUG" class="w-1/2 max-w-[200px] mx-auto h-auto object-contain" decoding="async" />
             </template>
         </PageHero>
 
@@ -129,20 +129,52 @@ const criteriaIcons = [
             </template>
 
             <template v-if="others.length || winner1">
-                <ul class="divide-y divide-base-200">
-                    <li v-for="w in [winner1, ...others].filter(Boolean)" :key="w.id"
-                        class="flex items-center gap-4 py-4">
-                        <div v-if="w.logo_url"
-                            class="w-10 h-10 rounded-full bg-base-200 overflow-hidden flex items-center justify-center shrink-0">
-                            <img :src="w.logo_url" :alt="w.name" class="max-h-8 max-w-full object-contain">
+                <!-- ── PODIUM top 3 ── -->
+                <div class="podium-wrap" v-if="[winner1, ...others].filter(Boolean).length >= 1">
+                    <div class="podium-stage">
+                        <!-- #2 -->
+                        <div class="podium-slot podium-slot--2" v-if="others[0]">
+                            <div class="podium-avatar-wrap">
+                                <img v-if="others[0].logo_url" :src="others[0].logo_url" :alt="others[0].name" class="podium-avatar-img">
+                                <span v-else class="podium-avatar-fallback" :style="`background-color:${others[0].primary_color}`">{{ others[0].name[0] }}</span>
+                            </div>
+                            <p class="podium-name">{{ others[0].name }}</p>
+                            <div class="podium-block podium-block--2"><span class="podium-rank">2</span></div>
                         </div>
-                        <div v-else class="w-10 h-10 rounded-full shrink-0"
-                            :style="`background-color: ${w.primary_color}`"></div>
+                        <!-- #1 -->
+                        <div class="podium-slot podium-slot--1" v-if="winner1">
+                            <div class="podium-avatar-wrap podium-avatar-wrap--1">
+                                <img v-if="winner1.logo_url" :src="winner1.logo_url" :alt="winner1.name" class="podium-avatar-img">
+                                <span v-else class="podium-avatar-fallback" :style="`background-color:${winner1.primary_color}`">{{ winner1.name[0] }}</span>
+                            </div>
+                            <p class="podium-name podium-name--1">{{ winner1.name }}</p>
+                            <div class="podium-block podium-block--1"><span class="podium-rank">1</span></div>
+                        </div>
+                        <!-- #3 -->
+                        <div class="podium-slot podium-slot--3" v-if="others[1]">
+                            <div class="podium-avatar-wrap">
+                                <img v-if="others[1].logo_url" :src="others[1].logo_url" :alt="others[1].name" class="podium-avatar-img">
+                                <span v-else class="podium-avatar-fallback" :style="`background-color:${others[1].primary_color}`">{{ others[1].name[0] }}</span>
+                            </div>
+                            <p class="podium-name">{{ others[1].name }}</p>
+                            <div class="podium-block podium-block--3"><span class="podium-rank">3</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Liste #4+ ── -->
+                <ul v-if="others.length > 2" class="mt-2">
+                    <li v-for="w in others.slice(2)" :key="w.id"
+                        class="flex items-center gap-4 py-3">
+                        <div class="w-11 h-11 rounded-lg bg-white overflow-hidden flex items-center justify-center shrink-0 p-1.5">
+                            <img v-if="w.logo_url" :src="w.logo_url" :alt="w.name" class="max-h-full max-w-full object-contain">
+                            <span v-else class="w-full h-full rounded flex items-center justify-center text-sm font-bold text-white" :style="`background-color:${w.primary_color}`">{{ w.name[0] }}</span>
+                        </div>
                         <div class="flex-1">
-                            <div class="font-semibold">{{ w.name }}</div>
+                            <div class="font-semibold text-sm">{{ w.name }}</div>
                             <div v-if="w.type" class="text-xs text-base-content/40">{{ t('inscription.type_' + w.type) }}</div>
                         </div>
-                        <span class="text-lg font-bold text-base-content/30">#{{ w.trophy_rank }}</span>
+                        <span class="text-xl font-bold text-base-content/25 shrink-0">{{ w.trophy_rank }}</span>
                     </li>
                 </ul>
             </template>
@@ -260,13 +292,131 @@ const criteriaIcons = [
 </template>
 
 <style scoped>
+/* ── Podium ─────────────────────────────────────────────────────── */
+.podium-wrap {
+    margin: 2rem 0 2.5rem;
+}
+.podium-stage {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Slot commun */
+.podium-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 220px;
+}
+
+/* Avatar */
+.podium-avatar-wrap {
+    width: 80px;
+    height: 80px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+.podium-avatar-wrap--1 {
+    width: 96px;
+    height: 96px;
+    padding: 10px;
+}
+.podium-avatar-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.podium-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+
+/* Couronne #1 */
+.podium-crown {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+    color: #E8C84A;
+    filter: drop-shadow(0 2px 4px rgba(232,200,74,0.4));
+    line-height: 1;
+}
+
+/* Nom */
+.podium-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    color: #374151;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    max-width: 130px;
+}
+.podium-name--1 {
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+/* Blocs podium */
+.podium-block {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 8px 8px 0 0;
+    padding-bottom: 12px;
+}
+.podium-block--1 {
+    height: 140px;
+    background: linear-gradient(160deg, #F0D050, #C9A227);
+}
+.podium-block--2 {
+    height: 104px;
+    background: linear-gradient(160deg, #D0D0D0, #9E9E9E);
+}
+.podium-block--3 {
+    height: 76px;
+    background: linear-gradient(160deg, #D4956A, #A0622A);
+}
+.podium-rank {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Trophée SVG dans le bloc */
+.podium-trophy {
+    width: 44px;
+    height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+}
+.podium-trophy--1 {
+    width: 54px;
+}
+
 .criteria-num {
     display: block;
     font-weight: 800;
     line-height: 1;
     font-size: clamp(2.5rem, 5vw, 3.75rem);
     font-variant-numeric: tabular-nums;
-    color: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.35);
     flex-shrink: 0;
     width: 3.5rem;
 }

@@ -32,7 +32,6 @@ const items = computed(() => [
         <main class="max-w-5xl mx-auto px-6 py-16 flex-1 w-full">
 
             <div class="mb-14 border-b border-base-200 pb-12 page-hero-text">
-                <p class="text-xs uppercase tracking-[0.2em] text-base-content/35 mb-5">{{ t('nav.kit') }}</p>
                 <h1 class="font-extrabold leading-tight text-base-content mb-5"
                     style="font-size: clamp(2rem, 5vw, 3.25rem);">
                     {{ t('kit.title') }}

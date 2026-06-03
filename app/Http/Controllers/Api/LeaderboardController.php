@@ -12,6 +12,7 @@ class LeaderboardController extends Controller
     public function index(): JsonResponse
     {
         $entreprises = Entreprise::where('is_active', true)
+            ->where('is_public', true)
             ->withCount([
                 'submissions as eligible_count' => fn($q) => $q->where('is_eligible', true),
             ])

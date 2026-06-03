@@ -32,6 +32,7 @@ class InscriptionController extends Controller
             'logo'            => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg|max:2048',
             'logo_url'        => 'nullable|url|max:2048',
             'wants_trophy'    => 'boolean',
+            'is_public'       => 'boolean',
         ]);
 
         $logoUrl = null;
@@ -48,6 +49,7 @@ class InscriptionController extends Controller
         Entreprise::create([
             'name'            => $request->name,
             'slug'            => $this->uniqueSlug(Str::slug($request->name)),
+            'access_token'    => Str::random(48),
             'type'            => $request->type,
             'employee_count'  => $request->employee_count,
             'contact_name'    => $request->contact_name,
@@ -59,6 +61,7 @@ class InscriptionController extends Controller
             'is_validated'    => false,
             'is_labelled'     => false,
             'wants_trophy'    => $request->boolean('wants_trophy'),
+            'is_public'       => $request->boolean('is_public', true),
             'locale'          => $locale,
         ]);
 

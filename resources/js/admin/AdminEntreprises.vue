@@ -152,6 +152,7 @@ const goPage = (n) => {
                 <option value="active">{{ t('admin.status_active') }}</option>
                 <option value="draft">{{ t('admin.status_draft') }}</option>
                 <option value="inactive">{{ t('admin.status_suspended') }}</option>
+                <option value="private">{{ t('admin.status_private') }}</option>
             </select>
         </div>
 
