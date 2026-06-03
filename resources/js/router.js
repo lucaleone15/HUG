@@ -12,6 +12,7 @@ import AdminAnalytics      from './admin/AdminAnalytics.vue'
 import AdminCampaignStats  from './admin/AdminCampaignStats.vue'
 import AdminReport         from './admin/AdminReport.vue'
 import AdminSettings       from './admin/AdminSettings.vue'
+import AdminTrophees       from './admin/AdminTrophees.vue'
 
 const routes = [
     { path: '/admin/login', component: AdminLogin, meta: { public: true } },
@@ -30,6 +31,7 @@ const routes = [
             { path: 'campaign-stats',       component: AdminCampaignStats,  name: 'campaign-stats' },
             { path: 'report',               component: AdminReport,         name: 'report' },
             { path: 'settings',             component: AdminSettings,       name: 'settings' },
+            { path: 'trophees',             component: AdminTrophees,       name: 'trophees' },
         ],
     },
     // Catch-all : redirige vers login (pas vers /admin pour éviter une boucle de redirects)

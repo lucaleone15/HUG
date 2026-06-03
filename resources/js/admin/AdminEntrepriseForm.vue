@@ -23,7 +23,6 @@ const form = ref({
     secondary_color: '',
     logo_url: '',
     is_active: true, is_labelled: false, is_validated: false,
-    trophy_rank: '',
     wants_trophy: false,
     rdv_url: '',
     rdv_date: '',
@@ -45,7 +44,6 @@ onMounted(async () => {
         textFields.forEach(k => { form.value[k] = e[k] ?? '' })
 
         form.value.employee_count = e.employee_count ?? ''
-        form.value.trophy_rank    = e.trophy_rank    ?? ''
 
         form.value.primary_color   = e.primary_color   ?? '#E30613'
         form.value.secondary_color = e.secondary_color ?? ''
@@ -88,7 +86,7 @@ const save = async () => {
         const fd = new FormData()
 
         const fields = ['name','slug','type','employee_count','contact_name','contact_email',
-                        'primary_color','secondary_color','logo_url','trophy_rank','rdv_url','rdv_date']
+                        'primary_color','secondary_color','logo_url','rdv_url','rdv_date']
         fields.forEach(k => {
             if (form.value[k] !== '' && form.value[k] !== null) fd.append(k, form.value[k])
         })
@@ -166,10 +164,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                         <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm">
                     </label>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_trophy_rank') }}</span></div>
-                        <input v-model="form.trophy_rank" type="number" min="1" class="input input-bordered input-sm" :placeholder="t('admin.form_trophy_rank_placeholder')">
-                    </label>
+
                 </div>
 
                 <!-- Section : Logo -->

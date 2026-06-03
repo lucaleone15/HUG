@@ -32,6 +32,7 @@ const nav = computed(() => [
     { to: "/admin/analytics",      label: t("admin.nav_analytics"),      icon: "chart"    },
     { to: "/admin/campaign-stats", label: t("admin.nav_campaign_stats"), icon: "cog"      },
     { to: "/admin/report",         label: t("admin.nav_report"),         icon: "document" },
+    { to: "/admin/trophees",       label: t("admin.nav_trophees"),       icon: "trophy"   },
 ]);
 
 const isActive = (path) => route.path.startsWith(path);

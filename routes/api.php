@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\EntrepriseController as AdminEntrepriseController;
 use App\Http\Controllers\Api\Admin\ReportController;
 use App\Http\Controllers\Api\Admin\SubmissionController;
+use App\Http\Controllers\Api\Admin\TropheeController;
 use App\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,10 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
     Route::post('entreprises/{id}/send-kit', [AdminEntrepriseController::class, 'sendKit']);
     Route::post('entreprises/{id}/send-link', [AdminEntrepriseController::class, 'sendLink']);
+
+    // Classement Trophée
+    Route::get('trophees',  [TropheeController::class, 'index']);
+    Route::put('trophees',  [TropheeController::class, 'reorder']);
 
     Route::get('submissions',              [SubmissionController::class, 'index']);
     Route::get('submissions/{submission}', [SubmissionController::class, 'show']);
