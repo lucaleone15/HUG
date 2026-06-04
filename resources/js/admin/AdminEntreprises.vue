@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
+import LogoContainer from '../components/ui/LogoContainer.vue'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 import BaseButton from '../components/ui/BaseButton.vue'
@@ -170,11 +171,13 @@ const goPage = (n) => {
                     class="flex items-center gap-3 p-4 cursor-pointer active:bg-base-200"
                     @click="goShow(e.id)"
                 >
-                    <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                        class="w-10 h-10 rounded object-contain bg-base-200 shrink-0" />
-                    <div v-else class="w-10 h-10 rounded-full shrink-0 flex items-center justify-center bg-base-200">
-                        <div class="w-4 h-4 rounded-full" :style="`background:${e.primary_color || '#D32C37'}`"></div>
-                    </div>
+                    <LogoContainer
+                        :logo-url="e.logo_url"
+                        :primary-color="e.primary_color"
+                        :name="e.name"
+                        size="w-10 h-10"
+                        rounded="rounded"
+                    />
 
                     <div class="flex-1 min-w-0">
                         <div class="font-semibold text-sm truncate">{{ e.name }}</div>
@@ -219,8 +222,13 @@ const goPage = (n) => {
                             <tr v-for="e in data" :key="e.id" class="hover cursor-pointer" @click="goShow(e.id)">
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                                            class="w-7 h-7 rounded object-contain bg-base-200 shrink-0" />
+                                        <LogoContainer v-if="e.logo_url"
+                                            :logo-url="e.logo_url"
+                                            :primary-color="e.primary_color"
+                                            :name="e.name"
+                                            size="w-7 h-7"
+                                            rounded="rounded"
+                                        />
                                         <div v-else class="w-2.5 h-2.5 rounded-full shrink-0" :style="`background:${e.primary_color}`"></div>
                                         <span class="font-medium text-sm">{{ e.name }}</span>
                                     </div>

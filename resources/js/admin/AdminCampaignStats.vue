@@ -104,7 +104,8 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.donations_count_label') }}</span></div>
                             <input v-model.number="form.donations_count" type="number" min="0" required
-                                class="input input-bordered input-sm" :class="fieldError('donations_count') ? 'input-error' : ''">
+                                class="input input-bordered input-sm" :class="fieldError('donations_count') ? 'input-error' : ''"
+                                @wheel="$event.target.blur()">
                             <div v-if="fieldError('donations_count')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('donations_count') }}</span>
                             </div>
@@ -112,7 +113,8 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.lives_saved_label') }}</span></div>
                             <input v-model.number="form.lives_saved" type="number" min="0" required
-                                class="input input-bordered input-sm" :class="fieldError('lives_saved') ? 'input-error' : ''">
+                                class="input input-bordered input-sm" :class="fieldError('lives_saved') ? 'input-error' : ''"
+                                @wheel="$event.target.blur()">
                             <div v-if="fieldError('lives_saved')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('lives_saved') }}</span>
                             </div>
@@ -120,7 +122,8 @@ const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
                         <label class="form-control">
                             <div class="label"><span class="label-text">{{ t('admin.hug_hospitals_label') }}</span></div>
                             <input v-model.number="form.hug_hospitals_count" type="number" min="0" required
-                                class="input input-bordered input-sm" :class="fieldError('hug_hospitals_count') ? 'input-error' : ''">
+                                class="input input-bordered input-sm" :class="fieldError('hug_hospitals_count') ? 'input-error' : ''"
+                                @wheel="$event.target.blur()">
                             <div v-if="fieldError('hug_hospitals_count')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('hug_hospitals_count') }}</span>
                             </div>

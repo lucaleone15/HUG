@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
+import { useLogoBg } from '../composables/useLogoBg.js'
 
 const route  = useRoute()
 const router = useRouter()
@@ -32,6 +33,11 @@ const form = ref({
 const logoFile     = ref(null)
 const logoPreview  = ref(null)
 const logoInputRef = ref(null)
+
+const { bg: previewBg } = useLogoBg(
+    () => logoPreview.value,
+    () => form.value.primary_color,
+)
 
 const types = ['banque','assurance','industrie','commerce','service','technologie','sante','education','autre']
 
@@ -164,7 +170,7 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_employee_count') }}</span></div>
-                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm">
+                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm" @wheel="$event.target.blur()">
                     </label>
 
 
@@ -174,7 +180,10 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_logo') }}</div>
 
                 <div v-if="logoPreview" class="flex items-center gap-4 p-3 bg-base-200 rounded-lg">
-                    <img :src="logoPreview" alt="Logo" class="h-14 w-14 object-contain rounded bg-white p-1 shrink-0">
+                    <div class="h-14 w-14 rounded p-1 shrink-0 flex items-center justify-center"
+                         :style="`background-color: ${previewBg}`">
+                        <img :src="logoPreview" alt="Logo" class="max-h-full max-w-full object-contain">
+                    </div>
                     <div class="flex-1 text-sm text-base-content/60 truncate min-w-0">{{ logoFile?.name ?? form.logo_url }}</div>
                     <button type="button" class="btn btn-ghost btn-xs text-error shrink-0" @click="clearLogo">✕</button>
                 </div>

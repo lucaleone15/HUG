@@ -16,6 +16,7 @@
     "hero_highlight": "l'enquête.",
     "hero_subtitle": "Mobilisez votre entreprise pour la campagne Don du Sang. Un geste simple, un impact immense.",
     "cta": "Découvrir les entreprises partenaires",
+    "stats_aria": "Statistiques de la campagne",
     "stats_donations": "dons collectés",
     "stats_lives": "vies sauvées",
     "stats_hospitals": "hôpitaux HUG",
@@ -132,6 +133,17 @@
     "inactive": "Cette campagne n'est plus active.",
     "collect_date": "Date de la collecte",
     "rdv_cta": "Prendre rendez-vous",
+    "collecte_default_label": "Collecte",
+    "collecte_rdv_cta_short": "Participer",
+    "collectes_past_highlight": "Collectes",
+    "collectes_past_title": " précédentes",
+    "collecte_past_badge": "Terminée",
+    "collecte_active_label": "Collecte en cours",
+    "collecte_active_title": "Prenez rendez-vous dès maintenant",
+    "collecte_rdv_cta": "Je prends rendez-vous →",
+    "collecte_none_label": "Pas de collecte en cours",
+    "collecte_none_title": "Restez connectés, ça se prépare !",
+    "collecte_none_description": "{company} prépare sa prochaine collecte. Revenez bientôt pour prendre rendez-vous.",
     "hero_title_line1": "Un don de sang sauve",
     "hero_title_highlight": "3 vies.",
     "hero_title_line2": "Une mission de 5 minutes.",
@@ -227,7 +239,8 @@
     "dossier_status": "Statut : en attente",
     "complete_dossier_label": "Dossier complet",
     "dossier_confidential": "CONFIDENTIEL",
-    "dossier_word": "DOSSIER"
+    "dossier_word": "DOSSIER",
+    "prev_question": "Question précédente"
   },
   "result": {
     "eligible_title": "Vous êtes éligible au don !",
@@ -317,7 +330,10 @@
     "name_placeholder": "MonExemple SA",
     "contact_name_placeholder": "Ducommun",
     "contact_email_placeholder": "prenom.nom{'@'}entreprise.ch",
-    "logo_url_placeholder": "https://exemple.com/logo.png"
+    "logo_url_placeholder": "https://exemple.com/logo.png",
+    "color_swatch_title": "Choisir une couleur",
+    "color_hint_click": "Cliquez sur le carré pour choisir la couleur de votre entreprise",
+    "color_error_primary": "Veuillez choisir la couleur de votre entreprise (cliquez sur le carré coloré)"
   },
   "footer": {
     "tagline": "Une initiative du Centre de transfusion sanguine des Hôpitaux Universitaires de Genève.",
@@ -441,6 +457,21 @@
     "form_section_contact": "Contact",
     "form_section_status": "Statut",
     "form_section_cts": "Collecte CTS",
+    "form_section_collectes": "Collectes OneDOC",
+    "form_ondoc_url": "Lien onedoc.ch",
+    "collecte_add": "+ Nouvelle collecte",
+    "collecte_cancel": "Annuler",
+    "collecte_save": "Enregistrer",
+    "collecte_empty": "Aucune collecte enregistrée pour cette entreprise.",
+    "collecte_is_active": "Collecte active",
+    "collecte_label": "Libellé (optionnel)",
+    "collecte_label_placeholder": "ex: Site Plan-les-Ouates",
+    "collecte_status_active": "active",
+    "collecte_status_inactive": "inactive",
+    "collecte_activate": "Activer",
+    "collecte_deactivate": "Désactiver",
+    "collecte_confirm_delete": "Supprimer cette collecte ?",
+    "delete": "Supprimer",
     "form_name": "Nom *",
     "form_slug": "Slug (URL)",
     "form_sector": "Secteur *",
@@ -519,7 +550,10 @@
     "settings_admin_remove": "Retirer",
     "settings_remove_confirm": "Retirer {name} des administrateurs ? Cette action est irréversible.",
     "settings_admin_added": "Administrateur ajouté avec succès.",
-    "settings_you": "vous"
+    "settings_you": "vous",
+    "trophees_move_up": "Monter",
+    "trophees_move_down": "Descendre",
+    "close_sidebar": "Fermer le menu"
   },
   "lang": "FR"
 }

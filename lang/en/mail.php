@@ -20,6 +20,19 @@ return [
     'contact_message'         => 'Message',
     'contact_reply_cta'       => 'Reply to :name →',
 
+    // New registration email (admin notification)
+    'registration_badge'           => 'New registration',
+    'registration_action_required' => 'ACTION REQUIRED',
+    'registration_title'           => ':name wants to join the brigade.',
+    'registration_body'            => 'A new company has just submitted its application via the registration form. Go to the back-office to review the request and validate (or reject) the application.',
+    'registration_company_label'   => 'COMPANY',
+    'registration_sector_label'    => 'SECTOR',
+    'registration_headcount_label' => 'HEADCOUNT',
+    'registration_employees'       => 'employees',
+    'registration_contact_label'   => 'CONTACT',
+    'registration_cta'             => 'Review application →',
+    'registration_footer_note'     => 'Automatic notification · HUG Blood Donation Platform',
+
     // New co-branding email
     'hero_comms_label'  => 'Official CTS-HUG communication',
     'hero_stamp'        => 'Dossier accepted',
@@ -49,7 +62,7 @@ return [
     'step3_cta'         => 'Access admin space',
     'recap_section'     => 'Collection summary',
     'recap_title'       => 'The dossier at a glance.',
-    'recap_badge'       => '— Confirmed',
+    'recap_badge'       => 'Confirmed',
     'recap_company'     => 'Company',
     'recap_date'        => 'Collection date',
     'recap_contact'     => 'Contact',

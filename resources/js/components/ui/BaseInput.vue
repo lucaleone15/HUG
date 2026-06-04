@@ -31,6 +31,7 @@ defineEmits(['update:modelValue'])
             class="input input-bordered w-full"
             :class="error ? 'input-error' : ''"
             @input="$emit('update:modelValue', $event.target.value)"
+            @wheel="type === 'number' ? $event.target.blur() : undefined"
         >
         <div v-if="hint && !error" class="label pt-0">
             <span class="label-text-alt text-base-content/50">{{ hint }}</span>

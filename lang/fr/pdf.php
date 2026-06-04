@@ -42,21 +42,21 @@ return [
     'performance'        => 'Performance',
 
     // ─── Durée ──────────────────────────────────────────────
-    'dur_very_fast'      => 'Très rapide — réviser la pertinence des questions',
-    'dur_concise'        => 'Concis — expérience utilisateur optimale',
-    'dur_optimal'        => 'Optimal — participants très impliqués dans la démarche',
-    'dur_long'           => "Long — risque d'abandon en cours de route",
+    'dur_very_fast'      => 'Très rapide · réviser la pertinence des questions',
+    'dur_concise'        => 'Concis · expérience utilisateur optimale',
+    'dur_optimal'        => 'Optimal · participants très impliqués dans la démarche',
+    'dur_long'           => "Long · risque d'abandon en cours de route",
 
     // ─── Recommandations taux ────────────────────────────────
     'reco_part_low'      => 'Renforcer la communication interne',
-    'reco_part_med'      => 'Bon taux — maintenir la visibilité',
+    'reco_part_med'      => 'Bon taux · maintenir la visibilité',
     'reco_part_high'     => 'Excellent engagement des collaborateurs',
     'reco_elig_low'      => 'Cibler des profils plus compatibles au don',
     'reco_elig_med'      => 'Conforme à la moyenne nationale (60-70%)',
     'reco_elig_high'     => 'Excellente adéquation des participants',
     'reco_conv_low'      => 'Optimiser le parcours CTA post-quiz',
-    'reco_conv_med'      => 'Bonne conversion — optimiser le rappel',
-    'reco_conv_high'     => 'Conversion remarquable — modèle à reproduire',
+    'reco_conv_med'      => 'Bonne conversion · optimiser le rappel',
+    'reco_conv_high'     => 'Conversion remarquable · modèle à reproduire',
 
     // ─── Diagnostics ─────────────────────────────────────────
     'section_diagnostics'   => 'Diagnostics',
@@ -71,15 +71,15 @@ return [
     'diag_conv_ok_t'        => 'Conversion RDV exemplaire (:pct%)',
     'diag_conv_ok_x'        => ':rdv RDV sur :eligible éligibles. Parmi les meilleurs résultats de la campagne SANG-26.',
     'diag_score_t'          => 'Score global campagne : :score%',
-    'diag_score_x'          => 'Performance :perf — moyenne des trois taux clés. Marge sur la conversion RDV (:conv% vs 70% cible).',
+    'diag_score_x'          => 'Performance :perf · moyenne des trois taux clés. Marge sur la conversion RDV (:conv% vs 70% cible).',
 
     // ─── Recommandations section ─────────────────────────────
     'section_reco'          => 'Recommandations prioritaires',
     'reco_session_title'    => 'Actions pour la prochaine session',
     'reco_1_low'            => "Lancer une campagne interne : affichage, email ciblé, présentation en réunion (cible 25%).",
     'reco_1_ok'             => 'Maintenir la visibilité et partager les résultats pour fidéliser les participants.',
-    'reco_2'                => 'Revoir la Q:q (:n abandons) — reformuler ou déplacer en fin de parcours.',
-    'reco_2_default'        => 'Revoir la question principale — reformuler ou déplacer en fin de parcours.',
+    'reco_2'                => 'Revoir la Q:q (:n abandons) · reformuler ou déplacer en fin de parcours.',
+    'reco_2_default'        => 'Revoir la question principale · reformuler ou déplacer en fin de parcours.',
     'reco_3'                => 'Fixer un objectif de :part participants pour ~:elig éligibles et ~:rdv RDV.',
 
     // ─── Objectifs ───────────────────────────────────────────
@@ -100,17 +100,17 @@ return [
     'funnel_pct_of_total'   => '% du total',
 
     // ─── Comportement ────────────────────────────────────────
-    'section_behavior_dur'  => 'Comportement — durée moyenne',
+    'section_behavior_dur'  => 'Comportement · durée moyenne',
     'abandon_questions'     => 'questions',
     'abandon_most_blocked'  => 'question la plus bloquante',
-    'abandon_reco_early'    => "Abandon précoce — revoir l'accroche initiale",
-    'abandon_reco_late'     => 'Abandon tardif — simplifier la conclusion',
-    'abandon_reco_mid'      => 'Abandon à mi-parcours — clarifier les questions centrales',
+    'abandon_reco_early'    => "Abandon précoce · revoir l'accroche initiale",
+    'abandon_reco_late'     => 'Abandon tardif · simplifier la conclusion',
+    'abandon_reco_mid'      => 'Abandon à mi-parcours · clarifier les questions centrales',
     'section_behavior_analysis' => 'Analyse comportementale',
     'behavior_interp_title' => 'Interprétation des abandons',
-    'behavior_interp_early' => "Q:q concentre :n des :total abandons (:pct%). Abandon précoce — question perçue comme trop intrusive.",
+    'behavior_interp_early' => "Q:q concentre :n des :total abandons (:pct%). Abandon précoce · question perçue comme trop intrusive.",
     'behavior_interp_hint_early' => 'Reformuler en question générale ou rassurer sur la confidentialité.',
-    'behavior_interp_other' => 'Abandons répartis sur :q questions — quiz bien structuré avec quelques frictions.',
+    'behavior_interp_other' => 'Abandons répartis sur :q questions · quiz bien structuré avec quelques frictions.',
     'behavior_interp_hint_other' => 'Simplifier les questions intermédiaires qui concentrent les abandons.',
 
     // ─── Benchmark ───────────────────────────────────────────
@@ -130,7 +130,7 @@ return [
     'synth_rdv_taken'       => 'RDV pris',
 
     // ─── Simulation ──────────────────────────────────────────
-    'sim_title'             => 'Simulation — 25% de participation',
+    'sim_title'             => 'Simulation · 25% de participation',
     'sim_participants'      => 'participants',
     'sim_eligible_lbl'      => 'éligibles',
     'sim_gain'              => '+:gain éligibles · +:rdvGain RDV supplémentaires estimés',

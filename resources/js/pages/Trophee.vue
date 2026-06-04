@@ -2,6 +2,7 @@
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavBar from '../components/ui/NavBar.vue'
+import LogoContainer from '../components/ui/LogoContainer.vue'
 import Footer from '../components/ui/Footer.vue'
 import PageHero from '../components/ui/PageHero.vue'
 
@@ -135,8 +136,8 @@ const criteriaIcons = [
                         <!-- #2 -->
                         <div class="podium-slot podium-slot--2" v-if="others[0]">
                             <div class="podium-avatar-wrap">
-                                <img v-if="others[0].logo_url" :src="others[0].logo_url" :alt="others[0].name" class="podium-avatar-img">
-                                <span v-else class="podium-avatar-fallback" :style="`background-color:${others[0].primary_color}`">{{ others[0].name[0] }}</span>
+                                <LogoContainer :logo-url="others[0].logo_url" :primary-color="others[0].primary_color"
+                                    :name="others[0].name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
                             </div>
                             <p class="podium-name">{{ others[0].name }}</p>
                             <div class="podium-block podium-block--2"><span class="podium-rank">2</span></div>
@@ -144,8 +145,8 @@ const criteriaIcons = [
                         <!-- #1 -->
                         <div class="podium-slot podium-slot--1" v-if="winner1">
                             <div class="podium-avatar-wrap podium-avatar-wrap--1">
-                                <img v-if="winner1.logo_url" :src="winner1.logo_url" :alt="winner1.name" class="podium-avatar-img">
-                                <span v-else class="podium-avatar-fallback" :style="`background-color:${winner1.primary_color}`">{{ winner1.name[0] }}</span>
+                                <LogoContainer :logo-url="winner1.logo_url" :primary-color="winner1.primary_color"
+                                    :name="winner1.name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
                             </div>
                             <p class="podium-name podium-name--1">{{ winner1.name }}</p>
                             <div class="podium-block podium-block--1"><span class="podium-rank">1</span></div>
@@ -153,8 +154,8 @@ const criteriaIcons = [
                         <!-- #3 -->
                         <div class="podium-slot podium-slot--3" v-if="others[1]">
                             <div class="podium-avatar-wrap">
-                                <img v-if="others[1].logo_url" :src="others[1].logo_url" :alt="others[1].name" class="podium-avatar-img">
-                                <span v-else class="podium-avatar-fallback" :style="`background-color:${others[1].primary_color}`">{{ others[1].name[0] }}</span>
+                                <LogoContainer :logo-url="others[1].logo_url" :primary-color="others[1].primary_color"
+                                    :name="others[1].name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
                             </div>
                             <p class="podium-name">{{ others[1].name }}</p>
                             <div class="podium-block podium-block--3"><span class="podium-rank">3</span></div>
@@ -166,10 +167,8 @@ const criteriaIcons = [
                 <ul v-if="others.length > 2" class="mt-2">
                     <li v-for="w in others.slice(2)" :key="w.id"
                         class="flex items-center gap-4 py-3">
-                        <div class="w-11 h-11 rounded-lg bg-white overflow-hidden flex items-center justify-center shrink-0 p-1.5">
-                            <img v-if="w.logo_url" :src="w.logo_url" :alt="w.name" class="max-h-full max-w-full object-contain">
-                            <span v-else class="w-full h-full rounded flex items-center justify-center text-sm font-bold text-white" :style="`background-color:${w.primary_color}`">{{ w.name[0] }}</span>
-                        </div>
+                        <LogoContainer :logo-url="w.logo_url" :primary-color="w.primary_color"
+                            :name="w.name" size="w-11 h-11" rounded="rounded-lg" />
                         <div class="flex-1">
                             <div class="font-semibold text-sm">{{ w.name }}</div>
                             <div v-if="w.type" class="text-xs text-base-content/40">{{ t('inscription.type_' + w.type) }}</div>

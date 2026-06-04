@@ -125,8 +125,11 @@ class QuizController extends Controller
 
         session()->forget('quiz_token');
 
+        $collecte = $entreprise->activeCollecte;
+
         return view('quiz.result', compact(
             'entreprise',
+            'collecte',
             'submission',
             'disqualificationReasons',
             'needsEvaluation'

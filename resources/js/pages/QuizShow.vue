@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sendAnalytics } from '../composables/useAnalytics.js'
+import { useLogoBg } from '../composables/useLogoBg.js'
 import { countries } from '../data/countries.js'
 import { COUNTRY_REGION_MAP } from '../data/countryRegions.js'
 import BaseButton from '../components/ui/BaseButton.vue'
@@ -13,6 +14,11 @@ const props = defineProps({
     questions:     Array,
     session_token: { type: String, default: null },
 })
+
+const { bg: logoBg } = useLogoBg(
+    () => props.entreprise?.logo_url,
+    () => props.entreprise?.primary_color,
+)
 
 // ─── Phase ──────────────────────────────────────────────────────────────────
 const phase = ref('intro')   // 'intro' | 'quiz'
@@ -200,7 +206,7 @@ const goBack = () => {
                         <p class="dossier-republic">{{ t('quiz.dossier_republic') }}</p>
                         <p class="dossier-hospital">{{ t('quiz.dossier_hospital_name') }}<br>{{ t('quiz.dossier_hospital_dept') }}</p>
                         <div class="dossier-confidential-badge">{{ t('quiz.dossier_confidential') }}</div>
-                        <div class="dossier-logo-stamp">
+                        <div class="dossier-logo-stamp" :style="entreprise.logo_url ? `background-color: ${logoBg}` : ''">
                             <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="dossier-logo-img">
                             <span v-else class="dossier-logo-text">{{ entreprise.name }}</span>
                         </div>
@@ -238,7 +244,7 @@ const goBack = () => {
                         class="topbar-back-btn"
                         :title="t('quiz.back')"
                         @click="goBack"
-                        aria-label="Question précédente"
+                        :aria-label="t('quiz.prev_question')"
                     >
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
@@ -322,7 +328,9 @@ const goBack = () => {
 
                                 <!-- Company logo stamp (desktop only) -->
                                 <div v-if="entreprise.logo_url" class="hidden lg:flex doc-logo-wrap">
-                                    <img :src="entreprise.logo_url" :alt="entreprise.name" class="doc-logo-img">
+                                    <div class="doc-logo-frame" :style="`background-color: ${logoBg}`">
+                                        <img :src="entreprise.logo_url" :alt="entreprise.name" class="doc-logo-img">
+                                    </div>
                                 </div>
 
                                 <!-- "Votre réponse" label: desktop only -->
@@ -738,7 +746,6 @@ const goBack = () => {
 }
 .dossier-logo-stamp {
     border: 1.5px solid var(--color-doc-border-alt);
-    background: white;
     padding: 16px 12px;
     margin: 0 0 14px;
     display: flex;
@@ -1274,14 +1281,18 @@ const goBack = () => {
     justify-content: flex-end;
     margin-bottom: 2px;
 }
+.doc-logo-frame {
+    border: 1.5px solid var(--color-doc-border-dark);
+    padding: 8px 12px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .doc-logo-img {
     max-height: 48px;
     max-width: 160px;
     object-fit: contain;
-    border: 1.5px solid var(--color-doc-border-dark);
-    padding: 8px 12px;
-    background: white;
-    border-radius: 2px;
 }
 
 /* ── Choose hint text ─────────────────────────────────────────── */

@@ -20,6 +20,19 @@ return [
     'contact_message'         => 'Messaggio',
     'contact_reply_cta'       => 'Rispondere a :name →',
 
+    // Email nuova iscrizione (notifica admin)
+    'registration_badge'           => 'Nuova iscrizione',
+    'registration_action_required' => 'AZIONE RICHIESTA',
+    'registration_title'           => ':name vuole unirsi alla brigata.',
+    'registration_body'            => 'Una nuova azienda ha appena inviato la sua candidatura tramite il modulo di iscrizione. Accedete al back-office per esaminare la richiesta e validare (o rifiutare) il dossier.',
+    'registration_company_label'   => 'AZIENDA',
+    'registration_sector_label'    => 'SETTORE',
+    'registration_headcount_label' => 'ORGANICO',
+    'registration_employees'       => 'dipendenti',
+    'registration_contact_label'   => 'CONTATTO',
+    'registration_cta'             => 'Esaminare la candidatura →',
+    'registration_footer_note'     => 'Notifica automatica · Piattaforma HUG Donazione del Sangue',
+
     // Nuova email co-branding
     'hero_comms_label'  => 'Comunicazione ufficiale CTS-HUG',
     'hero_stamp'        => 'Dossier accettato',
@@ -49,7 +62,7 @@ return [
     'step3_cta'         => 'Accedere allo spazio admin',
     'recap_section'     => 'Riepilogo della raccolta',
     'recap_title'       => 'Il dossier in breve.',
-    'recap_badge'       => '— Confermato',
+    'recap_badge'       => 'Confermato',
     'recap_company'     => 'Azienda',
     'recap_date'        => 'Data raccolta',
     'recap_contact'     => 'Referente',

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useApi } from '../composables/useApi.js'
+import LogoContainer from '../components/ui/LogoContainer.vue'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
 
@@ -90,14 +91,15 @@ const save = async () => {
                         <span class="badge badge-neutral font-bold w-8 shrink-0 justify-center">#{{ i + 1 }}</span>
 
                         <!-- Logo ou initiale colorée -->
-                        <div class="h-8 w-8 rounded shrink-0 overflow-hidden border border-base-200 bg-white flex items-center justify-center p-0.5">
-                            <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                                 class="h-full w-full object-contain">
-                            <span v-else class="text-xs font-bold text-white w-full h-full flex items-center justify-center rounded"
-                                  :style="e.primary_color ? `background:${e.primary_color}` : 'background:#888'">
-                                {{ e.name[0].toUpperCase() }}
-                            </span>
-                        </div>
+                        <LogoContainer
+                            :logo-url="e.logo_url"
+                            :primary-color="e.primary_color"
+                            :name="e.name"
+                            size="w-8 h-8"
+                            rounded="rounded"
+                            init-rounded="rounded"
+                            class="text-xs"
+                        />
 
                         <!-- Couleur primaire -->
                         <div v-if="e.primary_color"
@@ -113,11 +115,11 @@ const save = async () => {
                             <button class="btn btn-ghost btn-xs px-1.5"
                                     :disabled="i === 0"
                                     @click="moveUp(i)"
-                                    aria-label="Monter">▲</button>
+                                    :aria-label="t('admin.trophees_move_up')">▲</button>
                             <button class="btn btn-ghost btn-xs px-1.5"
                                     :disabled="i === ranked.length - 1"
                                     @click="moveDown(i)"
-                                    aria-label="Descendre">▼</button>
+                                    :aria-label="t('admin.trophees_move_down')">▼</button>
                         </div>
 
                         <!-- Retirer -->
@@ -139,14 +141,15 @@ const save = async () => {
                     <div v-for="(e, i) in unranked" :key="e.id"
                          class="flex items-center gap-3 py-2 border-b border-base-200 last:border-0">
                         <!-- Logo ou initiale colorée -->
-                        <div class="h-8 w-8 rounded shrink-0 overflow-hidden border border-base-200 bg-white flex items-center justify-center p-0.5">
-                            <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                                 class="h-full w-full object-contain">
-                            <span v-else class="text-xs font-bold text-white w-full h-full flex items-center justify-center rounded"
-                                  :style="e.primary_color ? `background:${e.primary_color}` : 'background:#888'">
-                                {{ e.name[0].toUpperCase() }}
-                            </span>
-                        </div>
+                        <LogoContainer
+                            :logo-url="e.logo_url"
+                            :primary-color="e.primary_color"
+                            :name="e.name"
+                            size="w-8 h-8"
+                            rounded="rounded"
+                            init-rounded="rounded"
+                            class="text-xs"
+                        />
 
                         <!-- Couleur primaire -->
                         <div v-if="e.primary_color"

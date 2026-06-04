@@ -16,6 +16,7 @@
     "hero_highlight": "the case.",
     "hero_subtitle": "Mobilise your company for the Blood Donation campaign. A simple act, an immense impact.",
     "cta": "Discover partner companies",
+    "stats_aria": "Campaign statistics",
     "stats_donations": "donations collected",
     "stats_lives": "lives saved",
     "stats_hospitals": "HUG hospitals",
@@ -132,6 +133,17 @@
     "inactive": "This campaign is no longer active.",
     "collect_date": "Collection date",
     "rdv_cta": "Book an appointment",
+    "collecte_default_label": "Blood drive",
+    "collecte_rdv_cta_short": "Sign up",
+    "collectes_past_highlight": "Past",
+    "collectes_past_title": " drives",
+    "collecte_past_badge": "Ended",
+    "collecte_active_label": "Active campaign",
+    "collecte_active_title": "Book your appointment now",
+    "collecte_rdv_cta": "Book my slot →",
+    "collecte_none_label": "No active campaign",
+    "collecte_none_title": "Stay tuned, it's coming!",
+    "collecte_none_description": "{company} is preparing its next blood drive. Check back soon to book your slot.",
     "hero_title_line1": "A blood donation saves",
     "hero_title_highlight": "3 lives.",
     "hero_title_line2": "A 5-minute mission.",
@@ -227,7 +239,8 @@
     "dossier_status": "Status: pending",
     "complete_dossier_label": "Complete file",
     "dossier_confidential": "CONFIDENTIAL",
-    "dossier_word": "FILE"
+    "dossier_word": "FILE",
+    "prev_question": "Previous question"
   },
   "result": {
     "eligible_title": "You are eligible to donate!",
@@ -317,7 +330,10 @@
     "name_placeholder": "MyCompany Ltd",
     "contact_name_placeholder": "Smith",
     "contact_email_placeholder": "firstname.lastname{'@'}company.ch",
-    "logo_url_placeholder": "https://example.com/logo.png"
+    "logo_url_placeholder": "https://example.com/logo.png",
+    "color_swatch_title": "Choose a colour",
+    "color_hint_click": "Click the square to choose your company colour",
+    "color_error_primary": "Please choose your company colour (click the coloured square)"
   },
   "footer": {
     "tagline": "An initiative of the Blood Transfusion Centre of the Geneva University Hospitals.",
@@ -519,7 +535,10 @@
     "settings_admin_remove": "Remove",
     "settings_remove_confirm": "Remove {name} from administrators? This action is irreversible.",
     "settings_admin_added": "Administrator added successfully.",
-    "settings_you": "you"
+    "settings_you": "you",
+    "trophees_move_up": "Move up",
+    "trophees_move_down": "Move down",
+    "close_sidebar": "Close menu"
   },
   "lang": "EN"
 }

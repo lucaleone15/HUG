@@ -20,6 +20,19 @@ return [
     'contact_message'         => 'Nachricht',
     'contact_reply_cta'       => 'Antworten an :name →',
 
+    // E-Mail neue Anmeldung (Admin-Benachrichtigung)
+    'registration_badge'           => 'Neue Anmeldung',
+    'registration_action_required' => 'AKTION ERFORDERLICH',
+    'registration_title'           => ':name möchte der Brigade beitreten.',
+    'registration_body'            => 'Ein neues Unternehmen hat soeben seine Bewerbung über das Anmeldeformular eingereicht. Gehen Sie ins Back-Office, um die Anfrage zu prüfen und das Dossier zu validieren (oder abzulehnen).',
+    'registration_company_label'   => 'UNTERNEHMEN',
+    'registration_sector_label'    => 'BRANCHE',
+    'registration_headcount_label' => 'MITARBEITENDE',
+    'registration_employees'       => 'Mitarbeitende',
+    'registration_contact_label'   => 'KONTAKT',
+    'registration_cta'             => 'Bewerbung prüfen →',
+    'registration_footer_note'     => 'Automatische Benachrichtigung · HUG Blutspende-Plattform',
+
     // Nouvel email co-branding
     'hero_comms_label'  => 'Offizielle Mitteilung des CTS-HUG',
     'hero_stamp'        => 'Dossier akzeptiert',
@@ -49,7 +62,7 @@ return [
     'step3_cta'         => 'Zum Admin-Bereich',
     'recap_section'     => 'Zusammenfassung der Sammlung',
     'recap_title'       => 'Das Dossier auf einen Blick.',
-    'recap_badge'       => '— Bestätigt',
+    'recap_badge'       => 'Bestätigt',
     'recap_company'     => 'Unternehmen',
     'recap_date'        => 'Sammeldatum',
     'recap_contact'     => 'Ansprechperson',
