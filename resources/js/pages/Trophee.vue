@@ -70,7 +70,7 @@ const criteriaIcons = [
             :cta="{ label: t('nav.inscription'), href: '/inscription' }"
         >
             <template #visual>
-                <img :src="'/images/trophee-rouge.svg'" alt="Trophée HUG" class="w-1/2 max-w-[200px] mx-auto h-auto object-contain" decoding="async" />
+                <img :src="'/images/trophee-rouge.svg'" alt="Trophée HUG" class="w-4/5 mx-auto h-auto object-contain" decoding="async" />
             </template>
         </PageHero>
 
