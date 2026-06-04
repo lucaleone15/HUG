@@ -1,4 +1,6 @@
 <script setup>
+defineOptions({ inheritAttrs: false })
+
 defineProps({
     modelValue: { type: [String, Number], default: undefined },
     label:      { type: String, default: null },
@@ -22,6 +24,7 @@ defineEmits(['update:modelValue'])
             </span>
         </div>
         <input
+            v-bind="$attrs"
             :type="type"
             :name="name"
             :value="modelValue"
@@ -31,7 +34,7 @@ defineEmits(['update:modelValue'])
             class="input input-bordered w-full"
             :class="error ? 'input-error' : ''"
             @input="$emit('update:modelValue', $event.target.value)"
-            @wheel="type === 'number' ? $event.target.blur() : undefined"
+            @wheel="type === 'number' ? ($event.preventDefault() || $event.target.blur()) : undefined"
         >
         <div v-if="hint && !error" class="label pt-0">
             <span class="label-text-alt text-base-content/50">{{ hint }}</span>

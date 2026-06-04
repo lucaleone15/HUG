@@ -15,12 +15,7 @@ const { t } = useI18n()
 const loading = ref(true)
 const e       = ref(null)
 
-// Collectes
-const collectes        = ref([])
-const collectesLoading = ref(false)
-const showNewForm      = ref(false)
-const newCollecte      = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
-const savingCollecte   = ref(false)
+const collecteCount = ref(null)
 
 onMounted(async () => {
     try {
@@ -31,49 +26,23 @@ onMounted(async () => {
     } finally {
         loading.value = false
     }
-    loadCollectes()
+    api.get(`/admin/entreprises/${route.params.id}/collectes`).then(res => {
+        const list = res.data ?? []
+        collecteCount.value = { total: list.length, active: list.filter(c => c.is_active).length }
+    }).catch(() => {})
 })
 
-async function loadCollectes() {
-    collectesLoading.value = true
-    try {
-        const res = await api.get(`/admin/entreprises/${route.params.id}/collectes`)
-        collectes.value = res.data ?? []
-    } finally {
-        collectesLoading.value = false
-    }
-}
-
-async function addCollecte() {
-    if (!newCollecte.value.ondoc_url) return
-    savingCollecte.value = true
-    try {
-        await api.post(`/admin/entreprises/${route.params.id}/collectes`, {
-            ondoc_url: newCollecte.value.ondoc_url,
-            rdv_date:  newCollecte.value.rdv_date  || null,
-            label:     newCollecte.value.label     || null,
-            is_active: newCollecte.value.is_active,
-        })
-        newCollecte.value = { ondoc_url: '', rdv_date: '', label: '', is_active: true }
-        showNewForm.value = false
-        await loadCollectes()
-    } finally {
-        savingCollecte.value = false
-    }
-}
-
-async function toggleCollecte(c) {
-    await api.put(`/admin/collectes/${c.id}`, { is_active: !c.is_active })
-    await loadCollectes()
-}
-
-async function deleteCollecte(c) {
-    if (!confirm(t('admin.collecte_confirm_delete'))) return
-    await api.del(`/admin/collectes/${c.id}`)
-    await loadCollectes()
-}
-
 const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
+const goCollectes = () => router.push(`/admin/entreprises/${route.params.id}/collectes`)
+
+const copied = ref(false)
+function copyLink() {
+    const url = `${window.location.origin}/c/${e.value.access_token}`
+    navigator.clipboard.writeText(url).then(() => {
+        copied.value = true
+        setTimeout(() => { copied.value = false }, 2000)
+    })
+}
 </script>
 
 <template>
@@ -125,10 +94,15 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
 
                     <div v-if="e.access_token" class="mt-2">
                         <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.company_url') }}</span>
-                        <a :href="`/c/${e.access_token}`" target="_blank"
-                           class="block text-xs text-primary hover:underline truncate mt-0.5 font-mono">
-                            {{ `/c/${e.access_token}` }}
-                        </a>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <a :href="`/c/${e.access_token}`" target="_blank"
+                               class="text-xs text-primary hover:underline truncate font-mono flex-1">
+                                {{ `/c/${e.access_token}` }}
+                            </a>
+                            <button class="btn btn-ghost btn-xs shrink-0" @click="copyLink">
+                                {{ copied ? t('admin.copied') : t('admin.copy') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,78 +174,29 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                 </div>
             </div>
 
-            <!-- Collectes (campagnes OnDoc) -->
+            <!-- Collectes (résumé + lien) -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
                     <div class="flex items-center justify-between mb-1">
                         <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{ t('admin.form_section_collectes') }}</div>
-                        <button class="btn btn-ghost btn-xs ml-3" @click="showNewForm = !showNewForm">
-                            {{ showNewForm ? t('admin.collecte_cancel') : t('admin.collecte_add') }}
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-base-content/60">
+                            <span v-if="collecteCount === null" class="loading loading-spinner loading-xs"></span>
+                            <template v-else-if="collecteCount.total === 0">
+                                {{ t('admin.collecte_empty') }}
+                            </template>
+                            <template v-else>
+                                <span class="font-semibold text-base-content">{{ collecteCount.active }}</span>
+                                {{ t('admin.collecte_status_active') }}
+                                <span class="text-base-content/30 mx-1">·</span>
+                                {{ collecteCount.total }} {{ t('admin.collecte_total') }}
+                            </template>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" @click="goCollectes">
+                            {{ t('admin.collecte_manage') }}
                         </button>
                     </div>
-
-                    <!-- Formulaire ajout collecte -->
-                    <form v-if="showNewForm" @submit.prevent="addCollecte" class="bg-base-200 rounded-xl p-4 flex flex-col gap-3 mb-2">
-                        <div>
-                            <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_ondoc_url') }} *</label>
-                            <input v-model="newCollecte.ondoc_url" type="url" required
-                                class="input input-bordered input-sm w-full font-mono text-xs"
-                                placeholder="https://www.onedoc.ch/fr/..." />
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_rdv_date') }}</label>
-                                <input v-model="newCollecte.rdv_date" type="date" class="input input-bordered input-sm w-full" />
-                            </div>
-                            <div>
-                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.collecte_label') }}</label>
-                                <input v-model="newCollecte.label" type="text" class="input input-bordered input-sm w-full"
-                                    :placeholder="t('admin.collecte_label_placeholder')" />
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input v-model="newCollecte.is_active" type="checkbox" class="checkbox checkbox-sm checkbox-success" id="new-collecte-active" />
-                            <label for="new-collecte-active" class="text-sm">{{ t('admin.collecte_is_active') }}</label>
-                        </div>
-                        <BaseButton type="submit" size="sm" :loading="savingCollecte">
-                            {{ t('admin.collecte_save') }}
-                        </BaseButton>
-                    </form>
-
-                    <!-- Liste des collectes -->
-                    <div v-if="collectesLoading" class="flex justify-center py-4">
-                        <span class="loading loading-spinner loading-sm"></span>
-                    </div>
-                    <div v-else-if="!collectes.length" class="text-sm text-base-content/40 italic py-2">
-                        {{ t('admin.collecte_empty') }}
-                    </div>
-                    <ul v-else class="flex flex-col gap-2">
-                        <li v-for="c in collectes" :key="c.id"
-                            class="flex items-start gap-3 p-3 rounded-lg border border-base-200 text-sm">
-                            <span :class="c.is_active ? 'badge badge-success badge-sm mt-0.5 shrink-0' : 'badge badge-ghost badge-sm mt-0.5 shrink-0'">
-                                {{ c.is_active ? t('admin.collecte_status_active') : t('admin.collecte_status_inactive') }}
-                            </span>
-                            <div class="flex-1 min-w-0">
-                                <a :href="c.ondoc_url" target="_blank" rel="noopener"
-                                   class="link link-hover text-primary text-xs font-mono break-all block">
-                                    {{ c.ondoc_url }}
-                                </a>
-                                <div v-if="c.label || c.rdv_date" class="text-xs text-base-content/50 mt-0.5">
-                                    <span v-if="c.label">{{ c.label }}</span>
-                                    <span v-if="c.label && c.rdv_date"> · </span>
-                                    <span v-if="c.rdv_date">{{ c.rdv_date }}</span>
-                                </div>
-                            </div>
-                            <div class="flex gap-1 shrink-0">
-                                <button class="btn btn-ghost btn-xs" @click="toggleCollecte(c)">
-                                    {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate') }}
-                                </button>
-                                <button class="btn btn-ghost btn-xs text-error" @click="deleteCollecte(c)">
-                                    {{ t('admin.delete') }}
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
                 </div>
             </div>
 

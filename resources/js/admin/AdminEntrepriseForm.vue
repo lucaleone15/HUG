@@ -26,8 +26,6 @@ const form = ref({
     is_active: true, is_labelled: false, is_validated: false,
     is_public: true,
     wants_trophy: false,
-    rdv_url: '',
-    rdv_date: '',
 })
 
 const logoFile     = ref(null)
@@ -61,9 +59,6 @@ onMounted(async () => {
         form.value.is_public    = e.is_public !== false
         form.value.wants_trophy = !!e.wants_trophy
 
-        form.value.rdv_url  = e.rdv_url  ?? ''
-        form.value.rdv_date = e.rdv_date ?? ''
-
         if (e.logo_url) logoPreview.value = e.logo_url
 
     } catch (err) {
@@ -94,7 +89,7 @@ const save = async () => {
         const fd = new FormData()
 
         const fields = ['name','slug','type','employee_count','contact_name','contact_email',
-                        'primary_color','secondary_color','logo_url','rdv_url','rdv_date']
+                        'primary_color','secondary_color','logo_url']
         fields.forEach(k => {
             if (form.value[k] !== '' && form.value[k] !== null) fd.append(k, form.value[k])
         })
@@ -170,7 +165,7 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_employee_count') }}</span></div>
-                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm" @wheel="$event.target.blur()">
+                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm" @wheel="$event.preventDefault() || $event.target.blur()">
                     </label>
 
 
@@ -277,28 +272,6 @@ const fieldError = (key) => errors.value[key]?.[0]
                             {{ t('admin.form_wants_trophy') }}
                             <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint') }}</span>
                         </span>
-                    </label>
-                </div>
-
-                <!-- Section : Collecte CTS -->
-                <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_cts') }}</div>
-                <p class="text-xs text-base-content/50 -mt-2">{{ t('admin.form_cts_desc') }}</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <label class="form-control col-span-1 sm:col-span-2">
-                        <div class="label"><span class="label-text">{{ t('admin.form_rdv_url') }}</span></div>
-                        <input v-model="form.rdv_url" type="url" class="input input-bordered input-sm"
-                            :placeholder="t('admin.form_rdv_url_placeholder')">
-                        <div v-if="fieldError('rdv_url')" class="label">
-                            <span class="label-text-alt text-error">{{ fieldError('rdv_url') }}</span>
-                        </div>
-                    </label>
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_rdv_date') }}</span></div>
-                        <input v-model="form.rdv_date" type="date" class="input input-bordered input-sm">
-                        <div v-if="fieldError('rdv_date')" class="label">
-                            <span class="label-text-alt text-error">{{ fieldError('rdv_date') }}</span>
-                        </div>
                     </label>
                 </div>
 
