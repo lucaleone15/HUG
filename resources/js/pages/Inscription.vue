@@ -281,12 +281,6 @@ const handleSubmit = (e) => {
                         </div>
                     </div>
 
-                    <!-- Séparateur section contact -->
-                    <div class="pt-4 border-t border-base-200">
-                        <p class="text-xs uppercase tracking-[0.2em] text-base-content/35 mb-6">
-                            {{ t('inscription.section_contact_ref') }}
-                        </p>
-                    </div>
 
                     <BaseInput
                         name="contact_name"
