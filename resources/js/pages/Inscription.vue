@@ -163,6 +163,8 @@ const handleSubmit = (e) => {
                     <BaseInput
                         name="employee_count"
                         type="number"
+                        min="1"
+                        step="1"
                         :label="t('inscription.field_size')"
                         :placeholder="t('inscription.size_placeholder')"
                         :error="errors.employee_count?.[0]"
