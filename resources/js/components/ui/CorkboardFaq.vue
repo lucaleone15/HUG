@@ -126,7 +126,7 @@ onMounted(() => {
         if (!entry.isIntersecting) return
         _observer.disconnect()
         boardRef.value.querySelectorAll('.stagger-item').forEach((el, i) => {
-            setTimeout(() => el.classList.add('is-visible'), i * 55)
+            setTimeout(() => el.classList.add('is-visible'), i * 18)
         })
     }, { threshold: 0.08 })
 
@@ -345,10 +345,10 @@ onUnmounted(() => {
 /* ── Stagger d'entrée ────────────────────────────────────────────── */
 .stagger-item {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
     transition:
-        opacity  500ms cubic-bezier(0.23,1,0.32,1),
-        transform 500ms cubic-bezier(0.23,1,0.32,1);
+        opacity  220ms cubic-bezier(0.23,1,0.32,1),
+        transform 220ms cubic-bezier(0.23,1,0.32,1);
 }
 .stagger-item.is-visible {
     opacity: 1;

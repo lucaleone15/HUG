@@ -102,9 +102,8 @@ function bgFromPixels(data, primaryColor) {
 
 /** Choisit le fond selon la proportion de pixels clairs */
 function pickBg(lightRatio) {
-    if (lightRatio > 0.55) return '#1a1a1a'  // logo clair → fond sombre
-    if (lightRatio < 0.35) return '#f0f0f0'  // logo sombre → fond clair
-    return '#374151'                          // logo mixte → gris foncé neutre
+    if (lightRatio > 0.55) return '#3a3a3a'  // logo clair → gris foncé (pas noir)
+    return '#f0f0f0'                          // logo sombre ou mixte → gris clair
 }
 
 /** Fallback : fond neutre systématique (CORS ou échec canvas) */
