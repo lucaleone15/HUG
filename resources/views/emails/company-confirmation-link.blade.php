@@ -34,7 +34,7 @@
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="vertical-align:middle;">
-            <img src="{{ config('app.url') }}/images/hug-logo_blanc.svg" alt="HUG" height="26" style="display:block;">
+            <img src="{{ config('app.url') }}/images/hug-logo_blanc.png" alt="HUG" height="26" style="display:block;">
           </td>
           @if($logoAbsUrl)
           <td style="text-align:center;vertical-align:middle;color:{{ $EC['cross'] }};font-size:15px;font-weight:300;width:40px;">×</td>

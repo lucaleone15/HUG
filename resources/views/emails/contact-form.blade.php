@@ -23,7 +23,7 @@
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="vertical-align:middle;">
-            <img src="{{ config('app.url') }}/images/hug-logo_blanc.svg" alt="HUG" height="26" style="display:block;">
+            <img src="{{ config('app.url') }}/images/hug-logo_blanc.png" alt="HUG" height="26" style="display:block;">
           </td>
           <td style="text-align:right;vertical-align:middle;">
             <span style="font-size:11px;color:{{ $EC['on_brand_lo'] }};">donnez-votre-sang.ch</span>
