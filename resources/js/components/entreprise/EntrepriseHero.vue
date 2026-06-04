@@ -13,8 +13,15 @@ defineProps({
 </script>
 
 <template>
-    <header class="py-16 px-6 text-white" :style="`background-color: ${entreprise.primary_color}`">
-        <div class="max-w-2xl mx-auto text-center">
+    <header class="relative py-20 px-6 text-white overflow-hidden"
+            style="background-image: url('https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=1400&q=80'); background-size: cover; background-position: center 30%;">
+        <!-- Overlay couleur primaire -->
+        <div class="absolute inset-0" :style="`background-color: ${entreprise.primary_color}; opacity: 0.78;`"></div>
+        <!-- Vignette bas -->
+        <div class="absolute inset-0 pointer-events-none"
+             style="background: linear-gradient(to top, rgba(0,0,0,0.30) 0%, transparent 55%);"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto text-center">
             <div v-if="entreprise.logo_url" class="flex justify-center mb-6 hero-item" style="--delay:0ms">
                 <div class="bg-white/15 rounded-xl p-3">
                     <img

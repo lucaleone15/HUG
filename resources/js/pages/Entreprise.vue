@@ -207,15 +207,13 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                     </p>
                 </div>
                 <div v-else class="aspect-[4/3] rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative page-hero-visual"
-                     :style="`background-color: var(--c1); color: var(--t1)`">
-                    <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 300" fill="none" aria-hidden="true">
-                        <circle cx="360" cy="-20" r="220" stroke="currentColor" stroke-width="1.5"/>
-                        <circle cx="360" cy="-20" r="160" stroke="currentColor" stroke-width="1"/>
-                        <circle cx="360" cy="-20" r="100" stroke="currentColor" stroke-width="0.5"/>
-                    </svg>
-                    <div class="relative z-10">
-                        <div class="text-[0.65rem] uppercase tracking-[0.25em] opacity-50 mb-2">{{ entreprise.name }}</div>
-                        <div class="font-extrabold leading-tight opacity-90" style="font-size: clamp(1.5rem, 3.5vw, 2.25rem);">{{ t('entreprise.quiz_cta') }}</div>
+                     style="background-image: url('https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
+                    <!-- Overlay couleur primaire -->
+                    <div class="absolute inset-0" :style="`background-color: var(--c1); opacity: 0.72;`"></div>
+                    <!-- Vignette bas pour lisibilité du texte -->
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);"></div>
+                    <div class="relative z-10" :style="`color: var(--t1)`">
+                        <div class="font-extrabold leading-tight uppercase tracking-wide" style="font-size: clamp(1.25rem, 3vw, 2rem);">{{ entreprise.name }}</div>
                     </div>
                 </div>
             </div>
