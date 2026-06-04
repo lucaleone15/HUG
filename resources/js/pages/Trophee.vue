@@ -349,7 +349,7 @@ const criteriaIcons = [
     flex-shrink: 0;
 }
 .podium-avatar--1 {
-    box-shadow: 0 6px 20px rgba(211,44,55,0.28);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
 }
 .podium-avatar-img {
     max-height: 100%;
