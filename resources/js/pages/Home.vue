@@ -219,24 +219,10 @@ const steps = computed(() => [
                     </a>
                 </div>
 
-                <!-- CTA visual: photo + texte superposé -->
-                <div class="reveal-up relative aspect-[4/3] rounded-xl overflow-hidden select-none"
+                <!-- CTA visual: photo seule -->
+                <div class="reveal-up aspect-[4/3] rounded-xl overflow-hidden select-none"
                      :class="{ 'reveal-up--visible': ctaVisible }"
                      style="transition-delay: 160ms; background-image: url('https://images.unsplash.com/photo-1697192156499-d85cfe1452c0?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
-                    <!-- Scrim pour lisibilité du texte -->
-                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(25,5,7,0.85) 35%, rgba(25,5,7,0.25) 100%);"></div>
-                    <!-- Top-right -->
-                    <div class="absolute top-6 right-6 text-right z-10">
-                        <div class="text-white/55 text-[0.7rem] mb-1">{{ t('home.impact_lives') }}</div>
-                        <div class="font-extrabold leading-none text-white"
-                             style="font-size: clamp(2rem, 4vw, 3rem);">3</div>
-                    </div>
-                    <!-- Bottom strip -->
-                    <div class="absolute bottom-0 left-0 right-0 px-6 py-5 z-10">
-                        <div class="text-[0.7rem] text-white/45 mb-1">{{ t('home.campaign_badge') }}</div>
-                        <div class="font-extrabold text-white leading-tight"
-                             style="font-size: clamp(1.2rem, 2.5vw, 1.6rem);">{{ t('home.cta_section_title') }}</div>
-                    </div>
                 </div>
 
             </div>
