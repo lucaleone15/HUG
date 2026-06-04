@@ -137,7 +137,7 @@ const criteriaIcons = [
                         <!-- #2 -->
                         <div class="podium-slot podium-slot--2" v-if="others[0]">
                             <LogoContainer :logo-url="others[0].logo_url" :primary-color="others[0].primary_color"
-                                :name="others[0].name" size="w-[72px] h-[72px]" rounded="rounded-full"
+                                :name="others[0].name" size="w-[72px] h-[72px]" rounded="rounded-xl"
                                 class="podium-avatar" />
                             <p class="podium-name">{{ others[0].name }}</p>
                             <div class="podium-block podium-block--2"><span class="podium-rank">2</span></div>
@@ -145,7 +145,7 @@ const criteriaIcons = [
                         <!-- #1 -->
                         <div class="podium-slot podium-slot--1" v-if="winner1">
                             <LogoContainer :logo-url="winner1.logo_url" :primary-color="winner1.primary_color"
-                                :name="winner1.name" size="w-[88px] h-[88px]" rounded="rounded-full"
+                                :name="winner1.name" size="w-[88px] h-[88px]" rounded="rounded-xl"
                                 class="podium-avatar podium-avatar--1" />
                             <p class="podium-name podium-name--1">{{ winner1.name }}</p>
                             <div class="podium-block podium-block--1"><span class="podium-rank">1</span></div>
@@ -153,7 +153,7 @@ const criteriaIcons = [
                         <!-- #3 -->
                         <div class="podium-slot podium-slot--3" v-if="others[1]">
                             <LogoContainer :logo-url="others[1].logo_url" :primary-color="others[1].primary_color"
-                                :name="others[1].name" size="w-[72px] h-[72px]" rounded="rounded-full"
+                                :name="others[1].name" size="w-[72px] h-[72px]" rounded="rounded-xl"
                                 class="podium-avatar" />
                             <p class="podium-name">{{ others[1].name }}</p>
                             <div class="podium-block podium-block--3"><span class="podium-rank">3</span></div>
@@ -166,7 +166,7 @@ const criteriaIcons = [
                     <li v-for="w in others.slice(2)" :key="w.id" class="ranking-row">
                         <span class="ranking-row-num">{{ w.trophy_rank }}</span>
                         <LogoContainer :logo-url="w.logo_url" :primary-color="w.primary_color"
-                            :name="w.name" size="w-10 h-10" rounded="rounded-full" />
+                            :name="w.name" size="w-10 h-10" rounded="rounded-xl" />
                         <div class="flex-1 min-w-0">
                             <div class="font-semibold text-sm truncate">{{ w.name }}</div>
                             <div v-if="w.type" class="text-xs text-base-content/40">{{ t('inscription.type_' + w.type) }}</div>
@@ -203,7 +203,7 @@ const criteriaIcons = [
                     </div>
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0"
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0"
                                  :style="`background-color: ${previousWinners[0].color}`">
                                 {{ previousWinners[0].name[0] }}
                             </div>
@@ -304,7 +304,6 @@ const criteriaIcons = [
     flex-direction: column;
     gap: 8px;
     padding: 0 0 0.75rem;
-    border-top: 1px solid rgba(0,0,0,0.07);
 }
 .ranking-row {
     display: flex;

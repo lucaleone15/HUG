@@ -8,8 +8,8 @@ const props = defineProps({
     primaryColor: { type: String,  default: null },
     name:         { type: String,  default: '' },
     size:         { type: String,  default: 'w-14 h-14' },
-    rounded:      { type: String,  default: 'rounded-lg' },
-    initRounded:  { type: String,  default: 'rounded-full' },
+    rounded:      { type: String,  default: 'rounded-xl' },
+    initRounded:  { type: String,  default: 'rounded-xl' },
 })
 
 const { bg } = useLogoBg(

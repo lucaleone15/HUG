@@ -108,10 +108,10 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </script>
 
 <template>
-    <div class="min-h-screen bg-white flex flex-col overflow-x-hidden" :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}`">
+    <div class="min-h-screen bg-base-100 flex flex-col overflow-x-hidden" :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}`">
 
         <!-- Header co-brandé -->
-        <header class="border-b border-base-200 bg-white sticky top-0 z-50 px-3 md:px-6 py-3">
+        <header class="bg-white sticky top-0 z-50 px-3 md:px-6 py-3" style="border-bottom: 3px solid var(--c1)">
             <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
                 <!-- Logos -->
                 <div class="flex items-center gap-2 min-w-0 overflow-hidden">
@@ -123,10 +123,10 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                     <span class="text-base-content/30 font-light shrink-0">×</span>
                     <div v-if="entreprise.logo_url"
                          class="rounded p-1 shrink-0 flex items-center justify-center"
-                         style="height: 28px; width: 52px;"
+                         style="height: 36px; width: auto; min-width: 36px;"
                          :style="`background-color: ${headerLogoBg}`">
                         <img :src="entreprise.logo_url" :alt="entreprise.name"
-                             class="h-5 max-w-[44px] object-contain">
+                             class="h-7 max-w-[56px] object-contain">
                     </div>
                     <span v-else class="font-semibold text-sm truncate min-w-0">{{ entreprise.name }}</span>
                 </div>
@@ -144,12 +144,13 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
         </header>
 
         <!-- Bottom nav — mobile uniquement -->
-        <nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-base-200"
-             style="padding-bottom: env(safe-area-inset-bottom);">
+        <nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
+             style="background-color: var(--c1); padding-bottom: env(safe-area-inset-bottom);">
             <div class="flex items-center gap-3 px-4 py-2 min-h-[56px]">
                 <!-- Retour accueil HUG -->
                 <a href="/"
-                   class="flex flex-col items-center justify-center gap-1 px-3 shrink-0 text-base-content/40 hover:text-base-content/70 transition-colors">
+                   class="flex flex-col items-center justify-center gap-1 px-3 shrink-0 transition-colors"
+                   style="color: var(--t1); opacity: 0.80;">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                     </svg>
@@ -158,61 +159,73 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                 <!-- CTA quiz — occupe tout l'espace restant -->
                 <a :href="`/c/${entreprise.access_token}/quiz`"
                    class="flex-1 btn border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
-                   :style="`background-color: var(--c1); color: var(--t1);`">
+                   style="background-color: var(--t1); color: var(--c1);">
                     {{ t('entreprise.quiz_cta') }}
                 </a>
             </div>
         </nav>
 
         <!-- Hero avec countdown -->
-        <section class="py-10 md:py-16 px-4 md:px-6 bg-white">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-8 md:mb-12">
+        <section class="py-12 md:py-20 px-4 md:px-6" style="background-color: var(--c1)">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-stretch mb-8 md:mb-12">
                 <div class="page-hero-text">
-                    <h1 class="font-extrabold leading-tight mb-5 text-base-content"
-                        style="font-size: clamp(1.6rem, 5vw, 3.5rem); overflow-wrap: break-word;">
-                        {{ t('entreprise.hero_title_line1') }} <span style="color: var(--c1)">{{ t('entreprise.hero_title_highlight') }}</span><br>
+                    <h1 class="font-extrabold leading-tight mb-5"
+                        style="color: var(--t1); font-size: clamp(1.6rem, 5vw, 3.5rem); overflow-wrap: break-word;">
+                        {{ t('entreprise.hero_title_line1') }}
+                        <span class="inline-block px-1 -mx-1 rounded-md" style="background-color: var(--t1); color: var(--c1);">{{ t('entreprise.hero_title_highlight') }}</span><br>
                         {{ t('entreprise.hero_title_line2') }}
                     </h1>
-                    <p class="text-base-content/60 mb-8 leading-relaxed">
+                    <p class="mb-8 leading-relaxed" style="color: var(--t1); opacity: 0.85;">
                         {{ t('entreprise.hero_description', { company: entreprise.name }) }}
                     </p>
                     <a :href="`/c/${entreprise.access_token}/quiz`"
-                       class="btn btn-co border-none font-semibold px-6 md:px-8 rounded-sm uppercase text-sm tracking-wide w-full sm:w-auto">
+                       class="btn border-none font-semibold px-6 md:px-8 rounded-sm uppercase text-sm tracking-wide w-full sm:w-auto"
+                       style="background-color: var(--t1); color: var(--c1);">
                         {{ t('entreprise.quiz_discover') }}
                     </a>
                 </div>
 
                 <!-- Countdown -->
-                <div v-if="hasCountdown" class="flex flex-col items-center gap-2 page-hero-visual w-full">
-                    <p class="text-sm text-base-content/50 mb-2">{{ t('entreprise.countdown_label') }}</p>
-                    <div class="flex items-center gap-2 w-full">
-                        <div class="text-center flex-1 min-w-0">
-                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c1); color: var(--t1)">{{ pad(countdown.days) }}</div>
-                            <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_days') }}</div>
+                <div v-if="hasCountdown" class="flex flex-col justify-center gap-5 page-hero-visual w-full">
+                    <p class="text-sm font-semibold"
+                       style="color: var(--t1); opacity: 0.72;">{{ t('entreprise.countdown_label') }}</p>
+
+                    <div class="flex items-end gap-3 md:gap-5">
+                        <div class="flex-1 text-center">
+                            <div class="font-extrabold tabular-nums leading-none"
+                                 style="color: var(--t1); font-size: clamp(2.5rem, 7vw, 4.5rem);">{{ pad(countdown.days) }}</div>
+                            <div class="text-[0.65rem] uppercase tracking-[0.14em] mt-2 font-semibold"
+                                 style="color: var(--t1); opacity: 0.82;">{{ t('entreprise.countdown_days') }}</div>
                         </div>
-                        <span class="text-xl font-bold text-base-content/30 mb-4 shrink-0">:</span>
-                        <div class="text-center flex-1 min-w-0">
-                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c2); color: var(--t2)">{{ pad(countdown.hours) }}</div>
-                            <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_hours') }}</div>
+                        <span class="pb-6 font-bold shrink-0 text-2xl"
+                              style="color: var(--t1); opacity: 0.25;">:</span>
+                        <div class="flex-1 text-center">
+                            <div class="font-extrabold tabular-nums leading-none"
+                                 style="color: var(--t1); font-size: clamp(2.5rem, 7vw, 4.5rem);">{{ pad(countdown.hours) }}</div>
+                            <div class="text-[0.65rem] uppercase tracking-[0.14em] mt-2 font-semibold"
+                                 style="color: var(--t1); opacity: 0.82;">{{ t('entreprise.countdown_hours') }}</div>
                         </div>
-                        <span class="text-xl font-bold text-base-content/30 mb-4 shrink-0">:</span>
-                        <div class="text-center flex-1 min-w-0">
-                            <div class="text-3xl md:text-5xl font-bold tabular-nums rounded-xl py-2 md:py-3" style="background-color: var(--c1); color: var(--t1)">{{ pad(countdown.minutes) }}</div>
-                            <div class="text-xs text-base-content/50 mt-1">{{ t('entreprise.countdown_minutes') }}</div>
+                        <span class="pb-6 font-bold shrink-0 text-2xl"
+                              style="color: var(--t1); opacity: 0.25;">:</span>
+                        <div class="flex-1 text-center">
+                            <div class="font-extrabold tabular-nums leading-none"
+                                 style="color: var(--t1); font-size: clamp(2.5rem, 7vw, 4.5rem);">{{ pad(countdown.minutes) }}</div>
+                            <div class="text-[0.65rem] uppercase tracking-[0.14em] mt-2 font-semibold"
+                                 style="color: var(--t1); opacity: 0.82;">{{ t('entreprise.countdown_minutes') }}</div>
                         </div>
                     </div>
-                    <p v-if="nextCollecte?.rdv_date" class="text-sm text-base-content/40 mt-3 text-center">
+
+                    <p v-if="nextCollecte?.rdv_date" class="text-sm pt-4"
+                       :style="`color: var(--t1); opacity: 0.82; border-top: 1px solid color-mix(in srgb, var(--t1) 20%, transparent);`">
                         {{ t('entreprise.collect_date') }} :
                         <strong>{{ fullDate(nextCollecte.rdv_date) }}</strong>
                     </p>
                 </div>
-                <div v-else class="aspect-[4/3] rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative page-hero-visual"
+                <div v-else class="h-full min-h-[280px] rounded-xl overflow-hidden flex flex-col items-start justify-end p-8 relative page-hero-visual"
                      style="background-image: url('https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
-                    <!-- Overlay couleur primaire -->
-                    <div class="absolute inset-0" :style="`background-color: var(--c1); opacity: 0.72;`"></div>
-                    <!-- Vignette bas pour lisibilité du texte -->
-                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);"></div>
-                    <div class="relative z-10" :style="`color: var(--t1)`">
+                    <div class="absolute inset-0" style="background-color: rgba(0,0,0,0.5);"></div>
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 55%);"></div>
+                    <div class="relative z-10 text-white">
                         <div class="font-extrabold leading-tight uppercase tracking-wide" style="font-size: clamp(1.25rem, 3vw, 2rem);">{{ entreprise.name }}</div>
                     </div>
                 </div>
@@ -225,21 +238,22 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                     <div class="flex flex-col gap-3">
                         <a v-for="c in upcomingCollectes" :key="c.id"
                            :href="`/c/${entreprise.access_token}/quiz`"
-                           class="flex items-center gap-4 rounded-xl border border-base-200 bg-white px-4 py-4 hover:border-[var(--c1)] transition-colors group">
+                           class="flex items-center gap-4 rounded-xl px-4 py-4 hover:opacity-90 transition-opacity group"
+                           style="background-color: var(--t1);">
 
                             <!-- Badge date -->
                             <div class="shrink-0 rounded-lg w-14 text-center py-2"
-                                 style="background-color: var(--c1); color: var(--t1)">
+                                 style="background-color: var(--c1); color: var(--t1);">
                                 <div class="text-2xl font-extrabold leading-none tabular-nums">{{ c.rdv_date ? dayNum(c.rdv_date) : '—' }}</div>
-                                <div class="text-[0.6rem] uppercase tracking-wider opacity-80 mt-0.5">{{ c.rdv_date ? monthShort(c.rdv_date) : '' }}</div>
+                                <div class="text-[0.6rem] uppercase tracking-wider opacity-90 mt-0.5">{{ c.rdv_date ? monthShort(c.rdv_date) : '' }}</div>
                             </div>
 
                             <!-- Infos -->
                             <div class="flex-1 min-w-0">
-                                <div class="font-bold text-base-content leading-snug truncate">
+                                <div class="font-bold leading-snug truncate" style="color: var(--c1);">
                                     {{ c.label || t('entreprise.collecte_default_label') }}
                                 </div>
-                                <div v-if="c.rdv_date" class="text-xs text-base-content/50 mt-0.5">
+                                <div v-if="c.rdv_date" class="text-xs mt-0.5" style="color: var(--c1); opacity: 0.68;">
                                     {{ fullDate(c.rdv_date) }}
                                 </div>
                             </div>
@@ -256,14 +270,15 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
                 <!-- Aucune collecte active -->
                 <template v-else>
-                    <div class="rounded-xl border border-dashed border-base-300 px-6 py-8 text-center">
-                        <p class="text-xs uppercase tracking-[0.2em] font-semibold text-base-content/40 mb-2">
+                    <div class="py-4">
+                        <p class="text-sm font-semibold mb-3"
+                           style="color: var(--t1); opacity: 0.72;">
                             {{ t('entreprise.collecte_none_label') }}
                         </p>
-                        <p class="font-bold text-base-content/70 mb-1" style="font-size: clamp(1rem, 2vw, 1.25rem);">
+                        <p class="font-bold mb-2" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.25rem);">
                             {{ t('entreprise.collecte_none_title') }}
                         </p>
-                        <p class="text-sm text-base-content/40 max-w-xs mx-auto">
+                        <p class="text-sm" style="color: var(--t1); opacity: 0.82; max-width: 42ch;">
                             {{ t('entreprise.collecte_none_description', { company: entreprise.name }) }}
                         </p>
                     </div>
@@ -280,9 +295,9 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
         </section>
 
         <!-- Stats de l'entreprise -->
-        <section class="py-10 md:py-16 px-4 md:px-6" style="background-color: var(--c2); color: var(--t2)" ref="statsRef">
+        <section class="py-10 md:py-16 px-4 md:px-6" style="background-color: var(--c2); color: var(--t2);" ref="statsRef">
             <div class="max-w-5xl mx-auto">
-                <p class="text-xs mb-8 uppercase tracking-[0.2em] font-semibold opacity-50 reveal-up"
+                <p class="text-xs mb-8 uppercase tracking-[0.2em] font-semibold opacity-75 reveal-up"
                    :class="{ 'reveal-up--visible': statsVisible }">{{ t('entreprise.stats_label') }}</p>
                 <div class="grid grid-cols-2 md:flex md:flex-wrap gap-6 md:gap-x-16">
                     <div v-if="entreprise.eligible_count"
@@ -291,7 +306,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         <div class="font-bold leading-none mb-1" style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.eligible_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('home.stats_eligible') }}</div>
+                        <div class="text-xs opacity-80 uppercase tracking-[0.12em]">{{ t('home.stats_eligible') }}</div>
                     </div>
                     <div v-if="entreprise.submissions_count"
                          class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
@@ -299,7 +314,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         <div class="font-bold leading-none mb-1" style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.submissions_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('entreprise.stats_quiz') }}</div>
+                        <div class="text-xs opacity-80 uppercase tracking-[0.12em]">{{ t('entreprise.stats_quiz') }}</div>
                     </div>
                     <div v-if="entreprise.employee_count"
                          class="reveal-up" :class="{ 'reveal-up--visible': statsVisible }"
@@ -307,43 +322,45 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         <div class="font-bold leading-none mb-1" style="font-size: clamp(1.75rem, 6vw, 3rem);">
                             {{ entreprise.employee_count.toLocaleString() }}
                         </div>
-                        <div class="text-xs opacity-60 uppercase tracking-[0.12em]">{{ t('entreprise.employees') }}</div>
+                        <div class="text-xs opacity-80 uppercase tracking-[0.12em]">{{ t('entreprise.employees') }}</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA quiz -->
-        <section class="py-10 md:py-16 px-4 md:px-6 bg-white border-t border-base-200" ref="ctaERef">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-16 items-end">
-                <div>
-                    <h2 class="font-bold mb-5 md:mb-8 leading-tight reveal-up"
-                        :class="{ 'reveal-up--visible': ctaEVisible }"
-                        style="font-size: clamp(1.4rem, 3vw, 2.25rem); overflow-wrap: break-word;">
-                        {{ t('entreprise.cta_section_title') }}
-                    </h2>
-                    <div class="space-y-3 border-t border-base-200 pt-5 md:pt-8 reveal-up"
+        <section class="py-10 md:py-16 px-4 md:px-6" style="background-color: var(--c1);" ref="ctaERef">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="font-bold mb-6 md:mb-10 leading-tight reveal-up"
+                    :class="{ 'reveal-up--visible': ctaEVisible }"
+                    style="color: var(--t1); font-size: clamp(1.4rem, 3vw, 2.25rem); overflow-wrap: break-word;">
+                    {{ t('entreprise.cta_section_title') }}
+                </h2>
+                <div class="grid md:grid-cols-[1.2fr_0.8fr] gap-8 md:gap-16 items-start"
+                     :style="`border-top: 1px solid color-mix(in srgb, var(--t1) 22%, transparent);`">
+                    <div class="pt-6 md:pt-8 space-y-3 reveal-up"
                          :class="{ 'reveal-up--visible': ctaEVisible }"
                          style="transition-delay: 80ms;">
-                        <p class="font-semibold leading-snug" style="font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line1') }}</p>
-                        <p class="font-semibold leading-snug" style="font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line2') }}</p>
-                        <p class="font-semibold leading-snug" style="color: var(--c1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line3') }}</p>
+                        <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line1') }}</p>
+                        <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line2') }}</p>
+                        <p class="font-semibold leading-snug" style="color: var(--t1); opacity: 0.82; font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line3') }}</p>
                     </div>
-                </div>
-                <div class="reveal-up" :class="{ 'reveal-up--visible': ctaEVisible }" style="transition-delay: 160ms;">
-                    <p class="text-base-content/55 text-sm mb-8 leading-relaxed" style="max-width: 42ch;">
-                        {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
-                    </p>
-                    <a :href="`/c/${entreprise.access_token}/quiz`"
-                       class="btn btn-co border-none font-semibold px-6 md:px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97] w-full md:w-auto">
-                        {{ t('entreprise.quiz_discover') }}
-                    </a>
+                    <div class="pt-6 md:pt-8 reveal-up" :class="{ 'reveal-up--visible': ctaEVisible }" style="transition-delay: 160ms;">
+                        <p class="text-sm mb-8 leading-relaxed" style="color: var(--t1); opacity: 0.82; max-width: 42ch;">
+                            {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
+                        </p>
+                        <a :href="`/c/${entreprise.access_token}/quiz`"
+                           class="btn border-none font-semibold px-6 md:px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97] w-full md:w-auto"
+                           style="background-color: var(--t1); color: var(--c1);">
+                            {{ t('entreprise.quiz_discover') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Collectes précédentes -->
-        <section v-if="pastCollectes.length" class="py-10 md:py-14 px-4 md:px-6 border-t border-base-200">
+        <section v-if="pastCollectes.length" class="py-10 md:py-14 px-4 md:px-6 bg-base-100 border-t border-base-200">
             <div class="max-w-5xl mx-auto">
                 <h2 class="font-bold mb-6" style="font-size: clamp(1.2rem, 2.5vw, 1.75rem);">
                     <span style="color: var(--c1)">{{ t('entreprise.collectes_past_highlight') }}</span>
