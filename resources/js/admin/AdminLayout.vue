@@ -97,7 +97,7 @@ const logout = async () => {
 
         <!-- Sidebar -->
         <div class="drawer-side z-20">
-            <label for="admin-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+            <label for="admin-drawer" :aria-label="t('admin.close_sidebar')" class="drawer-overlay"></label>
             <nav class="flex flex-col bg-brand w-64 min-h-full">
                 <!-- Logo -->
                 <div class="px-5 py-4 border-b border-white/10">

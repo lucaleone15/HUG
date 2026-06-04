@@ -32,7 +32,7 @@ const rankLabel = (rank) => ({
             <div class="text-4xl">{{ medal(winner.trophy_rank) }}</div>
             <div
                 v-if="winner.logo_url"
-                class="bg-white rounded-lg p-2 my-2 w-20 h-14 flex items-center justify-center"
+                class="bg-white/15 rounded-lg p-2 my-2 w-20 h-14 flex items-center justify-center"
             >
                 <img :src="winner.logo_url" :alt="winner.name" class="max-h-10 max-w-full object-contain">
             </div>

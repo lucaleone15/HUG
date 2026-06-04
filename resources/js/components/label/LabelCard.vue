@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
+import LogoContainer from '../ui/LogoContainer.vue'
 
 const { t } = useI18n()
 
@@ -7,7 +8,6 @@ defineProps({
     entreprise: {
         type: Object,
         required: true,
-        // { id, name, access_token, logo_url, primary_color, type, employee_count }
     },
 })
 </script>
@@ -20,23 +20,13 @@ defineProps({
     >
         <div class="card-body">
             <div class="flex items-center gap-3 mb-3">
-                <div
-                    v-if="entreprise.logo_url"
-                    class="bg-white border border-base-200 rounded-lg p-2 w-20 h-14 flex items-center justify-center shrink-0"
-                >
-                    <img
-                        :src="entreprise.logo_url"
-                        :alt="entreprise.name"
-                        class="max-h-10 max-w-full object-contain"
-                    >
-                </div>
-                <div
-                    v-else
-                    class="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0 select-none"
-                    :style="`background-color: ${entreprise.primary_color}`"
-                >
-                    {{ entreprise.name[0] }}
-                </div>
+                <LogoContainer
+                    :logo-url="entreprise.logo_url"
+                    :primary-color="entreprise.primary_color"
+                    :name="entreprise.name"
+                    size="w-20 h-14"
+                    init-rounded="rounded-lg"
+                />
             </div>
             <h2 class="card-title text-base">{{ entreprise.name }}</h2>
             <div class="flex gap-2 flex-wrap mt-1">

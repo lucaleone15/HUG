@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Entreprise extends Model
 {
@@ -80,6 +81,16 @@ class Entreprise extends Model
     public function getRouteKeyName(): string
     {
         return 'access_token';
+    }
+
+    public function collectes(): HasMany
+    {
+        return $this->hasMany(Collecte::class);
+    }
+
+    public function activeCollecte(): HasOne
+    {
+        return $this->hasOne(Collecte::class)->where('is_active', true)->latestOfMany();
     }
 
     public function submissions(): HasMany

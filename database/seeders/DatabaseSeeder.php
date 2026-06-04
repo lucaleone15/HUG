@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\CampaignStats;
+use App\Models\Collecte;
 use App\Models\Entreprise;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -60,7 +61,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Banque Cantonale de Genève', 'slug' => 'bcge',
                 'type' => 'banque', 'primary_color' => '#003F7D',
                 'employee_count' => 850, 'trophy_rank' => 1, 'wants_trophy' => true,
-                'rdv_url' => 'https://rdv.cts-ge.ch/bcge', 'rdv_date' => '2026-06-15',
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-bcge-2026', 'rdv_date' => '2026-06-15',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Marc Fontaine', 'contact_email' => 'rh@bcge.ch',
             ],
@@ -68,7 +69,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Firmenich', 'slug' => 'firmenich',
                 'type' => 'industrie', 'primary_color' => '#00833E',
                 'employee_count' => 3200, 'trophy_rank' => 2, 'wants_trophy' => true,
-                'rdv_url' => 'https://rdv.cts-ge.ch/firmenich', 'rdv_date' => '2026-06-22',
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-firmenich-2026', 'rdv_date' => '2026-06-22',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Sophie Müller', 'contact_email' => 'wellbeing@firmenich.com',
             ],
@@ -76,7 +77,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Groupe Mutuel', 'slug' => 'groupe-mutuel',
                 'type' => 'assurance', 'primary_color' => '#E30613',
                 'employee_count' => 1400, 'trophy_rank' => 3, 'wants_trophy' => true,
-                'rdv_url' => 'https://rdv.cts-ge.ch/groupe-mutuel', 'rdv_date' => '2026-07-03',
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-groupe-mutuel-2026', 'rdv_date' => '2026-07-03',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Alain Pernet', 'contact_email' => 'rh@groupemutuel.ch',
             ],
@@ -85,7 +86,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'SGS', 'slug' => 'sgs',
                 'type' => 'technologie', 'primary_color' => '#009FE3',
                 'employee_count' => 960, 'trophy_rank' => 4, 'wants_trophy' => true,
-                'rdv_url' => 'https://rdv.cts-ge.ch/sgs', 'rdv_date' => '2026-07-10',
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sgs-2026', 'rdv_date' => '2026-07-10',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Céline Rochat', 'contact_email' => 'hr@sgs.com',
             ],
@@ -93,7 +94,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'SIG — Services Industriels de Genève', 'slug' => 'sig',
                 'type' => 'service', 'primary_color' => '#F7941D',
                 'employee_count' => 1900, 'trophy_rank' => 5, 'wants_trophy' => true,
-                'rdv_url' => 'https://rdv.cts-ge.ch/sig', 'rdv_date' => '2026-07-17',
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sig-2026', 'rdv_date' => '2026-07-17',
                 'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
                 'contact_name' => 'Pierre-Alain Duc', 'contact_email' => 'rh@sig-ge.ch',
             ],
@@ -161,11 +162,39 @@ class DatabaseSeeder extends Seeder
         $now = now();
         $rows = [];
         foreach ($data as $row) {
-            $rows[] = array_merge($row, ['created_at' => $now, 'updated_at' => $now]);
+            $rows[] = array_merge($row, [
+                'access_token' => Str::random(48),
+                'is_public'    => true,
+                'locale'       => 'fr',
+                'created_at'   => $now,
+                'updated_at'   => $now,
+            ]);
         }
         DB::table('entreprises')->insert($rows);
 
-        return Entreprise::where('is_active', true)->get()->keyBy('slug')->toArray();
+        $entreprises = Entreprise::whereIn('slug', array_column($data, 'slug'))->get()->keyBy('slug');
+
+        // Crée une collecte active pour chaque entreprise qui a un lien OnDoc
+        $collectes = [];
+        foreach ($data as $row) {
+            if (empty($row['rdv_url'])) continue;
+            $entreprise = $entreprises->get($row['slug']);
+            if (! $entreprise) continue;
+            $collectes[] = [
+                'entreprise_id' => $entreprise->id,
+                'ondoc_url'     => $row['rdv_url'],
+                'rdv_date'      => $row['rdv_date'] ?? null,
+                'label'         => null,
+                'is_active'     => true,
+                'created_at'    => $now,
+                'updated_at'    => $now,
+            ];
+        }
+        if ($collectes) {
+            DB::table('collectes')->insert($collectes);
+        }
+
+        return $entreprises->toArray();
     }
 
     private function seedSubmissionsAndAnalytics(array $entreprises): void

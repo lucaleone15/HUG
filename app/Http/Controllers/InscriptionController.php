@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entreprise;
+use App\Mail\NewRegistrationNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -46,7 +48,7 @@ class InscriptionController extends Controller
 
         $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
 
-        Entreprise::create([
+        $entreprise = Entreprise::create([
             'name'            => $request->name,
             'slug'            => $this->uniqueSlug(Str::slug($request->name)),
             'access_token'    => Str::random(48),
@@ -64,6 +66,8 @@ class InscriptionController extends Controller
             'is_public'       => $request->boolean('is_public', true),
             'locale'          => $locale,
         ]);
+
+        Mail::to('info@donnez-votre-sang.ch')->send(new NewRegistrationNotification($entreprise));
 
         return redirect()->route('inscription')->with('success', true);
     }

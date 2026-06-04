@@ -5,6 +5,7 @@ import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
 import StatusBadge from '../components/admin/StatusBadge.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
+import LogoContainer from '../components/ui/LogoContainer.vue'
 
 const route  = useRoute()
 const router = useRouter()
@@ -13,6 +14,13 @@ const { t } = useI18n()
 
 const loading = ref(true)
 const e       = ref(null)
+
+// Collectes
+const collectes        = ref([])
+const collectesLoading = ref(false)
+const showNewForm      = ref(false)
+const newCollecte      = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
+const savingCollecte   = ref(false)
 
 onMounted(async () => {
     try {
@@ -23,7 +31,47 @@ onMounted(async () => {
     } finally {
         loading.value = false
     }
+    loadCollectes()
 })
+
+async function loadCollectes() {
+    collectesLoading.value = true
+    try {
+        const res = await api.get(`/admin/entreprises/${route.params.id}/collectes`)
+        collectes.value = res.data ?? []
+    } finally {
+        collectesLoading.value = false
+    }
+}
+
+async function addCollecte() {
+    if (!newCollecte.value.ondoc_url) return
+    savingCollecte.value = true
+    try {
+        await api.post(`/admin/entreprises/${route.params.id}/collectes`, {
+            ondoc_url: newCollecte.value.ondoc_url,
+            rdv_date:  newCollecte.value.rdv_date  || null,
+            label:     newCollecte.value.label     || null,
+            is_active: newCollecte.value.is_active,
+        })
+        newCollecte.value = { ondoc_url: '', rdv_date: '', label: '', is_active: true }
+        showNewForm.value = false
+        await loadCollectes()
+    } finally {
+        savingCollecte.value = false
+    }
+}
+
+async function toggleCollecte(c) {
+    await api.put(`/admin/collectes/${c.id}`, { is_active: !c.is_active })
+    await loadCollectes()
+}
+
+async function deleteCollecte(c) {
+    if (!confirm(t('admin.collecte_confirm_delete'))) return
+    await api.del(`/admin/collectes/${c.id}`)
+    await loadCollectes()
+}
 
 const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
 </script>
@@ -48,13 +96,13 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_identity') }}</div>
 
                     <div class="flex items-center gap-4">
-                        <img v-if="e.logo_url" :src="e.logo_url" :alt="e.name"
-                            class="w-14 h-14 rounded-lg object-contain bg-base-200 p-1 shrink-0">
-                        <div v-else
-                            class="w-14 h-14 rounded-lg flex items-center justify-center text-white font-bold text-xl shrink-0"
-                            :style="`background:${e.primary_color}`">
-                            {{ e.name?.charAt(0) }}
-                        </div>
+                        <LogoContainer
+                            :logo-url="e.logo_url"
+                            :primary-color="e.primary_color"
+                            :name="e.name"
+                            size="w-14 h-14"
+                            class="text-xl"
+                        />
                         <div class="flex-1 min-w-0">
                             <div class="text-lg font-bold truncate">{{ e.name }}</div>
                             <div class="text-sm text-base-content/40 truncate">{{ e.slug }}</div>
@@ -152,24 +200,78 @@ const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
                 </div>
             </div>
 
-            <!-- Collecte CTS -->
+            <!-- Collectes (campagnes OnDoc) -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
-                    <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_cts') }}</div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div class="flex items-center justify-between mb-1">
+                        <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{ t('admin.form_section_collectes') }}</div>
+                        <button class="btn btn-ghost btn-xs ml-3" @click="showNewForm = !showNewForm">
+                            {{ showNewForm ? t('admin.collecte_cancel') : t('admin.collecte_add') }}
+                        </button>
+                    </div>
+
+                    <!-- Formulaire ajout collecte -->
+                    <form v-if="showNewForm" @submit.prevent="addCollecte" class="bg-base-200 rounded-xl p-4 flex flex-col gap-3 mb-2">
                         <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_rdv_date') }}</span>
-                            <div class="font-medium mt-0.5">{{ e.rdv_date || '-' }}</div>
+                            <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_ondoc_url') }} *</label>
+                            <input v-model="newCollecte.ondoc_url" type="url" required
+                                class="input input-bordered input-sm w-full font-mono text-xs"
+                                placeholder="https://www.onedoc.ch/fr/..." />
                         </div>
-                        <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_rdv_url') }}</span>
-                            <div class="font-medium mt-0.5">
-                                <a v-if="e.rdv_url" :href="e.rdv_url" target="_blank" rel="noopener"
-                                    class="link link-hover text-primary text-xs break-all">{{ e.rdv_url }}</a>
-                                <span v-else>-</span>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_rdv_date') }}</label>
+                                <input v-model="newCollecte.rdv_date" type="date" class="input input-bordered input-sm w-full" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.collecte_label') }}</label>
+                                <input v-model="newCollecte.label" type="text" class="input input-bordered input-sm w-full"
+                                    :placeholder="t('admin.collecte_label_placeholder')" />
                             </div>
                         </div>
+                        <div class="flex items-center gap-2">
+                            <input v-model="newCollecte.is_active" type="checkbox" class="checkbox checkbox-sm checkbox-success" id="new-collecte-active" />
+                            <label for="new-collecte-active" class="text-sm">{{ t('admin.collecte_is_active') }}</label>
+                        </div>
+                        <BaseButton type="submit" size="sm" :loading="savingCollecte">
+                            {{ t('admin.collecte_save') }}
+                        </BaseButton>
+                    </form>
+
+                    <!-- Liste des collectes -->
+                    <div v-if="collectesLoading" class="flex justify-center py-4">
+                        <span class="loading loading-spinner loading-sm"></span>
                     </div>
+                    <div v-else-if="!collectes.length" class="text-sm text-base-content/40 italic py-2">
+                        {{ t('admin.collecte_empty') }}
+                    </div>
+                    <ul v-else class="flex flex-col gap-2">
+                        <li v-for="c in collectes" :key="c.id"
+                            class="flex items-start gap-3 p-3 rounded-lg border border-base-200 text-sm">
+                            <span :class="c.is_active ? 'badge badge-success badge-sm mt-0.5 shrink-0' : 'badge badge-ghost badge-sm mt-0.5 shrink-0'">
+                                {{ c.is_active ? t('admin.collecte_status_active') : t('admin.collecte_status_inactive') }}
+                            </span>
+                            <div class="flex-1 min-w-0">
+                                <a :href="c.ondoc_url" target="_blank" rel="noopener"
+                                   class="link link-hover text-primary text-xs font-mono break-all block">
+                                    {{ c.ondoc_url }}
+                                </a>
+                                <div v-if="c.label || c.rdv_date" class="text-xs text-base-content/50 mt-0.5">
+                                    <span v-if="c.label">{{ c.label }}</span>
+                                    <span v-if="c.label && c.rdv_date"> · </span>
+                                    <span v-if="c.rdv_date">{{ c.rdv_date }}</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 shrink-0">
+                                <button class="btn btn-ghost btn-xs" @click="toggleCollecte(c)">
+                                    {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate') }}
+                                </button>
+                                <button class="btn btn-ghost btn-xs text-error" @click="deleteCollecte(c)">
+                                    {{ t('admin.delete') }}
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
 

@@ -16,6 +16,8 @@ class EntrepriseController extends Controller
             'submissions as eligible_count' => fn ($q) => $q->where('is_eligible', true),
         ]);
 
-        return view('entreprise.show', compact('entreprise'));
+        $collectes = $entreprise->collectes()->orderByDesc('rdv_date')->orderByDesc('created_at')->get();
+
+        return view('entreprise.show', compact('entreprise', 'collectes'));
     }
 }

@@ -16,6 +16,7 @@
     "hero_highlight": "den Fall.",
     "hero_subtitle": "Mobilisieren Sie Ihr Unternehmen für die Blutspendeaktion. Eine einfache Geste, eine enorme Wirkung.",
     "cta": "Partnerunternehmen entdecken",
+    "stats_aria": "Kampagnenstatistiken",
     "stats_donations": "gesammelte Spenden",
     "stats_lives": "gerettete Leben",
     "stats_hospitals": "HUG-Spitäler",
@@ -132,6 +133,17 @@
     "inactive": "Diese Aktion ist nicht mehr aktiv.",
     "collect_date": "Datum der Blutspende",
     "rdv_cta": "Termin vereinbaren",
+    "collecte_default_label": "Sammelaktion",
+    "collecte_rdv_cta_short": "Mitmachen",
+    "collectes_past_highlight": "Vergangene",
+    "collectes_past_title": " Sammelaktionen",
+    "collecte_past_badge": "Beendet",
+    "collecte_active_label": "Laufende Sammelaktion",
+    "collecte_active_title": "Jetzt einen Termin buchen",
+    "collecte_rdv_cta": "Ich buche meinen Termin →",
+    "collecte_none_label": "Keine aktive Sammelaktion",
+    "collecte_none_title": "Bleibt dran, es wird vorbereitet!",
+    "collecte_none_description": "{company} plant die nächste Blutspende-Aktion. Schaut bald wieder vorbei.",
     "hero_title_line1": "Eine Blutspende rettet",
     "hero_title_highlight": "3 Leben.",
     "hero_title_line2": "Eine Mission von 5 Minuten.",
@@ -227,7 +239,8 @@
     "dossier_status": "Status: ausstehend",
     "complete_dossier_label": "Vollständige Akte",
     "dossier_confidential": "VERTRAULICH",
-    "dossier_word": "DOSSIER"
+    "dossier_word": "DOSSIER",
+    "prev_question": "Vorherige Frage"
   },
   "result": {
     "eligible_title": "Sie sind spendeberechtigt!",
@@ -317,7 +330,10 @@
     "name_placeholder": "MeinUnternehmen AG",
     "contact_name_placeholder": "Müller",
     "contact_email_placeholder": "vorname.nachname{'@'}unternehmen.ch",
-    "logo_url_placeholder": "https://beispiel.com/logo.png"
+    "logo_url_placeholder": "https://beispiel.com/logo.png",
+    "color_swatch_title": "Farbe wählen",
+    "color_hint_click": "Klicken Sie auf das Quadrat, um die Unternehmensfarbe zu wählen",
+    "color_error_primary": "Bitte wählen Sie die Unternehmensfarbe (klicken Sie auf das farbige Quadrat)"
   },
   "footer": {
     "tagline": "Eine Initiative des Bluttransfusionszentrums der Universitätsspitäler Genf.",
@@ -519,7 +535,10 @@
     "settings_admin_remove": "Entfernen",
     "settings_remove_confirm": "Möchten Sie {name} als Administrator entfernen? Diese Aktion ist unwiderruflich.",
     "settings_admin_added": "Administrator erfolgreich hinzugefügt.",
-    "settings_you": "Sie"
+    "settings_you": "Sie",
+    "trophees_move_up": "Nach oben",
+    "trophees_move_down": "Nach unten",
+    "close_sidebar": "Menü schließen"
   },
   "lang": "DE"
 }

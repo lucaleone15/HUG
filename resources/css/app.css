@@ -198,6 +198,16 @@
     --color-info-content:    #0497C8;  /* Bleu info — foncé / hover                */
     --color-warning:         #B56009;  /* Orange avertissement        (WCAG AA 4.52:1 sur blanc) */
 
+    /* ─── Couleurs emails (inline styles — les clients mail n'acceptent pas les variables CSS) ── */
+    --color-email-brand:        #E30613;   /* Rouge institutionnel HUG — header, CTA         */
+    --color-email-brand-dark:   #C5000E;   /* Rouge foncé — bandeau statut                  */
+    --color-email-brand-border: #A8000C;   /* Rouge bordure — séparateur bandeau statut      */
+    --color-email-hero:         #0D0D0D;   /* Fond hero sombre                               */
+    --color-email-dark:         #111111;   /* Sections sombres (kit, référent)               */
+    --color-email-bg:           #F0EDE8;   /* Fond de page email                             */
+    --color-email-recap-bg:     #F0EBE0;   /* Fond section récapitulatif                     */
+    --color-email-recap-border: #C4B080;   /* Bordure tableau récap                          */
+
     /* ─── Quiz — fond sombre ─────────────────────────────────────────────────── */
     --color-quiz-bg:             #0D0D0D;
     --color-quiz-track:          #2A2A2A;

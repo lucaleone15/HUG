@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Admin\EntrepriseController as AdminEntrepriseContro
 use App\Http\Controllers\Api\Admin\ReportController;
 use App\Http\Controllers\Api\Admin\SubmissionController;
 use App\Http\Controllers\Api\Admin\TropheeController;
+use App\Http\Controllers\Api\Admin\CollecteController;
 use App\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +39,14 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('entreprises/{id}',    [AdminEntrepriseController::class, 'show']);
     Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);   // POST utilisé pour multipart (logo)
     Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
-    Route::post('entreprises/{id}/send-kit', [AdminEntrepriseController::class, 'sendKit']);
+    Route::post('entreprises/{id}/send-kit',  [AdminEntrepriseController::class, 'sendKit']);
     Route::post('entreprises/{id}/send-link', [AdminEntrepriseController::class, 'sendLink']);
+
+    // Collectes (campagnes OnDoc) par entreprise
+    Route::get('entreprises/{id}/collectes',  [CollecteController::class, 'index']);
+    Route::post('entreprises/{id}/collectes', [CollecteController::class, 'store']);
+    Route::put('collectes/{collecte}',         [CollecteController::class, 'update']);
+    Route::delete('collectes/{collecte}',      [CollecteController::class, 'destroy']);
 
     // Classement Trophée
     Route::get('trophees',  [TropheeController::class, 'index']);

@@ -16,6 +16,7 @@
     "hero_highlight": "il caso.",
     "hero_subtitle": "Mobilitate la vostra azienda per la campagna di donazione del sangue. Un gesto semplice, un impatto enorme.",
     "cta": "Scoprire le aziende partner",
+    "stats_aria": "Statistiche della campagna",
     "stats_donations": "donazioni raccolte",
     "stats_lives": "vite salvate",
     "stats_hospitals": "ospedali HUG",
@@ -132,6 +133,17 @@
     "inactive": "Questa campagna non è più attiva.",
     "collect_date": "Data della raccolta",
     "rdv_cta": "Prendere un appuntamento",
+    "collecte_default_label": "Raccolta",
+    "collecte_rdv_cta_short": "Partecipo",
+    "collectes_past_highlight": "Raccolte",
+    "collectes_past_title": " precedenti",
+    "collecte_past_badge": "Terminata",
+    "collecte_active_label": "Raccolta attiva",
+    "collecte_active_title": "Prenota subito il tuo appuntamento",
+    "collecte_rdv_cta": "Prenoto il mio posto →",
+    "collecte_none_label": "Nessuna raccolta in corso",
+    "collecte_none_title": "Restate connessi, si sta preparando!",
+    "collecte_none_description": "{company} sta organizzando la prossima raccolta. Tornate presto per prenotare.",
     "hero_title_line1": "Una donazione di sangue salva",
     "hero_title_highlight": "3 vite.",
     "hero_title_line2": "Una missione di 5 minuti.",
@@ -227,7 +239,8 @@
     "dossier_status": "Stato: in attesa",
     "complete_dossier_label": "Fascicolo completo",
     "dossier_confidential": "RISERVATO",
-    "dossier_word": "DOSSIER"
+    "dossier_word": "DOSSIER",
+    "prev_question": "Domanda precedente"
   },
   "result": {
     "eligible_title": "Siete idonei alla donazione!",
@@ -317,7 +330,10 @@
     "name_placeholder": "MiaAzienda SA",
     "contact_name_placeholder": "Rossi",
     "contact_email_placeholder": "nome.cognome{'@'}azienda.ch",
-    "logo_url_placeholder": "https://esempio.com/logo.png"
+    "logo_url_placeholder": "https://esempio.com/logo.png",
+    "color_swatch_title": "Scegliere un colore",
+    "color_hint_click": "Clicca sul quadrato per scegliere il colore della tua azienda",
+    "color_error_primary": "Scegli il colore della tua azienda (clicca sul quadrato colorato)"
   },
   "footer": {
     "tagline": "Un'iniziativa del Centro Trasfusionale degli Ospedali Universitari di Ginevra.",
@@ -519,7 +535,10 @@
     "settings_admin_remove": "Rimuovere",
     "settings_remove_confirm": "Rimuovere {name} dagli amministratori? Questa azione è irreversibile.",
     "settings_admin_added": "Amministratore aggiunto con successo.",
-    "settings_you": "voi"
+    "settings_you": "voi",
+    "trophees_move_up": "Spostare su",
+    "trophees_move_down": "Spostare giù",
+    "close_sidebar": "Chiudi menu"
   },
   "lang": "IT"
 }

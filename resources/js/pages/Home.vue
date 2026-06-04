@@ -90,7 +90,7 @@ const steps = computed(() => [
         </section>
 
         <!-- ── STATS MARQUEE ──────────────────────────────────────────────────── -->
-        <div class="bg-brand py-5 overflow-hidden marquee-container" aria-label="Statistiques de la campagne">
+        <div class="bg-brand py-5 overflow-hidden marquee-container" :aria-label="t('home.stats_aria')">
             <div class="marquee-track flex items-baseline whitespace-nowrap">
                 <template v-for="(item, i) in marqueeItems" :key="`m-${i}`">
                     <span class="text-white font-extrabold tabular-nums shrink-0 mx-4 leading-none"

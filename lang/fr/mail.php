@@ -39,7 +39,7 @@ return [
     'step3_cta'         => 'Accéder à l\'espace admin',
     'recap_section'     => 'Récapitulatif de la collecte',
     'recap_title'       => 'Le dossier en bref.',
-    'recap_badge'       => '— Confirmé',
+    'recap_badge'       => 'Confirmé',
     'recap_company'     => 'Entreprise',
     'recap_date'        => 'Date collecte',
     'recap_contact'     => 'Référent',
@@ -62,4 +62,17 @@ return [
     'contact_from'           => 'De',
     'contact_message'        => 'Message',
     'contact_reply_cta'      => 'Répondre à :name →',
+
+    // Email nouvelle inscription (notification admin)
+    'registration_badge'           => 'Nouvelle inscription',
+    'registration_action_required' => 'ACTION REQUISE',
+    'registration_title'           => ':name veut rejoindre la brigade.',
+    'registration_body'            => 'Une nouvelle entreprise vient de soumettre sa candidature via le formulaire d\'inscription. Rendez-vous dans le back-office pour examiner la demande et valider (ou rejeter) le dossier.',
+    'registration_company_label'   => 'ENTREPRISE',
+    'registration_sector_label'    => 'SECTEUR',
+    'registration_headcount_label' => 'EFFECTIF',
+    'registration_employees'       => 'employés',
+    'registration_contact_label'   => 'CONTACT',
+    'registration_cta'             => 'Examiner la demande →',
+    'registration_footer_note'     => 'Notification automatique · Plateforme HUG Donnez Votre Sang',
 ];

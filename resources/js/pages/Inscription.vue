@@ -5,6 +5,7 @@ import NavBar from '../components/ui/NavBar.vue'
 import Footer from '../components/ui/Footer.vue'
 import BaseInput from '../components/ui/BaseInput.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
+import { useLogoBg } from '../composables/useLogoBg.js'
 
 const { t, locale } = useI18n()
 
@@ -39,8 +40,13 @@ const onIsPublicChange = (e) => {
 }
 
 const isValidHex = (v) => /^#[0-9A-Fa-f]{6}$/.test(v ?? '')
-const logoPreview     = ref(null)
-const logoFileRef     = ref(null)
+const logoPreview = ref(null)
+const logoFileRef = ref(null)
+
+const { bg: previewBg } = useLogoBg(
+    () => logoPreview.value,
+    () => primaryColor.value,
+)
 
 const onFileChange = (e) => {
     const file = e.target.files[0]
@@ -169,7 +175,10 @@ const handleSubmit = (e) => {
                         <div class="flex flex-col gap-1">
                             <label class="text-sm font-medium">{{ t('inscription.logo') }}</label>
                             <div v-if="logoPreview" class="flex items-center gap-2 mb-1">
-                                <img :src="logoPreview" class="h-8 w-8 object-contain rounded border border-base-300 bg-white p-0.5">
+                                <div class="h-8 w-8 rounded border border-base-300 flex items-center justify-center p-0.5 shrink-0"
+                                     :style="`background-color: ${previewBg}`">
+                                    <img :src="logoPreview" class="max-h-full max-w-full object-contain">
+                                </div>
                                 <button type="button" class="text-xs text-error hover:underline" @click="clearLogo">
                                     {{ t('inscription.logo_delete') }}
                                 </button>
@@ -206,7 +215,7 @@ const handleSubmit = (e) => {
                             <div class="flex items-center rounded-lg overflow-hidden"
                                  :class="(errors?.primary_color || primaryError) ? 'border border-error' : 'border border-base-300'">
                                 <!-- Swatch cliquable — ouvre le color picker natif -->
-                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" title="Choisir une couleur">
+                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" :title="t('inscription.color_swatch_title')">
                                     <input type="color"
                                         :value="primaryColor"
                                         @change="onPrimaryColorChange"
@@ -237,15 +246,15 @@ const handleSubmit = (e) => {
                                     class="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     placeholder="#RRGGBB">
                             </div>
-                            <p v-if="primaryError" class="text-error text-xs">Veuillez choisir la couleur de votre entreprise (cliquez sur le carré coloré)</p>
-                            <p v-else class="text-xs text-base-content/45">Cliquez sur le carré pour choisir la couleur de votre entreprise</p>
+                            <p v-if="primaryError" class="text-error text-xs">{{ t('inscription.color_error_primary') }}</p>
+                            <p v-else class="text-xs text-base-content/45">{{ t('inscription.color_hint_click') }}</p>
                             <span v-if="errors?.primary_color" class="text-error text-xs">{{ errors.primary_color[0] }}</span>
                         </div>
                         <!-- Couleur secondaire (optionnelle) -->
                         <div class="flex flex-col gap-1">
                             <label class="text-sm font-medium">{{ t('inscription.secondary_color') }}</label>
                             <div class="flex items-center border border-base-300 rounded-lg overflow-hidden">
-                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" title="Choisir une couleur">
+                                <label class="w-10 h-10 shrink-0 relative block cursor-pointer overflow-hidden border-r border-base-300 group" :title="t('inscription.color_swatch_title')">
                                     <input type="color"
                                         :value="isValidHex(secondaryColor) ? secondaryColor : '#888888'"
                                         @change="e => secondaryColor = e.target.value"

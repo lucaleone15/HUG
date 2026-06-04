@@ -16,7 +16,7 @@ defineProps({
     <header class="py-16 px-6 text-white" :style="`background-color: ${entreprise.primary_color}`">
         <div class="max-w-2xl mx-auto text-center">
             <div v-if="entreprise.logo_url" class="flex justify-center mb-6 hero-item" style="--delay:0ms">
-                <div class="bg-white rounded-xl p-3 shadow-sm">
+                <div class="bg-white/15 rounded-xl p-3">
                     <img
                         :src="entreprise.logo_url"
                         :alt="entreprise.name"
