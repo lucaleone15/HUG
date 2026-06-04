@@ -14,7 +14,7 @@ const activeItem = ref(null)
 const clickedId  = ref(null)
 const boardRef   = ref(null)
 
-// Génère une teinte d'une couleur hex en la mélangeant avec du blanc (factor 0=original, 1=blanc)
+// Mélange une couleur hex avec du blanc (factor 0=original, 1=blanc)
 function tint(hex, factor) {
     if (!hex || !/^#[0-9A-Fa-f]{6}$/.test(hex)) hex = '#E30613'
     const r = parseInt(hex.slice(1, 3), 16)
@@ -24,24 +24,24 @@ function tint(hex, factor) {
     return `#${t(r)}${t(g)}${t(b)}`
 }
 
-// 9 couleurs de post-its : mix couleur(s) de marque + neutres chauds pour la diversité
+function relativeLuminance(hex) {
+    if (!hex || !/^#[0-9A-Fa-f]{6}$/.test(hex)) hex = '#E30613'
+    const r = parseInt(hex.slice(1, 3), 16) / 255
+    const g = parseInt(hex.slice(3, 5), 16) / 255
+    const b = parseInt(hex.slice(5, 7), 16) / 255
+    const lin = c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+}
+function contrastFg(hex) {
+    return relativeLuminance(hex) > 0.179 ? 'rgba(0,0,0,0.80)' : 'rgba(255,255,255,0.90)'
+}
+
+// Tous les post-its dans la couleur primaire ; fallback si noir ou absent
 const postitColors = computed(() => {
     const c1 = props.primaryColor || '#E30613'
-    const c2 = props.secondaryColor
-    // Neutres chaleureux qui s'harmonisent avec n'importe quelle marque
-    const warm = ['#F7E87A', '#F5C97A', '#B8DFAA', '#D4B8E8', '#F5B8C0', '#A8D8EA']
-    if (c2) {
-        return [
-            { bg: tint(c1, 0.72) }, { bg: tint(c2, 0.70) }, { bg: warm[0] },
-            { bg: tint(c1, 0.62) }, { bg: tint(c2, 0.78) }, { bg: warm[1] },
-            { bg: tint(c1, 0.80) }, { bg: warm[2] },         { bg: tint(c2, 0.65) },
-        ]
-    }
-    return [
-        { bg: tint(c1, 0.72) }, { bg: warm[0] }, { bg: tint(c1, 0.62) },
-        { bg: warm[1] },        { bg: warm[2] }, { bg: tint(c1, 0.80) },
-        { bg: warm[3] },        { bg: warm[4] }, { bg: warm[5] },
-    ]
+    const bg = relativeLuminance(c1) < 0.02 ? '#E30613' : c1
+    const color = { bg, fg: contrastFg(bg) }
+    return Array(9).fill(color)
 })
 
 const ITEM_POSITIONS = [
@@ -181,7 +181,7 @@ onUnmounted(() => {
                                 :aria-label="t(`entreprise.faq_${entry.item.faqIndex}_q`)"
                                 @click="open(entry.item)">
                             <div class="postit"
-                                 :style="`transform: rotate(${entry.item.rotation}deg); --pi-bg:${entry.item.color.bg}`">
+                                 :style="`transform: rotate(${entry.item.rotation}deg); --pi-bg:${entry.item.color.bg}; --pi-fg:${entry.item.color.fg}`">
                                 <span class="pin" aria-hidden="true"></span>
                                 <p class="postit-label">{{ t(`entreprise.faq_${entry.item.faqIndex}_short`) }}</p>
                             </div>
@@ -213,7 +213,7 @@ onUnmounted(() => {
                 </filter>
             </defs>
             <g stroke="#c62828" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"
-               filter="url(#thread-shadow)" opacity="0.92">
+               filter="url(#thread-shadow)" opacity="1">
                 <path d="M 206,324 C 338,351 428,389 512,406 C 706,343 818,309 925,282 C 1052,277 1120,277 1185,282"/>
                 <path d="M 1185,282 C 1148,383 1094,449 1001,498"/>
                 <path d="M 1001,498 C 868,581 730,621 596,662 C 718,677 780,685 841,693 C 1008,679 1098,669 1185,662"/>
@@ -230,7 +230,7 @@ onUnmounted(() => {
              fetchpriority="high" decoding="async" />
 
         <!-- Titre traduit -->
-        <div class="absolute" style="left: 10%; top: 2%; width: 78%; z-index: 3;">
+        <div class="absolute" style="left: 50%; top: 2%; width: 55%; transform: translateX(-50%); z-index: 3;">
             <div class="cork-title-strip">
                 <span class="cork-tape cork-tape-l" aria-hidden="true"></span>
                 <span class="cork-tape cork-tape-r" aria-hidden="true"></span>
@@ -246,7 +246,7 @@ onUnmounted(() => {
              loading="lazy" decoding="async" aria-hidden="true" />
 
         <!-- Vignette subtile -->
-        <div class="absolute inset-0 pointer-events-none" style="z-index:8; background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 50%, rgba(0,0,0,0.18) 100%);" aria-hidden="true"></div>
+        <div class="absolute inset-0 pointer-events-none" style="z-index:8; background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(0,0,0,0.50) 100%);" aria-hidden="true"></div>
 
         <!-- Post-its CSS — z-index 4 (sous le fil) -->
         <div v-for="item in items" :key="item.id"
@@ -258,7 +258,7 @@ onUnmounted(() => {
                     :aria-label="t(`entreprise.faq_${item.faqIndex}_q`)"
                     @click="open(item)">
                 <div class="postit"
-                     :style="`transform: rotate(${item.rotation}deg); --pi-bg:${item.color.bg}`">
+                     :style="`transform: rotate(${item.rotation}deg); --pi-bg:${item.color.bg}; --pi-fg:${item.color.fg}`">
                     <p class="postit-label">{{ t(`entreprise.faq_${item.faqIndex}_short`) }}</p>
                 </div>
             </button>
@@ -318,12 +318,14 @@ onUnmounted(() => {
 <style scoped>
 /* ── Ombre + lift corkboard ──────────────────────────────────────── */
 .cork-shell {
-    border-radius: 12px;
+    border-radius: 6px;
+    border: 10px solid #8e8e8e;
     box-shadow:
-        0 2px 4px rgba(0,0,0,0.08),
-        0 8px 24px rgba(0,0,0,0.14),
-        0 24px 64px rgba(0,0,0,0.22),
-        0 48px 96px rgba(0,0,0,0.12);
+        inset 0 0 0 1px rgba(255,255,255,0.28),
+        0 0 0 1px rgba(0,0,0,0.35),
+        0 2px 4px rgba(0,0,0,0.12),
+        0 8px 18px rgba(0,0,0,0.20),
+        0 20px 40px rgba(0,0,0,0.22);
     transition:
         box-shadow 400ms cubic-bezier(0.23,1,0.32,1),
         transform   400ms cubic-bezier(0.23,1,0.32,1);
@@ -332,10 +334,11 @@ onUnmounted(() => {
     .cork-shell:hover {
         transform: translateY(-4px);
         box-shadow:
-            0 2px 4px rgba(0,0,0,0.10),
-            0 12px 32px rgba(0,0,0,0.18),
-            0 32px 80px rgba(0,0,0,0.26),
-            0 64px 120px rgba(0,0,0,0.14);
+            inset 0 0 0 1px rgba(255,255,255,0.32),
+            0 0 0 1px rgba(0,0,0,0.40),
+            0 2px 4px rgba(0,0,0,0.16),
+            0 12px 24px rgba(0,0,0,0.26),
+            0 28px 52px rgba(0,0,0,0.28);
     }
 }
 
@@ -364,8 +367,20 @@ onUnmounted(() => {
 
 /* ── Fond board ──────────────────────────────────────────────────── */
 .cork-board {
-    background-image: url('/images/corkboard/board-bg.webp');
-    background-size: cover;
+    background-color: #131313;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px, transparent 2px,
+            rgba(255,255,255,0.022) 2px, rgba(255,255,255,0.022) 3px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px, transparent 2px,
+            rgba(255,255,255,0.018) 2px, rgba(255,255,255,0.018) 3px
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72 0.84' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+    background-size: auto, auto, 256px 256px;
     background-position: center;
 }
 
@@ -439,7 +454,7 @@ onUnmounted(() => {
     font-weight: 700;
     font-size: clamp(0.52rem, 1.18vw, 0.92rem);
     text-align: center;
-    color: rgba(0,0,0,0.65);
+    color: var(--pi-fg, rgba(0,0,0,0.80));
     line-height: 1.28;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -479,11 +494,11 @@ onUnmounted(() => {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: #D32C37;
+    background: radial-gradient(circle at 38% 35%, #e8e8e8 0%, #9e9e9e 55%, #5a5a5a 100%);
     box-shadow:
-        0 4px 12px rgba(0,0,0,0.45),
-        0 1px 4px rgba(0,0,0,0.25),
-        inset 0 2px 3px rgba(255,255,255,0.25);
+        0 4px 12px rgba(0,0,0,0.65),
+        0 1px 4px rgba(0,0,0,0.35),
+        inset 0 2px 3px rgba(255,255,255,0.45);
     pointer-events: none;
     z-index: 10;
 }
@@ -495,7 +510,7 @@ onUnmounted(() => {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(0,0,0,0.20);
+    background: rgba(0,0,0,0.28);
 }
 
 /* ── Carte réponse ───────────────────────────────────────────────── */

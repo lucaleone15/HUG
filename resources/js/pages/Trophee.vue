@@ -130,33 +130,31 @@ const criteriaIcons = [
             </template>
 
             <template v-if="others.length || winner1">
+                <div class="ranking-card">
                 <!-- ── PODIUM top 3 ── -->
                 <div class="podium-wrap" v-if="[winner1, ...others].filter(Boolean).length >= 1">
                     <div class="podium-stage">
                         <!-- #2 -->
                         <div class="podium-slot podium-slot--2" v-if="others[0]">
-                            <div class="podium-avatar-wrap">
-                                <LogoContainer :logo-url="others[0].logo_url" :primary-color="others[0].primary_color"
-                                    :name="others[0].name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
-                            </div>
+                            <LogoContainer :logo-url="others[0].logo_url" :primary-color="others[0].primary_color"
+                                :name="others[0].name" size="w-[72px] h-[72px]" rounded="rounded-full"
+                                class="podium-avatar" />
                             <p class="podium-name">{{ others[0].name }}</p>
                             <div class="podium-block podium-block--2"><span class="podium-rank">2</span></div>
                         </div>
                         <!-- #1 -->
                         <div class="podium-slot podium-slot--1" v-if="winner1">
-                            <div class="podium-avatar-wrap podium-avatar-wrap--1">
-                                <LogoContainer :logo-url="winner1.logo_url" :primary-color="winner1.primary_color"
-                                    :name="winner1.name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
-                            </div>
+                            <LogoContainer :logo-url="winner1.logo_url" :primary-color="winner1.primary_color"
+                                :name="winner1.name" size="w-[88px] h-[88px]" rounded="rounded-full"
+                                class="podium-avatar podium-avatar--1" />
                             <p class="podium-name podium-name--1">{{ winner1.name }}</p>
                             <div class="podium-block podium-block--1"><span class="podium-rank">1</span></div>
                         </div>
                         <!-- #3 -->
                         <div class="podium-slot podium-slot--3" v-if="others[1]">
-                            <div class="podium-avatar-wrap">
-                                <LogoContainer :logo-url="others[1].logo_url" :primary-color="others[1].primary_color"
-                                    :name="others[1].name" size="w-full h-full" rounded="rounded-xl" class="podium-avatar-inner" />
-                            </div>
+                            <LogoContainer :logo-url="others[1].logo_url" :primary-color="others[1].primary_color"
+                                :name="others[1].name" size="w-[72px] h-[72px]" rounded="rounded-full"
+                                class="podium-avatar" />
                             <p class="podium-name">{{ others[1].name }}</p>
                             <div class="podium-block podium-block--3"><span class="podium-rank">3</span></div>
                         </div>
@@ -164,18 +162,18 @@ const criteriaIcons = [
                 </div>
 
                 <!-- ── Liste #4+ ── -->
-                <ul v-if="others.length > 2" class="mt-2">
-                    <li v-for="w in others.slice(2)" :key="w.id"
-                        class="flex items-center gap-4 py-3">
+                <ul v-if="others.length > 2" class="ranking-list">
+                    <li v-for="w in others.slice(2)" :key="w.id" class="ranking-row">
+                        <span class="ranking-row-num">{{ w.trophy_rank }}</span>
                         <LogoContainer :logo-url="w.logo_url" :primary-color="w.primary_color"
-                            :name="w.name" size="w-11 h-11" rounded="rounded-lg" />
-                        <div class="flex-1">
-                            <div class="font-semibold text-sm">{{ w.name }}</div>
+                            :name="w.name" size="w-10 h-10" rounded="rounded-full" />
+                        <div class="flex-1 min-w-0">
+                            <div class="font-semibold text-sm truncate">{{ w.name }}</div>
                             <div v-if="w.type" class="text-xs text-base-content/40">{{ t('inscription.type_' + w.type) }}</div>
                         </div>
-                        <span class="text-xl font-bold text-base-content/25 shrink-0">{{ w.trophy_rank }}</span>
                     </li>
                 </ul>
+                </div>
             </template>
         </main>
 
@@ -291,9 +289,42 @@ const criteriaIcons = [
 </template>
 
 <style scoped>
+/* ── Carte classement unifiée ────────────────────────────────── */
+.ranking-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1.5px solid rgba(0,0,0,0.10);
+    padding: 0 1.5rem 1rem;
+    margin-bottom: 2rem;
+}
+
+/* ── Liste #4+ ───────────────────────────────────────────────── */
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 0 0.75rem;
+    border-top: 1px solid rgba(0,0,0,0.07);
+}
+.ranking-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 10px 14px;
+}
+.ranking-row-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(0,0,0,0.28);
+    min-width: 18px;
+    text-align: center;
+}
+
 /* ── Podium ─────────────────────────────────────────────────────── */
 .podium-wrap {
-    margin: 2rem 0 2.5rem;
+    margin: 2rem 0 1.5rem;
 }
 .podium-stage {
     display: flex;
@@ -312,21 +343,13 @@ const criteriaIcons = [
 }
 
 /* Avatar */
-.podium-avatar-wrap {
-    width: 80px;
-    height: 80px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+.podium-avatar {
     margin-bottom: 10px;
-    padding: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    flex-shrink: 0;
 }
-.podium-avatar-wrap--1 {
-    width: 96px;
-    height: 96px;
-    padding: 10px;
+.podium-avatar--1 {
+    box-shadow: 0 6px 20px rgba(211,44,55,0.28);
 }
 .podium-avatar-img {
     max-height: 100%;
@@ -380,15 +403,21 @@ const criteriaIcons = [
 }
 .podium-block--1 {
     height: 140px;
-    background: linear-gradient(160deg, #F0D050, #C9A227);
+    background: var(--color-brand);
 }
 .podium-block--2 {
     height: 104px;
-    background: linear-gradient(160deg, #D0D0D0, #9E9E9E);
+    background: #ffffff;
+    border: 2px solid var(--color-brand);
 }
 .podium-block--3 {
     height: 76px;
-    background: linear-gradient(160deg, #D4956A, #A0622A);
+    background: #ffffff;
+    border: 2px solid var(--color-brand);
+}
+.podium-block--2 .podium-rank,
+.podium-block--3 .podium-rank {
+    color: var(--color-brand);
 }
 .podium-rank {
     font-size: 3rem;
