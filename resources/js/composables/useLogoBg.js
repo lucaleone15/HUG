@@ -107,10 +107,9 @@ function pickBg(lightRatio) {
     return '#374151'                          // logo mixte → gris foncé neutre
 }
 
-/** Fallback : utilise primary_color sauf si trop claire */
-function fallback(hex) {
-    if (!hex || !/^#[0-9A-Fa-f]{6}$/i.test(hex)) return '#f0f0f0'
-    return luminance(hex) > 0.4 ? '#f0f0f0' : hex
+/** Fallback : fond neutre systématique (CORS ou échec canvas) */
+function fallback(_hex) {
+    return '#f0f0f0'
 }
 
 // ─── Utilitaires ─────────────────────────────────────────────────────────────
