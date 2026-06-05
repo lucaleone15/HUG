@@ -181,7 +181,7 @@ onUnmounted(() => {
                                 :aria-label="t(`entreprise.faq_${entry.item.faqIndex}_q`)"
                                 @click="open(entry.item)">
                             <div class="postit"
-                                 :style="`transform: rotate(${entry.item.rotation}deg); --pi-bg:${entry.item.color.bg}; --pi-fg:${entry.item.color.fg}`">
+                                 :style="`--rotation:${entry.item.rotation}deg; --pi-bg:${entry.item.color.bg}; --pi-fg:${entry.item.color.fg}`">
                                 <span class="pin" aria-hidden="true"></span>
                                 <p class="postit-label">{{ t(`entreprise.faq_${entry.item.faqIndex}_short`) }}</p>
                             </div>
@@ -258,7 +258,7 @@ onUnmounted(() => {
                     :aria-label="t(`entreprise.faq_${item.faqIndex}_q`)"
                     @click="open(item)">
                 <div class="postit"
-                     :style="`transform: rotate(${item.rotation}deg); --pi-bg:${item.color.bg}; --pi-fg:${item.color.fg}`">
+                     :style="`--rotation:${item.rotation}deg; --pi-bg:${item.color.bg}; --pi-fg:${item.color.fg}`">
                     <p class="postit-label">{{ t(`entreprise.faq_${item.faqIndex}_short`) }}</p>
                 </div>
             </button>
@@ -466,20 +466,21 @@ onUnmounted(() => {
 /* ── Bouton post-it hover ────────────────────────────────────────── */
 .postit-btn { cursor: pointer; }
 .postit {
+    transform: rotate(var(--rotation, 0deg));
     transition:
         transform 200ms cubic-bezier(0.23,1,0.32,1),
         box-shadow 200ms cubic-bezier(0.23,1,0.32,1);
 }
 .postit-btn:active .postit {
-    transform: scale(0.96);
-    transition-duration: 120ms;
+    transform: rotate(var(--rotation, 0deg)) scale(0.96);
+    transition-duration: 100ms;
 }
 @media (hover: hover) and (pointer: fine) {
     .postit-btn:hover .postit {
-        transform: scale(1.08) rotate(-1deg) translateY(-6px);
+        transform: rotate(var(--rotation, 0deg)) translateY(-8px) scale(1.07);
         box-shadow:
-            0 20px 48px rgba(0,0,0,0.32),
-            0 6px 14px rgba(0,0,0,0.18),
+            0 22px 52px rgba(0,0,0,0.30),
+            0 6px 16px rgba(0,0,0,0.16),
             inset 0 -3px 0 rgba(0,0,0,0.10);
     }
 }
