@@ -196,6 +196,7 @@ const goBack = () => {
                     <BaseButton variant="primary" :full="true" @click="startQuiz">
                         {{ t('quiz.intro_cta') }}
                     </BaseButton>
+                    <p class="intro-privacy-note">{{ t('quiz.intro_privacy') }}</p>
                 </div>
             </div>
 
@@ -241,7 +242,7 @@ const goBack = () => {
                 <div class="topbar-left">
                     <button
                         v-if="answeredActive.length > 0 && !isComplete"
-                        class="topbar-back-btn"
+                        class="topbar-back-btn lg:hidden"
                         :title="t('quiz.back')"
                         @click="goBack"
                         :aria-label="t('quiz.prev_question')"
@@ -250,7 +251,7 @@ const goBack = () => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </button>
-                    <div v-else class="topbar-spacer"></div>
+                    <div v-else class="topbar-spacer lg:hidden"></div>
                     <div class="topbar-brand">
                         <img :src="'/images/hug-logo_blanc.svg'" alt="HUG" class="topbar-hug-logo">
                         <span class="topbar-brand-sep">×</span>
@@ -262,6 +263,19 @@ const goBack = () => {
                 <span class="topbar-pct">{{ progress }}%</span>
             </div>
         </header>
+
+        <!-- Bouton retour desktop : fixe, centré à gauche -->
+        <button
+            v-if="answeredActive.length > 0 && !isComplete"
+            class="quiz-back-desktop hidden lg:flex"
+            :title="t('quiz.back')"
+            @click="goBack"
+            :aria-label="t('quiz.prev_question')"
+        >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
 
         <!-- ── Main content ─────────────────────────────────────────────── -->
         <main class="quiz-main flex-1 flex flex-col items-center px-4 py-6 lg:py-10 lg:px-8 overflow-x-hidden">
@@ -401,7 +415,10 @@ const goBack = () => {
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                                     </svg>
                                                 </span>
-                                                <span class="check-label-text">{{ item.label }}</span>
+                                                <div class="check-text">
+                                                    <span class="check-label-text">{{ item.label }}</span>
+                                                    <span v-if="item.sublabel" class="check-sublabel-text">{{ item.sublabel }}</span>
+                                                </div>
                                             </label>
                                             <select v-if="birthSelected.includes(item.id)"
                                                 class="quiz-select mt-1"
@@ -854,6 +871,12 @@ const goBack = () => {
 @media (min-width: 640px) and (max-width: 1023px) {
     .intro-cta-wrap { max-width: 100%; }
 }
+.intro-privacy-note {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.38);
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -893,18 +916,34 @@ const goBack = () => {
 .topbar-back-btn {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--color-quiz-control-border);
     background: transparent;
-    color: rgba(255,255,255,0.7);
+    border: none;
+    color: var(--color-brand);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
-    transition: border-color 150ms, color 150ms;
+    transition: opacity 150ms;
 }
-.topbar-back-btn:hover { border-color: var(--color-quiz-control-hover); color: white; }
+.topbar-back-btn:hover { opacity: 0.7; }
+.quiz-back-desktop {
+    position: fixed;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: var(--color-brand);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 150ms;
+    z-index: 10;
+}
+.quiz-back-desktop:hover { opacity: 0.7; }
 .topbar-left {
     display: flex;
     align-items: center;
@@ -942,12 +981,11 @@ const goBack = () => {
 .topbar-pct {
     font-size: 12px;
     font-weight: 600;
-    color: rgba(255,255,255,0.45);
+    color: var(--color-brand);
     min-width: 36px;
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
-
 /* ═══════════════════════════════════════════════════════════════════
    DOCUMENT — wrapper & tab
 ═══════════════════════════════════════════════════════════════════ */

@@ -134,7 +134,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                 <div class="flex items-center gap-2 shrink-0">
                     <a
                         :href="`/c/${entreprise.access_token}/quiz`"
-                        class="hidden sm:inline-flex btn btn-sm btn-co border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
+                        class="hidden sm:inline-flex btn btn-sm btn-co border-none rounded-sm text-xs font-semibold"
                     >
                         {{ t('entreprise.quiz_cta') }}
                     </a>
@@ -158,7 +158,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                 </a>
                 <!-- CTA quiz — occupe tout l'espace restant -->
                 <a :href="`/c/${entreprise.access_token}/quiz`"
-                   class="flex-1 btn border-none rounded-sm uppercase text-xs font-semibold tracking-wide"
+                   class="flex-1 btn border-none rounded-sm text-xs font-semibold"
                    style="background-color: var(--t1); color: var(--c1);">
                     {{ t('entreprise.quiz_cta') }}
                 </a>
@@ -179,7 +179,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         {{ t('entreprise.hero_description', { company: entreprise.name }) }}
                     </p>
                     <a :href="`/c/${entreprise.access_token}/quiz`"
-                       class="btn border-none font-semibold px-6 md:px-8 rounded-sm uppercase text-sm tracking-wide w-full sm:w-auto"
+                       class="btn border-none font-semibold px-6 md:px-8 rounded-sm w-full sm:w-auto"
                        style="background-color: var(--t1); color: var(--c1);">
                         {{ t('entreprise.quiz_discover') }}
                     </a>
@@ -260,7 +260,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
                             <!-- CTA -->
                             <div class="shrink-0">
-                                <span class="btn btn-co btn-sm border-none rounded-sm uppercase text-xs font-semibold tracking-wide">
+                                <span class="btn btn-co btn-sm border-none rounded-sm text-xs font-semibold">
                                     {{ t('entreprise.collecte_rdv_cta_short') }}
                                 </span>
                             </div>
@@ -344,13 +344,18 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line1') }}</p>
                         <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line2') }}</p>
                         <p class="font-semibold leading-snug" style="color: var(--t1); opacity: 0.82; font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line3') }}</p>
+                        <a href="https://www.hug.ch/don-du-sang" target="_blank" rel="noopener noreferrer"
+                           class="btn border-2 bg-transparent font-semibold px-6 rounded-sm active:scale-[0.97] w-full md:w-auto mt-4"
+                           style="border-color: var(--t1); color: var(--t1);">
+                            {{ t('entreprise.learn_more_cta') }}
+                        </a>
                     </div>
                     <div class="pt-6 md:pt-8 reveal-up" :class="{ 'reveal-up--visible': ctaEVisible }" style="transition-delay: 160ms;">
                         <p class="text-sm mb-8 leading-relaxed" style="color: var(--t1); opacity: 0.82; max-width: 42ch;">
                             {{ t('entreprise.cta_section_description', { company: entreprise.name }) }}
                         </p>
                         <a :href="`/c/${entreprise.access_token}/quiz`"
-                           class="btn border-none font-semibold px-6 md:px-10 rounded-sm uppercase text-sm tracking-wide active:scale-[0.97] w-full md:w-auto"
+                           class="btn border-none font-semibold px-6 md:px-10 rounded-sm active:scale-[0.97] w-full md:w-auto"
                            style="background-color: var(--t1); color: var(--c1);">
                             {{ t('entreprise.quiz_discover') }}
                         </a>

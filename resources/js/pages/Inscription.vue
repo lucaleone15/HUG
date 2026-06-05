@@ -330,7 +330,7 @@ const handleSubmit = (e) => {
                     </p>
 
                     <button type="submit"
-                        class="w-full bg-black hover:bg-black/80 text-white font-semibold py-4 rounded-sm uppercase tracking-wide text-sm active:scale-[0.97]"
+                        class="w-full bg-black hover:bg-black/80 text-white font-semibold py-4 rounded-sm active:scale-[0.97]"
                         style="transition: background-color 150ms ease, transform 140ms cubic-bezier(0.23,1,0.32,1);">
                         {{ t('inscription.submit_label') }}
                     </button>

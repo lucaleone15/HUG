@@ -177,11 +177,12 @@ const goToContact = () => {
                 </div>
 
                 <!-- ── Boutons de partage intégrés dans le dossier ── -->
-                <template v-if="!eligible">
-                    <div class="dossier-rule"></div>
+                <div class="dossier-rule"></div>
+                <div class="dossier-share-section">
+                    <h3 class="share-section-title">{{ t('result.referral_section_title') }}</h3>
                     <div class="dossier-share">
                         <BaseButton variant="primary" class="!rounded-sm flex-1" @click="copyLink">
-                            {{ copied ? t('result.referral_copied') : t('result.referral_colleague') }}
+                            {{ copied ? t('result.referral_copied') : t('result.referral_copy') }}
                         </BaseButton>
                         <BaseButton variant="primary" class="!rounded-sm flex-1" @click="openMail">
                             {{ t('result.share_mail') }}
@@ -190,7 +191,7 @@ const goToContact = () => {
                             {{ t('result.referral_whatsapp') }}
                         </BaseButton>
                     </div>
-                </template>
+                </div>
 
             </div><!-- /dossier-card -->
         </div><!-- /dossier-wrapper -->
@@ -526,14 +527,28 @@ const goToContact = () => {
 .agent-stamp--ineligible { color: #D32C37; }
 
 /* ── Share inside dossier ──────────────────────────────────────── */
+.dossier-share-section {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+@media (min-width: 640px) {
+    .dossier-share-section { padding: 20px 32px 28px; }
+}
+.share-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #7A5A30;
+}
 .dossier-share {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 20px 24px 24px;
 }
 @media (min-width: 640px) {
-    .dossier-share { flex-direction: row; padding: 20px 32px 28px; }
+    .dossier-share { flex-direction: row; }
 }
 
 

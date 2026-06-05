@@ -128,7 +128,7 @@ const colorSwatches = computed(() =>
                         {{ t('label.cta_section_description') }}
                     </p>
                     <a href="/inscription"
-                        class="btn bg-black hover:bg-black/80 text-white border-none font-semibold px-8 rounded-sm uppercase text-sm tracking-wide reveal-up active:scale-[0.97]"
+                        class="btn bg-black hover:bg-black/80 text-white border-none font-semibold px-8 rounded-sm reveal-up active:scale-[0.97]"
                         :class="{ 'reveal-up--visible': ctaVisible }"
                         style="transition-delay: 240ms;">
                         {{ t('label.cta_button') }}

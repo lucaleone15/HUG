@@ -67,7 +67,7 @@ const criteriaIcons = [
         <PageHero
             :title="t('trophee.title')"
             :subtitle="t('trophee.subtitle')"
-            :cta="{ label: t('nav.inscription'), href: '/inscription' }"
+            :cta="{ label: t('home.register_cta'), href: '/inscription' }"
         >
             <template #visual>
                 <img :src="'/images/trophee-rouge.svg'" alt="Trophée HUG" class="w-4/5 mx-auto h-auto object-contain" decoding="async" />
@@ -276,7 +276,7 @@ const criteriaIcons = [
                     {{ t('trophee.cta_section_description') }}
                 </p>
                 <a href="/inscription"
-                    class="btn bg-white text-black hover:bg-white/90 border-none font-semibold px-8 rounded-sm uppercase text-sm tracking-wide reveal-up active:scale-[0.97]"
+                    class="btn bg-white text-black hover:bg-white/90 border-none font-semibold px-8 rounded-sm reveal-up active:scale-[0.97]"
                     :class="{ 'reveal-up--visible': ctaVisible }"
                     style="transition-delay: 180ms;">
                     {{ t('trophee.cta_button') }}

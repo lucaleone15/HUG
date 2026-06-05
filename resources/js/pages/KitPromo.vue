@@ -133,12 +133,7 @@ const allResources = resources
                         </div>
                         <a href="/downloads/kit/brochure.pdf"
                            download
-                           class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-6 gap-2 shrink-0 active:scale-[0.97]">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                <polyline points="7 10 12 15 17 10"/>
-                                <line x1="12" y1="15" x2="12" y2="3"/>
-                            </svg>
+                           class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-6 shrink-0 active:scale-[0.97]">
                             {{ t('kit.brochure_download') }}
                         </a>
                     </div>
@@ -183,7 +178,7 @@ const allResources = resources
                     {{ t('kit.cta_section_desc') }}
                 </p>
                 <a href="/contact"
-                   class="btn bg-white text-black hover:bg-white/90 border-none font-semibold px-8 rounded-sm uppercase text-sm tracking-wide reveal-up active:scale-[0.97]"
+                   class="btn bg-white text-black hover:bg-white/90 border-none font-semibold px-8 rounded-sm reveal-up active:scale-[0.97]"
                    :class="{ 'reveal-up--visible': ctaVisible }"
                    style="transition-delay: 160ms;">
                     {{ t('kit.contact_link') }}
