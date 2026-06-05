@@ -144,7 +144,8 @@
         },
         {
           "id": "q7_soins_med",
-          "label": "Visita medica o cure mediche (escluse le cure dentali)",
+          "label": "Visita medica o cure mediche",
+          "sublabel": "escluse le cure dentali",
           "is_disqualifying": true,
           "disqualification_reason": "Cure mediche recenti possono richiedere un periodo di attesa a seconda della loro natura. Il personale medico valuterà la tua situazione."
         },
@@ -256,21 +257,24 @@
       "items": [
         {
           "id": "q10_vaccin_4sem",
-          "label": "Qualsiasi vaccino ricevuto nelle ultime 4 settimane (specificare quale al personale medico)",
+          "label": "Qualsiasi vaccino nelle ultime 4 settimane",
+          "sublabel": "specificare quale al personale medico",
           "timeframe": "4 dernières semaines",
           "is_disqualifying": true,
           "disqualification_reason": "Un vaccino recente (nelle ultime 4 settimane) richiede un periodo di attesa prima della donazione. Il periodo esatto varia a seconda del vaccino."
         },
         {
           "id": "q10_rage_tetanos",
-          "label": "Vaccino contro la rabbia o il tetano negli ultimi 12 mesi",
+          "label": "Vaccino contro la rabbia o il tetano",
+          "sublabel": "ultimi 12 mesi",
           "timeframe": "12 derniers mois",
           "is_disqualifying": true,
           "disqualification_reason": "Un vaccino contro la rabbia o il tetano negli ultimi 12 mesi controindica temporaneamente la donazione."
         },
         {
           "id": "q10_immunotherapie",
-          "label": "Immunoterapia a base di cellule o siero di origine umana o animale (in qualsiasi momento nella tua vita)",
+          "label": "Immunoterapia con cellule o siero umano o animale",
+          "sublabel": "in qualsiasi momento della vita",
           "timeframe": "À tout moment",
           "is_disqualifying": true,
           "disqualification_reason": "Un'immunoterapia a base di prodotti umani o animali può controindicare la donazione. Si prega di informare il personale medico per la valutazione."
@@ -292,55 +296,64 @@
       "items": [
         {
           "id": "q11_cardio",
-          "label": "Malattia cardiovascolare: ipertensione arteriosa grave, infarto del miocardio, insufficienza cardiaca, angina pectoris",
+          "label": "Malattia cardiovascolare",
+          "sublabel": "ipertensione arteriosa grave, infarto del miocardio, insufficienza cardiaca, angina pectoris",
           "is_disqualifying": true,
           "disqualification_reason": "Una grave malattia cardiovascolare può controindicare la donazione. Il personale medico valuterà la tua situazione."
         },
         {
           "id": "q11_pulmonaire",
-          "label": "Malattia polmonare grave: asma non controllato, BPCO, insufficienza respiratoria, embolia polmonare",
+          "label": "Malattia polmonare grave",
+          "sublabel": "asma non controllato, BPCO, insufficienza respiratoria, embolia polmonare",
           "is_disqualifying": true,
           "disqualification_reason": "Una malattia polmonare grave può controindicare la donazione di sangue."
         },
         {
           "id": "q11_avc",
-          "label": "Ictus (AVC), attacco ischemico transitorio (TIA) o perdita di coscienza inspiegabile",
+          "label": "Ictus (AVC)",
+          "sublabel": "attacco ischemico transitorio (TIA) o perdita di coscienza inspiegabile",
           "is_disqualifying": true,
           "disqualification_reason": "Un ictus, un TIA o una perdita di coscienza inspiegabile controindica la donazione di sangue."
         },
         {
           "id": "q11_diabete",
-          "label": "Diabete (di tipo 1, di tipo 2 o gestazionale)",
+          "label": "Diabete",
+          "sublabel": "di tipo 1, di tipo 2 o gestazionale",
           "is_disqualifying": true,
           "disqualification_reason": "Il diabete può controindicare la donazione a seconda del tipo e del trattamento. Il personale medico valuterà la tua situazione."
         },
         {
           "id": "q11_sang_coag",
-          "label": "Malattia del sangue o della coagulazione: anemia cronica, emofilia, trombocitopenia, trombosi, drepanocitosi",
+          "label": "Malattia del sangue o della coagulazione",
+          "sublabel": "anemia cronica, emofilia, trombocitopenia, trombosi, drepanocitosi",
           "is_disqualifying": true,
           "disqualification_reason": "Una malattia del sangue o della coagulazione controindica la donazione di sangue."
         },
         {
           "id": "q11_cancer",
-          "label": "Cancro o tumore maligno (in corso o passato, di qualsiasi tipo)",
+          "label": "Cancro o tumore maligno",
+          "sublabel": "in corso o passato, di qualsiasi tipo",
           "is_disqualifying": true,
           "disqualification_reason": "Alcuni precedenti oncologici possono controindica la donazione. Il personale medico valuterà la tua situazione in base al tipo e alla data del trattamento."
         },
         {
           "id": "q11_renal",
-          "label": "Malattia renale: insufficienza renale cronica, nefropatia",
+          "label": "Malattia renale",
+          "sublabel": "insufficienza renale cronica, nefropatia",
           "is_disqualifying": true,
           "disqualification_reason": "Una malattia renale può controindicare la donazione di sangue."
         },
         {
           "id": "q11_neuro",
-          "label": "Malattia neurologica o epilessia (compresi gli episodi convulsivi)",
+          "label": "Malattia neurologica o epilessia",
+          "sublabel": "compresi gli episodi convulsivi",
           "is_disqualifying": true,
           "disqualification_reason": "Una malattia neurologica o l'epilessia può controindicare la donazione di sangue."
         },
         {
           "id": "q11_foie",
-          "label": "Malattia del fegato: epatite cronica, cirrosi, steatoepatite",
+          "label": "Malattia del fegato",
+          "sublabel": "epatite cronica, cirrosi, steatoepatite",
           "is_disqualifying": true,
           "disqualification_reason": "Una malattia del fegato può controindicare la donazione di sangue."
         },
@@ -352,7 +365,8 @@
         },
         {
           "id": "q11_allergie_severe",
-          "label": "Allergia grave o shock anafilattico (farmaci, alimenti, punture di insetti...)",
+          "label": "Allergia grave o shock anafilattico",
+          "sublabel": "farmaci, alimenti, punture di insetti...",
           "is_disqualifying": true,
           "disqualification_reason": "Un'allergia grave o un precedente di shock anafilattico può controindicare la donazione. Il personale medico valuterà la tua situazione."
         }
@@ -411,31 +425,36 @@
       "items": [
         {
           "id": "q14_greffe_tissu",
-          "label": "Trapianto di tessuto umano o animale (cornea, valvola cardiaca, pelle, osso...)",
+          "label": "Trapianto di tessuto umano o animale",
+          "sublabel": "cornea, valvola cardiaca, pelle, osso...",
           "is_disqualifying": true,
           "disqualification_reason": "Un trapianto di tessuto umano o animale controindica definitivamente la donazione di sangue."
         },
         {
           "id": "q14_transplantation",
-          "label": "Trapianto di organo (rene, fegato, cuore, polmone, pancreas...)",
+          "label": "Trapianto di organo",
+          "sublabel": "rene, fegato, cuore, polmone, pancreas...",
           "is_disqualifying": true,
           "disqualification_reason": "Un trapianto di organo controindica definitivamente la donazione di sangue."
         },
         {
           "id": "q14_op_cerveau_etranger",
-          "label": "Operazione al cervello o al midollo spinale eseguita all'estero",
+          "label": "Operazione al cervello o al midollo spinale all'estero",
+          "sublabel": "rischio di malattia di Creutzfeldt-Jakob",
           "is_disqualifying": true,
           "disqualification_reason": "Un'operazione al cervello o al midollo spinale eseguita all'estero controindica definitivamente la donazione, a causa del rischio di trasmissione della malattia di Creutzfeldt-Jakob."
         },
         {
           "id": "q14_hormone_croissance",
-          "label": "Trattamento con ormone della crescita o iniezioni ormonali per l'infertilità prima del 01.01.1986",
+          "label": "Ormone della crescita o iniezioni ormonali per l'infertilità",
+          "sublabel": "prima del 01.01.1986",
           "is_disqualifying": true,
           "disqualification_reason": "Un trattamento con ormone della crescita prima del 1986 controindica definitivamente la donazione a causa del rischio di malattia di Creutzfeldt-Jakob (vecchia preparazione di origine ipofisaria)."
         },
         {
           "id": "q14_creutzfeldt",
-          "label": "Possibile rischio di malattia di Creutzfeldt-Jakob che ti riguarda o nella tua famiglia diretta (anche in caso di dubbio)",
+          "label": "Malattia di Creutzfeldt-Jakob",
+          "sublabel": "rischio personale o familiare, anche in caso di dubbio",
           "is_disqualifying": true,
           "disqualification_reason": "Un rischio di malattia di Creutzfeldt-Jakob (per te o nella tua famiglia) controindica definitivamente la donazione di sangue."
         }
@@ -538,13 +557,15 @@
       "items": [
         {
           "id": "q16_naissance_hors_suisse",
-          "label": "Sono nato/a fuori dalla Svizzera, vi sono cresciuto/a o vi ho vissuto per più di 6 mesi : indicare il paese",
+          "label": "Nato/a fuori dalla Svizzera o cresciuto/a lì",
+          "sublabel": "più di 6 mesi — indicare il paese",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
-          "label": "Mia madre è nata in un paese extra-europeo, vi è cresciuta o vi ha vissuto per più di 6 mesi : indicare il paese",
+          "label": "Madre nata in un paese extra-europeo",
+          "sublabel": "cresciuta o vissuta lì più di 6 mesi — indicare il paese",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -564,17 +585,17 @@
       "order": 17,
       "items": [
         { "id": "q17_toxoplasmose", "label": "Toxoplasmosi", "is_disqualifying": true, "disqualification_reason": "Precedenti di toxoplasmosi possono richiedere un periodo di attesa prima della donazione. Si prega di specificare la data al personale medico." },
-        { "id": "q17_mononucleose", "label": "Mononucleosi infettiva (malattia del bacio, EBV)", "is_disqualifying": true, "disqualification_reason": "Precedenti di mononucleosi possono richiedere un periodo di attesa prima della donazione a seconda della data della malattia." },
-        { "id": "q17_amibiase", "label": "Amebiasi (dissenteria amebica)", "is_disqualifying": true, "disqualification_reason": "Precedenti di amebiasi possono richiedere un periodo di attesa prima della donazione." },
-        { "id": "q17_shigellose", "label": "Shigellosi (dissenteria batterica)", "is_disqualifying": true, "disqualification_reason": "Precedenti di shigellosi possono richiedere un periodo di attesa prima della donazione." },
-        { "id": "q17_fsme", "label": "TBE : Meningoencefalite da zecche", "is_disqualifying": true, "disqualification_reason": "Precedenti di TBE possono richiedere un periodo di attesa prima della donazione." },
-        { "id": "q17_bilharziose", "label": "Bilharziosi (schistosomiasi)", "is_disqualifying": true, "disqualification_reason": "Precedenti di bilharziosi richiedono una valutazione medica prima della donazione." },
-        { "id": "q17_gonorrhee", "label": "Gonorrea (MST batterica)", "is_disqualifying": true, "disqualification_reason": "Precedenti di gonorrea possono richiedere un periodo di attesa prima della donazione." },
-        { "id": "q17_osteomyelite", "label": "Osteomielite (infezione ossea)", "is_disqualifying": true, "disqualification_reason": "Precedenti di osteomielite richiedono una valutazione medica prima della donazione." },
+        { "id": "q17_mononucleose", "label": "Mononucleosi infettiva", "sublabel": "malattia del bacio, EBV", "is_disqualifying": true, "disqualification_reason": "Precedenti di mononucleosi possono richiedere un periodo di attesa prima della donazione a seconda della data della malattia." },
+        { "id": "q17_amibiase", "label": "Amebiasi", "sublabel": "dissenteria amebica", "is_disqualifying": true, "disqualification_reason": "Precedenti di amebiasi possono richiedere un periodo di attesa prima della donazione." },
+        { "id": "q17_shigellose", "label": "Shigellosi", "sublabel": "dissenteria batterica", "is_disqualifying": true, "disqualification_reason": "Precedenti di shigellosi possono richiedere un periodo di attesa prima della donazione." },
+        { "id": "q17_fsme", "label": "TBE", "sublabel": "Meningoencefalite da zecche", "is_disqualifying": true, "disqualification_reason": "Precedenti di TBE possono richiedere un periodo di attesa prima della donazione." },
+        { "id": "q17_bilharziose", "label": "Bilharziosi", "sublabel": "schistosomiasi", "is_disqualifying": true, "disqualification_reason": "Precedenti di bilharziosi richiedono una valutazione medica prima della donazione." },
+        { "id": "q17_gonorrhee", "label": "Gonorrea", "sublabel": "MST batterica", "is_disqualifying": true, "disqualification_reason": "Precedenti di gonorrea possono richiedere un periodo di attesa prima della donazione." },
+        { "id": "q17_osteomyelite", "label": "Osteomielite", "sublabel": "infezione ossea", "is_disqualifying": true, "disqualification_reason": "Precedenti di osteomielite richiedono una valutazione medica prima della donazione." },
         { "id": "q17_fievre_rhum", "label": "Febbre reumatica", "is_disqualifying": true, "disqualification_reason": "Precedenti di febbre reumatica possono richiedere un periodo di attesa prima della donazione." },
-        { "id": "q17_tuberculose", "label": "Tubercolosi (polmonare o extrapolmonare)", "is_disqualifying": true, "disqualification_reason": "Precedenti di tubercolosi richiedono una valutazione medica approfondita prima della donazione." },
-        { "id": "q17_fievre_recurrente", "label": "Febbre ricorrente (borreliosi)", "is_disqualifying": true, "disqualification_reason": "Precedenti di febbre ricorrente richiedono una valutazione medica prima della donazione." },
-        { "id": "q17_fievre_q", "label": "Febbre Q (Coxiella burnetii)", "is_disqualifying": true, "disqualification_reason": "Precedenti di febbre Q richiedono una valutazione medica prima della donazione." },
+        { "id": "q17_tuberculose", "label": "Tubercolosi", "sublabel": "polmonare o extrapolmonare", "is_disqualifying": true, "disqualification_reason": "Precedenti di tubercolosi richiedono una valutazione medica approfondita prima della donazione." },
+        { "id": "q17_fievre_recurrente", "label": "Febbre ricorrente", "sublabel": "borreliosi", "is_disqualifying": true, "disqualification_reason": "Precedenti di febbre ricorrente richiedono una valutazione medica prima della donazione." },
+        { "id": "q17_fievre_q", "label": "Febbre Q", "sublabel": "Coxiella burnetii", "is_disqualifying": true, "disqualification_reason": "Precedenti di febbre Q richiedono una valutazione medica prima della donazione." },
         { "id": "q17_guillain_barre", "label": "Sindrome di Guillain-Barré", "is_disqualifying": true, "disqualification_reason": "Precedenti di sindrome di Guillain-Barré possono controindica la donazione." }
       ],
       "options": [
@@ -592,15 +613,15 @@
       "order": 18,
       "items": [
         { "id": "q18_paludisme", "label": "Malaria", "is_disqualifying": true, "disqualification_reason": "Precedenti di malaria controindica la donazione per 3 anni dopo la guarigione completamente documentata." },
-        { "id": "q18_chagas", "label": "Malattia di Chagas (tripanosomiasi americana)", "is_disqualifying": true, "disqualification_reason": "Precedenti di malattia di Chagas controindica definitivamente la donazione a causa del rischio di trasmissione al ricevente tramite il sangue." },
+        { "id": "q18_chagas", "label": "Malattia di Chagas", "sublabel": "tripanosomiasi americana", "is_disqualifying": true, "disqualification_reason": "Precedenti di malattia di Chagas controindica definitivamente la donazione a causa del rischio di trasmissione al ricevente tramite il sangue." },
         { "id": "q18_brucellose", "label": "Brucellosi", "is_disqualifying": true, "disqualification_reason": "Precedenti di brucellosi richiedono una valutazione medica prima della donazione." },
-        { "id": "q18_echinococcose", "label": "Echinococcosi (ciste idatidea)", "is_disqualifying": true, "disqualification_reason": "Precedenti di echinococcosi richiedono una valutazione medica prima della donazione." },
-        { "id": "q18_leishmaniose", "label": "Leishmaniosi (cutanea, viscerale o mucosale)", "is_disqualifying": true, "disqualification_reason": "Precedenti di leishmaniosi possono controindica la donazione a causa del rischio di trasmissione tramite il sangue." },
-        { "id": "q18_lymphogranulome", "label": "Linfogranuloma venereo (LGV, Chlamydia L1/L2/L3)", "is_disqualifying": true, "disqualification_reason": "Precedenti di LGV richiedono una valutazione medica prima della donazione." },
-        { "id": "q18_filariose", "label": "Filariosi (linfatica o oculare)", "is_disqualifying": true, "disqualification_reason": "Precedenti di filariosi possono controindica la donazione." },
+        { "id": "q18_echinococcose", "label": "Echinococcosi", "sublabel": "ciste idatidea", "is_disqualifying": true, "disqualification_reason": "Precedenti di echinococcosi richiedono una valutazione medica prima della donazione." },
+        { "id": "q18_leishmaniose", "label": "Leishmaniosi", "sublabel": "cutanea, viscerale o mucosale", "is_disqualifying": true, "disqualification_reason": "Precedenti di leishmaniosi possono controindica la donazione a causa del rischio di trasmissione tramite il sangue." },
+        { "id": "q18_lymphogranulome", "label": "Linfogranuloma venereo (LGV)", "sublabel": "Chlamydia L1/L2/L3", "is_disqualifying": true, "disqualification_reason": "Precedenti di LGV richiedono una valutazione medica prima della donazione." },
+        { "id": "q18_filariose", "label": "Filariosi", "sublabel": "linfatica o oculare", "is_disqualifying": true, "disqualification_reason": "Precedenti di filariosi possono controindica la donazione." },
         { "id": "q18_babesiose", "label": "Babesiosi", "is_disqualifying": true, "disqualification_reason": "Precedenti di babesiosi controindica la donazione per un lungo periodo." },
-        { "id": "q18_ebola", "label": "Malattia da virus Ebola, o soggiorno in zona di epidemia attiva Ebola", "is_disqualifying": true, "disqualification_reason": "Precedenti di Ebola o un soggiorno in zona di epidemia attiva controindica definitivamente la donazione." },
-        { "id": "q18_autre_grave", "label": "Altra infezione grave non elencata (specificare al personale medico)", "is_disqualifying": true, "disqualification_reason": "Un'infezione grave passata può controindicare la donazione. Si prega di specificare la malattia al personale medico per la valutazione." }
+        { "id": "q18_ebola", "label": "Malattia da virus Ebola", "sublabel": "o soggiorno in zona di epidemia attiva", "is_disqualifying": true, "disqualification_reason": "Precedenti di Ebola o un soggiorno in zona di epidemia attiva controindica definitivamente la donazione." },
+        { "id": "q18_autre_grave", "label": "Altra infezione grave non elencata", "sublabel": "specificare al personale medico", "is_disqualifying": true, "disqualification_reason": "Un'infezione grave passata può controindicare la donazione. Si prega di specificare la malattia al personale medico per la valutazione." }
       ],
       "options": [
         { "id": "q18_aucun", "label": "Nessuna di queste malattie", "is_disqualifying": false }
@@ -624,7 +645,8 @@
         },
         {
           "id": "q19_contact_infectieux",
-          "label": "Contatto ravvicinato con una persona affetta da una malattia infettiva contagiosa (specificare la malattia al personale medico)",
+          "label": "Contatto ravvicinato con una persona affetta da una malattia contagiosa",
+          "sublabel": "specificare la malattia al personale medico",
           "is_disqualifying": true,
           "disqualification_reason": "Un contatto recente con una persona contagiosa può richiedere un periodo di attesa a seconda della malattia in questione."
         }
@@ -650,7 +672,7 @@
         { "id": "q20_epilation_electrique", "label": "Epilazione elettrica", "is_disqualifying": true, "disqualification_reason": "Un'epilazione elettrica negli ultimi 4 mesi può temporaneamente controindica la donazione." },
         { "id": "q20_gastroscopie", "label": "Gastroscopia o colonscopia", "is_disqualifying": true, "disqualification_reason": "Una gastroscopia o colonscopia negli ultimi 4 mesi controindica temporaneamente la donazione a causa del rischio di trasmissione di infezioni." },
         { "id": "q20_sangsues", "label": "Utilizzo di sanguisughe medicinali", "is_disqualifying": true, "disqualification_reason": "L'utilizzo di sanguisughe medicinali negli ultimi 4 mesi controindica temporaneamente la donazione." },
-        { "id": "q20_contact_sang", "label": "Contatto con sangue altrui: puntura accidentale con ago, schizzo negli occhi, nella bocca o su una ferita aperta", "is_disqualifying": true, "disqualification_reason": "Un contatto con sangue altrui negli ultimi 4 mesi controindica temporaneamente la donazione a causa del rischio di trasmissione di HIV, epatiti B/C o altre infezioni." }
+        { "id": "q20_contact_sang", "label": "Contatto con sangue altrui", "sublabel": "puntura d'ago, schizzo negli occhi, bocca o ferita aperta", "is_disqualifying": true, "disqualification_reason": "Un contatto con sangue altrui negli ultimi 4 mesi controindica temporaneamente la donazione a causa del rischio di trasmissione di HIV, epatiti B/C o altre infezioni." }
       ],
       "options": [
         { "id": "q20_aucun", "label": "Nessuna di queste procedure", "is_disqualifying": false }
@@ -685,34 +707,10 @@
       "type": "checklist",
       "order": 22,
       "items": [
-        {
-          "id": "q22_partenaire_recents",
-          "label": "Nuovo partner sessuale, cambio di partner, o più di 2 partner negli ultimi 4 mesi",
-          "timeframe": "4 derniers mois",
-          "is_disqualifying": true,
-          "disqualification_reason": "Un nuovo partner, un cambio di partner o più di 2 partner negli ultimi 4 mesi richiede un periodo di attesa a causa del rischio di MST nella fase di sieroconversione."
-        },
-        {
-          "id": "q22_rapport_remunere",
-          "label": "Rapporti sessuali a pagamento (denaro, droghe o altre prestazioni) negli ultimi 12 mesi",
-          "timeframe": "12 derniers mois",
-          "is_disqualifying": true,
-          "disqualification_reason": "Rapporti sessuali a pagamento negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST."
-        },
-        {
-          "id": "q22_partenaire_ist",
-          "label": "Negli ultimi 12 mesi, partner affetto da epatite B/C, virus Zika, o lui/lei stesso/a esposto/a a una situazione a rischio (MST, HIV…)",
-          "timeframe": "12 derniers mois",
-          "is_disqualifying": true,
-          "disqualification_reason": "Un partner affetto da epatite B/C, Zika o esposto a una situazione a rischio negli ultimi 12 mesi controindica temporaneamente la donazione."
-        },
-        {
-          "id": "q22_partenaire_pays_risque",
-          "label": "Negli ultimi 4 mesi, rapporti sessuali con un partner che ha soggiornato più di 6 mesi in un paese ad alta prevalenza di HIV, epatite B o C",
-          "timeframe": "4 derniers mois",
-          "is_disqualifying": true,
-          "disqualification_reason": "Rapporti con un partner proveniente da un paese ad alta prevalenza negli ultimi 4 mesi richiedono un periodo di attesa."
-        }
+        { "id": "q22_partenaire_recents", "label": "Nuovo partner o più di 2 partner", "sublabel": "negli ultimi 4 mesi", "is_disqualifying": true, "disqualification_reason": "Un nuovo partner, un cambio di partner o più di 2 partner negli ultimi 4 mesi richiede un periodo di attesa a causa del rischio di MST nella fase di sieroconversione." },
+        { "id": "q22_rapport_remunere", "label": "Rapporti sessuali a pagamento", "sublabel": "denaro, droghe o altre prestazioni — ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti sessuali a pagamento negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST." },
+        { "id": "q22_partenaire_ist", "label": "Partner affetto da epatite B/C, Zika o esposto all'HIV", "sublabel": "negli ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Un partner affetto da epatite B/C, Zika o esposto a una situazione a rischio negli ultimi 12 mesi controindica temporaneamente la donazione." },
+        { "id": "q22_partenaire_pays_risque", "label": "Partner con soggiorno in un paese ad alta prevalenza HIV / epatite", "sublabel": "più di 6 mesi — ultimi 4 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti con un partner proveniente da un paese ad alta prevalenza negli ultimi 4 mesi richiedono un periodo di attesa." }
       ],
       "options": [
         { "id": "q22_aucun", "label": "Nessuna di queste situazioni mi riguarda", "is_disqualifying": false }
@@ -728,19 +726,8 @@
       "type": "checklist",
       "order": 23,
       "items": [
-        {
-          "id": "q23_injection",
-          "label": "Iniezione di droga (anche una sola volta nella vita, anche in passato)",
-          "is_disqualifying": true,
-          "disqualification_reason": "L'uso passato o presente di droghe iniettabili controindica definitivamente la donazione di sangue, a causa dell'elevato rischio di trasmissione di HIV ed epatiti B e C per via ematica."
-        },
-        {
-          "id": "q23_synthese",
-          "label": "Rapporti sessuali sotto l'influenza di droghe sintetiche negli ultimi 12 mesi",
-          "timeframe": "12 derniers mois",
-          "is_disqualifying": true,
-          "disqualification_reason": "Rapporti sessuali sotto droghe sintetiche negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST."
-        }
+        { "id": "q23_injection", "label": "Iniezione di droga", "sublabel": "anche una sola volta nella vita", "is_disqualifying": true, "disqualification_reason": "L'uso passato o presente di droghe iniettabili controindica definitivamente la donazione di sangue, a causa dell'elevato rischio di trasmissione di HIV ed epatiti B e C per via ematica." },
+        { "id": "q23_synthese", "label": "Rapporti sessuali sotto l'influenza di droghe sintetiche", "sublabel": "negli ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti sessuali sotto droghe sintetiche negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST." }
       ],
       "options": [
         { "id": "q23_aucun", "label": "No, nessuna di queste situazioni mi riguarda", "is_disqualifying": false }

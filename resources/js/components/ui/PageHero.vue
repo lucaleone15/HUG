@@ -27,7 +27,7 @@ defineProps({
                 {{ subtitle }}
             </p>
             <a v-if="cta" :href="cta.href"
-                class="btn font-semibold px-8 border-none rounded-sm uppercase text-sm tracking-wide"
+                class="btn font-semibold px-8 border-none rounded-sm"
                 :class="light ? 'bg-brand hover:bg-brand-dark text-white' : 'bg-white text-brand hover:bg-white/90'">
                 {{ cta.label }}
             </a>
