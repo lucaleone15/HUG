@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
                             </div>
                         </div>
                         <span
-                            class="pb-5 font-bold shrink-0 text-xl text-base-content/20"
+                            class="pb-5 font-bold shrink-0 text-xl text-base-content/40"
                             >:</span
                         >
                         <div class="flex-1 text-center">
@@ -358,7 +358,7 @@ onBeforeUnmount(() => {
                             </div>
                         </div>
                         <span
-                            class="pb-5 font-bold shrink-0 text-xl text-base-content/20"
+                            class="pb-5 font-bold shrink-0 text-xl text-base-content/40"
                             >:</span
                         >
                         <div class="flex-1 text-center">
@@ -445,7 +445,7 @@ onBeforeUnmount(() => {
                             <div class="flex-1 min-w-0">
                                 <div
                                     class="font-bold leading-snug truncate"
-                                    style="color: var(--c1)"
+                                    style="color: var(--t1)"
                                 >
                                     {{
                                         c.label ||
@@ -455,7 +455,7 @@ onBeforeUnmount(() => {
                                 <div
                                     v-if="c.rdv_date"
                                     class="text-xs mt-0.5"
-                                    style="color: var(--c1); opacity: 0.68"
+                                    style="color: var(--t1); opacity: 0.68"
                                 >
                                     {{ fullDate(c.rdv_date) }}
                                 </div>
@@ -759,6 +759,15 @@ onBeforeUnmount(() => {
 .entreprise-hero-img {
     animation: inspector-enter 600ms var(--ease-out) both;
     animation-delay: 200ms;
+}
+@media (min-width: 768px) {
+    .entreprise-hero-img {
+        width: 58%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+    }
 }
 @keyframes inspector-enter {
     from {

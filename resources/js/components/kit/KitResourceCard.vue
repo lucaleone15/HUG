@@ -1,24 +1,30 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
 const props = defineProps({
     resourceKey: { type: String, required: true },
-    file: { type: String, required: true },
+    file: { type: String, default: null },
     n: { type: Number, required: true },
     image: { type: String, default: null },
     video: { type: String, default: null },
     imageRatio: { type: String, default: null },
     slides: { type: Array, default: null },
+    customHref: { type: String, default: null },
+    actionLabel: { type: String, default: null },
+    previewHtml: { type: String, default: null },
 });
 
 const imageError = ref(false);
 const slideIndex = ref(0);
 const videoEl = ref(null);
+const emailMediaEl = ref(null);
+const emailScale = ref(0.5);
 let timer = null;
 let replayTimer = null;
+let resizeObserver = null;
 
 const currentImage = computed(() => {
     if (props.slides?.length) return props.slides[slideIndex.value];
@@ -40,16 +46,28 @@ onMounted(() => {
             }, 800);
         });
     }
+
+    if (props.previewHtml && emailMediaEl.value) {
+        resizeObserver = new ResizeObserver(([e]) => {
+            emailScale.value = e.contentRect.width / 640;
+        });
+        resizeObserver.observe(emailMediaEl.value);
+    }
 });
 
 onUnmounted(() => {
     if (timer) clearInterval(timer);
     if (replayTimer) clearTimeout(replayTimer);
+    if (resizeObserver) resizeObserver.disconnect();
 });
 </script>
 
 <template>
-    <a :href="file" download class="kit-card">
+    <a
+        :href="customHref ?? file"
+        v-bind="customHref ? {} : { download: '' }"
+        class="kit-card"
+    >
         <!-- Zone aperçu -->
         <div
             class="kit-card__media"
@@ -82,6 +100,16 @@ onUnmounted(() => {
                 </Transition>
             </template>
 
+            <div v-else-if="previewHtml" ref="emailMediaEl" class="kit-card__email-preview">
+                <iframe
+                    :srcdoc="previewHtml"
+                    scrolling="no"
+                    class="kit-card__email-iframe"
+                    :style="`transform:scale(${emailScale}); transform-origin:top left;`"
+                    title="Aperçu email"
+                ></iframe>
+            </div>
+
             <div v-else class="kit-card__placeholder">
                 <span class="kit-card__bg-num" aria-hidden="true">
                     {{ String(n).padStart(2, "0") }}
@@ -107,7 +135,7 @@ onUnmounted(() => {
                 {{ t(`kit.resource_${resourceKey}_desc`) }}
             </p>
             <div class="kit-card__dl">
-                {{ t("kit.download_label") }}
+                {{ actionLabel ?? t("kit.download_label") }}
             </div>
         </div>
     </a>
@@ -155,6 +183,20 @@ onUnmounted(() => {
     height: 100%;
     object-fit: cover;
     z-index: 0;
+}
+
+.kit-card__email-preview {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: #fff;
+}
+.kit-card__email-iframe {
+    display: block;
+    width: 640px;
+    height: 900px;
+    border: 0;
+    pointer-events: none;
 }
 
 .kit-card__placeholder {
