@@ -1,83 +1,90 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const props = defineProps({
     resourceKey: { type: String, required: true },
-    file:        { type: String, required: true },
-    n:           { type: Number, required: true },
-    image:       { type: String, default: null },
-    video:       { type: String, default: null },
-    imageRatio:  { type: String, default: null },
-    slides:      { type: Array,  default: null }, // tableau d'URLs pour le slider
-})
+    file: { type: String, required: true },
+    n: { type: Number, required: true },
+    image: { type: String, default: null },
+    video: { type: String, default: null },
+    imageRatio: { type: String, default: null },
+    slides: { type: Array, default: null },
+});
 
-const imageError = ref(false)
-const slideIndex = ref(0)
-const videoEl   = ref(null)
-let timer      = null
-let replayTimer = null
+const imageError = ref(false);
+const slideIndex = ref(0);
+const videoEl = ref(null);
+let timer = null;
+let replayTimer = null;
 
 const currentImage = computed(() => {
-    if (props.slides?.length) return props.slides[slideIndex.value]
-    return props.image
-})
+    if (props.slides?.length) return props.slides[slideIndex.value];
+    return props.image;
+});
 
 onMounted(() => {
     if (props.slides?.length > 1) {
         timer = setInterval(() => {
-            slideIndex.value = (slideIndex.value + 1) % props.slides.length
-        }, 2500)
+            slideIndex.value = (slideIndex.value + 1) % props.slides.length;
+        }, 2500);
     }
 
     if (props.video && videoEl.value) {
-        videoEl.value.addEventListener('ended', () => {
-            videoEl.value.currentTime = 0        // reset immédiat → pas de rebuffering
+        videoEl.value.addEventListener("ended", () => {
+            videoEl.value.currentTime = 0;
             replayTimer = setTimeout(() => {
-                videoEl.value?.play()
-            }, 800)
-        })
+                videoEl.value?.play();
+            }, 800);
+        });
     }
-})
+});
 
 onUnmounted(() => {
-    if (timer) clearInterval(timer)
-    if (replayTimer) clearTimeout(replayTimer)
-})
+    if (timer) clearInterval(timer);
+    if (replayTimer) clearTimeout(replayTimer);
+});
 </script>
 
 <template>
     <a :href="file" download class="kit-card">
-
-        <!-- ── Zone aperçu ──────────────────────────────────────── -->
-        <div class="kit-card__media"
-             :style="imageRatio ? { aspectRatio: imageRatio, flex: 'none' } : { minHeight: '180px' }">
-
-            <video v-if="video"
-                   ref="videoEl"
-                   class="kit-card__img"
-                   :src="video"
-                   autoplay
-                   muted
-                   playsinline
+        <!-- Zone aperçu -->
+        <div
+            class="kit-card__media"
+            :style="
+                imageRatio
+                    ? { aspectRatio: imageRatio, flex: 'none' }
+                    : { minHeight: '180px' }
+            "
+        >
+            <video
+                v-if="video"
+                ref="videoEl"
+                class="kit-card__img"
+                :src="video"
+                autoplay
+                muted
+                playsinline
             ></video>
 
             <template v-else-if="currentImage && !imageError">
                 <Transition name="kit-fade">
-                    <img :key="currentImage"
-                         :src="currentImage"
-                         :alt="t(`kit.resource_${resourceKey}_title`)"
-                         class="kit-card__img"
-                         loading="lazy"
-                         @error="imageError = true" />
+                    <img
+                        :key="currentImage"
+                        :src="currentImage"
+                        :alt="t(`kit.resource_${resourceKey}_title`)"
+                        class="kit-card__img"
+                        loading="lazy"
+                        @error="imageError = true"
+                    />
                 </Transition>
             </template>
 
             <div v-else class="kit-card__placeholder">
                 <span class="kit-card__bg-num" aria-hidden="true">
-                    {{ String(n).padStart(2, '0') }}
+                    {{ String(n).padStart(2, "0") }}
                 </span>
                 <span class="kit-card__fmt-hint">
                     {{ t(`kit.resource_${resourceKey}_format`) }}
@@ -88,21 +95,25 @@ onUnmounted(() => {
             <div class="kit-card__bar" aria-hidden="true"></div>
         </div>
 
-        <!-- ── Zone infos ───────────────────────────────────────── -->
+        <!-- Zone infos -->
         <div class="kit-card__body">
-            <span class="kit-card__format">{{ t(`kit.resource_${resourceKey}_format`) }}</span>
-            <h4 class="kit-card__title">{{ t(`kit.resource_${resourceKey}_title`) }}</h4>
-            <p class="kit-card__desc">{{ t(`kit.resource_${resourceKey}_desc`) }}</p>
+            <span class="kit-card__format">{{
+                t(`kit.resource_${resourceKey}_format`)
+            }}</span>
+            <h4 class="kit-card__title">
+                {{ t(`kit.resource_${resourceKey}_title`) }}
+            </h4>
+            <p class="kit-card__desc">
+                {{ t(`kit.resource_${resourceKey}_desc`) }}
+            </p>
             <div class="kit-card__dl">
-                {{ t('kit.download_label') }}
+                {{ t("kit.download_label") }}
             </div>
         </div>
-
     </a>
 </template>
 
 <style scoped>
-/* ── Base ───────────────────────────────────────────────────── */
 .kit-card {
     display: flex;
     flex-direction: column;
@@ -110,14 +121,19 @@ onUnmounted(() => {
     overflow: hidden;
     background: #ffffff;
     text-decoration: none;
-    box-shadow: 0 1px 3px rgba(25, 5, 7, 0.07), 0 1px 2px rgba(25, 5, 7, 0.04);
-    transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
-                box-shadow 220ms ease;
+    box-shadow:
+        0 1px 3px rgba(25, 5, 7, 0.07),
+        0 1px 2px rgba(25, 5, 7, 0.04);
+    transition:
+        transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 220ms ease;
 }
 @media (hover: hover) and (pointer: fine) {
     .kit-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 14px 42px rgba(25, 5, 7, 0.13), 0 4px 10px rgba(25, 5, 7, 0.06);
+        box-shadow:
+            0 14px 42px rgba(25, 5, 7, 0.13),
+            0 4px 10px rgba(25, 5, 7, 0.06);
     }
     .kit-card:hover .kit-card__bar {
         opacity: 1;
@@ -125,7 +141,6 @@ onUnmounted(() => {
     }
 }
 
-/* ── Aperçu ─────────────────────────────────────────────────── */
 .kit-card__media {
     position: relative;
     background: #f8f8f8;
@@ -133,7 +148,6 @@ onUnmounted(() => {
     flex-shrink: 0;
 }
 
-/* Image : absolue, remplit exactement le ratio défini */
 .kit-card__img {
     position: absolute;
     inset: 0;
@@ -143,7 +157,6 @@ onUnmounted(() => {
     z-index: 0;
 }
 
-/* ── Placeholder ────────────────────────────────────────────── */
 .kit-card__placeholder {
     position: absolute;
     inset: 0;
@@ -182,7 +195,6 @@ onUnmounted(() => {
     color: rgba(255, 255, 255, 0.18);
 }
 
-/* Dots carrousel */
 .kit-card__slides {
     display: flex;
     align-items: center;
@@ -194,15 +206,17 @@ onUnmounted(() => {
     height: 0.4rem;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
-    transition: background 150ms ease, width 150ms ease, border-radius 150ms ease;
+    transition:
+        background 150ms ease,
+        width 150ms ease,
+        border-radius 150ms ease;
 }
 .kit-card__dot--on {
-    background: #D32C37;
+    background: #d32c37;
     width: 0.9rem;
     border-radius: 0.2rem;
 }
 
-/* ── Trait rouge ────────────────────────────────────────────── */
 .kit-card__bar {
     position: absolute;
     bottom: 0;
@@ -210,11 +224,13 @@ onUnmounted(() => {
     right: 0;
     z-index: 1;
     height: 3px;
-    background: #D32C37;
+    background: #d32c37;
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
-    transition: opacity 220ms ease, transform 220ms ease;
+    transition:
+        opacity 220ms ease,
+        transform 220ms ease;
 }
 .kit-card--featured .kit-card__bar {
     height: 4px;
@@ -222,7 +238,6 @@ onUnmounted(() => {
     transform: scaleX(1);
 }
 
-/* ── Corps ──────────────────────────────────────────────────── */
 .kit-card__body {
     padding: 1rem 1.125rem 1.125rem;
     display: flex;
@@ -239,7 +254,6 @@ onUnmounted(() => {
     gap: 0.4rem;
 }
 
-/* landscape : infos en ligne sur desktop (titre gauche / dl droite) */
 @media (min-width: 640px) {
     .kit-card--landscape .kit-card__body {
         flex-direction: row;
@@ -272,9 +286,15 @@ onUnmounted(() => {
     color: #190507;
     margin: 0;
 }
-.kit-card--featured .kit-card__title   { font-size: 1.05rem; }
-.kit-card--landscape .kit-card__title  { font-size: 1rem; }
-.kit-card--wide .kit-card__title       { font-size: 1rem; }
+.kit-card--featured .kit-card__title {
+    font-size: 1.05rem;
+}
+.kit-card--landscape .kit-card__title {
+    font-size: 1rem;
+}
+.kit-card--wide .kit-card__title {
+    font-size: 1rem;
+}
 
 .kit-card__desc {
     font-size: 0.7rem;
@@ -291,9 +311,10 @@ onUnmounted(() => {
     font-size: 0.775rem;
     -webkit-line-clamp: 3;
 }
-/* landscape : description cachée sur desktop (espace insuffisant en ligne) */
 @media (min-width: 640px) {
-    .kit-card--landscape .kit-card__desc { display: none; }
+    .kit-card--landscape .kit-card__desc {
+        display: none;
+    }
 }
 
 .kit-card__dl {
@@ -304,7 +325,7 @@ onUnmounted(() => {
     padding-top: 0.5rem;
     font-size: 0.7rem;
     font-weight: 700;
-    color: #D32C37;
+    color: #d32c37;
 }
 .kit-card--featured .kit-card__dl,
 .kit-card--wide .kit-card__dl {
@@ -313,16 +334,24 @@ onUnmounted(() => {
     margin-top: 0.625rem;
 }
 
-/* ── Transition slides ──────────────────────────────────────── */
-.kit-fade-enter-active, .kit-fade-leave-active {
+.kit-fade-enter-active,
+.kit-fade-leave-active {
     transition: opacity 0.8s ease;
 }
-.kit-fade-enter-from, .kit-fade-leave-to {
+.kit-fade-enter-from,
+.kit-fade-leave-to {
     opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .kit-card, .kit-card__bar, .kit-card__dot { transition: none; }
-    .kit-fade-enter-active, .kit-fade-leave-active { transition: none; }
+    .kit-card,
+    .kit-card__bar,
+    .kit-card__dot {
+        transition: none;
+    }
+    .kit-fade-enter-active,
+    .kit-fade-leave-active {
+        transition: none;
+    }
 }
 </style>

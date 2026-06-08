@@ -23,6 +23,7 @@ defineEmits(['update:modelValue'])
                 {{ label }}<span v-if="required" class="text-error ml-0.5">*</span>
             </span>
         </div>
+        <!-- pose sur l'input tout ce qu'on écrit sur <BaseInput> mais qui n'est pas dans defineProps (ex. id, autocomplete) -->
         <input
             v-bind="$attrs"
             :type="type"

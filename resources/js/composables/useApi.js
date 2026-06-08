@@ -25,7 +25,7 @@ export function useApi() {
             method,
             headers: {
                 'Content-Type': 'application/json',
-                'Accept':       'application/json',
+                'Accept': 'application/json',
                 ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
             },
             ...(body !== null ? { body: JSON.stringify(body) } : {}),
@@ -34,7 +34,6 @@ export function useApi() {
     }
 
     // Multipart (pour les uploads de fichiers)
-    // Pas de Content-Type : le navigateur le positionne avec le boundary multipart
     const upload = async (path, formData) => {
         const res = await fetch(`/api${path}`, {
             method: 'POST',
@@ -48,11 +47,11 @@ export function useApi() {
     }
 
     return {
-        get:    (path)        => request('GET',    path),
-        post:   (path, body)  => request('POST',   path, body),
-        put:    (path, body)  => request('PUT',    path, body),
-        patch:  (path, body)  => request('PATCH',  path, body),
-        del:    (path)        => request('DELETE', path),
-        upload: (path, fd)    => upload(path, fd),
+        get: (path) => request('GET', path),
+        post: (path, body) => request('POST', path, body),
+        put: (path, body) => request('PUT', path, body),
+        patch: (path, body) => request('PATCH', path, body),
+        del: (path) => request('DELETE', path),
+        upload: (path, fd) => upload(path, fd),
     }
 }

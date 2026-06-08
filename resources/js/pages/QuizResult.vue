@@ -1,259 +1,372 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 
-const DATE_LOCALES = { fr: 'fr-CH', de: 'de-CH', it: 'it-CH', en: 'en-GB' }
-import { sendAnalytics } from '../composables/useAnalytics.js'
-import BaseButton from '../components/ui/BaseButton.vue'
+const DATE_LOCALES = { fr: "fr-CH", de: "de-CH", it: "it-CH", en: "en-GB" };
+import { sendAnalytics } from "../composables/useAnalytics.js";
+import BaseButton from "../components/ui/BaseButton.vue";
 
-const { t, locale } = useI18n()
+const { t, locale } = useI18n();
 
 const props = defineProps({
     entreprise: Object,
     submission: Object,
-})
+});
 
-const eligible        = props.submission?.is_eligible ?? false
-const reasons         = props.submission?.disqualification_reasons ?? []
-const needsEvaluation = props.submission?.needs_evaluation ?? false
-const copied = ref(false)
-const shareUrl        = `${window.location.origin}/c/${props.entreprise.access_token}`
-const dossierCode     = 'SANG-' + new Date().getFullYear().toString().slice(-2)
+const eligible = props.submission?.is_eligible ?? false;
+const reasons = props.submission?.disqualification_reasons ?? [];
+const needsEvaluation = props.submission?.needs_evaluation ?? false;
+const copied = ref(false);
+const shareUrl = `${window.location.origin}/c/${props.entreprise.access_token}`;
+const dossierCode = "SANG-" + new Date().getFullYear().toString().slice(-2);
 
 const formattedDate = computed(() => {
-    if (!props.entreprise.rdv_date) return null
-    const dateLocale = DATE_LOCALES[locale.value] ?? 'fr-CH'
+    if (!props.entreprise.rdv_date) return null;
+    const dateLocale = DATE_LOCALES[locale.value] ?? "fr-CH";
     return new Date(props.entreprise.rdv_date).toLocaleDateString(dateLocale, {
-        day: 'numeric', month: 'long', year: 'numeric',
-    })
-})
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+});
 
 const onRdvClick = () => {
-    sendAnalytics('rdv_clicked', props.entreprise.id, null, {})
-    window.open(props.entreprise.rdv_url || 'https://www.onedoc.ch', '_blank', 'noopener,noreferrer')
-}
+    sendAnalytics("rdv_clicked", props.entreprise.id, null, {});
+    window.open(
+        props.entreprise.rdv_url || "https://www.onedoc.ch",
+        "_blank",
+        "noopener,noreferrer",
+    );
+};
 
 const copyLink = async () => {
     try {
-        await navigator.clipboard.writeText(shareUrl)
+        await navigator.clipboard.writeText(shareUrl);
     } catch {
-        const el = document.createElement('input')
-        el.value = shareUrl
-        el.style.position = 'fixed'
-        el.style.opacity = '0'
-        document.body.appendChild(el)
-        el.select()
-        document.execCommand('copy')
-        document.body.removeChild(el)
+        const el = document.createElement("input");
+        el.value = shareUrl;
+        el.style.position = "fixed";
+        el.style.opacity = "0";
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
     }
-    copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
-}
+    copied.value = true;
+    setTimeout(() => {
+        copied.value = false;
+    }, 2000);
+};
 
 const openMail = () => {
-    const subject = encodeURIComponent(t('result.referral_email_subject', { company: props.entreprise.name }))
-    const body    = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
-    window.location.href = `mailto:?subject=${subject}&body=${body}`
-}
+    const subject = encodeURIComponent(
+        t("result.referral_email_subject", { company: props.entreprise.name }),
+    );
+    const body = encodeURIComponent(
+        t("result.referral_email_body", {
+            company: props.entreprise.name,
+            url: shareUrl,
+        }),
+    );
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+};
 
 const openWhatsapp = () => {
-    const text = encodeURIComponent(t('result.referral_email_body', { company: props.entreprise.name, url: shareUrl }))
-    window.open(`https://wa.me/?text=${text}`, '_blank', 'noopener,noreferrer')
-}
+    const text = encodeURIComponent(
+        t("result.referral_email_body", {
+            company: props.entreprise.name,
+            url: shareUrl,
+        }),
+    );
+    window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
+};
 
 const goToContact = () => {
-    const params = new URLSearchParams()
-    params.set('prefill', '1')
-    if (props.entreprise?.name) params.set('company', props.entreprise.name)
-    if (reasons.length > 0) params.set('reasons', reasons.join('||'))
-    if (needsEvaluation) params.set('needs_eval', '1')
-    window.location.href = `/contact?${params.toString()}`
-}
+    const params = new URLSearchParams();
+    params.set("prefill", "1");
+    if (props.entreprise?.name) params.set("company", props.entreprise.name);
+    if (reasons.length > 0) params.set("reasons", reasons.join("||"));
+    if (needsEvaluation) params.set("needs_eval", "1");
+    window.location.href = `/contact?${params.toString()}`;
+};
 </script>
 
 <template>
-<div class="result-root">
-
-    <!-- ── Top bar (progress at 100%) ──────────────────────────────────────── -->
-    <header class="result-topbar">
-        <div class="topbar-progress" aria-hidden="true">
-            <div class="topbar-progress-fill"></div>
-        </div>
-        <div class="topbar-controls">
-            <a :href="`/c/${entreprise.access_token}`" class="topbar-back-btn" :aria-label="t('result.back_home')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </a>
-            <span class="topbar-pct">100%</span>
-        </div>
-    </header>
-
-    <!-- ── Main ──────────────────────────────────────────────────────────────── -->
-    <main class="result-main">
-
-        <!-- Dossier Agent card -->
-        <div class="dossier-wrapper">
-
-            <!-- Tab desktop -->
-            <div class="hidden lg:flex justify-end pr-14 mb-[-1px] relative z-[1]">
-                <span class="doc-tab-inner">N° {{ dossierCode }}</span>
+    <div class="result-root">
+        <!-- Top bar -->
+        <header class="result-topbar">
+            <div class="topbar-progress" aria-hidden="true">
+                <div class="topbar-progress-fill"></div>
             </div>
+            <div class="topbar-controls">
+                <a
+                    :href="`/c/${entreprise.access_token}`"
+                    class="topbar-back-btn"
+                    :aria-label="t('result.back_home')"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        class="w-5 h-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+                </a>
+                <span class="topbar-pct">100%</span>
+            </div>
+        </header>
 
-            <div class="dossier-card">
-
-                <!-- Tape mobile -->
-                <div class="lg:hidden flex justify-center pt-2 pb-1">
-                    <div class="tape-strip"></div>
+        <!-- Main -->
+        <main class="result-main">
+            <!-- Dossier Agent card -->
+            <div class="dossier-wrapper">
+                <!-- Tab desktop -->
+                <div
+                    class="hidden lg:flex justify-end pr-14 mb-[-1px] relative z-[1]"
+                >
+                    <span class="doc-tab-inner">N° {{ dossierCode }}</span>
                 </div>
 
-                <!-- Card header -->
-                <div class="dossier-header">
-                    <h1 class="dossier-title">{{ t('result.dossier_title') }}</h1>
-                </div>
-                <div class="dossier-rule"></div>
-
-                <!-- Body: narrative left, portrait right -->
-                <div class="dossier-body">
-
-                    <!-- LEFT: narrative text + reasons + action inside dossier -->
-                    <div class="dossier-narrative">
-                        <template v-if="eligible">
-                            <p class="narrative-text">{{ t('result.eligible_narrative') }}</p>
-                            <!-- RDV button inside dossier -->
-                            <div class="dossier-action-block">
-                                <p v-if="formattedDate" class="dossier-action-date">
-                                    {{ t('entreprise.collect_date') }} : <strong>{{ formattedDate }}</strong>
-                                </p>
-                                <BaseButton variant="primary" class="!rounded-sm" @click="onRdvClick">
-                                    {{ t('result.rdv_cta') }}
-                                </BaseButton>
-                            </div>
-                        </template>
-                        <template v-else>
-                            <p class="narrative-text">{{ t('result.ineligible_narrative_p1') }}</p>
-                            <div v-if="reasons.length > 0" class="dossier-reasons">
-                                <p class="dossier-reasons-title">{{ t('result.ineligible_reasons_title') }} :</p>
-                                <ul class="dossier-reasons-list">
-                                    <li v-for="(r, i) in reasons" :key="i" class="dossier-reason-item">
-                                        <span class="reason-bullet">•</span>
-                                        <span>{{ r }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <p v-if="needsEvaluation" class="narrative-text narrative-text--gap narrative-text--info">
-                                {{ t('result.needs_evaluation_message') }}
-                            </p>
-                            <p class="narrative-text narrative-text--gap">{{ t('result.ineligible_narrative_p2') }}</p>
-                            <div class="dossier-action-block">
-                                <BaseButton variant="dark" class="!rounded-sm" @click="goToContact">
-                                    {{ t('result.contact_box_cta') }}
-                                </BaseButton>
-                            </div>
-                        </template>
+                <div class="dossier-card">
+                    <!-- Tape mobile -->
+                    <div class="lg:hidden flex justify-center pt-2 pb-1">
+                        <div class="tape-strip"></div>
                     </div>
 
-                    <!-- RIGHT: portrait + fingerprints (masqué sur mobile) -->
-                    <div class="dossier-right-col hidden md:flex flex-col gap-[10px]">
+                    <!-- Card header -->
+                    <div class="dossier-header">
+                        <h1 class="dossier-title">
+                            {{ t("result.dossier_title") }}
+                        </h1>
+                    </div>
+                    <div class="dossier-rule"></div>
 
-                        <!-- Photo frame -->
-                        <div class="photo-frame">
-                            <div class="photo-tape"></div>
-                            <div class="photo-icon-wrap">
-                                <svg viewBox="4 8 56 50" preserveAspectRatio="xMidYMax meet" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="photo-icon">
-                                    <circle cx="32" cy="22" r="13"/>
-                                    <path d="M6 58c0-14.359 11.641-26 26-26s26 11.641 26 26H6z"/>
-                                </svg>
-                            </div>
+                    <!-- Body: narrative left, portrait right -->
+                    <div class="dossier-body">
+                        <!-- LEFT: narrative text + reasons + action inside dossier -->
+                        <div class="dossier-narrative">
+                            <template v-if="eligible">
+                                <p class="narrative-text">
+                                    {{ t("result.eligible_narrative") }}
+                                </p>
+                                <!-- RDV button inside dossier -->
+                                <div class="dossier-action-block">
+                                    <p
+                                        v-if="formattedDate"
+                                        class="dossier-action-date"
+                                    >
+                                        {{ t("entreprise.collect_date") }} :
+                                        <strong>{{ formattedDate }}</strong>
+                                    </p>
+                                    <BaseButton
+                                        variant="primary"
+                                        class="!rounded-sm"
+                                        @click="onRdvClick"
+                                    >
+                                        {{ t("result.rdv_cta") }}
+                                    </BaseButton>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <p class="narrative-text">
+                                    {{ t("result.ineligible_narrative_p1") }}
+                                </p>
+                                <div
+                                    v-if="reasons.length > 0"
+                                    class="dossier-reasons"
+                                >
+                                    <p class="dossier-reasons-title">
+                                        {{
+                                            t("result.ineligible_reasons_title")
+                                        }}
+                                        :
+                                    </p>
+                                    <ul class="dossier-reasons-list">
+                                        <li
+                                            v-for="(r, i) in reasons"
+                                            :key="i"
+                                            class="dossier-reason-item"
+                                        >
+                                            <span class="reason-bullet">•</span>
+                                            <span>{{ r }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <p
+                                    v-if="needsEvaluation"
+                                    class="narrative-text narrative-text--gap narrative-text--info"
+                                >
+                                    {{ t("result.needs_evaluation_message") }}
+                                </p>
+                                <p class="narrative-text narrative-text--gap">
+                                    {{ t("result.ineligible_narrative_p2") }}
+                                </p>
+                                <div class="dossier-action-block">
+                                    <BaseButton
+                                        variant="dark"
+                                        class="!rounded-sm"
+                                        @click="goToContact"
+                                    >
+                                        {{ t("result.contact_box_cta") }}
+                                    </BaseButton>
+                                </div>
+                            </template>
                         </div>
 
+                        <!-- RIGHT: portrait (masqué sur mobile) -->
+                        <div
+                            class="dossier-right-col hidden md:flex flex-col gap-[10px]"
+                        >
+                            <!-- Photo frame -->
+                            <div class="photo-frame">
+                                <div class="photo-tape"></div>
+                                <div class="photo-icon-wrap">
+                                    <svg
+                                        viewBox="4 8 56 50"
+                                        preserveAspectRatio="xMidYMax meet"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="photo-icon"
+                                    >
+                                        <circle cx="32" cy="22" r="13" />
+                                        <path
+                                            d="M6 58c0-14.359 11.641-26 26-26s26 11.641 26 26H6z"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    </div><!-- /dossier-right-col -->
-                </div><!-- /dossier-body -->
+                    <!-- Eligibility stamp -->
+                    <div
+                        :class="[
+                            'agent-stamp',
+                            eligible
+                                ? 'agent-stamp--eligible'
+                                : 'agent-stamp--ineligible',
+                        ]"
+                    >
+                        {{
+                            eligible
+                                ? t("result.stamp_eligible")
+                                : t("result.stamp_ineligible")
+                        }}
+                    </div>
 
-                <!-- Eligibility stamp (diagonal, absolute) -->
-                <div :class="['agent-stamp', eligible ? 'agent-stamp--eligible' : 'agent-stamp--ineligible']">
-                    {{ eligible ? t('result.stamp_eligible') : t('result.stamp_ineligible') }}
-                </div>
-
-                <!-- ── Boutons de partage intégrés dans le dossier ── -->
-                <div class="dossier-rule"></div>
-                <div class="dossier-share-section">
-                    <h3 class="share-section-title">{{ t('result.referral_section_title') }}</h3>
-                    <div class="dossier-share">
-                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="copyLink">
-                            {{ copied ? t('result.referral_copied') : t('result.referral_copy') }}
-                        </BaseButton>
-                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="openMail">
-                            {{ t('result.share_mail') }}
-                        </BaseButton>
-                        <BaseButton variant="primary" class="!rounded-sm flex-1" @click="openWhatsapp">
-                            {{ t('result.referral_whatsapp') }}
-                        </BaseButton>
+                    <!-- Boutons de partage intégrés dans le dossier -->
+                    <div class="dossier-rule"></div>
+                    <div class="dossier-share-section">
+                        <h3 class="share-section-title">
+                            {{ t("result.referral_section_title") }}
+                        </h3>
+                        <div class="dossier-share">
+                            <BaseButton
+                                variant="primary"
+                                class="!rounded-sm flex-1"
+                                @click="copyLink"
+                            >
+                                {{
+                                    copied
+                                        ? t("result.referral_copied")
+                                        : t("result.referral_copy")
+                                }}
+                            </BaseButton>
+                            <BaseButton
+                                variant="primary"
+                                class="!rounded-sm flex-1"
+                                @click="openMail"
+                            >
+                                {{ t("result.share_mail") }}
+                            </BaseButton>
+                            <BaseButton
+                                variant="primary"
+                                class="!rounded-sm flex-1"
+                                @click="openWhatsapp"
+                            >
+                                {{ t("result.referral_whatsapp") }}
+                            </BaseButton>
+                        </div>
                     </div>
                 </div>
-
-            </div><!-- /dossier-card -->
-        </div><!-- /dossier-wrapper -->
-
-    </main>
-
-</div>
+            </div>
+        </main>
+    </div>
 </template>
 
 <style scoped>
-/* ═══════════════════════════════════════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════════════════════════════════════ */
 @keyframes dossier-enter {
-    from { opacity: 0; transform: translateY(28px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 @keyframes stamp-land {
-    0%   { opacity: 0; transform: rotate(3deg) scale(1.2); }
-    55%  { opacity: 1; transform: rotate(10deg) scale(0.96); }
-    75%  { transform: rotate(6deg) scale(1.01); }
-    100% { opacity: 0.92; transform: rotate(8deg) scale(1); }
+    0% {
+        opacity: 0;
+        transform: rotate(3deg) scale(1.2);
+    }
+    55% {
+        opacity: 1;
+        transform: rotate(10deg) scale(0.96);
+    }
+    75% {
+        transform: rotate(6deg) scale(1.01);
+    }
+    100% {
+        opacity: 0.92;
+        transform: rotate(8deg) scale(1);
+    }
 }
 @keyframes cta-enter {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   ROOT
-═══════════════════════════════════════════════════════════════════ */
 .result-root {
     min-height: 100vh;
-    background: #0D0D0D;
+    background: #0d0d0d;
     color: white;
     display: flex;
     flex-direction: column;
-    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    font-family: "Cooper Hewitt", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   TOPBAR (progress bar + controls row — mirrors QuizShow)
-═══════════════════════════════════════════════════════════════════ */
 .result-topbar {
     display: flex;
     flex-direction: column;
     position: sticky;
     top: 0;
     z-index: 20;
-    background: #0D0D0D;
-    border-bottom: 1px solid #1A1A1A;
+    background: #0d0d0d;
+    border-bottom: 1px solid #1a1a1a;
 }
 .topbar-progress {
     width: 100%;
     height: 3px;
-    background: #2A2A2A;
+    background: #2a2a2a;
     flex-shrink: 0;
 }
 .topbar-progress-fill {
     width: 100%;
     height: 100%;
-    background: #D32C37;
+    background: #d32c37;
 }
 .topbar-controls {
     display: flex;
@@ -276,19 +389,18 @@ const goToContact = () => {
     transition: color 150ms;
     text-decoration: none;
 }
-.topbar-back-btn:hover { color: var(--color-brand-dark); }
+.topbar-back-btn:hover {
+    color: var(--color-brand-dark);
+}
 .topbar-pct {
     font-size: 12px;
     font-weight: 600;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255, 255, 255, 0.45);
     min-width: 36px;
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   MAIN
-═══════════════════════════════════════════════════════════════════ */
 .result-main {
     flex: 1;
     display: flex;
@@ -298,12 +410,11 @@ const goToContact = () => {
     gap: 28px;
 }
 @media (min-width: 1024px) {
-    .result-main { padding: 24px 32px 56px; }
+    .result-main {
+        padding: 24px 32px 56px;
+    }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   DOSSIER AGENT CARD
-═══════════════════════════════════════════════════════════════════ */
 .dossier-wrapper {
     width: 100%;
     max-width: 900px;
@@ -312,37 +423,36 @@ const goToContact = () => {
 
 .doc-tab-inner {
     display: inline-block;
-    background: #EDE4C8;
-    color: #7A6A50;
+    background: #ede4c8;
+    color: #7a6a50;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
     padding: 5px 16px;
     border-radius: 4px 4px 0 0;
-    border: 1px solid #C4B080;
+    border: 1px solid #c4b080;
     border-bottom: none;
 }
 
 .dossier-card {
-    background: #E8DFC0;
-    color: #1A1A1A;
+    background: #e8dfc0;
+    color: #1a1a1a;
     border-radius: 4px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
     overflow: hidden;
     position: relative;
-    animation: dossier-enter 700ms cubic-bezier(0.23,1,0.32,1) both;
+    animation: dossier-enter 700ms cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .tape-strip {
     width: 72px;
     height: 13px;
-    background: rgba(180,170,150,0.55);
+    background: rgba(180, 170, 150, 0.55);
     border-radius: 2px;
     display: block;
     margin-bottom: 4px;
 }
 
-/* ── Card header ──────────────────────────────────────────────── */
 .dossier-header {
     padding: 20px 24px 10px;
     text-align: center;
@@ -351,24 +461,29 @@ const goToContact = () => {
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: 0.12em;
-    color: #1A1A1A;
+    color: #1a1a1a;
     text-transform: uppercase;
 }
 @media (min-width: 1024px) {
-    .dossier-header { padding: 28px 32px 12px; }
-    .dossier-title  { font-size: 2rem; }
+    .dossier-header {
+        padding: 28px 32px 12px;
+    }
+    .dossier-title {
+        font-size: 2rem;
+    }
 }
 
 .dossier-rule {
     height: 1.5px;
-    background: #C4A870;
+    background: #c4a870;
     margin: 0 24px;
 }
 @media (min-width: 1024px) {
-    .dossier-rule { margin: 0 32px; }
+    .dossier-rule {
+        margin: 0 32px;
+    }
 }
 
-/* ── Body layout ─────────────────────────────────────────────── */
 .dossier-body {
     display: grid;
     grid-template-columns: 1fr;
@@ -383,7 +498,6 @@ const goToContact = () => {
     }
 }
 
-/* ── Narrative text (left) ───────────────────────────────────── */
 .dossier-narrative {
     display: flex;
     flex-direction: column;
@@ -392,27 +506,30 @@ const goToContact = () => {
 
 .narrative-text {
     font-size: 14px;
-    color: #3A2A1A;
+    color: #3a2a1a;
     line-height: 1.8;
     font-style: italic;
 }
 @media (min-width: 768px) {
-    .narrative-text { font-size: 15px; }
+    .narrative-text {
+        font-size: 15px;
+    }
 }
-.narrative-text--gap { margin-top: 4px; }
+.narrative-text--gap {
+    margin-top: 4px;
+}
 .narrative-text--info {
-    color: #2A5A8A;
+    color: #2a5a8a;
     font-style: italic;
 }
 
-/* Reasons inside dossier */
 .dossier-reasons {
     margin-top: 2px;
 }
 .dossier-reasons-title {
     font-size: 11px;
     font-weight: 700;
-    color: #7A5A30;
+    color: #7a5a30;
     letter-spacing: 0.04em;
     margin-bottom: 6px;
 }
@@ -427,17 +544,16 @@ const goToContact = () => {
     display: flex;
     gap: 7px;
     font-size: 12px;
-    color: #4A3A2A;
+    color: #4a3a2a;
     line-height: 1.5;
     font-style: italic;
 }
 .reason-bullet {
-    color: #D32C37;
+    color: #d32c37;
     flex-shrink: 0;
     margin-top: 1px;
 }
 
-/* ── Action block inside dossier ─────────────────────────────── */
 .dossier-action-block {
     margin-top: 16px;
     display: flex;
@@ -446,20 +562,18 @@ const goToContact = () => {
 }
 .dossier-action-date {
     font-size: 13px;
-    color: #6A5A40;
+    color: #6a5a40;
     font-style: italic;
 }
 
-/* ── Right column ─────────────────────────────────────────────── */
 .dossier-right-col {
     width: 210px;
     flex-shrink: 0;
 }
 
-/* ── Photo frame ─────────────────────────────────────────────── */
 .photo-frame {
-    border: 1.5px solid #C4A870;
-    background: #EDE8D4;
+    border: 1.5px solid #c4a870;
+    background: #ede8d4;
     overflow: hidden;
     position: relative;
     aspect-ratio: 3/4;
@@ -477,7 +591,7 @@ const goToContact = () => {
 .photo-icon {
     width: 100%;
     height: 100%;
-    color: #8A7A60;
+    color: #8a7a60;
     opacity: 0.45;
 }
 .photo-tape {
@@ -487,13 +601,11 @@ const goToContact = () => {
     transform: translateX(-50%);
     width: 56px;
     height: 14px;
-    background: rgba(180,170,150,0.6);
+    background: rgba(180, 170, 150, 0.6);
     border-radius: 2px;
     z-index: 2;
 }
 
-
-/* ── Eligibility stamp (bottom of dossier, in reserved padding zone) ── */
 .agent-stamp {
     position: absolute;
     top: 18px;
@@ -509,24 +621,33 @@ const goToContact = () => {
     z-index: 5;
     white-space: nowrap;
     opacity: 0.92;
-    animation: stamp-land 560ms cubic-bezier(0.23,1,0.32,1) both 440ms;
-    font-family: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif;
+    animation: stamp-land 560ms cubic-bezier(0.23, 1, 0.32, 1) both 440ms;
+    font-family: "Cooper Hewitt", ui-sans-serif, system-ui, sans-serif;
 }
 @media (min-width: 768px) {
-    .agent-stamp { font-size: 1.75rem; padding: 10px 28px; top: 24px; right: 28px; border-width: 3px; }
+    .agent-stamp {
+        font-size: 1.75rem;
+        padding: 10px 28px;
+        top: 24px;
+        right: 28px;
+        border-width: 3px;
+    }
 }
-/* Double border via pseudo-element */
+
 .agent-stamp::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 6px;
     border: 1.5px solid currentColor;
     pointer-events: none;
 }
-.agent-stamp--eligible   { color: #2A8A3A; }
-.agent-stamp--ineligible { color: #D32C37; }
+.agent-stamp--eligible {
+    color: #2a8a3a;
+}
+.agent-stamp--ineligible {
+    color: #d32c37;
+}
 
-/* ── Share inside dossier ──────────────────────────────────────── */
 .dossier-share-section {
     padding: 20px 24px 24px;
     display: flex;
@@ -534,13 +655,15 @@ const goToContact = () => {
     gap: 12px;
 }
 @media (min-width: 640px) {
-    .dossier-share-section { padding: 20px 32px 28px; }
+    .dossier-share-section {
+        padding: 20px 32px 28px;
+    }
 }
 .share-section-title {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: #7A5A30;
+    color: #7a5a30;
 }
 .dossier-share {
     display: flex;
@@ -548,18 +671,24 @@ const goToContact = () => {
     gap: 10px;
 }
 @media (min-width: 640px) {
-    .dossier-share { flex-direction: row; }
+    .dossier-share {
+        flex-direction: row;
+    }
 }
 
-
-
-
-/* ═══════════════════════════════════════════════════════════════════
-   REDUCED MOTION
-═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-    .dossier-card { animation: none; opacity: 1; }
-    .agent-stamp  { animation: none; opacity: 0.92; transform: rotate(8deg); }
-    .result-cta-section { animation: none; opacity: 1; }
+    .dossier-card {
+        animation: none;
+        opacity: 1;
+    }
+    .agent-stamp {
+        animation: none;
+        opacity: 0.92;
+        transform: rotate(8deg);
+    }
+    .result-cta-section {
+        animation: none;
+        opacity: 1;
+    }
 }
 </style>

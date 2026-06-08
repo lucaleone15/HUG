@@ -22,7 +22,6 @@ return [
     'contact_message'         => 'Messaggio',
     'contact_reply_cta'       => 'Rispondere a :name',
 
-    // Email nuova iscrizione (notifica admin)
     'registration_badge'           => 'Nuova iscrizione',
     'registration_action_required' => 'Azione richiesta',
     'registration_title'           => ':name vuole unirsi alla brigata.',
@@ -36,7 +35,6 @@ return [
     'registration_footer_note'     => 'Notifica automatica · Piattaforma HUG Donazione del Sangue',
     'registration_comms_label'     => 'Notifica interna · Back-office HUG',
 
-    // Nuova email co-branding
     'hero_comms_label'  => 'Comunicazione ufficiale CTS-HUG',
     'hero_stamp'        => 'Dossier accettato',
     'hero_welcome'      => 'Benvenuti nella brigata.',
@@ -44,7 +42,7 @@ return [
     'status_label'      => 'Stato',
     'status_confirmed'  => 'Donazione di sangue confermata',
     'date_label'        => 'Data',
-    'activation_section'=> 'Attivazione dello spazio',
+    'activation_section' => 'Attivazione dello spazio',
     'cta_access_page'   => 'Accedere alla pagina co-branded',
     'admin_link'        => 'Spazio admin',
     'kit_section'       => 'Kit di comunicazione',
@@ -77,5 +75,5 @@ return [
     'footer_sub_title'  => 'Centro di Trasfusione Sanguigna × Ospedali Universitari di Ginevra',
     'footer_links'      => 'Il Trofeo · Il Label CTS · Per saperne di più',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
-    'footer_unsubscribe'=> 'Disiscriversi',
+    'footer_unsubscribe' => 'Disiscriversi',
 ];

@@ -12,12 +12,10 @@
     $pct = fn($a, $b) => $b > 0 ? round(($a / $b) * 1000) / 10 : 0;
     $fmt = fn($n) => number_format($n ?? 0, 0, '.', "\u{202F}");
 
-    // Logos base64 inline
     $logoColor = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path('images/hug-logo.svg')));
     $logoBlanc =
         'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path('images/hug-logo_blanc.svg')));
 
-    // Nom court pour tableaux (max 8 chars ou initiales si trop long)
     $rawName = $entreprise['name'] ?? 'Entreprise';
     $shortName =
         mb_strlen($rawName) <= 9
@@ -38,45 +36,53 @@
     $convRate = $pct($rdv, $el);
     $e2eRate = $pct($rdv, $qs);
     $score = round(($partRate + $eligRate + $convRate) / 3);
-    $perf = $score >= 65 ? $tr['perf_excellent'] : ($score >= 45 ? $tr['perf_bon'] : ($score >= 25 ? $tr['perf_moyen'] : $tr['perf_faible']));
+    $perf =
+        $score >= 65
+            ? $tr['perf_excellent']
+            : ($score >= 45
+                ? $tr['perf_bon']
+                : ($score >= 25
+                    ? $tr['perf_moyen']
+                    : $tr['perf_faible']));
 
-    // Nombre de diagnostics actifs (pour gérer l'espace — doit être après $convRate)
-$diagCount = 2 + ($convRate >= 70 ? 1 : 0);
+    $diagCount = 2 + ($convRate >= 70 ? 1 : 0);
 
-$drop1 = $qs - $qc;
-$drop2 = $qc - $el;
-$drop3 = $el - $rdv;
+    $drop1 = $qs - $qc;
+    $drop2 = $qc - $el;
+    $drop3 = $el - $rdv;
 
-// Abandons
-$abs = collect($behavior['abandon_by_question'] ?? [])
-    ->map(fn($n, $k) => ['q' => (int) $k + 1, 'n' => (int) $n])
-    ->sortByDesc('n')
-    ->values();
-$maxAb = $abs->max('n') ?: 1;
-$totalAb = $abs->sum('n');
-$topQ = $abs->first();
+    $abs = collect($behavior['abandon_by_question'] ?? [])
+        ->map(fn($n, $k) => ['q' => (int) $k + 1, 'n' => (int) $n])
+        ->sortByDesc('n')
+        ->values();
+    $maxAb = $abs->max('n') ?: 1;
+    $totalAb = $abs->sum('n');
+    $topQ = $abs->first();
 
-// Potentiel 25%
-$potPart = round($emp * 0.25);
-$potElig = round(($potPart * $eligRate) / 100);
-$potRdv = round(($potElig * $convRate) / 100);
+    $potPart = round($emp * 0.25);
+    $potElig = round(($potPart * $eligRate) / 100);
+    $potRdv = round(($potElig * $convRate) / 100);
 
-// Objectifs 2027
-$obj2027Part = 25;
-$obj2027Elig = $fmt(round(($emp * 0.25 * $eligRate) / 100));
-$obj2027Rdv = $fmt(round(((($emp * 0.25 * $eligRate) / 100) * $convRate) / 100));
+    $obj2027Part = 25;
+    $obj2027Elig = $fmt(round(($emp * 0.25 * $eligRate) / 100));
+    $obj2027Rdv = $fmt(round(((($emp * 0.25 * $eligRate) / 100) * $convRate) / 100));
 
-// Impact vies
-$lives = $rdv * 3;
+    $lives = $rdv * 3;
 
-// Durée contexte
-$durCtx = $dur ? ($dur < 120 ? $tr['dur_very_fast'] : ($dur < 180 ? $tr['dur_concise'] : ($dur < 300 ? $tr['dur_optimal'] : $tr['dur_long']))) : '-';
-$durPct = $dur ? min(round(($dur / 600) * 100), 100) : 0;
-$durCirc = round(($durPct / 100) * 163.4, 1); // 2π×26 ≈ 163.4
+    $durCtx = $dur
+        ? ($dur < 120
+            ? $tr['dur_very_fast']
+            : ($dur < 180
+                ? $tr['dur_concise']
+                : ($dur < 300
+                    ? $tr['dur_optimal']
+                    : $tr['dur_long'])))
+        : '-';
+    $durPct = $dur ? min(round(($dur / 600) * 100), 100) : 0;
+    $durCirc = round(($durPct / 100) * 163.4, 1); // 2π×26 ≈ 163.4
 
-// Gauge semicircle: arc = pct/100 * 175.9 (π×56 = demi-circonf pour R=28 viewBox)
-$gaV = fn($v) => round((min($v, 100) / 100) * 125.7, 1); // π×40 = 125.7
-$gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
+    $gaV = fn($v) => round((min($v, 100) / 100) * 125.7, 1); // π×40 = 125.7
+    $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 @endphp
 <!DOCTYPE html>
 <html lang="fr">
@@ -114,7 +120,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             font-display: block
         }
 
-        /* ─── Palette stricte : #E8001C | #1A1A1A | #6B6B6B | #E5E5E5 | #FFF ── */
         @media print {
             @page {
                 size: A4 portrait;
@@ -143,7 +148,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             print-color-adjust: exact
         }
 
-        /* ─── HEADER ──────────────────────────────────────────── */
         .hdr {
             display: flex;
             align-items: center;
@@ -201,7 +205,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             margin-top: 3px
         }
 
-        /* ─── KPI BAND ────────────────────────────────────────── */
         .kband {
             display: flex;
             background: #1A1A1A;
@@ -259,7 +262,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             color: #E8001C
         }
 
-        /* ─── BODY ────────────────────────────────────────────── */
         .body {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -280,7 +282,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             color: #fff
         }
 
-        /* ─── SECTIONS ────────────────────────────────────────── */
         .blk {
             flex-shrink: 0
         }
@@ -309,7 +310,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             flex-shrink: 0
         }
 
-        /* Info rows */
         .ir {
             display: flex;
             justify-content: space-between;
@@ -342,7 +342,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             margin-left: 2px
         }
 
-        /* ─── GAUGES ──────────────────────────────────────────── */
         .gauge-item {
             display: flex;
             align-items: flex-start;
@@ -415,7 +414,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             margin-top: 3px
         }
 
-        /* ─── DIAGNOSTICS ─────────────────────────────────────── */
         .diag {
             display: flex;
             gap: 6px;
@@ -452,7 +450,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             line-height: 1.5
         }
 
-        /* ─── RECO BOX ────────────────────────────────────────── */
         .reco {
             background: #FFF8F8;
             border: 1px solid #E5E5E5;
@@ -524,7 +521,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             color: #16a34a
         }
 
-        /* ─── FUNNEL ──────────────────────────────────────────── */
         .funnel-wrap {
             padding: 6px 14px;
             flex: 1;
@@ -532,7 +528,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             flex-direction: column
         }
 
-        /* ─── DURATION ────────────────────────────────────────── */
         .dur-block {
             display: flex;
             align-items: center;
@@ -574,7 +569,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             line-height: 1.5
         }
 
-        /* ─── BAR CHART ───────────────────────────────────────── */
         .bchart {
             padding: 6px 14px;
             flex: 1;
@@ -649,7 +643,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             flex-shrink: 0
         }
 
-        /* ─── MINI ENCADRÉS ───────────────────────────────────── */
         .mini-box {
             background: #F9F9F9;
             border: 1px solid #E5E5E5;
@@ -694,7 +687,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             color: #16a34a
         }
 
-        /* ─── DARK COL ────────────────────────────────────────── */
         .d3e {
             font-size: 7px;
             font-weight: 400;
@@ -818,7 +810,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             line-height: 1.3
         }
 
-        /* F4 grid */
         .f4 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -853,7 +844,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             margin-top: 1px
         }
 
-        /* Simulation */
         .sim {
             background: rgba(255, 255, 255, .04);
             border: 1px solid rgba(255, 255, 255, .1);
@@ -947,7 +937,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             margin-top: 3px
         }
 
-        /* Impact */
         .impact {
             background: rgba(255, 255, 255, .04);
             border: 1px solid rgba(255, 255, 255, .1);
@@ -1021,7 +1010,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             color: #fff
         }
 
-        /* D3 footer */
         .d3ft {
             margin-top: auto;
             padding-top: 8px;
@@ -1047,7 +1035,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
 <body>
 
-    {{-- HEADER --}}
     <div class="hdr">
         <div class="hdr-l">
             <img src="{{ $logoColor }}" alt="HUG" style="height:34px;width:auto">
@@ -1063,7 +1050,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
         </div>
     </div>
 
-    {{-- KPI BAND --}}
     <div class="kband">
         <div class="kpi">
             <div class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8001C"
@@ -1117,7 +1103,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
     <div class="body">
 
-        {{-- ── COL 1 ── --}}
         <div class="col">
 
             <div class="blk">
@@ -1141,7 +1126,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Taux avec jauges SVG --}}
             @php
                 $rateRows = [
                     [
@@ -1218,7 +1202,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Diagnostics --}}
             <div class="blk">
                 <div class="sh">{{ $tr['section_diagnostics'] }}</div>
                 <div style="padding:5px 12px;display:flex;flex-direction:column;gap:5px">
@@ -1271,7 +1254,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                             </div>
                         </div>
                     @else
-                        {{-- Bloc de remplissage si seulement 2 diagnostics --}}
                         <div class="diag">
                             <div class="diag-ic" style="background:#EEF2FF">◎</div>
                             <div class="diag-body">
@@ -1286,7 +1268,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Recommandations --}}
             <div class="blk">
                 <div class="sh">{{ $tr['section_reco'] }}</div>
                 <div style="padding:5px 12px">
@@ -1308,7 +1289,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Prochaine session + tableau objectifs --}}
             <div class="blk blk-grow">
                 <div class="sh">{{ $tr['section_objectives'] }}</div>
                 <div style="padding:6px 12px;flex:1">
@@ -1346,10 +1326,8 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
         </div>
 
-        {{-- ── COL 2 ── --}}
         <div class="col">
 
-            {{-- Entonnoir SVG --}}
             <div class="blk">
                 <div class="sh">{{ $tr['section_participation'] }}</div>
                 <div class="funnel-wrap" style="padding:6px 12px;min-height:0">
@@ -1439,11 +1417,9 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Durée avec jauge circulaire --}}
             <div class="blk">
                 <div class="sh">{{ $tr['section_behavior_dur'] }}</div>
                 <div class="dur-block">
-                    {{-- Jauge circulaire SVG --}}
                     <svg width="70" height="70" viewBox="0 0 70 70" flex-shrink="0">
                         <circle cx="35" cy="35" r="26" fill="none" stroke="#F0F0F0"
                             stroke-width="7" />
@@ -1466,7 +1442,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Bar chart abandons --}}
             <div class="bchart" style="min-height:0;padding:5px 12px">
                 <div class="sh" style="margin:0 -12px 5px;padding:4px 12px">{{ $tr['abandon_by_question'] }}
                 </div>
@@ -1500,7 +1475,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Analyse comportementale --}}
             <div class="blk">
                 <div class="sh">{{ $tr['section_behavior_analysis'] }}</div>
                 <div style="padding:5px 12px">
@@ -1524,7 +1498,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
             <div class="hsep"></div>
 
-            {{-- Benchmark --}}
             <div class="blk blk-grow">
                 <div class="sh">{{ $tr['section_benchmark'] }}</div>
                 <div style="padding:5px 12px;flex:1">
@@ -1557,7 +1530,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                     <div
                         style="font-size:6.5px;font-weight:300;color:#bbb;font-style:italic;margin-top:5px;line-height:1.4">
                         {{ $tr['bench_note'] }}</div>
-                    {{-- Enrichissement si peu d'abandons ou peu de volume --}}
                     @if ($abs->count() < 4 || $qs < 50)
                         <div style="margin-top:8px;background:#F7F7F7;border-left:3px solid #E8001C;padding:7px 10px">
                             <div style="font-size:7.5px;font-weight:600;color:#E8001C;margin-bottom:4px">
@@ -1574,7 +1546,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
         </div>
 
-        {{-- ── COL 3 DARK ── --}}
         <div class="col">
             <div style="padding:10px 12px;display:flex;flex-direction:column;height:100%;overflow:hidden">
 
@@ -1586,7 +1557,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                     <div class="sfill" style="width:{{ $score }}%"></div>
                 </div>
 
-                {{-- Barres verticales --}}
                 <div class="vbs">
                     <div class="vb">
                         <div class="vbt">
@@ -1619,7 +1589,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                 </div>
                 <div class="d3sep"></div>
 
-                {{-- Facts 2×2 (plus grands) --}}
                 <div class="f4">
                     <div class="f4i"><span class="f4n">{{ $fmt($sub) }}</span><span
                             class="f4l">{{ $tr['synth_soumissions'] }}</span><span
@@ -1638,12 +1607,10 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                 </div>
                 <div class="d3sep"></div>
 
-                {{-- Simulation avec double barre SVG --}}
                 @if ($emp)
                     <div class="sim">
                         <div class="sim-t">{{ $tr['sim_title'] }}</div>
 
-                        {{-- Participants --}}
                         <div style="margin-bottom:5px">
                             <div class="sim-nums">
                                 <span class="sim-now">{{ $fmt($qs) }}</span>
@@ -1664,7 +1631,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                             </svg>
                         </div>
 
-                        {{-- Éligibles --}}
                         <div>
                             <div class="sim-nums">
                                 <span class="sim-now">{{ $fmt($el) }}</span>
@@ -1695,7 +1661,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                     <div class="d3sep"></div>
                 @endif
 
-                {{-- Impact don du sang --}}
                 <div class="impact">
                     <div class="impact-t">{{ $tr['impact_title'] }}</div>
                     <div class="impact-big">{{ $fmt($lives) }}</div>
@@ -1705,7 +1670,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                 </div>
                 <div class="d3sep"></div>
 
-                {{-- Ratio --}}
                 <div>
                     <div class="ratio-l">{{ $tr['ratio_title'] }}</div>
                     <div class="ratio-b">
@@ -1718,7 +1682,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
 
                 <div class="d3sep"></div>
 
-                {{-- Le saviez-vous --}}
                 <div
                     style="background:rgba(232,0,28,.08);border:1px solid rgba(232,0,28,.2);border-left:3px solid #E8001C;padding:7px 8px;margin-bottom:6px">
                     <div style="font-size:7.5px;font-weight:700;color:#E8001C;margin-bottom:4px">
@@ -1729,7 +1692,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                     </div>
                 </div>
 
-                {{-- Contact campagne --}}
                 <div
                     style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:7px 8px;margin-bottom:6px">
                     <div style="font-size:7.5px;font-weight:600;color:#AAA;margin-bottom:4px">
@@ -1752,7 +1714,6 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
                     </div>
                 </div>
 
-                {{-- Footer dark --}}
                 <div class="d3ft">
                     <img src="{{ $logoBlanc }}" alt="HUG" style="height:18px;width:auto;opacity:.5">
                     <div class="d3url">{{ $tr['footer_site'] }}</div>
@@ -1761,16 +1722,14 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
             </div>
         </div>
 
-    </div>{{-- /body --}}
+    </div>
 
-    {{-- FOOTER --}}
     <div class="rp-footer"
         style="display:flex;align-items:center;justify-content:space-between;background:#160B0B;padding:0 20px;height:40px">
         <div style="display:flex;align-items:center;gap:10px">
             <img src="{{ $logoBlanc }}" alt="HUG" style="height:22px;width:auto;opacity:.6;flex-shrink:0">
             <div>
-                <div
-                    style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,.5)">
+                <div style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,.5)">
                     {{ $tr['footer_hug'] }}</div>
                 <div style="font-size:6.5px;font-weight:300;color:rgba(255,255,255,.25);margin-top:1px">
                     {{ $tr['footer_site'] }}</div>
@@ -1786,12 +1745,11 @@ $gaC = fn($v) => $v >= 70 ? '#16a34a' : ($v >= 50 ? '#d97706' : '#E8001C');
         </div>
     </div>
 
-<script>
-    // Déclenche l'impression automatiquement (Ctrl+P → Enregistrer en PDF)
-    window.addEventListener('load', () => {
-        setTimeout(() => window.print(), 500);
-    });
-</script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => window.print(), 500);
+        });
+    </script>
 
 </body>
 

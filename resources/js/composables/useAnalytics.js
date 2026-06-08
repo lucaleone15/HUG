@@ -27,7 +27,7 @@ export const sendAnalytics = (type, entrepriseId = null, sessionToken = null, me
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: payload,
-    }).catch(() => {}) // silently swallowed — never block the front
+    }).catch(() => { })
 }
 
 export { getDevice }

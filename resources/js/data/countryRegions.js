@@ -11,7 +11,7 @@ const ME   = 'Moyen-Orient (zones à risque)'
 const EU   = 'Europe (hors Suisse) et pays à faible risque'
 
 export const COUNTRY_REGION_MAP = {
-    // ── Afrique du Nord ──────────────────────────────────────────────────────
+    // Afrique du Nord
     'Algérie':           AN,
     'Égypte':            AN,
     'Libye':             AN,
@@ -19,7 +19,7 @@ export const COUNTRY_REGION_MAP = {
     'Mauritanie':        AN,
     'Tunisie':           AN,
 
-    // ── Afrique subsaharienne ────────────────────────────────────────────────
+    // Afrique subsaharienne
     'Afrique du Sud':    SS,
     'Angola':            SS,
     'Bénin':             SS,
@@ -65,7 +65,7 @@ export const COUNTRY_REGION_MAP = {
     'Zambie':            SS,
     'Zimbabwe':          SS,
 
-    // ── Moyen-Orient (zones à risque) ────────────────────────────────────────
+    // Moyen-Orient (zones à risque)
     'Arabie saoudite':   ME,
     'Djibouti':          ME,
     'Érythrée':          ME,
@@ -74,13 +74,13 @@ export const COUNTRY_REGION_MAP = {
     'Liban':             ME,
     'Oman':              ME,
     'Palestine':         ME,
-    'Somalie':           ME,   // Horn of Africa, classé zone à risque
+    'Somalie':           ME,
     'Soudan':            ME,
     'Soudan du Sud':     ME,
     'Syrie':             ME,
     'Yémen':             ME,
 
-    // ── Amérique centrale et du Sud ──────────────────────────────────────────
+    // Amérique centrale et du Sud
     'Argentine':         ACS,
     'Belize':            ACS,
     'Bolivie':           ACS,
@@ -107,7 +107,7 @@ export const COUNTRY_REGION_MAP = {
     'Trinité-et-Tobago': ACS,
     'Venezuela':         ACS,
 
-    // ── Asie du Sud et du Sud-Est ────────────────────────────────────────────
+    // Asie du Sud et du Sud-Est
     'Afghanistan':       ASSE,
     'Bangladesh':        ASSE,
     'Bhoutan':           ASSE,
@@ -131,7 +131,7 @@ export const COUNTRY_REGION_MAP = {
     'Vanuatu':           ASSE,
     'Viêt Nam':          ASSE,
 
-    // ── Europe et pays à faible risque (tout le reste) ───────────────────────
+    // Europe et pays à faible risque (tout le reste)
     'Albanie':           EU,
     'Allemagne':         EU,
     'Andorre':           EU,
