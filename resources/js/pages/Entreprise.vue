@@ -61,7 +61,12 @@ const upcomingCollectes = computed(() =>
 const pastCollectes = computed(() =>
     props.collectes.filter((c) => !c.is_active),
 );
-const nextCollecte = computed(() => upcomingCollectes.value[0] ?? null);
+const nextCollecte = computed(() =>
+    upcomingCollectes.value.find((c) => !isDatePast(c.rdv_date)) ?? null,
+);
+const hasUpcomingCollectes = computed(() =>
+    upcomingCollectes.value.some((c) => !isDatePast(c.rdv_date)),
+);
 
 const countdown = ref({ days: 0, hours: 0, minutes: 0 });
 let timer = null;
@@ -422,7 +427,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <!-- Collectes à venir -->
-                <template v-if="upcomingCollectes.length">
+                <template v-if="hasUpcomingCollectes">
                     <div class="flex flex-col gap-3">
                         <template
                             v-for="c in upcomingCollectes"
