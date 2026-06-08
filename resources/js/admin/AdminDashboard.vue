@@ -21,11 +21,11 @@ onMounted(execute)
 const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
 
 const usageKpis = computed(() => [
-    { label: t('admin.funnel_visitors'),  value: fmt(data.value?.funnel.page_viewed)    },
-    { label: t('admin.funnel_started'),   value: fmt(data.value?.funnel.quiz_started)   },
+    { label: t('admin.funnel_visitors'), value: fmt(data.value?.funnel.page_viewed) },
+    { label: t('admin.funnel_started'), value: fmt(data.value?.funnel.quiz_started) },
     { label: t('admin.funnel_completed'), value: fmt(data.value?.funnel.quiz_completed) },
-    { label: t('admin.funnel_eligible'),  value: fmt(data.value?.funnel.eligible)       },
-    { label: t('admin.funnel_rdv'),       value: fmt(data.value?.funnel.rdv_clicked)    },
+    { label: t('admin.funnel_eligible'), value: fmt(data.value?.funnel.eligible) },
+    { label: t('admin.funnel_rdv'), value: fmt(data.value?.funnel.rdv_clicked) },
 ])
 </script>
 
@@ -38,60 +38,68 @@ const usageKpis = computed(() => [
         <div v-else-if="error" class="alert alert-error">{{ error }}</div>
 
         <template v-else-if="data">
-            <!-- Statistiques d'activité -->
+
             <section class="mb-8">
                 <h2 class="text-lg font-bold mb-4">{{ t('admin.stats_activity') }}</h2>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
-                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_active_companies') }}</div>
+                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
+                            t('admin.kpi_active_companies') }}</div>
                         <div class="text-3xl font-bold text-brand tabular-nums">{{ data.by_entreprise.length }}</div>
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
-                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_collections_year') }}</div>
+                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
+                            t('admin.kpi_collections_year') }}</div>
                         <div class="text-3xl font-bold text-brand tabular-nums">-</div>
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
-                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_donations_total') }}</div>
-                        <div class="text-3xl font-bold text-brand tabular-nums">{{ fmt(data.campaignStats?.donations_count) }}</div>
+                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
+                            t('admin.kpi_donations_total') }}</div>
+                        <div class="text-3xl font-bold text-brand tabular-nums">{{
+                            fmt(data.campaignStats?.donations_count) }}</div>
                         <div v-if="data.campaignStats?.lives_saved" class="text-xs text-emerald-600 mt-1 font-medium">
                             {{ fmt(data.campaignStats.lives_saved) }} {{ t('admin.lives_saved_stat') }}
                         </div>
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
-                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{ t('admin.kpi_trophy_applications') }}</div>
+                        <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
+                            t('admin.kpi_trophy_applications') }}</div>
                         <div class="text-3xl font-bold text-brand tabular-nums">-</div>
                     </div>
                 </div>
             </section>
 
-            <!-- Statistiques d'utilisation + Classement Trophée -->
+            <!-- Stats utilisation + classement trophee -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Statistiques d'utilisation -->
+                <!-- Stats utilisation -->
                 <section>
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-bold">{{ t('admin.stats_usage') }}</h2>
                         <RouterLink to="/admin/analytics" class="btn btn-ghost btn-xs text-brand gap-1">
                             {{ t('admin.see_all') }}
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
                             </svg>
                         </RouterLink>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div v-for="kpi in usageKpis" :key="kpi.label" class="bg-base-100 rounded-xl shadow-sm p-4">
-                            <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-1">{{ kpi.label }}</div>
+                            <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-1">{{
+                                kpi.label }}</div>
                             <div class="text-2xl font-bold text-brand tabular-nums">{{ kpi.value }}</div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Classement Trophée -->
+                <!-- trophee -->
                 <section>
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-bold">{{ t('admin.trophy_leaderboard') }}</h2>
                         <RouterLink to="/admin/entreprises" class="btn btn-ghost btn-xs text-brand gap-1">
                             {{ t('admin.see_all') }}
-                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
                             </svg>
                         </RouterLink>
@@ -119,7 +127,8 @@ const usageKpis = computed(() => [
                                         </span>
                                         <span v-else class="text-base-content/30">-</span>
                                     </td>
-                                    <td class="hidden sm:table-cell text-right text-sm font-semibold tabular-nums">{{ fmt(e.eligible_count) }}</td>
+                                    <td class="hidden sm:table-cell text-right text-sm font-semibold tabular-nums">{{
+                                        fmt(e.eligible_count) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,10 +136,11 @@ const usageKpis = computed(() => [
                 </section>
             </div>
 
-            <!-- Détail par entreprise (entonnoir complet) -->
+            <!-- Détail par entreprise -->
             <section>
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-sm font-semibold uppercase tracking-widest text-base-content/40">{{ t('admin.by_company') }}</h2>
+                    <h2 class="text-sm font-semibold uppercase tracking-widest text-base-content/40">{{
+                        t('admin.by_company') }}</h2>
                     <RouterLink to="/admin/entreprises" class="btn btn-ghost btn-xs text-brand gap-1">
                         {{ t('admin.see_all') }}
                         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -155,14 +165,18 @@ const usageKpis = computed(() => [
                                 <tr v-for="(e, i) in data.by_entreprise" :key="e.id" class="hover">
                                     <td class="text-base-content/40 text-xs">{{ i + 1 }}</td>
                                     <td class="font-medium">{{ e.name }}</td>
-                                    <td class="text-right font-semibold text-emerald-600">{{ fmt(e.eligible_count) }}</td>
-                                    <td class="hidden sm:table-cell text-right text-base-content/60">{{ fmt(e.submission_count) }}</td>
+                                    <td class="text-right font-semibold text-emerald-600">{{ fmt(e.eligible_count) }}
+                                    </td>
+                                    <td class="hidden sm:table-cell text-right text-base-content/60">{{
+                                        fmt(e.submission_count) }}</td>
                                     <td class="text-right">
-                                        <span v-if="e.eligibility_rate !== null">{{ (e.eligibility_rate * 100).toFixed(1) }}%</span>
+                                        <span v-if="e.eligibility_rate !== null">{{ (e.eligibility_rate *
+                                            100).toFixed(1) }}%</span>
                                         <span v-else class="text-base-content/30">-</span>
                                     </td>
                                     <td class="hidden md:table-cell text-right">
-                                        <span v-if="e.participation_rate !== null">{{ (e.participation_rate * 100).toFixed(1) }}%</span>
+                                        <span v-if="e.participation_rate !== null">{{ (e.participation_rate *
+                                            100).toFixed(1) }}%</span>
                                         <span v-else class="text-base-content/30">-</span>
                                     </td>
                                 </tr>

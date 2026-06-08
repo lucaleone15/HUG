@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 class AnalyticsController extends Controller
 {
-    // Toujours 204 — ne jamais bloquer le front (fire & forget)
+    // Toujours 204, ne jamais bloquer le front (fire & forget)
     public function store(Request $request): Response
     {
         try {
@@ -22,7 +22,7 @@ class AnalyticsController extends Controller
 
             AnalyticsEvent::create($data);
         } catch (\Throwable) {
-            // Silently swallowed — on ne bloque jamais le front
+            //pas bloquer le front
         }
 
         return response()->noContent();

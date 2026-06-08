@@ -6,15 +6,15 @@ import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
 import { useLogoBg } from '../composables/useLogoBg.js'
 
-const route  = useRoute()
+const route = useRoute()
 const router = useRouter()
-const api    = useApi()
+const api = useApi()
 const { t, locale } = useI18n()
 
-const isEdit  = computed(() => !!route.params.id)
+const isEdit = computed(() => !!route.params.id)
 const loading = ref(false)
-const saving  = ref(false)
-const errors  = ref({})
+const saving = ref(false)
+const errors = ref({})
 
 const form = ref({
     name: '', slug: '', type: '',
@@ -28,8 +28,8 @@ const form = ref({
     wants_trophy: false,
 })
 
-const logoFile     = ref(null)
-const logoPreview  = ref(null)
+const logoFile = ref(null)
+const logoPreview = ref(null)
 const logoInputRef = ref(null)
 
 const { bg: previewBg } = useLogoBg(
@@ -37,7 +37,7 @@ const { bg: previewBg } = useLogoBg(
     () => form.value.primary_color,
 )
 
-const types = ['banque','assurance','industrie','commerce','service','technologie','sante','education','autre']
+const types = ['banque', 'assurance', 'industrie', 'commerce', 'service', 'technologie', 'sante', 'education', 'autre']
 
 onMounted(async () => {
     if (!isEdit.value) return
@@ -50,13 +50,13 @@ onMounted(async () => {
 
         form.value.employee_count = e.employee_count ?? ''
 
-        form.value.primary_color   = e.primary_color   ?? '#E30613'
+        form.value.primary_color = e.primary_color ?? '#E30613'
         form.value.secondary_color = e.secondary_color ?? ''
 
-        form.value.is_active    = !!e.is_active
-        form.value.is_labelled  = !!e.is_labelled
+        form.value.is_active = !!e.is_active
+        form.value.is_labelled = !!e.is_labelled
         form.value.is_validated = !!e.is_validated
-        form.value.is_public    = e.is_public !== false
+        form.value.is_public = e.is_public !== false
         form.value.wants_trophy = !!e.wants_trophy
 
         if (e.logo_url) logoPreview.value = e.logo_url
@@ -72,12 +72,12 @@ onMounted(async () => {
 const onFileChange = (event) => {
     const file = event.target.files[0]
     if (!file) return
-    logoFile.value    = file
+    logoFile.value = file
     logoPreview.value = URL.createObjectURL(file)
 }
 
 const clearLogo = () => {
-    logoFile.value    = null
+    logoFile.value = null
     logoPreview.value = form.value.logo_url || null
     if (logoInputRef.value) logoInputRef.value.value = ''
 }
@@ -88,15 +88,15 @@ const save = async () => {
     try {
         const fd = new FormData()
 
-        const fields = ['name','slug','type','employee_count','contact_name','contact_email',
-                        'primary_color','secondary_color','logo_url']
+        const fields = ['name', 'slug', 'type', 'employee_count', 'contact_name', 'contact_email',
+            'primary_color', 'secondary_color', 'logo_url']
         fields.forEach(k => {
             if (form.value[k] !== '' && form.value[k] !== null) fd.append(k, form.value[k])
         })
-        fd.append('is_active',    form.value.is_active    ? '1' : '0')
-        fd.append('is_labelled',  form.value.is_labelled  ? '1' : '0')
+        fd.append('is_active', form.value.is_active ? '1' : '0')
+        fd.append('is_labelled', form.value.is_labelled ? '1' : '0')
         fd.append('is_validated', form.value.is_validated ? '1' : '0')
-        fd.append('is_public',    form.value.is_public    ? '1' : '0')
+        fd.append('is_public', form.value.is_public ? '1' : '0')
         fd.append('wants_trophy', form.value.wants_trophy ? '1' : '0')
         fd.append('locale', locale.value)
 
@@ -123,7 +123,8 @@ const fieldError = (key) => errors.value[key]?.[0]
     <div class="w-full max-w-2xl">
         <div class="flex items-center gap-3 mb-6">
             <button class="btn btn-ghost btn-sm shrink-0" @click="router.back()">{{ t('admin.form_back') }}</button>
-            <h1 class="text-xl sm:text-2xl font-bold truncate">{{ isEdit ? t('admin.form_edit_title') : t('admin.form_new_title') }}</h1>
+            <h1 class="text-xl sm:text-2xl font-bold truncate">{{ isEdit ? t('admin.form_edit_title') :
+                t('admin.form_new_title') }}</h1>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -133,7 +134,7 @@ const fieldError = (key) => errors.value[key]?.[0]
         <form v-else class="card bg-base-100 shadow-sm" @submit.prevent="save">
             <div class="card-body gap-4">
 
-                <!-- Section : Identité -->
+                <!-- ce qui concerne l'identité -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_identity') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -141,14 +142,17 @@ const fieldError = (key) => errors.value[key]?.[0]
                         <div class="label"><span class="label-text">{{ t('admin.form_name') }}</span></div>
                         <input v-model="form.name" type="text" required class="input input-bordered input-sm"
                             :class="fieldError('name') ? 'input-error' : ''">
-                        <div v-if="fieldError('name')" class="label"><span class="label-text-alt text-error">{{ fieldError('name') }}</span></div>
+                        <div v-if="fieldError('name')" class="label"><span class="label-text-alt text-error">{{
+                            fieldError('name') }}</span></div>
                     </label>
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_slug') }}</span></div>
                         <input v-model="form.slug" type="text" class="input input-bordered input-sm"
-                            :class="fieldError('slug') ? 'input-error' : ''" :placeholder="t('admin.form_slug_placeholder')">
-                        <div v-if="fieldError('slug')" class="label"><span class="label-text-alt text-error">{{ fieldError('slug') }}</span></div>
+                            :class="fieldError('slug') ? 'input-error' : ''"
+                            :placeholder="t('admin.form_slug_placeholder')">
+                        <div v-if="fieldError('slug')" class="label"><span class="label-text-alt text-error">{{
+                            fieldError('slug') }}</span></div>
                     </label>
 
                     <label class="form-control">
@@ -165,30 +169,32 @@ const fieldError = (key) => errors.value[key]?.[0]
 
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_employee_count') }}</span></div>
-                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm" @wheel="$event.preventDefault() || $event.target.blur()">
+                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm"
+                            @wheel="$event.preventDefault() || $event.target.blur()">
                     </label>
 
 
                 </div>
 
-                <!-- Section : Logo -->
+                <!-- partie dédiée au logo -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_logo') }}</div>
 
                 <div v-if="logoPreview" class="flex items-center gap-4 p-3 bg-base-200 rounded-lg">
                     <div class="h-14 w-14 rounded p-1 shrink-0 flex items-center justify-center"
-                         :style="`background-color: ${previewBg}`">
+                        :style="`background-color: ${previewBg}`">
                         <img :src="logoPreview" alt="Logo" class="max-h-full max-w-full object-contain">
                     </div>
-                    <div class="flex-1 text-sm text-base-content/60 truncate min-w-0">{{ logoFile?.name ?? form.logo_url }}</div>
+                    <div class="flex-1 text-sm text-base-content/60 truncate min-w-0">{{ logoFile?.name ?? form.logo_url
+                        }}</div>
                     <button type="button" class="btn btn-ghost btn-xs text-error shrink-0" @click="clearLogo">✕</button>
                 </div>
 
                 <label class="form-control">
                     <div class="label"><span class="label-text">{{ t('admin.form_logo_upload') }}</span></div>
                     <input ref="logoInputRef" type="file" accept="image/*,.svg"
-                        class="file-input file-input-bordered file-input-sm w-full"
-                        @change="onFileChange">
-                    <div class="label"><span class="label-text-alt text-base-content/50">{{ t('admin.form_logo_hint') }}</span></div>
+                        class="file-input file-input-bordered file-input-sm w-full" @change="onFileChange">
+                    <div class="label"><span class="label-text-alt text-base-content/50">{{ t('admin.form_logo_hint')
+                            }}</span></div>
                 </label>
 
                 <label class="form-control">
@@ -197,7 +203,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                         :disabled="!!logoFile">
                 </label>
 
-                <!-- Section : Couleurs -->
+                <!-- tout ce qui touche aux couleurs -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_colors') }}</div>
 
                 <div class="flex flex-col gap-3">
@@ -224,14 +230,15 @@ const fieldError = (key) => errors.value[key]?.[0]
                             <button type="button" class="btn btn-ghost btn-xs text-base-content/40"
                                 @click="form.secondary_color = ''">{{ t('admin.form_color_remove') }}</button>
                         </div>
-                        <button v-else type="button" class="btn btn-ghost btn-xs border border-dashed border-base-300 text-base-content/50"
+                        <button v-else type="button"
+                            class="btn btn-ghost btn-xs border border-dashed border-base-300 text-base-content/50"
                             @click="form.secondary_color = '#CCCCCC'">
                             {{ t('admin.form_color_add') }}
                         </button>
                     </div>
                 </div>
 
-                <!-- Section : Contact -->
+                <!-- contact -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_contact') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -242,11 +249,12 @@ const fieldError = (key) => errors.value[key]?.[0]
                     <label class="form-control">
                         <div class="label"><span class="label-text">{{ t('admin.form_contact_email') }}</span></div>
                         <input v-model="form.contact_email" type="email" class="input input-bordered input-sm">
-                        <div v-if="fieldError('contact_email')" class="label"><span class="label-text-alt text-error">{{ fieldError('contact_email') }}</span></div>
+                        <div v-if="fieldError('contact_email')" class="label"><span class="label-text-alt text-error">{{
+                            fieldError('contact_email') }}</span></div>
                     </label>
                 </div>
 
-                <!-- Section : Statut -->
+                <!-- statut de l'entreprise en fonction des choix du form -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_status') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -270,7 +278,8 @@ const fieldError = (key) => errors.value[key]?.[0]
                         <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">
                         <span class="label-text text-sm">
                             {{ t('admin.form_wants_trophy') }}
-                            <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint') }}</span>
+                            <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint')
+                                }}</span>
                         </span>
                     </label>
                 </div>

@@ -14,19 +14,19 @@ const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
 
 const activeEntreprises = computed(() => entreprises.value.filter(e => e.is_active))
 
-const data        = ref(null)
-const loading     = ref(false)
+const data = ref(null)
+const loading = ref(false)
 const downloading = ref(false)
-const error       = ref(null)
-const selectedId  = ref('')
+const error = ref(null)
+const selectedId = ref('')
 
 onMounted(fetchEntreprises)
 
 const generate = async () => {
     if (!selectedId.value) return
     loading.value = true
-    error.value   = null
-    data.value    = null
+    error.value = null
+    data.value = null
     try {
         data.value = await api.get(`/admin/report?entreprise_id=${selectedId.value}`)
     } catch (e) {
@@ -50,21 +50,18 @@ const downloadPdf = async () => {
 }
 
 const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '-'
-const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
+const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
 </script>
 
 <template>
     <div>
         <h1 class="text-2xl font-bold mb-6">{{ t('admin.report_title') }}</h1>
 
-        <!-- Sélecteur -->
+        <!-- Sélecteur pour les entreprises -->
         <div class="card bg-base-100 shadow-sm max-w-md mb-6">
             <div class="card-body gap-3">
-                <CompanySelector
-                    :companies="activeEntreprises"
-                    v-model="selectedId"
-                    :label="t('admin.choose_company')"
-                />
+                <CompanySelector :companies="activeEntreprises" v-model="selectedId"
+                    :label="t('admin.choose_company')" />
                 <BaseButton size="sm" :disabled="!selectedId" :loading="loading" @click="generate">
                     {{ t('admin.generate_report') }}
                 </BaseButton>
@@ -77,7 +74,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
         <template v-if="data">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                <!-- Infos entreprise -->
+                <!-- Infos concernant les entreprise -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold text-lg">{{ data.entreprise.name }}</h2>
@@ -98,7 +95,7 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
                     </div>
                 </div>
 
-                <!-- KPIs participation -->
+                <!-- KPIs pour la participation -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.participation_title') }}</h2>
@@ -113,7 +110,8 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
                             </div>
                             <div class="flex items-center justify-between py-2.5">
                                 <span class="text-sm text-base-content/55">{{ t('admin.funnel_eligible') }}</span>
-                                <span class="font-bold tabular-nums text-brand">{{ fmt(data.participation.eligible) }}</span>
+                                <span class="font-bold tabular-nums text-brand">{{ fmt(data.participation.eligible)
+                                    }}</span>
                             </div>
                             <div class="flex items-center justify-between py-2.5">
                                 <span class="text-sm text-base-content/55">{{ t('admin.rdv_clicked_stat') }}</span>
@@ -123,15 +121,15 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
                     </div>
                 </div>
 
-                <!-- Taux -->
+                <!-- Les différents taux -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.key_rates') }}</h2>
                         <div class="space-y-3">
                             <div v-for="([label, a, b]) in [
                                 [t('admin.participation_rate'), data.participation.quiz_started, data.entreprise.employee_count],
-                                [t('admin.eligibility_rate'),   data.participation.eligible,     data.participation.total_submissions],
-                                [t('admin.conversion_rate'),    data.participation.rdv_clicked,  data.participation.eligible],
+                                [t('admin.eligibility_rate'), data.participation.eligible, data.participation.total_submissions],
+                                [t('admin.conversion_rate'), data.participation.rdv_clicked, data.participation.eligible],
                             ]" :key="label">
                                 <div class="flex justify-between text-sm mb-1">
                                     <span class="text-base-content/60">{{ label }}</span>
@@ -139,20 +137,21 @@ const fmt = (n)   => n?.toLocaleString('fr-CH') ?? '-'
                                 </div>
                                 <div class="bg-base-200 rounded-full h-1.5">
                                     <div class="bg-brand h-1.5 rounded-full"
-                                        :style="`width:${b > 0 ? Math.min(a/b*100, 100).toFixed(1) : 0}%`"></div>
+                                        :style="`width:${b > 0 ? Math.min(a / b * 100, 100).toFixed(1) : 0}%`"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Comportement -->
+                <!-- KPI liés aux comportements -->
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.behavior_title') }}</h2>
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-base-content/55">{{ t('admin.avg_duration_stat') }}</span>
-                            <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '-' }}</strong>
+                            <strong>{{ data.behavior.avg_duration_s ? data.behavior.avg_duration_s + 's' : '-'
+                                }}</strong>
                         </div>
                         <div v-if="Object.keys(data.behavior.abandon_by_question ?? {}).length" class="mt-3">
                             <p class="text-xs text-base-content/40 mb-2">{{ t('admin.abandon_by_question') }}</p>

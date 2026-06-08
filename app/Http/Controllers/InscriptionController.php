@@ -78,7 +78,7 @@ class InscriptionController extends Controller
 
         return redirect()->route('inscription')->with('success', true);
     }
-
+    //génère le lien unique pour les entreprises
     private function uniqueSlug(string $base): string
     {
         $slug = $base ?: 'entreprise';

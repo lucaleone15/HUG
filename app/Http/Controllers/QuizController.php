@@ -13,12 +13,8 @@ use Illuminate\View\View;
 
 class QuizController extends Controller
 {
-    /** Champs jamais exposés au front — invariant critique */
+    //champs jamais exposé au front pour éviter qu'ils puissent être consultés
     private const SENSITIVE_FIELDS = ['is_disqualifying', 'disqualification_reason'];
-
-    // -------------------------------------------------------------------------
-    // Actions publiques
-    // -------------------------------------------------------------------------
 
     public function show(Entreprise $entreprise): View
     {
@@ -44,9 +40,9 @@ class QuizController extends Controller
         $answers   = $request->input('answers', []);
         $questions = $this->loadQuiz()['questions'];
 
-        // Les réponses travel_check et birth_check arrivent JSON-encodées depuis le form HTML.
-        // Les réponses checklist arrivent sous forme de tableau PHP natif (answers[qN][]).
-        // Les réponses yes_no arrivent comme strings — inchangées.
+        // Les réponses travel_check et birth_check arrivent JSON depuis le form.
+        // Les réponses checklist arrivent sous forme de tableau PHP.
+        // Les réponses yes_no arrivent comme strings.
         foreach ($answers as &$val) {
             if (is_string($val) && str_starts_with(ltrim($val), '{')) {
                 $decoded = json_decode($val, true);
@@ -57,12 +53,12 @@ class QuizController extends Controller
         }
         unset($val);
 
-        // Questions actives : celles dont les conditions de dépendance sont remplies
+        // Questions qui ont des conditions de dépendances
         $activeQuestions = collect($questions)->filter(
             fn ($q) => $this->conditionsMet($q, $answers)
         );
 
-        // Toutes les questions actives doivent avoir une réponse non-vide
+        // détéction des questions sans réponse
         $unanswered = $activeQuestions->filter(
             fn ($q) => ! $this->hasValidAnswer($answers, $q)
         );
@@ -70,7 +66,7 @@ class QuizController extends Controller
             return back()->withErrors(['answers' => 'Toutes les questions doivent être répondues.']);
         }
 
-        // Calcul d'éligibilité — uniquement côté serveur, jamais côté Vue
+        // Calcul d'éligibilité côté serveur uniquement
         $isEligible             = true;
         $needsEvaluation        = false;
         $disqualificationReasons = [];
@@ -88,7 +84,7 @@ class QuizController extends Controller
             }
         }
 
-        // firstOrCreate : protection contre le double-submit (unique sur session_token)
+        // protection pour une soumission unique
         Submission::firstOrCreate(
             ['session_token' => $token],
             [
@@ -98,7 +94,7 @@ class QuizController extends Controller
             ]
         );
 
-        // Flash les raisons vers la result page (1 seul redirect, non persisté en DB)
+        
         if (! $isEligible) {
             session()->flash(
                 'disqualification_reasons',
@@ -119,7 +115,6 @@ class QuizController extends Controller
 
         $submission = Submission::where('session_token', $token)->firstOrFail();
 
-        // Lire les flash avant de nettoyer la session
         $disqualificationReasons = session('disqualification_reasons', []);
         $needsEvaluation         = session('needs_evaluation', false);
 
@@ -136,10 +131,7 @@ class QuizController extends Controller
         ));
     }
 
-    // -------------------------------------------------------------------------
-    // Chargement du quiz
-    // -------------------------------------------------------------------------
-
+    //Fn pour charger le quiz
     private function loadQuiz(): array
     {
         $locale = app()->getLocale();
@@ -154,16 +146,12 @@ class QuizController extends Controller
         );
     }
 
-    // -------------------------------------------------------------------------
-    // Stripping — show() uniquement
-    // INVARIANT : is_disqualifying et disqualification_reason ne quittent jamais le serveur
-    // -------------------------------------------------------------------------
-
+// Masque les champs sensibles avant envoi au front.
     private function stripSensitiveFields(array $question): array
     {
         $strip = array_flip(self::SENSITIVE_FIELDS);
 
-        // options (yes_no, et option "aucun" des checklists)
+        // yes - no ou aucun
         if (isset($question['options'])) {
             $question['options'] = collect($question['options'])
                 ->map(fn ($opt) => array_diff_key($opt, $strip))
@@ -171,7 +159,7 @@ class QuizController extends Controller
                 ->all();
         }
 
-        // items (checklist, birth_check)
+        // checklist et birthcheck
         if (isset($question['items'])) {
             $question['items'] = collect($question['items'])
                 ->map(fn ($item) => array_diff_key($item, $strip))
@@ -179,23 +167,20 @@ class QuizController extends Controller
                 ->all();
         }
 
-        // risk_map (travel_check, birth_check) — on garde diseases et waiting_period_months pour l'UX
+
         if (isset($question['risk_map'])) {
             $question['risk_map'] = collect($question['risk_map'])
                 ->map(fn ($zone) => array_diff_key($zone, $strip))
                 ->all();
         }
 
-        // Champs de documentation interne — inutiles au front
         unset($question['data_schema'], $question['types_note']);
 
         return $question;
     }
 
-    // -------------------------------------------------------------------------
-    // Conditions de dépendance entre questions
-    // -------------------------------------------------------------------------
 
+    //conditions de dépendance entre les questions
     private function conditionsMet(array $question, array $answers): bool
     {
         foreach ($question['conditions'] as $cond) {
@@ -206,10 +191,6 @@ class QuizController extends Controller
         return true;
     }
 
-    // -------------------------------------------------------------------------
-    // Validation de présence de réponse
-    // -------------------------------------------------------------------------
-
     private function hasValidAnswer(array $answers, array $question): bool
     {
         $answer = $answers[$question['id']] ?? null;
@@ -218,12 +199,12 @@ class QuizController extends Controller
             return false;
         }
 
-        // Tableau vide = question non répondue
+        // Tableau vide = pas de réponse
         if (is_array($answer) && empty($answer)) {
             return false;
         }
 
-        // travel_check spécifique : trips doit être non-vide OU option "non" choisie
+        // spécifique pour travel_check
         if (($question['type'] ?? '') === 'travel_check') {
             if (is_array($answer) && empty($answer['trips'] ?? [])) {
                 return false;
@@ -233,11 +214,8 @@ class QuizController extends Controller
         return true;
     }
 
-    // -------------------------------------------------------------------------
-    // Évaluation de l'éligibilité — dispatch par type
-    // Retourne : ['is_disqualifying' => bool, 'reasons' => string[], 'needs_evaluation' => bool?]
-    // -------------------------------------------------------------------------
 
+    //permet d'évaluer l'éligibilité
     private function evaluateQuestion(array $question, mixed $answer): array
     {
         return match ($question['type'] ?? 'yes_no') {
@@ -248,9 +226,7 @@ class QuizController extends Controller
         };
     }
 
-    /**
-     * yes_no — answer : string (ID de l'option choisie)
-     */
+
     private function evaluateYesNo(array $question, mixed $answer): array
     {
         $option = collect($question['options'])->firstWhere('id', $answer);
@@ -264,14 +240,10 @@ class QuizController extends Controller
         ];
     }
 
-    /**
-     * checklist — answer :
-     *   - string  → ID de l'option "aucun" (non disqualifiant)
-     *   - string[] → IDs des items sélectionnés
-     */
+    //gère les réponses des checklist et leurs cas
     private function evaluateChecklist(array $question, mixed $answer): array
     {
-        // Option "aucun" sélectionnée
+        
         $noneOptionIds = collect($question['options'] ?? [])->pluck('id')->all();
         if (is_string($answer) && in_array($answer, $noneOptionIds, true)) {
             return ['is_disqualifying' => false, 'reasons' => []];
@@ -298,11 +270,7 @@ class QuizController extends Controller
     }
 
     /**
-     * travel_check — answer :
-     *   - string → ID de l'option "pas de voyage" (non disqualifiant)
-     *   - array  → ['trips' => [['region' => string, 'return_date' => 'YYYY-MM-DD'], ...]]
-     *
-     * Logique : pour chaque voyage, si la région est dans risk_map ET le retour
+     * Logique : pour chaque voyage, si la région est dans risk_map et le retour
      * date de moins de waiting_period_months mois → disqualifiant.
      */
     private function evaluateTravelCheck(array $question, mixed $answer): array
@@ -347,12 +315,8 @@ class QuizController extends Controller
     }
 
     /**
-     * birth_check — pas directement disqualifiant.
+     * birth_check n'est pas forcément disqualifiant.
      * Positionne needs_evaluation = true sur la Submission si un item est sélectionné.
-     *
-     * answer :
-     *   - string → ID de l'option "aucune de ces situations"
-     *   - array  → ['items' => string[], 'countries' => string[]]
      */
     private function evaluateBirthCheck(array $question, mixed $answer): array
     {

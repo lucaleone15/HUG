@@ -5,22 +5,22 @@ import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
 
-const route  = useRoute()
+const route = useRoute()
 const router = useRouter()
-const api    = useApi()
+const api = useApi()
 const { t } = useI18n()
 
 const loading = ref(true)
-const e       = ref(null)
+const e = ref(null)
 
-const collectes        = ref([])
+const collectes = ref([])
 const collectesLoading = ref(false)
-const showNewForm      = ref(false)
-const newCollecte      = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
-const savingCollecte   = ref(false)
+const showNewForm = ref(false)
+const newCollecte = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
+const savingCollecte = ref(false)
 
-const editingId  = ref(null)
-const editForm   = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
+const editingId = ref(null)
+const editForm = ref({ ondoc_url: '', rdv_date: '', label: '', is_active: true })
 const savingEdit = ref(false)
 
 onMounted(async () => {
@@ -51,8 +51,8 @@ async function addCollecte() {
     try {
         await api.post(`/admin/entreprises/${route.params.id}/collectes`, {
             ondoc_url: newCollecte.value.ondoc_url,
-            rdv_date:  newCollecte.value.rdv_date  || null,
-            label:     newCollecte.value.label     || null,
+            rdv_date: newCollecte.value.rdv_date || null,
+            label: newCollecte.value.label || null,
             is_active: newCollecte.value.is_active,
         })
         newCollecte.value = { ondoc_url: '', rdv_date: '', label: '', is_active: true }
@@ -67,8 +67,8 @@ function startEdit(c) {
     editingId.value = c.id
     editForm.value = {
         ondoc_url: c.ondoc_url,
-        rdv_date:  c.rdv_date ?? '',
-        label:     c.label    ?? '',
+        rdv_date: c.rdv_date ?? '',
+        label: c.label ?? '',
         is_active: c.is_active,
     }
 }
@@ -82,8 +82,8 @@ async function saveEdit(c) {
     try {
         await api.put(`/admin/collectes/${c.id}`, {
             ondoc_url: editForm.value.ondoc_url,
-            rdv_date:  editForm.value.rdv_date  || null,
-            label:     editForm.value.label     || null,
+            rdv_date: editForm.value.rdv_date || null,
+            label: editForm.value.label || null,
             is_active: editForm.value.is_active,
         })
         editingId.value = null
@@ -107,7 +107,7 @@ async function deleteCollecte(c) {
 
 <template>
     <div class="w-full max-w-2xl">
-        <!-- Header -->
+
         <div class="flex items-center gap-3 mb-6 flex-wrap">
             <button class="btn btn-ghost btn-sm" @click="router.push(`/admin/entreprises/${route.params.id}`)">
                 {{ t('admin.form_back') }}
@@ -125,15 +125,16 @@ async function deleteCollecte(c) {
         <template v-else-if="e">
             <div class="card bg-base-100 shadow-sm">
                 <div class="card-body gap-3">
-                    <!-- Section header + add button -->
+
                     <div class="flex items-center justify-between mb-1">
-                        <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{ t('admin.form_section_collectes') }}</div>
+                        <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{
+                            t('admin.form_section_collectes') }}</div>
                         <button class="btn btn-ghost btn-xs ml-3" @click="showNewForm = !showNewForm">
                             {{ showNewForm ? t('admin.collecte_cancel') : t('admin.collecte_add') }}
                         </button>
                     </div>
 
-                    <!-- Formulaire ajout -->
+                    <!-- Formulaire pr ajout -->
                     <form v-if="showNewForm" @submit.prevent="addCollecte"
                         class="bg-base-200 rounded-xl p-4 flex flex-col gap-3 mb-2">
                         <div>
@@ -146,12 +147,16 @@ async function deleteCollecte(c) {
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_rdv_date') }}</label>
-                                <input v-model="newCollecte.rdv_date" type="date" class="input input-bordered input-sm w-full" />
+                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{
+                                    t('admin.form_rdv_date') }}</label>
+                                <input v-model="newCollecte.rdv_date" type="date"
+                                    class="input input-bordered input-sm w-full" />
                             </div>
                             <div>
-                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.collecte_label') }}</label>
-                                <input v-model="newCollecte.label" type="text" class="input input-bordered input-sm w-full"
+                                <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{
+                                    t('admin.collecte_label') }}</label>
+                                <input v-model="newCollecte.label" type="text"
+                                    class="input input-bordered input-sm w-full"
                                     :placeholder="t('admin.collecte_label_placeholder')" />
                             </div>
                         </div>
@@ -165,7 +170,7 @@ async function deleteCollecte(c) {
                         </BaseButton>
                     </form>
 
-                    <!-- Liste -->
+
                     <div v-if="collectesLoading" class="flex justify-center py-4">
                         <span class="loading loading-spinner loading-sm"></span>
                     </div>
@@ -176,12 +181,13 @@ async function deleteCollecte(c) {
                         <li v-for="c in collectes" :key="c.id"
                             class="rounded-lg border border-base-200 text-sm overflow-hidden">
 
-                            <!-- Mode affichage -->
+                            <!-- affichage -->
                             <div v-if="editingId !== c.id" class="flex items-start gap-3 p-3">
                                 <span :class="c.is_active
                                     ? 'badge badge-success badge-sm mt-0.5 shrink-0'
                                     : 'badge badge-ghost badge-sm mt-0.5 shrink-0'">
-                                    {{ c.is_active ? t('admin.collecte_status_active') : t('admin.collecte_status_inactive') }}
+                                    {{ c.is_active ? t('admin.collecte_status_active') :
+                                        t('admin.collecte_status_inactive') }}
                                 </span>
                                 <div class="flex-1 min-w-0">
                                     <a :href="c.ondoc_url" target="_blank" rel="noopener"
@@ -199,7 +205,8 @@ async function deleteCollecte(c) {
                                         {{ t('admin.collecte_edit') }}
                                     </button>
                                     <button class="btn btn-ghost btn-xs" @click="toggleCollecte(c)">
-                                        {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate') }}
+                                        {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate')
+                                        }}
                                     </button>
                                     <button class="btn btn-ghost btn-xs text-error" @click="deleteCollecte(c)">
                                         {{ t('admin.delete') }}
@@ -207,9 +214,8 @@ async function deleteCollecte(c) {
                                 </div>
                             </div>
 
-                            <!-- Mode édition inline -->
-                            <form v-else @submit.prevent="saveEdit(c)"
-                                class="bg-base-200 p-4 flex flex-col gap-3">
+                            <!-- mode édition inline -->
+                            <form v-else @submit.prevent="saveEdit(c)" class="bg-base-200 p-4 flex flex-col gap-3">
                                 <div>
                                     <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">
                                         {{ t('admin.form_ondoc_url') }} *
@@ -219,19 +225,26 @@ async function deleteCollecte(c) {
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.form_rdv_date') }}</label>
-                                        <input v-model="editForm.rdv_date" type="date" class="input input-bordered input-sm w-full" />
+                                        <label
+                                            class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{
+                                                t('admin.form_rdv_date') }}</label>
+                                        <input v-model="editForm.rdv_date" type="date"
+                                            class="input input-bordered input-sm w-full" />
                                     </div>
                                     <div>
-                                        <label class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{ t('admin.collecte_label') }}</label>
-                                        <input v-model="editForm.label" type="text" class="input input-bordered input-sm w-full"
+                                        <label
+                                            class="text-xs text-base-content/50 uppercase tracking-wide block mb-1">{{
+                                                t('admin.collecte_label') }}</label>
+                                        <input v-model="editForm.label" type="text"
+                                            class="input input-bordered input-sm w-full"
                                             :placeholder="t('admin.collecte_label_placeholder')" />
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <input v-model="editForm.is_active" type="checkbox"
                                         class="checkbox checkbox-sm checkbox-success" :id="`edit-active-${c.id}`" />
-                                    <label :for="`edit-active-${c.id}`" class="text-sm">{{ t('admin.collecte_is_active') }}</label>
+                                    <label :for="`edit-active-${c.id}`" class="text-sm">{{ t('admin.collecte_is_active')
+                                    }}</label>
                                 </div>
                                 <div class="flex gap-2 justify-end">
                                     <button type="button" class="btn btn-ghost btn-sm" @click="cancelEdit">

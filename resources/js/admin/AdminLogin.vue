@@ -4,18 +4,19 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '../composables/useAuth.js'
 import LangSwitcher from '../components/ui/LangSwitcher.vue'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const router = useRouter()
 const { t } = useI18n()
 const { setAuth } = useAuth()
 
-const email    = ref('')
+const email = ref('')
 const password = ref('')
-const loading  = ref(false)
-const error    = ref(null)
+const loading = ref(false)
+const error = ref(null)
 
 const submit = async () => {
-    error.value   = null
+    error.value = null
     loading.value = true
     try {
         const res = await fetch('/api/auth/login', {
@@ -42,7 +43,7 @@ const submit = async () => {
     <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
         <div class="card bg-base-100 shadow-xl w-full max-w-sm">
             <div class="card-body gap-5">
-                <!-- Header card -->
+                <!-- gestion langues -->
                 <div class="flex justify-end">
                     <LangSwitcher />
                 </div>
@@ -51,7 +52,8 @@ const submit = async () => {
                         <img :src="'/images/hug-logo.svg'" alt="HUG" class="h-10 mx-auto mb-4" />
                     </a>
                     <div class="bg-brand rounded-lg py-2.5 px-4">
-                        <h1 class="text-white font-bold tracking-widest text-sm uppercase">{{ t('admin.login_title_banner') }}</h1>
+                        <h1 class="text-white font-bold tracking-widest text-sm uppercase">{{
+                            t('admin.login_title_banner') }}</h1>
                     </div>
                 </div>
 
@@ -64,28 +66,16 @@ const submit = async () => {
                         <label class="label py-1">
                             <span class="label-text text-sm font-medium">{{ t('admin.login_email_label') }}</span>
                         </label>
-                        <input
-                            v-model="email"
-                            type="email"
-                            required
-                            autocomplete="email"
-                            class="input input-bordered input-sm"
-                            :placeholder="t('admin.login_email_placeholder')"
-                        />
+                        <input v-model="email" type="email" required autocomplete="email"
+                            class="input input-bordered input-sm" :placeholder="t('admin.login_email_placeholder')" />
                     </div>
 
                     <div class="form-control">
                         <label class="label py-1">
                             <span class="label-text text-sm font-medium">{{ t('admin.login_password') }}</span>
                         </label>
-                        <input
-                            v-model="password"
-                            type="password"
-                            required
-                            autocomplete="current-password"
-                            class="input input-bordered input-sm"
-                            placeholder="••••••"
-                        />
+                        <input v-model="password" type="password" required autocomplete="current-password"
+                            class="input input-bordered input-sm" placeholder="••••••" />
                         <div class="label pt-1">
                             <span></span>
                             <a href="#" class="label-text-alt text-xs underline text-base-content/60 hover:text-brand">
@@ -94,14 +84,9 @@ const submit = async () => {
                         </div>
                     </div>
 
-                    <button
-                        type="submit"
-                        class="btn bg-brand hover:bg-brand-dark text-white border-none mt-1"
-                        :disabled="loading"
-                    >
-                        <span v-if="loading" class="loading loading-spinner loading-sm"></span>
-                        <span v-else>{{ t('admin.login_submit') }}</span>
-                    </button>
+                    <BaseButton type="submit" :loading="loading" :disabled="loading" class="mt-1">
+                        {{ t('admin.login_submit') }}
+                    </BaseButton>
                 </form>
             </div>
         </div>
