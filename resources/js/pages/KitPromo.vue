@@ -1,12 +1,82 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { EMAIL_TEMPLATE, FIXED_IMAGES, LOGO_IMG_DEFAULT } from "../data/emailTemplate.js";
 import NavBar from "../components/ui/NavBar.vue";
 import Footer from "../components/ui/Footer.vue";
 import PageHero from "../components/ui/PageHero.vue";
 import KitResourceCard from "../components/kit/KitResourceCard.vue";
 
 const { t } = useI18n();
+
+function repAll(s, f, v) { return s.split(f).join(v); }
+
+const emailPreviewHtml = computed(() => {
+    let html = EMAIL_TEMPLATE;
+    // Translations
+    for (const [ph, key] of [
+        ["[EMAIL_PREHEADER]",       "email_preheader"],
+        ["[EMAIL_BAD_DISPLAY]",     "email_bad_display"],
+        ["[EMAIL_VIEW_ONLINE]",     "email_view_online"],
+        ["[EMAIL_DOSSIER_BADGE]",   "email_dossier_badge"],
+        ["[EMAIL_MISSION_BADGE]",   "email_mission_badge"],
+        ["[EMAIL_ALT_LOUPE]",       "email_alt_loupe"],
+        ["[EMAIL_HERO_VERB]",       "email_hero_verb"],
+        ["[EMAIL_HERO_NOUN]",       "email_hero_noun"],
+        ["[EMAIL_HERO_ADJ]",        "email_hero_adj"],
+        ["[EMAIL_BODY1]",           "email_body1"],
+        ["[EMAIL_BODY2]",           "email_body2"],
+        ["[EMAIL_BODY3]",           "email_body3"],
+        ["[EMAIL_BODY4]",           "email_body4"],
+        ["[EMAIL_BODY5]",           "email_body5"],
+        ["[EMAIL_CTA_ELIG]",        "email_cta_elig"],
+        ["[EMAIL_COLLECTE1]",       "email_collecte1"],
+        ["[EMAIL_COLLECTE2]",       "email_collecte2"],
+        ["[EMAIL_CHEZ]",            "email_chez"],
+        ["[EMAIL_LABEL_DATE]",      "email_label_date"],
+        ["[EMAIL_LABEL_HORAIRES]",  "email_label_horaires"],
+        ["[EMAIL_LABEL_LIEU]",      "email_label_lieu"],
+        ["[EMAIL_LABEL_ADRESSE]",   "email_label_adresse"],
+        ["[EMAIL_LABEL_STATUT]",    "email_label_statut"],
+        ["[EMAIL_STATUT_VALUE]",    "email_statut_value"],
+        ["[EMAIL_LINK_RDV]",        "email_link_rdv"],
+        ["[EMAIL_INTERRO_BADGE]",   "email_interro_badge"],
+        ["[EMAIL_ALT_CHAPEAU]",     "email_alt_chapeau"],
+        ["[EMAIL_ETES_VOUS]",       "email_etes_vous"],
+        ["[EMAIL_ELIGIBLE]",        "email_eligible"],
+        ["[EMAIL_QUIZ_DESC1]",      "email_quiz_desc1"],
+        ["[EMAIL_QUIZ_DESC2]",      "email_quiz_desc2"],
+        ["[EMAIL_CTA_ENQUETE]",     "email_cta_enquete"],
+        ["[EMAIL_QUIZ_BADGE]",      "email_quiz_badge"],
+        ["[EMAIL_FOOTER_ORG]",      "email_footer_org"],
+        ["[EMAIL_FOOTER_HOSPITAL]", "email_footer_hospital"],
+        ["[EMAIL_FOOTER_LINKS]",    "email_footer_links"],
+        ["[EMAIL_FOOTER_LEARN]",    "email_footer_learn"],
+        ["[EMAIL_FOOTER_COPY]",     "email_footer_copy"],
+    ]) {
+        html = repAll(html, ph, t("kit." + key));
+    }
+    // Data placeholders
+    html = repAll(html, "[VOTRE ENTREPRISE]",             t("kit.email_ph_company"));
+    html = repAll(html, "[JJ MOIS AAAA]",                 t("kit.email_ph_date"));
+    html = repAll(html, "[HHhMM &ndash; HHhMM]",          t("kit.email_ph_horaires"));
+    html = repAll(html, "[B&Acirc;TIMENT / SALLE]",       t("kit.email_ph_salle"));
+    html = repAll(html, "[RUE ET NUM&Eacute;RO, VILLE]",   t("kit.email_ph_adresse"));
+    html = repAll(html, "[URL_ELIGIBILITE]",  "#");
+    html = repAll(html, "[URL_RESERVATION_DON]", "#");
+    html = repAll(html, "[URL_PAGE]", "#");
+    // Images (local URL — même origine, pas besoin de base64)
+    for (const img of FIXED_IMAGES) {
+        html = repAll(html, img.url, img.localUrl);
+    }
+    // Logo placeholder
+    html = repAll(html, LOGO_IMG_DEFAULT,
+        `<span style="display:inline-block;border:1px dashed rgba(255,255,255,0.3);padding:0 14px;font-family:'Cooper Hewitt','Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.35);height:44px;line-height:44px;vertical-align:middle;border-radius:2px;">LOGO</span>`
+    );
+    // Strip elements not relevant in the kit preview
+    html = html.replace(/<!--KIT_HIDE-->[\s\S]*?<!--\/KIT_HIDE-->/g, '');
+    return html;
+});
 
 function makeObserver(targetRef, visibleRef, threshold = 0.1) {
     const io = new IntersectionObserver(
@@ -107,11 +177,25 @@ const resources = [
     },
     {
         key: "email",
-        file: "/downloads/kit/email-invitation.zip",
+        file: null,
+        customHref: "/generateur-email",
         n: 7,
         span: "sm:col-span-2",
         image: null,
-        imageRatio: null,
+        imageRatio: "4/3",
+        useEmailPreview: true,
+    },
+    {
+        key: "goodies",
+        file: "/downloads/kit/goodies.zip",
+        n: 8,
+        span: "",
+        imageRatio: "1/1",
+        slides: [
+            "/images/kit/slides/goodies/sticker-1.png",
+            "/images/kit/slides/goodies/sticker-2.png",
+            "/images/kit/slides/goodies/sticker-3.png",
+        ],
     },
 ];
 
@@ -121,12 +205,15 @@ const resourceProps = (key) => {
     const r = resources.find((x) => x.key === key);
     return {
         resourceKey: r.key,
-        file: r.file,
+        file: r.file ?? "#",
+        customHref: r.customHref ?? null,
+        actionLabel: r.customHref ? t("kit.generate_label") : null,
         n: r.n,
         image: r.image ?? null,
         video: r.video ?? null,
         imageRatio: r.imageRatio,
         slides: r.slides ?? null,
+        previewHtml: r.useEmailPreview ? emailPreviewHtml.value : null,
     };
 };
 </script>
@@ -273,17 +360,12 @@ const resourceProps = (key) => {
                             class="flex-1"
                         />
                     </div>
-                    <!-- Bannières + Réseaux sociaux côte à côte -->
-                    <KitResourceCard
-                        v-bind="resourceProps('banners')"
-                        class="sm:col-span-2"
-                    />
+                    <!-- Bannières (2 col) + Social (1 col) — même rangée -->
+                    <KitResourceCard v-bind="resourceProps('banners')" class="sm:col-span-2" />
                     <KitResourceCard v-bind="resourceProps('social')" />
-                    <!-- Email d'invitation -->
-                    <KitResourceCard
-                        v-bind="resourceProps('email')"
-                        class="sm:col-span-2"
-                    />
+                    <!-- Email (2 col) + Goodies (1 col) — même rangée → bas aligné automatiquement -->
+                    <KitResourceCard v-bind="resourceProps('email')" class="sm:col-span-2" />
+                    <KitResourceCard v-bind="resourceProps('goodies')" />
                 </div>
             </div>
         </section>

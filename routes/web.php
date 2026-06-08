@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EmailGeneratorController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InscriptionController;
@@ -15,6 +16,7 @@ Route::get('/',          [HomeController::class, 'index'])->name('home');
 Route::get('/trophee',   [TropheeController::class, 'index'])->name('trophee');
 Route::get('/label',     [LabelController::class, 'index'])->name('label');
 Route::get('/kit-promo', [KitController::class, 'index'])->name('kit-promo');
+Route::get('/generateur-email', [EmailGeneratorController::class, 'index'])->name('email-generator');
 Route::get('/contact',     [ContactController::class, 'index'])->name('contact');
 Route::post('/contact',    [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
