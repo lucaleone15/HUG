@@ -37,7 +37,7 @@ const t2 = computed(() => textOn(c2.value))
 
 // Couleur d'accent de l'inspecteur : c2 si différent de c1, sinon rouge HUG
 const accentColor = computed(() =>
-    props.entreprise.secondary_color && c2.value !== c1.value ? c2.value : '#E22C1B'
+    props.entreprise.secondary_color && c2.value !== c1.value ? c2.value : '#A9232C'
 )
 
 
@@ -314,7 +314,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
                         <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line1') }}</p>
                         <p class="font-semibold leading-snug" style="color: var(--t1); font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line2') }}</p>
                         <p class="font-semibold leading-snug" style="color: var(--t1); opacity: 0.82; font-size: clamp(1rem, 2vw, 1.15rem);">{{ t('entreprise.cta_section_line3') }}</p>
-                        <a href="https://www.hug.ch/don-du-sang" target="_blank" rel="noopener noreferrer"
+                        <a href="/"
                            class="btn border-2 bg-transparent font-semibold px-6 rounded-sm active:scale-[0.97] w-full md:w-auto mt-4"
                            style="border-color: var(--t1); color: var(--t1);">
                             {{ t('entreprise.learn_more_cta') }}

@@ -48,7 +48,7 @@ class InscriptionController extends Controller
 
         $locale = in_array($request->locale, ['fr', 'de', 'it', 'en']) ? $request->locale : 'fr';
 
-        $entreprise = Entreprise::create([
+        $createData = [
             'name'            => $request->name,
             'slug'            => $this->uniqueSlug(Str::slug($request->name)),
             'access_token'    => Str::random(48),
@@ -65,7 +65,14 @@ class InscriptionController extends Controller
             'wants_trophy'    => $request->boolean('wants_trophy'),
             'is_public'       => $request->boolean('is_public', true),
             'locale'          => $locale,
-        ]);
+        ];
+
+        try {
+            $entreprise = Entreprise::create($createData);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+            $createData['slug'] = $this->uniqueSlug(Str::slug($request->name) . '-' . Str::random(4));
+            $entreprise = Entreprise::create($createData);
+        }
 
         Mail::to('info@donnez-votre-sang.ch')->send(new NewRegistrationNotification($entreprise));
 

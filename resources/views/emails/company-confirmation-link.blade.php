@@ -138,7 +138,7 @@
       </table>
       <p style="margin:0;">
         <a href="{{ $adminUrl }}" style="font-size:12px;color:{{ $EC['muted'] }};text-decoration:none;font-weight:600;">
-          {{ __('mail.admin_link') }} →
+          {{ __('mail.admin_link') }}
         </a>
       </p>
     </td>
@@ -170,7 +170,7 @@
           <p style="margin:0 0 16px;font-size:12px;color:{{ $EC['step_text'] }};line-height:1.65;">{{ __('mail.step1_body') }}</p>
           <a href="{{ $pageUrl }}"
              style="display:inline-block;background:{{ $EC['brand'] }};color:{{ $EC['white'] }};text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
-            {{ __('mail.step1_cta') }} →
+            {{ __('mail.step1_cta') }}
           </a>
         </td></tr>
       </table>
@@ -188,7 +188,7 @@
           <p style="margin:0 0 16px;font-size:12px;color:{{ $EC['step_text'] }};line-height:1.65;">{{ __('mail.step2_body') }}</p>
           <a href="{{ $adminUrl }}"
              style="display:inline-block;background:{{ $EC['brand'] }};color:{{ $EC['white'] }};text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
-            {{ __('mail.step2_cta') }} →
+            {{ __('mail.step2_cta') }}
           </a>
         </td></tr>
       </table>
@@ -206,7 +206,7 @@
           <p style="margin:0 0 16px;font-size:12px;color:{{ $EC['step_text'] }};line-height:1.65;">{{ __('mail.step3_body') }}</p>
           <a href="{{ $adminUrl }}"
              style="display:inline-block;background:{{ $EC['brand'] }};color:{{ $EC['white'] }};text-decoration:none;padding:10px 20px;font-size:13px;font-weight:700;border-radius:6px;">
-            {{ __('mail.step3_cta') }} →
+            {{ __('mail.step3_cta') }}
           </a>
         </td></tr>
       </table>

@@ -123,7 +123,7 @@ return [
     'contact_phone_label'=> 'Direct line',
     'contact_email_val'  => 'cts@hug.ch',
     'contact_phone_val'  => '+41 22 372 61 00',
-    'footer_hug'         => 'HUG – Geneva University Hospitals · Blood Transfusion Centre',
+    'footer_hug'         => 'HUG - Geneva University Hospitals · Blood Transfusion Centre',
     'footer_site'        => 'donnez-votre-sang.ch',
     'vbl_part' => 'Partic.',
     'vbl_elig' => 'Eligib.',

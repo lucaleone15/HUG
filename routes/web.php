@@ -16,10 +16,10 @@ Route::get('/trophee',   [TropheeController::class, 'index'])->name('trophee');
 Route::get('/label',     [LabelController::class, 'index'])->name('label');
 Route::get('/kit-promo', [KitController::class, 'index'])->name('kit-promo');
 Route::get('/contact',     [ContactController::class, 'index'])->name('contact');
-Route::post('/contact',    [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact',    [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
 Route::get('/inscription', [InscriptionController::class, 'index'])->name('inscription');
-Route::post('/inscription',[InscriptionController::class, 'store'])->name('inscription.store');
+Route::post('/inscription',[InscriptionController::class, 'store'])->middleware('throttle:3,1')->name('inscription.store');
 
 Route::get('/c/{entreprise}',             [EntrepriseController::class, 'show'])->name('entreprise.show');
 Route::get('/c/{entreprise}/quiz',        [QuizController::class, 'show'])->name('quiz.show');

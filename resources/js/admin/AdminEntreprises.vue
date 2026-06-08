@@ -191,8 +191,7 @@ const goPage = (n) => {
                     <div class="flex flex-col items-end gap-1.5 shrink-0">
                         <div class="flex items-center gap-1">
                             <span v-if="e.is_labelled"
-                                class="badge badge-xs font-semibold"
-                                style="background-color:#d4edda;color:#155724;border:none">2026</span>
+                                class="badge badge-xs badge-success font-semibold">2026</span>
                             <StatusBadge :entreprise="e" />
                         </div>
                     </div>
@@ -242,8 +241,7 @@ const goPage = (n) => {
                                 <td class="text-right text-sm tabular-nums text-base-content/50">-</td>
                                 <td>
                                     <span v-if="e.is_labelled"
-                                        class="badge badge-sm font-semibold"
-                                        style="background-color:#d4edda;color:#155724;border:none">2026</span>
+                                        class="badge badge-sm badge-success font-semibold">2026</span>
                                     <span v-else class="text-base-content/30 text-sm">-</span>
                                 </td>
                                 <td><StatusBadge :entreprise="e" /></td>

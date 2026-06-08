@@ -102,7 +102,12 @@ class EntrepriseController extends Controller
         $data['slug']         ??= $this->uniqueSlug(Str::slug($request->name));
         $data['access_token'] ??= Str::random(48);
 
-        $entreprise = Entreprise::create($data);
+        try {
+            $entreprise = Entreprise::create($data);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+            $data['slug'] = $this->uniqueSlug(Str::slug($request->name) . '-' . Str::random(4));
+            $entreprise   = Entreprise::create($data);
+        }
 
         return response()->json(new AdminEntrepriseResource($entreprise), 201);
     }
@@ -183,7 +188,7 @@ class EntrepriseController extends Controller
         ]);
     }
 
-    public function sendLink(Request $request, int $id): JsonResponse
+    public function sendLink(int $id): JsonResponse
     {
         $entreprise = Entreprise::findOrFail($id);
 

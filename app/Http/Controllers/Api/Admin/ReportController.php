@@ -80,7 +80,7 @@ class ReportController extends Controller
             'abandon_by_question' => $abandonByQuestion,
         ];
 
-        if ($request->format === 'pdf') {
+        if ($request->input('format') === 'pdf') {
             $token = Str::uuid()->toString();
 
             Cache::put("report_preview:{$token}", [

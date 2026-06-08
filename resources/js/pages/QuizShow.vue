@@ -207,10 +207,6 @@ const goBack = () => {
                         <p class="dossier-republic">{{ t('quiz.dossier_republic') }}</p>
                         <p class="dossier-hospital">{{ t('quiz.dossier_hospital_name') }}<br>{{ t('quiz.dossier_hospital_dept') }}</p>
                         <div class="dossier-confidential-badge">{{ t('quiz.dossier_confidential') }}</div>
-                        <div class="dossier-logo-stamp" :style="entreprise.logo_url ? `background-color: ${logoBg}` : ''">
-                            <img v-if="entreprise.logo_url" :src="entreprise.logo_url" :alt="entreprise.name" class="dossier-logo-img">
-                            <span v-else class="dossier-logo-text">{{ entreprise.name }}</span>
-                        </div>
                         <p class="dossier-folder-title">{{ t('quiz.dossier_word') }}<br>{{ dossierCode }}</p>
                         <div class="dossier-folder-meta">
                             <p>{{ t('quiz.dossier_open_date') }} : {{ new Date().toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</p>
@@ -340,12 +336,6 @@ const goBack = () => {
                             <!-- ▌RIGHT PANEL — Answers ▐ -->
                             <div class="doc-right">
 
-                                <!-- Company logo stamp (desktop only) -->
-                                <div v-if="entreprise.logo_url" class="hidden lg:flex doc-logo-wrap">
-                                    <div class="doc-logo-frame" :style="`background-color: ${logoBg}`">
-                                        <img :src="entreprise.logo_url" :alt="entreprise.name" class="doc-logo-img">
-                                    </div>
-                                </div>
 
                                 <!-- "Votre réponse" label: desktop only -->
                                 <p class="your-answer-label hidden lg:block">{{ t('quiz.your_answer') }}</p>
@@ -654,7 +644,7 @@ const goBack = () => {
     border: none;
     border-radius: 0;
     background: transparent;
-    color: #e53e3e;
+    color: var(--color-brand);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -662,7 +652,7 @@ const goBack = () => {
     transition: color 150ms;
     flex-shrink: 0;
 }
-.intro-close-btn:hover { color: #c53030; }
+.intro-close-btn:hover { color: var(--color-brand-dark); }
 
 /* ═══════════════════════════════════════════════════════════════════
    INTRO — grid layout
@@ -754,7 +744,7 @@ const goBack = () => {
     border: 2px solid var(--color-brand);
     color: var(--color-brand);
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.12em;
     padding: 3px 8px;
     transform: rotate(5deg);
@@ -784,7 +774,7 @@ const goBack = () => {
 }
 .dossier-folder-title {
     font-size: 1.6rem;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--color-doc-ink);
     text-transform: uppercase;
     line-height: 1.1;
@@ -831,7 +821,7 @@ const goBack = () => {
 /* ── Bureau narrative content ──────────────────────────────────── */
 .intro-title {
     font-size: clamp(1.9rem, 3.5vw, 3.25rem);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
@@ -906,7 +896,7 @@ const goBack = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 14px;
+    padding: 14px 20px;
 }
 .topbar-spacer {
     width: 36px;
@@ -925,6 +915,9 @@ const goBack = () => {
     cursor: pointer;
     flex-shrink: 0;
     transition: opacity 150ms;
+}
+@media (min-width: 1024px) {
+    .topbar-back-btn { display: none; }
 }
 .topbar-back-btn:hover { opacity: 0.7; }
 .quiz-back-desktop {
@@ -952,37 +945,37 @@ const goBack = () => {
 .topbar-brand {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
 }
 .topbar-hug-logo {
-    height: 20px;
+    height: 30px;
     width: auto;
     opacity: 0.75;
 }
 .topbar-brand-sep {
-    font-size: 13px;
+    font-size: 18px;
     color: rgba(255,255,255,0.3);
     font-weight: 300;
 }
 .topbar-ent-logo {
-    height: 18px;
-    max-width: 80px;
+    height: 28px;
+    max-width: 120px;
     object-fit: contain;
     opacity: 0.75;
     filter: brightness(0) invert(1);
 }
 .topbar-ent-name {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     color: rgba(255,255,255,0.55);
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
 .topbar-pct {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--color-brand);
-    min-width: 36px;
+    min-width: 40px;
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
@@ -1095,7 +1088,7 @@ const goBack = () => {
 }
 .classified-title {
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 800;
     color: white;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -1296,7 +1289,7 @@ const goBack = () => {
 }
 .hug-logo-text {
     font-size: 11px;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--color-doc-paper-light);
     letter-spacing: 0.06em;
     z-index: 1;

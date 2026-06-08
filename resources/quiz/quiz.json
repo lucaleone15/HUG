@@ -380,7 +380,7 @@
     {
       "id": "q12",
       "category": "Hospitalisations & interventions",
-      "content": "Ces 3 dernières années, avez-vous été hospitalisé(e), opéré(e) ou victime d'un accident nécessitant une prise en charge médicale ?",
+      "content": "Ces 3 dernières années, avez-vous été hospitalisé·e, opéré·e ou victime d'un accident nécessitant une prise en charge médicale ?",
       "hint": "Cela inclut : toute chirurgie (ambulatoire ou avec hospitalisation), toute hospitalisation de plus de 24h, et tout accident avec soins médicaux (fracture, blessure importante, etc.). Une simple consultation aux urgences sans hospitalisation n'est pas concernée.",
       "type": "yes_no",
       "order": 12,
@@ -557,15 +557,15 @@
       "items": [
         {
           "id": "q16_naissance_hors_suisse",
-          "label": "Né(e) hors de Suisse ou y ayant grandi",
-          "sublabel": "plus de 6 mois — indiquer le pays",
+          "label": "Né·e hors de Suisse ou y ayant grandi",
+          "sublabel": "plus de 6 mois, indiquer le pays",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
           "label": "Mère née dans un pays extra-européen",
-          "sublabel": "y ayant grandi ou vécu plus de 6 mois — indiquer le pays",
+          "sublabel": "y ayant grandi ou vécu plus de 6 mois, indiquer le pays",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -683,7 +683,7 @@
     {
       "id": "q21",
       "category": "VIH, hépatites & IST",
-      "content": "Avez-vous déjà été testé(e) positif/positive pour l'une de ces maladies ?",
+      "content": "Avez-vous déjà été testé·e positif/positive pour l'une de ces maladies ?",
       "hint": "Ces maladies entraînent une contre-indication définitive et permanente au don de sang.",
       "type": "checklist",
       "order": 21,
@@ -708,9 +708,9 @@
       "order": 22,
       "items": [
         { "id": "q22_partenaire_recents", "label": "Nouveau partenaire ou plus de 2 partenaires", "sublabel": "au cours des 4 derniers mois", "is_disqualifying": true, "disqualification_reason": "Un nouveau partenaire, un changement de partenaire ou plus de 2 partenaires dans les 4 derniers mois nécessite un délai d'attente en raison du risque d'IST en phase de séroconversion." },
-        { "id": "q22_rapport_remunere", "label": "Relations sexuelles contre rémunération", "sublabel": "argent, drogues ou autres prestations — 12 derniers mois", "is_disqualifying": true, "disqualification_reason": "Des relations sexuelles rémunérées dans les 12 derniers mois contre-indiquent temporairement le don en raison d'un risque accru d'exposition aux IST." },
-        { "id": "q22_partenaire_ist", "label": "Partenaire atteint(e) d'hépatite B/C, Zika ou exposé(e) au VIH", "sublabel": "au cours des 12 derniers mois", "is_disqualifying": true, "disqualification_reason": "Un partenaire atteint d'hépatite B/C, du Zika ou exposé à une situation à risque dans les 12 derniers mois contre-indique temporairement le don." },
-        { "id": "q22_partenaire_pays_risque", "label": "Partenaire ayant séjourné dans un pays à haute prévalence VIH / hépatite", "sublabel": "plus de 6 mois — 4 derniers mois", "is_disqualifying": true, "disqualification_reason": "Des relations avec un partenaire revenant d'un pays à haute prévalence dans les 4 derniers mois nécessitent un délai d'attente." }
+        { "id": "q22_rapport_remunere", "label": "Relations sexuelles contre rémunération", "sublabel": "argent, drogues ou autres prestations, 12 derniers mois", "is_disqualifying": true, "disqualification_reason": "Des relations sexuelles rémunérées dans les 12 derniers mois contre-indiquent temporairement le don en raison d'un risque accru d'exposition aux IST." },
+        { "id": "q22_partenaire_ist", "label": "Partenaire atteint·e d'hépatite B/C, Zika ou exposé·e au VIH", "sublabel": "au cours des 12 derniers mois", "is_disqualifying": true, "disqualification_reason": "Un partenaire atteint d'hépatite B/C, du Zika ou exposé à une situation à risque dans les 12 derniers mois contre-indique temporairement le don." },
+        { "id": "q22_partenaire_pays_risque", "label": "Partenaire ayant séjourné dans un pays à haute prévalence VIH / hépatite", "sublabel": "plus de 6 mois, 4 derniers mois", "is_disqualifying": true, "disqualification_reason": "Des relations avec un partenaire revenant d'un pays à haute prévalence dans les 4 derniers mois nécessitent un délai d'attente." }
       ],
       "options": [
         { "id": "q22_aucun", "label": "Aucune de ces situations ne me concerne", "is_disqualifying": false }

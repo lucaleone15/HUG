@@ -420,7 +420,7 @@ const criteriaIcons = [
 }
 .podium-rank {
     font-size: 3rem;
-    font-weight: 900;
+    font-weight: 800;
     color: #ffffff;
     line-height: 1;
     letter-spacing: -0.04em;

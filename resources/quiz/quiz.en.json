@@ -558,14 +558,14 @@
         {
           "id": "q16_naissance_hors_suisse",
           "label": "Born outside Switzerland or having grown up there",
-          "sublabel": "more than 6 months — specify the country",
+          "sublabel": "more than 6 months, specify the country",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
           "label": "Mother born in a non-European country",
-          "sublabel": "grew up or lived there more than 6 months — specify the country",
+          "sublabel": "grew up or lived there more than 6 months, specify the country",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -708,9 +708,9 @@
       "order": 22,
       "items": [
         { "id": "q22_partenaire_recents", "label": "New partner or more than 2 partners", "sublabel": "in the last 4 months", "is_disqualifying": true, "disqualification_reason": "A new partner, change of partner or more than 2 partners in the last 4 months requires a waiting period due to the risk of STIs during the seroconversion window." },
-        { "id": "q22_rapport_remunere", "label": "Sexual relations for payment", "sublabel": "money, drugs or other services — last 12 months", "is_disqualifying": true, "disqualification_reason": "Sexual relations for payment in the last 12 months temporarily contraindicate donation due to an increased risk of STI exposure." },
+        { "id": "q22_rapport_remunere", "label": "Sexual relations for payment", "sublabel": "money, drugs or other services, last 12 months", "is_disqualifying": true, "disqualification_reason": "Sexual relations for payment in the last 12 months temporarily contraindicate donation due to an increased risk of STI exposure." },
         { "id": "q22_partenaire_ist", "label": "Partner with hepatitis B/C, Zika or exposed to HIV", "sublabel": "in the last 12 months", "is_disqualifying": true, "disqualification_reason": "A partner with hepatitis B/C, Zika or exposed to a risk situation in the last 12 months temporarily contraindicates donation." },
-        { "id": "q22_partenaire_pays_risque", "label": "Partner who stayed in a country with high HIV / hepatitis prevalence", "sublabel": "more than 6 months — last 4 months", "is_disqualifying": true, "disqualification_reason": "Sexual relations with a partner returning from a high-prevalence country in the last 4 months require a waiting period." }
+        { "id": "q22_partenaire_pays_risque", "label": "Partner who stayed in a country with high HIV / hepatitis prevalence", "sublabel": "more than 6 months, last 4 months", "is_disqualifying": true, "disqualification_reason": "Sexual relations with a partner returning from a high-prevalence country in the last 4 months require a waiting period." }
       ],
       "options": [
         { "id": "q22_aucun", "label": "None of these situations apply to me", "is_disqualifying": false }

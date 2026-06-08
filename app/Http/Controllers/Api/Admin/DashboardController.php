@@ -29,7 +29,7 @@ class DashboardController extends Controller
             ->whereNotNull('metadata')
             ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(metadata, "$.last_question_index")) as q_index, COUNT(*) as total')
             ->groupBy('q_index')
-            ->orderBy('q_index')
+            ->orderBy(DB::raw('CAST(q_index AS UNSIGNED)'))
             ->pluck('total', 'q_index');
 
         $byReferrer = AnalyticsEvent::where('type', 'page_viewed')

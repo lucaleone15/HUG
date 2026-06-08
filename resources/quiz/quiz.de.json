@@ -558,14 +558,14 @@
         {
           "id": "q16_naissance_hors_suisse",
           "label": "Ausserhalb der Schweiz geboren oder aufgewachsen",
-          "sublabel": "mehr als 6 Monate — Land angeben",
+          "sublabel": "mehr als 6 Monate, Land angeben",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
           "label": "Mutter in einem aussereuropäischen Land geboren",
-          "sublabel": "dort aufgewachsen oder mehr als 6 Monate gelebt — Land angeben",
+          "sublabel": "dort aufgewachsen oder mehr als 6 Monate gelebt, Land angeben",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -708,9 +708,9 @@
       "order": 22,
       "items": [
         { "id": "q22_partenaire_recents", "label": "Neuer Sexualpartner oder mehr als 2 Partner", "sublabel": "in den letzten 4 Monaten", "is_disqualifying": true, "disqualification_reason": "Ein neuer Partner, ein Partnerwechsel oder mehr als 2 Partner in den letzten 4 Monaten erfordert aufgrund des Risikos von STIs im Serokonversionsfenster eine Wartezeit." },
-        { "id": "q22_rapport_remunere", "label": "Sexuelle Beziehungen gegen Entgelt", "sublabel": "Geld, Drogen oder andere Leistungen — letzte 12 Monate", "is_disqualifying": true, "disqualification_reason": "Sexuelle Beziehungen gegen Entgelt in den letzten 12 Monaten sind aufgrund eines erhöhten Risikos der STI-Exposition vorübergehend eine Kontraindikation zur Blutspende." },
+        { "id": "q22_rapport_remunere", "label": "Sexuelle Beziehungen gegen Entgelt", "sublabel": "Geld, Drogen oder andere Leistungen, letzte 12 Monate", "is_disqualifying": true, "disqualification_reason": "Sexuelle Beziehungen gegen Entgelt in den letzten 12 Monaten sind aufgrund eines erhöhten Risikos der STI-Exposition vorübergehend eine Kontraindikation zur Blutspende." },
         { "id": "q22_partenaire_ist", "label": "Partner mit Hepatitis B/C, Zika oder HIV-Exposition", "sublabel": "in den letzten 12 Monaten", "is_disqualifying": true, "disqualification_reason": "Ein Partner mit Hepatitis B/C, Zika oder einer Risikosituation in den letzten 12 Monaten ist vorübergehend eine Kontraindikation zur Blutspende." },
-        { "id": "q22_partenaire_pays_risque", "label": "Partner mit Aufenthalt in einem Land mit hoher HIV- / Hepatitis-Prävalenz", "sublabel": "mehr als 6 Monate — letzte 4 Monate", "is_disqualifying": true, "disqualification_reason": "Sexualverkehr mit einem Partner aus einem Hochprävalenzland in den letzten 4 Monaten erfordert eine Wartezeit." }
+        { "id": "q22_partenaire_pays_risque", "label": "Partner mit Aufenthalt in einem Land mit hoher HIV- / Hepatitis-Prävalenz", "sublabel": "mehr als 6 Monate, letzte 4 Monate", "is_disqualifying": true, "disqualification_reason": "Sexualverkehr mit einem Partner aus einem Hochprävalenzland in den letzten 4 Monaten erfordert eine Wartezeit." }
       ],
       "options": [
         { "id": "q22_aucun", "label": "Keine dieser Situationen trifft auf mich zu", "is_disqualifying": false }

@@ -121,7 +121,7 @@ const deviceKey = {
                             <div v-for="(count, ref) in data.by_referrer" :key="ref" class="flex items-center gap-3">
                                 <span class="text-xs w-24 truncate text-base-content/60">{{ ref }}</span>
                                 <div class="flex-1 bg-base-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full"
+                                    <div class="bg-[--color-info] h-2 rounded-full"
                                         :style="`width:${(count / maxVal(data.by_referrer) * 100).toFixed(1)}%`"></div>
                                 </div>
                                 <span class="text-xs w-8 text-right">{{ count }}</span>

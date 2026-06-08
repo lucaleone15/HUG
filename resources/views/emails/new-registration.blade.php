@@ -56,7 +56,7 @@
   <tr>
     <td style="background:{{ $EC['hero'] }};padding:48px 32px 44px;text-align:center;">
       <p style="margin:0 0 22px;font-size:10px;color:{{ $EC['on_dark_lo'] }};letter-spacing:0.08em;">
-        {{ __('mail.hero_comms_label') }}
+        {{ __('mail.registration_comms_label') }}
       </p>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto 28px;">
         <tr>
