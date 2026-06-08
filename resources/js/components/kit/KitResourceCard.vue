@@ -1,44 +1,85 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-defineProps({
+const props = defineProps({
     resourceKey: { type: String, required: true },
     file:        { type: String, required: true },
     n:           { type: Number, required: true },
-    variant:     { type: String, default: 'standard' }, // 'featured' | 'standard' | 'wide'
+    image:       { type: String, default: null },
+    video:       { type: String, default: null },
+    imageRatio:  { type: String, default: null },
+    slides:      { type: Array,  default: null }, // tableau d'URLs pour le slider
 })
 
 const imageError = ref(false)
+const slideIndex = ref(0)
+const videoEl   = ref(null)
+let timer      = null
+let replayTimer = null
+
+const currentImage = computed(() => {
+    if (props.slides?.length) return props.slides[slideIndex.value]
+    return props.image
+})
+
+onMounted(() => {
+    if (props.slides?.length > 1) {
+        timer = setInterval(() => {
+            slideIndex.value = (slideIndex.value + 1) % props.slides.length
+        }, 2500)
+    }
+
+    if (props.video && videoEl.value) {
+        videoEl.value.addEventListener('ended', () => {
+            videoEl.value.currentTime = 0        // reset immédiat → pas de rebuffering
+            replayTimer = setTimeout(() => {
+                videoEl.value?.play()
+            }, 800)
+        })
+    }
+})
+
+onUnmounted(() => {
+    if (timer) clearInterval(timer)
+    if (replayTimer) clearTimeout(replayTimer)
+})
 </script>
 
 <template>
-    <a :href="file" download class="kit-card" :class="`kit-card--${variant}`">
+    <a :href="file" download class="kit-card">
 
         <!-- ── Zone aperçu ──────────────────────────────────────── -->
-        <div class="kit-card__media">
+        <div class="kit-card__media"
+             :style="imageRatio ? { aspectRatio: imageRatio, flex: 'none' } : { minHeight: '180px' }">
 
-            <img v-if="!imageError"
-                 :src="`/downloads/kit/preview-${resourceKey}.jpg`"
-                 :alt="t(`kit.resource_${resourceKey}_title`)"
-                 class="kit-card__img"
-                 loading="lazy"
-                 @error="imageError = true" />
+            <video v-if="video"
+                   ref="videoEl"
+                   class="kit-card__img"
+                   :src="video"
+                   autoplay
+                   muted
+                   playsinline
+            ></video>
+
+            <template v-else-if="currentImage && !imageError">
+                <Transition name="kit-fade">
+                    <img :key="currentImage"
+                         :src="currentImage"
+                         :alt="t(`kit.resource_${resourceKey}_title`)"
+                         class="kit-card__img"
+                         loading="lazy"
+                         @error="imageError = true" />
+                </Transition>
+            </template>
 
             <div v-else class="kit-card__placeholder">
                 <span class="kit-card__bg-num" aria-hidden="true">
                     {{ String(n).padStart(2, '0') }}
                 </span>
-                <!-- Indicateurs carrousel (carte wide uniquement) -->
-                <div v-if="variant === 'wide'" class="kit-card__slides" aria-hidden="true">
-                    <span v-for="i in 5" :key="i"
-                          class="kit-card__dot"
-                          :class="{ 'kit-card__dot--on': i === 1 }">
-                    </span>
-                </div>
-                <span v-else class="kit-card__fmt-hint">
+                <span class="kit-card__fmt-hint">
                     {{ t(`kit.resource_${resourceKey}_format`) }}
                 </span>
             </div>
@@ -69,7 +110,6 @@ const imageError = ref(false)
     overflow: hidden;
     background: #ffffff;
     text-decoration: none;
-    height: 100%;
     box-shadow: 0 1px 3px rgba(25, 5, 7, 0.07), 0 1px 2px rgba(25, 5, 7, 0.04);
     transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
                 box-shadow 220ms ease;
@@ -88,56 +128,19 @@ const imageError = ref(false)
 /* ── Aperçu ─────────────────────────────────────────────────── */
 .kit-card__media {
     position: relative;
-    background: #190507;
+    background: #f8f8f8;
     overflow: hidden;
     flex-shrink: 0;
 }
 
-/* standard : ratio 3/2 */
-.kit-card--standard .kit-card__media {
-    aspect-ratio: 3 / 2;
-}
-
-/* featured (tall, 1col×2row) : aperçu remplit l'espace dispo */
-.kit-card--featured .kit-card__media {
-    flex: 1;
-    min-height: 180px;
-}
-
-/* landscape (wide, 2col×1row) : aperçu remplit la hauteur, infos en bas */
-.kit-card--landscape .kit-card__media {
-    flex: 1;
-    min-height: 130px;
-}
-
-/* wide (social, 3col) : horizontal sur desktop */
-.kit-card--wide .kit-card__media {
-    aspect-ratio: 3 / 2;
-}
-@media (min-width: 640px) {
-    .kit-card--wide {
-        flex-direction: row;
-    }
-    .kit-card--wide .kit-card__media {
-        aspect-ratio: unset;
-        width: 44%;
-        flex-shrink: 0;
-    }
-    .kit-card--wide .kit-card__body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-}
-
-/* Image */
+/* Image : absolue, remplit exactement le ratio défini */
 .kit-card__img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 0;
 }
 
 /* ── Placeholder ────────────────────────────────────────────── */
@@ -151,10 +154,11 @@ const imageError = ref(false)
     gap: 0.75rem;
     padding: 1.25rem;
     user-select: none;
+    background: #190507;
 }
 
 .kit-card__bg-num {
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1;
     font-variant-numeric: tabular-nums;
     color: rgba(255, 255, 255, 0.06);
@@ -204,10 +208,11 @@ const imageError = ref(false)
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 1;
     height: 3px;
     background: #D32C37;
-    opacity: 0.4;
-    transform: scaleX(0.7);
+    opacity: 0;
+    transform: scaleX(0);
     transform-origin: left;
     transition: opacity 220ms ease, transform 220ms ease;
 }
@@ -223,7 +228,7 @@ const imageError = ref(false)
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    flex-shrink: 0;
+    flex: 1;
 }
 .kit-card--featured .kit-card__body {
     padding: 1.125rem 1.375rem 1.375rem;
@@ -295,7 +300,8 @@ const imageError = ref(false)
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    margin-top: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
     font-size: 0.7rem;
     font-weight: 700;
     color: #D32C37;
@@ -307,7 +313,16 @@ const imageError = ref(false)
     margin-top: 0.625rem;
 }
 
+/* ── Transition slides ──────────────────────────────────────── */
+.kit-fade-enter-active, .kit-fade-leave-active {
+    transition: opacity 0.8s ease;
+}
+.kit-fade-enter-from, .kit-fade-leave-to {
+    opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .kit-card, .kit-card__bar, .kit-card__dot { transition: none; }
+    .kit-fade-enter-active, .kit-fade-leave-active { transition: none; }
 }
 </style>

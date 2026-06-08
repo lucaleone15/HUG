@@ -100,7 +100,7 @@ const logoError = ref(false)
                         <a :href="link.href"
                            class="rounded-lg text-sm"
                            :class="isActive(link.href)
-                               ? (isOpaque ? 'font-semibold text-brand bg-red-50' : 'font-semibold text-white bg-white/15')
+                               ? (isOpaque ? 'font-semibold text-brand bg-brand/10' : 'font-semibold text-white bg-white/15')
                                : (isOpaque ? 'text-base-content/70 hover:text-base-content' : 'text-white/75 hover:text-white')">
                             {{ t(link.key) }}
                         </a>

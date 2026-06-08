@@ -558,14 +558,14 @@
         {
           "id": "q16_naissance_hors_suisse",
           "label": "Nato/a fuori dalla Svizzera o cresciuto/a lì",
-          "sublabel": "più di 6 mesi — indicare il paese",
+          "sublabel": "più di 6 mesi, indicare il paese",
           "is_disqualifying": false,
           "needs_evaluation": true
         },
         {
           "id": "q16_mere_extra_europeenne",
           "label": "Madre nata in un paese extra-europeo",
-          "sublabel": "cresciuta o vissuta lì più di 6 mesi — indicare il paese",
+          "sublabel": "cresciuta o vissuta lì più di 6 mesi, indicare il paese",
           "is_disqualifying": false,
           "needs_evaluation": true
         }
@@ -708,9 +708,9 @@
       "order": 22,
       "items": [
         { "id": "q22_partenaire_recents", "label": "Nuovo partner o più di 2 partner", "sublabel": "negli ultimi 4 mesi", "is_disqualifying": true, "disqualification_reason": "Un nuovo partner, un cambio di partner o più di 2 partner negli ultimi 4 mesi richiede un periodo di attesa a causa del rischio di MST nella fase di sieroconversione." },
-        { "id": "q22_rapport_remunere", "label": "Rapporti sessuali a pagamento", "sublabel": "denaro, droghe o altre prestazioni — ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti sessuali a pagamento negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST." },
+        { "id": "q22_rapport_remunere", "label": "Rapporti sessuali a pagamento", "sublabel": "denaro, droghe o altre prestazioni, ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti sessuali a pagamento negli ultimi 12 mesi controindica temporaneamente la donazione a causa di un rischio elevato di esposizione alle MST." },
         { "id": "q22_partenaire_ist", "label": "Partner affetto da epatite B/C, Zika o esposto all'HIV", "sublabel": "negli ultimi 12 mesi", "is_disqualifying": true, "disqualification_reason": "Un partner affetto da epatite B/C, Zika o esposto a una situazione a rischio negli ultimi 12 mesi controindica temporaneamente la donazione." },
-        { "id": "q22_partenaire_pays_risque", "label": "Partner con soggiorno in un paese ad alta prevalenza HIV / epatite", "sublabel": "più di 6 mesi — ultimi 4 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti con un partner proveniente da un paese ad alta prevalenza negli ultimi 4 mesi richiedono un periodo di attesa." }
+        { "id": "q22_partenaire_pays_risque", "label": "Partner con soggiorno in un paese ad alta prevalenza HIV / epatite", "sublabel": "più di 6 mesi, ultimi 4 mesi", "is_disqualifying": true, "disqualification_reason": "Rapporti con un partner proveniente da un paese ad alta prevalenza negli ultimi 4 mesi richiedono un periodo di attesa." }
       ],
       "options": [
         { "id": "q22_aucun", "label": "Nessuna di queste situazioni mi riguarda", "is_disqualifying": false }

@@ -9,7 +9,7 @@ return [
     'contact_name'       => 'Responsable',
     'contact_email'      => 'Email',
     'employee_count'     => 'Effectif',
-    'employees'          => 'employés',
+    'employees'          => 'employé·e·s',
     'section_participation' => 'Participation',
     'quiz_started'       => 'Quiz démarrés',
     'quiz_completed'     => 'Quiz complétés',
@@ -44,16 +44,16 @@ return [
     // ─── Durée ──────────────────────────────────────────────
     'dur_very_fast'      => 'Très rapide · réviser la pertinence des questions',
     'dur_concise'        => 'Concis · expérience utilisateur optimale',
-    'dur_optimal'        => 'Optimal · participants très impliqués dans la démarche',
+    'dur_optimal'        => 'Optimal · participant·e·s très impliqué·e·s dans la démarche',
     'dur_long'           => "Long · risque d'abandon en cours de route",
 
     // ─── Recommandations taux ────────────────────────────────
     'reco_part_low'      => 'Renforcer la communication interne',
     'reco_part_med'      => 'Bon taux · maintenir la visibilité',
-    'reco_part_high'     => 'Excellent engagement des collaborateurs',
+    'reco_part_high'     => 'Excellent engagement des collaborateur·trice·s',
     'reco_elig_low'      => 'Cibler des profils plus compatibles au don',
     'reco_elig_med'      => 'Conforme à la moyenne nationale (60-70%)',
-    'reco_elig_high'     => 'Excellente adéquation des participants',
+    'reco_elig_high'     => 'Excellente adéquation des participant·e·s',
     'reco_conv_low'      => 'Optimiser le parcours CTA post-quiz',
     'reco_conv_med'      => 'Bonne conversion · optimiser le rappel',
     'reco_conv_high'     => 'Conversion remarquable · modèle à reproduire',
@@ -61,9 +61,9 @@ return [
     // ─── Diagnostics ─────────────────────────────────────────
     'section_diagnostics'   => 'Diagnostics',
     'diag_part_low_t'       => 'Participation insuffisante (:pct%)',
-    'diag_part_low_x'       => ':started sur :emp collaborateurs. Une campagne ciblée peut tripler ce taux. Objectif recommandé : 25%.',
+    'diag_part_low_x'       => ':started sur :emp collaborateur·trice·s. Une campagne ciblée peut tripler ce taux. Objectif recommandé : 25%.',
     'diag_part_ok_t'        => 'Participation satisfaisante (:pct%)',
-    'diag_part_ok_x'        => ':started collaborateurs engagés. Maintenir la visibilité du programme pour fidéliser les participants.',
+    'diag_part_ok_x'        => ':started collaborateur·trice·s engagé·e·s. Maintenir la visibilité du programme pour fidéliser les participant·e·s.',
     'diag_elig_ok_t'        => 'Excellente éligibilité (:pct%)',
     'diag_elig_ok_x'        => 'Dépasse la moyenne nationale (60-70%). Population active en très bonne santé.',
     'diag_elig_low_t'       => "Éligibilité à améliorer (:pct%)",
@@ -80,7 +80,7 @@ return [
     'reco_1_ok'             => 'Maintenir la visibilité et partager les résultats pour fidéliser les participants.',
     'reco_2'                => 'Revoir la Q:q (:n abandons) · reformuler ou déplacer en fin de parcours.',
     'reco_2_default'        => 'Revoir la question principale · reformuler ou déplacer en fin de parcours.',
-    'reco_3'                => 'Fixer un objectif de :part participants pour ~:elig éligibles et ~:rdv RDV.',
+    'reco_3'                => 'Fixer un objectif de :part participant·e·s pour ~:elig éligibles et ~:rdv RDV.',
 
     // ─── Objectifs ───────────────────────────────────────────
     'section_objectives'    => 'Objectifs campagne 2027',
@@ -88,7 +88,7 @@ return [
     'obj_current'           => 'Actuel',
     'obj_target'            => 'Objectif 2027',
     'obj_participation'     => 'Participation',
-    'obj_participants'      => 'Participants',
+    'obj_participants'      => 'Participant·e·s',
     'obj_eligible_pl'       => 'Éligibles',
     'obj_rdv'               => 'RDV',
     'obj_note'              => 'Objectifs basés sur 25% de participation et les taux observés. Estimation non contractuelle.',
@@ -131,15 +131,15 @@ return [
 
     // ─── Simulation ──────────────────────────────────────────
     'sim_title'             => 'Simulation · 25% de participation',
-    'sim_participants'      => 'participants',
+    'sim_participants'      => 'participant·e·s',
     'sim_eligible_lbl'      => 'éligibles',
     'sim_gain'              => '+:gain éligibles · +:rdvGain RDV supplémentaires estimés',
     'sim_note'              => "Estimation basée sur les taux observés (:elig% éligibilité · :conv% conversion)",
 
     // ─── Impact ──────────────────────────────────────────────
     'impact_title'          => 'Impact don du sang',
-    'impact_sub'            => 'vies potentiellement sauvées grâce aux :rdv donneurs de cette campagne',
-    'impact_eq'             => '1 donneur peut sauver jusqu\'à 3 vies · :rdv × 3 = :lives',
+    'impact_sub'            => 'vies potentiellement sauvées grâce aux :rdv donneur·euse·s de cette campagne',
+    'impact_eq'             => '1 donneur·euse peut sauver jusqu\'à 3 vies · :rdv × 3 = :lives',
 
     // ─── Ratio ───────────────────────────────────────────────
     'ratio_title'           => "Ratio d'éligibilité",
@@ -158,7 +158,7 @@ return [
     'contact_phone_val'     => '+41 22 372 61 00',
 
     // ─── Footer ──────────────────────────────────────────────
-    'footer_hug'            => 'HUG – Hôpitaux Universitaires de Genève · Centre de Transfusion Sanguine',
+    'footer_hug'            => 'HUG - Hôpitaux Universitaires de Genève · Centre de Transfusion Sanguine',
     'footer_site'           => 'donnez-votre-sang.ch',
     'vbl_part' => 'Partic.',
     'vbl_elig' => 'Éligib.',

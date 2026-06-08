@@ -267,7 +267,7 @@ const goToContact = () => {
     border-radius: 0;
     border: none;
     background: transparent;
-    color: #e53e3e;
+    color: var(--color-brand);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,7 +276,7 @@ const goToContact = () => {
     transition: color 150ms;
     text-decoration: none;
 }
-.topbar-back-btn:hover { color: #c53030; }
+.topbar-back-btn:hover { color: var(--color-brand-dark); }
 .topbar-pct {
     font-size: 12px;
     font-weight: 600;
@@ -349,7 +349,7 @@ const goToContact = () => {
 }
 .dossier-title {
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.12em;
     color: #1A1A1A;
     text-transform: uppercase;
@@ -502,7 +502,7 @@ const goToContact = () => {
     border: 2.5px solid currentColor;
     padding: 8px 20px;
     font-size: 1.25rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     pointer-events: none;

@@ -32,18 +32,57 @@ onMounted(() => {
 //   [rollup — std]  [banners — std]  [↑ suite flyers          ]
 //   [email — landscape 2col×1row  ]  [tv — std                ]
 //   [social ——————— full 3col ——————————————————————————————  ]
+// imageRatio = largeur/hauteur exacte de l'image source
 const resources = [
-    { key: 'affiches', file: '/downloads/kit/affiches.zip',           n: 1, variant: 'landscape', span: 'sm:col-span-2' },
-    { key: 'flyers',   file: '/downloads/kit/flyers.zip',             n: 2, variant: 'featured',  span: 'sm:row-span-2' },
-    { key: 'rollup',   file: '/downloads/kit/rollup.pdf',             n: 3, variant: 'standard',  span: '' },
-    { key: 'banners',  file: '/downloads/kit/bannieres-intranet.zip', n: 4, variant: 'standard',  span: '' },
-    { key: 'email',    file: '/downloads/kit/email-invitation.zip',   n: 5, variant: 'landscape', span: 'sm:col-span-2' },
-    { key: 'tv',       file: '/downloads/kit/infographie-tv.zip',     n: 6, variant: 'standard',  span: '' },
-    { key: 'social',   file: '/downloads/kit/reseaux-sociaux.zip',    n: 7, variant: 'wide',      span: 'sm:col-span-3' },
+    { key: 'affiches', file: '/downloads/kit/affiches.zip', n: 1, span: '', imageRatio: '848/1200',
+      slides: [
+          '/images/kit/slides/affiches/loupe-fondblanc.png',
+          '/images/kit/slides/affiches/loupe-fondnoir.png',
+          '/images/kit/slides/affiches/poche-fondblanc.png',
+          '/images/kit/slides/affiches/poche-fondnoir.png',
+      ]},
+    { key: 'flyers', file: '/downloads/kit/flyers.zip', n: 2, span: '', imageRatio: '845/1200',
+      slides: [
+          '/images/kit/slides/flyers/loupe-fondblanc.png',
+          '/images/kit/slides/flyers/loupe-fondnoir.png',
+          '/images/kit/slides/flyers/poche-fondblanc.png',
+          '/images/kit/slides/flyers/poche-fondnoir.png',
+      ]},
+    { key: 'rollup',  file: '/downloads/kit/rollup.zip',         n: 3, span: '',              image: '/images/kit/preview-rollup.png', imageRatio: '3000/1206' },
+    { key: 'banners', file: '/downloads/kit/bannieres.zip',       n: 4, span: 'sm:col-span-2', imageRatio: '1200/396',
+      slides: [
+          '/images/kit/slides/banners/composite-black-md.png',
+          '/images/kit/slides/banners/composite-white-md.png',
+          '/images/kit/slides/banners/composite-black-sm.png',
+          '/images/kit/slides/banners/composite-white-sm.png',
+      ]},
+    { key: 'tv',     file: '/downloads/kit/infographie-tv.zip',  n: 5, span: '', image: null, video: '/pdfs/02%20Communication%20digitale/InfoTV/InfoTV.mp4', imageRatio: '16/9' },
+    { key: 'social', file: '/downloads/kit/reseaux-sociaux.zip', n: 6, span: 'sm:col-span-3', imageRatio: '2160/2700',
+      slides: [
+          '/images/kit/slides/social/carousel-1.png',
+          '/images/kit/slides/social/carousel-2.png',
+          '/images/kit/slides/social/carousel-3.png',
+          '/images/kit/slides/social/carousel-4.png',
+          '/images/kit/slides/social/carousel-5.png',
+      ]},
+    { key: 'email',  file: '/downloads/kit/email-invitation.zip', n: 7, span: 'sm:col-span-2', image: null, imageRatio: null },
 ]
 
 // Flat list for the red summary section
 const allResources = resources
+
+const resourceProps = (key) => {
+    const r = resources.find(x => x.key === key)
+    return {
+        resourceKey: r.key,
+        file: r.file,
+        n: r.n,
+        image: r.image ?? null,
+        video: r.video ?? null,
+        imageRatio: r.imageRatio,
+        slides: r.slides ?? null,
+    }
+}
 </script>
 
 <template>
@@ -56,24 +95,11 @@ const allResources = resources
             :cta="{ label: t('kit.hero_cta'), href: '#telechargements' }"
         >
             <template #visual>
-                <div class="w-full max-w-[220px] mx-auto py-4" aria-hidden="true">
-                    <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
-                        <rect x="44" y="62" width="108" height="128" rx="6" fill="#f0f0f0" stroke="#e6e6e6" stroke-width="1.5"/>
-                        <rect x="30" y="48" width="108" height="128" rx="6" fill="#f6f6f6" stroke="#e2e2e2" stroke-width="1.5"/>
-                        <rect x="58" y="34" width="108" height="128" rx="6" fill="white" stroke="#d9d9d9" stroke-width="1.5"/>
-                        <path d="M136 34 L166 64 L136 64 Z" fill="#ebebeb"/>
-                        <path d="M136 34 L166 64" stroke="#d9d9d9" stroke-width="1.5"/>
-                        <line x1="74" y1="78" x2="150" y2="78" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="74" y1="90" x2="138" y2="90" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="74" y1="106" x2="150" y2="106" stroke="#ededed" stroke-width="1.5" stroke-linecap="round"/>
-                        <line x1="74" y1="116" x2="128" y2="116" stroke="#ededed" stroke-width="1.5" stroke-linecap="round"/>
-                        <line x1="74" y1="126" x2="142" y2="126" stroke="#ededed" stroke-width="1.5" stroke-linecap="round"/>
-                        <line x1="74" y1="136" x2="116" y2="136" stroke="#ededed" stroke-width="1.5" stroke-linecap="round"/>
-                        <circle cx="164" cy="142" r="26" fill="#D32C37"/>
-                        <path d="M157 139 L164 148 L171 139" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line x1="164" y1="132" x2="164" y2="148" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-                        <line x1="155" y1="153" x2="173" y2="153" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-                    </svg>
+                <div class="kit-hero-visual" aria-hidden="true">
+                    <img :src="'/images/kit/slides/affiches/poche-fondnoir.png'"
+                         class="kit-hero-img kit-hero-img--back" alt="" />
+                    <img :src="'/images/kit/slides/affiches/loupe-fondblanc.png'"
+                         class="kit-hero-img kit-hero-img--front" alt="" />
                 </div>
             </template>
         </PageHero>
@@ -131,7 +157,7 @@ const allResources = resources
                                 {{ t('kit.brochure_desc') }}
                             </p>
                         </div>
-                        <a href="/downloads/kit/brochure.pdf"
+                        <a href="/pdfs/Kit_Promotionnel.pdf"
                            download
                            class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-6 shrink-0 active:scale-[0.97]">
                             {{ t('kit.brochure_download') }}
@@ -139,7 +165,7 @@ const allResources = resources
                     </div>
                     <!-- PDF viewer -->
                     <iframe
-                        src="/downloads/kit/brochure.pdf"
+                        src="/pdfs/Kit_Promotionnel.pdf"
                         class="w-full block border-0"
                         style="height: 580px;"
                         :title="t('kit.brochure_title')"
@@ -149,16 +175,22 @@ const allResources = resources
                 <!-- ── Bento grid ── -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 reveal-up"
                      :class="{ 'reveal-up--visible': dlVisible }"
-                     style="transition-delay: 100ms; grid-auto-rows: auto;">
-                    <KitResourceCard
-                        v-for="r in resources"
-                        :key="r.key"
-                        :resource-key="r.key"
-                        :file="r.file"
-                        :n="r.n"
-                        :variant="r.variant"
-                        :class="r.span"
-                    />
+                     style="transition-delay: 100ms;">
+
+                    <!-- Affiches -->
+                    <KitResourceCard v-bind="resourceProps('affiches')" />
+                    <!-- Flyers -->
+                    <KitResourceCard v-bind="resourceProps('flyers')" />
+                    <!-- Rollup + TV empilés dans la même colonne -->
+                    <div class="flex flex-col gap-4">
+                        <KitResourceCard v-bind="resourceProps('rollup')" />
+                        <KitResourceCard v-bind="resourceProps('tv')" class="flex-1" />
+                    </div>
+                    <!-- Bannières + Réseaux sociaux côte à côte -->
+                    <KitResourceCard v-bind="resourceProps('banners')" class="sm:col-span-2" />
+                    <KitResourceCard v-bind="resourceProps('social')" />
+                    <!-- Email d'invitation (placeholder) -->
+                    <KitResourceCard v-bind="resourceProps('email')" class="sm:col-span-2" />
                 </div>
 
             </div>
@@ -191,6 +223,28 @@ const allResources = resources
 </template>
 
 <style scoped>
+/* ── Hero visual ─────────────────────────────────────────────── */
+.kit-hero-visual {
+    position: relative;
+    width: 300px;
+    height: 420px;
+    margin: auto;
+}
+.kit-hero-img {
+    position: absolute;
+    width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 16px 48px rgba(25, 5, 7, 0.20), 0 4px 12px rgba(25, 5, 7, 0.10);
+}
+.kit-hero-img--back {
+    transform: rotate(-7deg) translate(-22px, 40px);
+    z-index: 1;
+}
+.kit-hero-img--front {
+    transform: rotate(4deg) translate(28px, 22px);
+    z-index: 2;
+}
+
 .kit-num {
     display: block;
     font-weight: 800;

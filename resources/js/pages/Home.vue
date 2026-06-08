@@ -166,8 +166,8 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('trophee.title')" :description="t('trophee.subtitle')" href="/trophee">
                             <template #visual>
-                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-4 transition-colors duration-150">
-                                    <img :src="'/images/trophee-rouge-icon.svg'" alt="" class="h-full w-auto max-w-full transition-[filter] duration-150 group-hover:brightness-0 group-hover:invert" aria-hidden="true" decoding="async" />
+                                <div class="w-full h-full flex items-center justify-center p-3">
+                                    <img :src="'/images/trophee-rouge.svg'" alt="" class="h-full w-auto max-w-full" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
                         </ProgrammeRow>
@@ -176,7 +176,7 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('label.title')" :description="t('label.subtitle')" href="/label">
                             <template #visual>
-                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center p-3 transition-colors duration-150">
+                                <div class="w-full h-full flex items-center justify-center p-3">
                                     <img :src="'/images/label-plein.svg'" alt="" class="w-full h-full object-contain" aria-hidden="true" decoding="async" />
                                 </div>
                             </template>
@@ -186,11 +186,15 @@ const steps = computed(() => [
                     <div class="reveal-up prog-row-wrap" :class="{ 'reveal-up--visible': progVisible }">
                         <ProgrammeRow :title="t('kit.title')" :description="t('kit.subtitle')" href="/kit-promo">
                             <template #visual>
-                                <div class="w-full h-full bg-site-ink group-hover:bg-brand flex items-center justify-center transition-colors duration-150">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-white/70 group-hover:text-white transition-colors duration-150" aria-hidden="true">
-                                        <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z"/>
-                                        <path d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087z"/>
-                                    </svg>
+                                <div class="relative w-full h-full overflow-hidden">
+                                    <img :src="'/images/kit/slides/affiches/poche-fondnoir.png'"
+                                         alt=""
+                                         class="absolute rounded-sm shadow"
+                                         style="width:42px; transform:rotate(-6deg); top:10%; left:8%; z-index:1;" />
+                                    <img :src="'/images/kit/slides/affiches/loupe-fondblanc.png'"
+                                         alt=""
+                                         class="absolute rounded-sm shadow"
+                                         style="width:42px; transform:rotate(4deg); top:6%; left:44%; z-index:2;" />
                                 </div>
                             </template>
                         </ProgrammeRow>
@@ -310,12 +314,16 @@ const steps = computed(() => [
 .how-steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-rows: auto auto auto;
+    column-gap: 2rem;
+    row-gap: 1.125rem;
+    align-items: start;
 }
 .how-step {
-    display: flex;
-    flex-direction: column;
-    gap: 1.125rem;
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    align-items: start;
 }
 .how-step-icon {
     color: var(--color-brand);
@@ -336,7 +344,15 @@ const steps = computed(() => [
 @media (max-width: 680px) {
     .how-steps-grid {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        grid-template-rows: none;
+        column-gap: 0;
+        row-gap: 2.5rem;
+    }
+    .how-step {
+        display: flex;
+        flex-direction: column;
+        grid-row: auto;
+        gap: 1.125rem;
     }
 }
 
