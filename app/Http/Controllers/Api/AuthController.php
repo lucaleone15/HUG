@@ -18,7 +18,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // first() au lieu de firstOrFail() — évite l'énumération d'emails (HTTP 404 vs 401)
+        // first() au lieu de firstOrFail(), évite que qqun puisse déduire des emails en fonction des codes de réponses (HTTP 404 vs 401)
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {

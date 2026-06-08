@@ -10,21 +10,21 @@ const { t } = useI18n()
 const api = useApi()
 const { user: currentUser } = useAuth()
 
-const admins      = ref([])
-const loading     = ref(true)
-const saving      = ref(false)
-const loadError   = ref(null)
-const formError   = ref(null)
+const admins = ref([])
+const loading = ref(true)
+const saving = ref(false)
+const loadError = ref(null)
+const formError = ref(null)
 const fieldErrors = ref({})
-const success     = ref(false)
+const success = ref(false)
 const deleteModal = ref(false)
 const deleteTarget = ref(null)
-const deleting    = ref(null)
+const deleting = ref(null)
 
 const form = ref({ name: '', email: '', password: '' })
 
 const load = async () => {
-    loading.value   = true
+    loading.value = true
     loadError.value = null
     try {
         admins.value = await api.get('/admin/users')
@@ -38,10 +38,10 @@ const load = async () => {
 onMounted(load)
 
 const addAdmin = async () => {
-    saving.value     = true
+    saving.value = true
     fieldErrors.value = {}
-    formError.value  = null
-    success.value    = false
+    formError.value = null
+    success.value = false
     try {
         const newAdmin = await api.post('/admin/users', form.value)
         admins.value.push(newAdmin)
@@ -58,12 +58,12 @@ const addAdmin = async () => {
 
 const askDelete = (admin) => {
     deleteTarget.value = admin
-    deleteModal.value  = true
+    deleteModal.value = true
 }
 
 const confirmDelete = async () => {
     const admin = deleteTarget.value
-    deleteModal.value  = false
+    deleteModal.value = false
     deleteTarget.value = null
     deleting.value = admin.id
     try {
@@ -85,7 +85,7 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
     <div class="w-full max-w-2xl">
         <h1 class="text-2xl font-bold mb-6">{{ t('admin.nav_settings') }}</h1>
 
-        <!-- Section : Gestion des administrateurs -->
+        <!-- Gestion pour les administrateurs -->
         <section>
             <div class="mb-4">
                 <h2 class="text-lg font-semibold">{{ t('admin.settings_admins_section') }}</h2>
@@ -101,31 +101,33 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                     <div class="alert alert-error text-sm">{{ loadError }}</div>
                 </div>
                 <template v-else>
-                    <!-- Mobile : cartes -->
+                    <!-- version mobile avec les cartes -->
                     <div class="sm:hidden divide-y divide-base-200">
                         <div v-for="admin in admins" :key="admin.id" class="flex items-center gap-3 p-4">
-                            <div class="w-9 h-9 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-sm shrink-0">
+                            <div
+                                class="w-9 h-9 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-sm shrink-0">
                                 {{ (admin.name?.[0] || admin.email[0]).toUpperCase() }}
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="font-medium text-sm truncate">{{ admin.name || '-' }}</div>
                                 <div class="text-xs text-base-content/50 truncate">{{ admin.email }}</div>
-                                <div class="text-xs text-base-content/30 mt-0.5">{{ t('admin.settings_admin_since') }} {{ fmt(admin.created_at) }}</div>
+                                <div class="text-xs text-base-content/30 mt-0.5">{{ t('admin.settings_admin_since') }}
+                                    {{ fmt(admin.created_at) }}</div>
                             </div>
                             <div class="shrink-0">
-                                <span v-if="isSelf(admin)" class="badge badge-ghost badge-sm">{{ t('admin.settings_you') }}</span>
-                                <button v-else
-                                    class="btn btn-ghost btn-xs text-error"
-                                    :disabled="deleting === admin.id"
+                                <span v-if="isSelf(admin)" class="badge badge-ghost badge-sm">{{ t('admin.settings_you')
+                                    }}</span>
+                                <button v-else class="btn btn-ghost btn-xs text-error" :disabled="deleting === admin.id"
                                     @click="askDelete(admin)">
-                                    <span v-if="deleting === admin.id" class="loading loading-spinner loading-xs"></span>
+                                    <span v-if="deleting === admin.id"
+                                        class="loading loading-spinner loading-xs"></span>
                                     <span v-else>{{ t('admin.settings_admin_remove') }}</span>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Desktop : tableau -->
+                    <!-- version desktop avec le tableau -->
                     <div class="hidden sm:block overflow-x-auto">
                         <table class="table table-sm">
                             <thead>
@@ -140,22 +142,22 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                                 <tr v-for="admin in admins" :key="admin.id" class="hover">
                                     <td>
                                         <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-xs shrink-0">
+                                            <div
+                                                class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-xs shrink-0">
                                                 {{ (admin.name?.[0] || admin.email[0]).toUpperCase() }}
                                             </div>
                                             <span class="font-medium text-sm">{{ admin.name || '-' }}</span>
-                                            <span v-if="isSelf(admin)" class="badge badge-ghost badge-xs">{{ t('admin.settings_you') }}</span>
+                                            <span v-if="isSelf(admin)" class="badge badge-ghost badge-xs">{{
+                                                t('admin.settings_you') }}</span>
                                         </div>
                                     </td>
                                     <td class="text-sm text-base-content/60">{{ admin.email }}</td>
                                     <td class="text-sm text-base-content/50">{{ fmt(admin.created_at) }}</td>
                                     <td class="text-right">
-                                        <button
-                                            v-if="!isSelf(admin)"
-                                            class="btn btn-ghost btn-xs text-error"
-                                            :disabled="deleting === admin.id"
-                                            @click="askDelete(admin)">
-                                            <span v-if="deleting === admin.id" class="loading loading-spinner loading-xs"></span>
+                                        <button v-if="!isSelf(admin)" class="btn btn-ghost btn-xs text-error"
+                                            :disabled="deleting === admin.id" @click="askDelete(admin)">
+                                            <span v-if="deleting === admin.id"
+                                                class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.settings_admin_remove') }}</span>
                                         </button>
                                     </td>
@@ -166,7 +168,7 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                 </template>
             </div>
 
-            <!-- Formulaire ajout admin -->
+            <!-- Formulaire pour ajouter un admin -->
             <div class="card bg-base-100 shadow-sm">
                 <div class="card-body gap-4">
                     <h3 class="font-semibold text-base">{{ t('admin.settings_admin_add') }}</h3>
@@ -180,9 +182,10 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
 
                     <form class="grid grid-cols-1 sm:grid-cols-2 gap-4" @submit.prevent="addAdmin">
                         <label class="form-control">
-                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_name') }}</span></div>
-                            <input v-model="form.name" type="text" required
-                                class="input input-bordered input-sm"
+                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_name')
+                                    }}</span>
+                            </div>
+                            <input v-model="form.name" type="text" required class="input input-bordered input-sm"
                                 :class="fieldError('name') ? 'input-error' : ''">
                             <div v-if="fieldError('name')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('name') }}</span>
@@ -190,9 +193,10 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                         </label>
 
                         <label class="form-control">
-                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_email') }}</span></div>
-                            <input v-model="form.email" type="email" required
-                                class="input input-bordered input-sm"
+                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_email')
+                                    }}</span>
+                            </div>
+                            <input v-model="form.email" type="email" required class="input input-bordered input-sm"
                                 :class="fieldError('email') ? 'input-error' : ''">
                             <div v-if="fieldError('email')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('email') }}</span>
@@ -200,11 +204,12 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                         </label>
 
                         <label class="form-control col-span-1 sm:col-span-2">
-                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_password') }}</span></div>
+                            <div class="label py-1"><span class="label-text text-sm">{{
+                                t('admin.settings_admin_password') }}</span>
+                            </div>
                             <input v-model="form.password" type="password" required minlength="8"
                                 class="input input-bordered input-sm"
-                                :class="fieldError('password') ? 'input-error' : ''"
-                                placeholder="••••••••">
+                                :class="fieldError('password') ? 'input-error' : ''" placeholder="••••••••">
                             <div v-if="fieldError('password')" class="label">
                                 <span class="label-text-alt text-error">{{ fieldError('password') }}</span>
                             </div>
@@ -220,14 +225,15 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
             </div>
         </section>
 
-        <!-- Modal confirmation suppression -->
+
         <BaseModal v-model="deleteModal" :title="t('admin.delete_confirm_title')">
             <p class="text-sm text-base-content/70">
                 {{ t('admin.settings_remove_confirm', { name: deleteTarget?.name || deleteTarget?.email }) }}
             </p>
             <template #footer>
                 <BaseButton variant="ghost" @click="deleteModal = false">{{ t('admin.cancel') }}</BaseButton>
-                <BaseButton variant="outline" class="text-error border-error hover:bg-error hover:text-white" @click="confirmDelete">
+                <BaseButton variant="outline" class="text-error border-error hover:bg-error hover:text-white"
+                    @click="confirmDelete">
                     {{ t('admin.settings_admin_remove') }}
                 </BaseButton>
             </template>

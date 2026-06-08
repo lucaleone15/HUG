@@ -99,6 +99,7 @@ class EntrepriseController extends Controller
             $data['trophy_rank'] = null;
         }
 
+        //token pour accès unique
         $data['slug']         ??= $this->uniqueSlug(Str::slug($request->name));
         $data['access_token'] ??= Str::random(48);
 

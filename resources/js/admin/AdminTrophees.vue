@@ -5,19 +5,19 @@ import LogoContainer from '../components/ui/LogoContainer.vue'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
 
-const api     = useApi()
-const { t }   = useI18n()
+const api = useApi()
+const { t } = useI18n()
 
 const loading = ref(false)
-const saving  = ref(false)
-const ranked  = ref([])
+const saving = ref(false)
+const ranked = ref([])
 const unranked = ref([])
 
 onMounted(async () => {
     loading.value = true
     try {
         const data = await api.get('/admin/trophees')
-        ranked.value  = data.ranked
+        ranked.value = data.ranked
         unranked.value = data.unranked
     } finally {
         loading.value = false
@@ -28,14 +28,14 @@ const moveUp = (index) => {
     if (index === 0) return
     const tmp = ranked.value[index - 1]
     ranked.value[index - 1] = ranked.value[index]
-    ranked.value[index]     = tmp
+    ranked.value[index] = tmp
 }
 
 const moveDown = (index) => {
     if (index === ranked.value.length - 1) return
     const tmp = ranked.value[index + 1]
     ranked.value[index + 1] = ranked.value[index]
-    ranked.value[index]     = tmp
+    ranked.value[index] = tmp
 }
 
 const removeFromRanking = (index) => {
@@ -86,50 +86,37 @@ const save = async () => {
                     </div>
 
                     <div v-for="(e, i) in ranked" :key="e.id"
-                         class="flex items-center gap-3 py-2 border-b border-base-200 last:border-0">
-                        <!-- Rang -->
+                        class="flex items-center gap-3 py-2 border-b border-base-200 last:border-0">
+                        <!-- Rangs-->
                         <span class="badge badge-neutral font-bold w-8 shrink-0 justify-center">#{{ i + 1 }}</span>
 
-                        <!-- Logo ou initiale colorée -->
-                        <LogoContainer
-                            :logo-url="e.logo_url"
-                            :primary-color="e.primary_color"
-                            :name="e.name"
-                            size="w-8 h-8"
-                            rounded="rounded"
-                            init-rounded="rounded"
-                            class="text-xs"
-                        />
+                        <!-- Gestion logo ou initiale-->
+                        <LogoContainer :logo-url="e.logo_url" :primary-color="e.primary_color" :name="e.name"
+                            size="w-8 h-8" rounded="rounded" init-rounded="rounded" class="text-xs" />
 
                         <!-- Couleur primaire -->
-                        <div v-if="e.primary_color"
-                             class="h-4 w-4 rounded-full shrink-0 border border-base-200"
-                             :style="`background:${e.primary_color}`"
-                             :title="e.primary_color"></div>
+                        <div v-if="e.primary_color" class="h-4 w-4 rounded-full shrink-0 border border-base-200"
+                            :style="`background:${e.primary_color}`" :title="e.primary_color"></div>
 
                         <!-- Nom -->
                         <span class="flex-1 font-medium text-sm truncate min-w-0">{{ e.name }}</span>
 
-                        <!-- Flèches -->
+                        <!-- Flèches pour faciliter la compréhension -->
                         <div class="flex gap-1 shrink-0">
-                            <button class="btn btn-ghost btn-xs px-1.5"
-                                    :disabled="i === 0"
-                                    @click="moveUp(i)"
-                                    :aria-label="t('admin.trophees_move_up')">▲</button>
-                            <button class="btn btn-ghost btn-xs px-1.5"
-                                    :disabled="i === ranked.length - 1"
-                                    @click="moveDown(i)"
-                                    :aria-label="t('admin.trophees_move_down')">▼</button>
+                            <button class="btn btn-ghost btn-xs px-1.5" :disabled="i === 0" @click="moveUp(i)"
+                                :aria-label="t('admin.trophees_move_up')">▲</button>
+                            <button class="btn btn-ghost btn-xs px-1.5" :disabled="i === ranked.length - 1"
+                                @click="moveDown(i)" :aria-label="t('admin.trophees_move_down')">▼</button>
                         </div>
 
                         <!-- Retirer -->
                         <button class="btn btn-ghost btn-xs text-error shrink-0"
-                                @click="removeFromRanking(i)">✕</button>
+                            @click="removeFromRanking(i)">✕</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Non classées -->
+            <!-- Pour les entreprises non classées -->
             <div class="card bg-base-100 shadow-sm">
                 <div class="card-body gap-2">
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.trophees_unranked') }}</div>
@@ -139,35 +126,26 @@ const save = async () => {
                     </div>
 
                     <div v-for="(e, i) in unranked" :key="e.id"
-                         class="flex items-center gap-3 py-2 border-b border-base-200 last:border-0">
-                        <!-- Logo ou initiale colorée -->
-                        <LogoContainer
-                            :logo-url="e.logo_url"
-                            :primary-color="e.primary_color"
-                            :name="e.name"
-                            size="w-8 h-8"
-                            rounded="rounded"
-                            init-rounded="rounded"
-                            class="text-xs"
-                        />
+                        class="flex items-center gap-3 py-2 border-b border-base-200 last:border-0">
+                        <!-- gestion logo -->
+                        <LogoContainer :logo-url="e.logo_url" :primary-color="e.primary_color" :name="e.name"
+                            size="w-8 h-8" rounded="rounded" init-rounded="rounded" class="text-xs" />
 
                         <!-- Couleur primaire -->
-                        <div v-if="e.primary_color"
-                             class="h-4 w-4 rounded-full shrink-0 border border-base-200"
-                             :style="`background:${e.primary_color}`"
-                             :title="e.primary_color"></div>
+                        <div v-if="e.primary_color" class="h-4 w-4 rounded-full shrink-0 border border-base-200"
+                            :style="`background:${e.primary_color}`" :title="e.primary_color"></div>
 
                         <!-- Nom -->
                         <span class="flex-1 text-sm truncate min-w-0 text-base-content/70">{{ e.name }}</span>
 
-                        <!-- Ajouter -->
-                        <button class="btn btn-ghost btn-xs text-brand shrink-0"
-                                @click="addToRanking(i)">+ {{ t('admin.trophees_add') }}</button>
+                        <!-- Ajouter entreprise-->
+                        <button class="btn btn-ghost btn-xs text-brand shrink-0" @click="addToRanking(i)">+ {{
+                            t('admin.trophees_add') }}</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Bouton save bas de page -->
+
             <div class="flex justify-end mt-4">
                 <BaseButton size="sm" :loading="saving" @click="save">
                     {{ t('admin.trophees_save') }}

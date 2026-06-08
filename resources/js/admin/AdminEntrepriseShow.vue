@@ -7,13 +7,13 @@ import StatusBadge from '../components/admin/StatusBadge.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
 import LogoContainer from '../components/ui/LogoContainer.vue'
 
-const route  = useRoute()
+const route = useRoute()
 const router = useRouter()
-const api    = useApi()
+const api = useApi()
 const { t } = useI18n()
 
 const loading = ref(true)
-const e       = ref(null)
+const e = ref(null)
 
 const collecteCount = ref(null)
 
@@ -29,7 +29,7 @@ onMounted(async () => {
     api.get(`/admin/entreprises/${route.params.id}/collectes`).then(res => {
         const list = res.data ?? []
         collecteCount.value = { total: list.length, active: list.filter(c => c.is_active).length }
-    }).catch(() => {})
+    }).catch(() => { })
 })
 
 const goEdit = () => router.push(`/admin/entreprises/${route.params.id}/edit`)
@@ -47,7 +47,7 @@ function copyLink() {
 
 <template>
     <div class="w-full max-w-2xl">
-        <!-- Header -->
+
         <div class="flex items-center gap-3 mb-6 flex-wrap">
             <button class="btn btn-ghost btn-sm" @click="router.back()">{{ t('admin.form_back') }}</button>
             <h1 class="text-xl sm:text-2xl font-bold flex-1">{{ t('admin.show_title') }}</h1>
@@ -59,19 +59,14 @@ function copyLink() {
         </div>
 
         <template v-else-if="e">
-            <!-- Identité -->
+            <!-- Identité de l'entreprise -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-4">
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_identity') }}</div>
 
                     <div class="flex items-center gap-4">
-                        <LogoContainer
-                            :logo-url="e.logo_url"
-                            :primary-color="e.primary_color"
-                            :name="e.name"
-                            size="w-14 h-14"
-                            class="text-xl"
-                        />
+                        <LogoContainer :logo-url="e.logo_url" :primary-color="e.primary_color" :name="e.name"
+                            size="w-14 h-14" class="text-xl" />
                         <div class="flex-1 min-w-0">
                             <div class="text-lg font-bold truncate">{{ e.name }}</div>
                             <div class="text-sm text-base-content/40 truncate">{{ e.slug }}</div>
@@ -83,20 +78,23 @@ function copyLink() {
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_sector') }}</span>
+                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_sector')
+                                }}</span>
                             <div class="font-medium mt-0.5">{{ e.type ? t('inscription.type_' + e.type) : '-' }}</div>
                         </div>
                         <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_employee_count') }}</span>
+                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{
+                                t('admin.form_employee_count') }}</span>
                             <div class="font-medium mt-0.5">{{ e.employee_count ?? '-' }}</div>
                         </div>
                     </div>
 
                     <div v-if="e.access_token" class="mt-2">
-                        <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.company_url') }}</span>
+                        <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.company_url')
+                            }}</span>
                         <div class="flex items-center gap-2 mt-0.5">
                             <a :href="`/c/${e.access_token}`" target="_blank"
-                               class="text-xs text-primary hover:underline truncate font-mono flex-1">
+                                class="text-xs text-primary hover:underline truncate font-mono flex-1">
                                 {{ `/c/${e.access_token}` }}
                             </a>
                             <button class="btn btn-ghost btn-xs shrink-0" @click="copyLink">
@@ -107,7 +105,7 @@ function copyLink() {
                 </div>
             </div>
 
-            <!-- Couleurs -->
+            <!-- couleurs -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_colors') }}</div>
@@ -124,22 +122,25 @@ function copyLink() {
                             <span class="text-xs">{{ e.secondary_color }}</span>
                             <span class="text-base-content/50 text-xs">{{ t('admin.form_secondary_color') }}</span>
                         </div>
-                        <span v-else class="text-base-content/30 text-xs self-center">{{ t('admin.show_no_secondary_color') }}</span>
+                        <span v-else class="text-base-content/30 text-xs self-center">{{
+                            t('admin.show_no_secondary_color') }}</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Contact -->
+            <!-- Section pour le contact -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_contact') }}</div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_contact_name') }}</span>
+                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{
+                                t('admin.form_contact_name') }}</span>
                             <div class="font-medium mt-0.5">{{ e.contact_name || '-' }}</div>
                         </div>
                         <div>
-                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{ t('admin.form_contact_email') }}</span>
+                            <span class="text-base-content/50 text-xs uppercase tracking-wide">{{
+                                t('admin.form_contact_email') }}</span>
                             <div class="font-medium mt-0.5 break-all">
                                 <a v-if="e.contact_email" :href="`mailto:${e.contact_email}`"
                                     class="link link-hover text-primary">{{ e.contact_email }}</a>
@@ -150,15 +151,15 @@ function copyLink() {
                 </div>
             </div>
 
-            <!-- Statut & Trophée -->
+            <!-- statut & trophée -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.form_section_status') }}</div>
                     <div class="flex flex-wrap gap-3">
                         <div v-for="flag in [
-                            { key: 'is_active',    label: t('admin.form_is_active') },
+                            { key: 'is_active', label: t('admin.form_is_active') },
                             { key: 'is_validated', label: t('admin.form_is_validated') },
-                            { key: 'is_labelled',  label: t('admin.form_is_labelled') },
+                            { key: 'is_labelled', label: t('admin.form_is_labelled') },
                             { key: 'wants_trophy', label: t('admin.form_wants_trophy') },
                         ]" :key="flag.key" class="flex items-center gap-2 text-sm">
                             <span :class="e[flag.key] ? 'badge badge-success badge-sm' : 'badge badge-ghost badge-sm'">
@@ -174,11 +175,12 @@ function copyLink() {
                 </div>
             </div>
 
-            <!-- Collectes (résumé + lien) -->
+            <!-- Collectes avec un résumé et lien -->
             <div class="card bg-base-100 shadow-sm mb-4">
                 <div class="card-body gap-3">
                     <div class="flex items-center justify-between mb-1">
-                        <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{ t('admin.form_section_collectes') }}</div>
+                        <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{
+                            t('admin.form_section_collectes') }}</div>
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="text-sm text-base-content/60">
@@ -206,14 +208,18 @@ function copyLink() {
                     <div class="divider text-xs text-base-content/40 mt-0">{{ t('admin.show_section_stats') }}</div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-base-200 rounded-xl p-4 text-center">
-                            <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{ t('admin.col_eligible') }}</div>
-                            <div class="text-2xl font-bold text-emerald-600 tabular-nums">{{ e.eligible_count ?? '-' }}</div>
+                            <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{
+                                t('admin.col_eligible') }}
+                            </div>
+                            <div class="text-2xl font-bold text-emerald-600 tabular-nums">{{ e.eligible_count ?? '-' }}
+                            </div>
                             <div v-if="e.submission_count" class="text-xs text-base-content/40 mt-0.5">
                                 / {{ e.submission_count }} {{ t('admin.show_submissions') }}
                             </div>
                         </div>
                         <div class="bg-base-200 rounded-xl p-4 text-center">
-                            <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{ t('admin.col_trophy') }}</div>
+                            <div class="text-xs text-base-content/50 uppercase tracking-wide mb-1">{{
+                                t('admin.col_trophy') }}</div>
                             <div class="text-2xl font-bold tabular-nums">
                                 <span v-if="e.trophy_rank" class="text-brand">#{{ e.trophy_rank }}</span>
                                 <span v-else class="text-base-content/30 text-lg">-</span>

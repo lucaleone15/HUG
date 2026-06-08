@@ -10,13 +10,13 @@ const { t } = useI18n()
 const api = useApi()
 const { entreprises, fetch: fetchEntreprises } = useEntreprisesStore()
 
-const filterEligible   = ref('')
+const filterEligible = ref('')
 const filterEntreprise = ref('')
 
 const { data, loading, error, page, lastPage, total, isFirst, isLast, load, prev, next, reset } =
     usePagination((p) => {
         const params = new URLSearchParams({ page: p })
-        if (filterEligible.value !== '')   params.set('is_eligible',   filterEligible.value)
+        if (filterEligible.value !== '') params.set('is_eligible', filterEligible.value)
         if (filterEntreprise.value !== '') params.set('entreprise_id', filterEntreprise.value)
         return api.get(`/admin/submissions?${params}`)
     })
@@ -35,14 +35,10 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
     <div>
         <h1 class="text-2xl font-bold mb-6">{{ t('admin.submissions_title') }}</h1>
 
-        <!-- Filtres -->
+        <!-- Filtres pour les entreprises -->
         <div class="flex flex-wrap gap-3 mb-4">
-            <CompanySelector
-                :companies="entreprises"
-                v-model="filterEntreprise"
-                :all-label="t('admin.all_companies')"
-                class="select-sm"
-            />
+            <CompanySelector :companies="entreprises" v-model="filterEntreprise" :all-label="t('admin.all_companies')"
+                class="select-sm" />
             <select v-model="filterEligible" class="select select-bordered select-sm">
                 <option value="">{{ t('admin.filter_all') }}</option>
                 <option value="1">{{ t('admin.filter_eligible') }}</option>
@@ -60,15 +56,14 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                 {{ t('admin.submissions_count', { n: total.toLocaleString('fr-CH') }) }}
             </div>
 
-            <!-- Vue mobile : cartes -->
+            <!-- vue mobile avec cartes -->
             <div class="md:hidden card bg-base-100 shadow-sm divide-y divide-base-200">
                 <div v-for="s in data" :key="'m-' + s.id" class="flex items-center gap-3 p-4">
                     <div class="flex-1 min-w-0">
                         <div class="font-medium text-sm truncate">{{ s.entreprise?.name ?? '-' }}</div>
                         <div class="text-xs text-base-content/50 mt-0.5">{{ fmt(s.completed_at) }}</div>
                     </div>
-                    <span v-if="s.is_eligible === true"
-                        class="badge badge-success badge-sm shrink-0 whitespace-nowrap">
+                    <span v-if="s.is_eligible === true" class="badge badge-success badge-sm shrink-0 whitespace-nowrap">
                         {{ t('admin.eligible_badge') }}
                     </span>
                     <span v-else-if="s.is_eligible === false"
@@ -79,7 +74,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                 </div>
             </div>
 
-            <!-- Vue desktop : tableau -->
+            <!-- vue desktop avec le tableau -->
             <div class="hidden md:block card bg-base-100 shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="table table-sm">
@@ -105,7 +100,8 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                                     </span>
                                     <span v-else class="badge badge-ghost badge-sm">-</span>
                                 </td>
-                                <td class="text-sm text-base-content/60 whitespace-nowrap">{{ fmt(s.completed_at) }}</td>
+                                <td class="text-sm text-base-content/60 whitespace-nowrap">{{ fmt(s.completed_at) }}
+                                </td>
                                 <td class="text-xs text-base-content/30 max-w-[100px] truncate">{{ s.id }}</td>
                             </tr>
                         </tbody>
@@ -113,6 +109,7 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
                 </div>
             </div>
 
+            <!-- navigation -->
             <div v-if="lastPage > 1" class="flex justify-center mt-4 gap-2">
                 <button class="btn btn-sm btn-ghost" :disabled="isFirst" @click="prev">←</button>
                 <span class="text-sm self-center">{{ page }} / {{ lastPage }}</span>

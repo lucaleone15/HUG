@@ -13,14 +13,14 @@ class DashboardController extends Controller
 {
     public function index(): JsonResponse
     {
-        // --- Entonnoir global ---
+        
         $pageViewed    = AnalyticsEvent::where('type', 'page_viewed')->count();
         $quizStarted   = AnalyticsEvent::where('type', 'quiz_started')->count();
         $quizCompleted = AnalyticsEvent::where('type', 'quiz_completed')->count();
         $rdvClicked    = AnalyticsEvent::where('type', 'rdv_clicked')->count();
         $eligible      = Submission::where('is_eligible', true)->count();
 
-        // --- Comportement utilisateur ---
+        
         $avgDuration = AnalyticsEvent::where('type', 'quiz_completed')
             ->whereNotNull('metadata')
             ->avg(DB::raw('JSON_UNQUOTE(JSON_EXTRACT(metadata, "$.duration_s"))'));
@@ -44,7 +44,7 @@ class DashboardController extends Controller
             ->groupByRaw('JSON_UNQUOTE(JSON_EXTRACT(metadata, "$.device"))')
             ->pluck('total', 'device');
 
-        // --- Par entreprise ---
+      
         $perEntreprise = Entreprise::where('is_active', true)
             ->withCount([
                 'submissions as submission_count',

@@ -29,7 +29,7 @@ class TropheeController extends Controller
         ]);
 
         Entreprise::whereNotNull('trophy_rank')->update(['trophy_rank' => null]);
-
+        //permet de gérer le ranking
         foreach ($data['ranking'] as $pos => $id) {
             Entreprise::where('id', $id)->where('is_public', true)->update(['trophy_rank' => $pos + 1]);
         }
