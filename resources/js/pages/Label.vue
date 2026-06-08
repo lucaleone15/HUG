@@ -26,12 +26,15 @@ const sectionRef = ref(null);
 const sectionVisible = ref(false);
 const gridRef = ref(null);
 const gridVisible = ref(false);
+const downloadRef = ref(null);
+const downloadVisible = ref(false);
 const ctaRef = ref(null);
 const ctaVisible = ref(false);
 
 onMounted(() => {
     makeObserver(sectionRef, sectionVisible, 0.1);
     makeObserver(gridRef, gridVisible, 0.08);
+    makeObserver(downloadRef, downloadVisible, 0.15);
     makeObserver(ctaRef, ctaVisible, 0.15);
 });
 
@@ -155,6 +158,40 @@ const colorSwatches = computed(() =>
                 <LabelCard v-for="e in filtered" :key="e.id" :entreprise="e" />
             </div>
         </main>
+
+        <!-- Téléchargement du visuel -->
+        <section class="py-16 px-6 bg-base-200" ref="downloadRef">
+            <div
+                class="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
+            >
+                <div
+                    class="reveal-up"
+                    :class="{ 'reveal-up--visible': downloadVisible }"
+                >
+                    <h2
+                        class="font-bold mb-2 leading-tight"
+                        style="font-size: clamp(1.35rem, 2.5vw, 1.85rem)"
+                    >
+                        {{ t("label.download_section_title") }}
+                    </h2>
+                    <p
+                        class="text-base-content/55 text-sm leading-relaxed"
+                        style="max-width: 50ch"
+                    >
+                        {{ t("label.download_section_text") }}
+                    </p>
+                </div>
+                <a
+                    href="/images/label-plein.svg"
+                    download="label-100-pour-sang.svg"
+                    class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-8 rounded-sm shrink-0 reveal-up active:scale-[0.97]"
+                    :class="{ 'reveal-up--visible': downloadVisible }"
+                    style="transition-delay: 80ms"
+                >
+                    {{ t("label.download_visual") }}
+                </a>
+            </div>
+        </section>
 
         <!-- CTA -->
         <section class="py-20 px-6 border-t border-base-200" ref="ctaRef">
