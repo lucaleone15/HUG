@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useApi } from '../composables/useApi.js'
 import { useAuth } from '../composables/useAuth.js'
 import BaseButton from '../components/ui/BaseButton.vue'
+import BaseInput from '../components/ui/BaseInput.vue'
 import BaseModal from '../components/ui/BaseModal.vue'
 
 const { t } = useI18n()
@@ -117,12 +118,12 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                             <div class="shrink-0">
                                 <span v-if="isSelf(admin)" class="badge badge-ghost badge-sm">{{ t('admin.settings_you')
                                     }}</span>
-                                <button v-else class="btn btn-ghost btn-xs text-error" :disabled="deleting === admin.id"
+                                <BaseButton v-else variant="ghost" size="xs" class="text-error" :disabled="deleting === admin.id"
                                     @click="askDelete(admin)">
                                     <span v-if="deleting === admin.id"
                                         class="loading loading-spinner loading-xs"></span>
                                     <span v-else>{{ t('admin.settings_admin_remove') }}</span>
-                                </button>
+                                </BaseButton>
                             </div>
                         </div>
                     </div>
@@ -154,12 +155,12 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                                     <td class="text-sm text-base-content/60">{{ admin.email }}</td>
                                     <td class="text-sm text-base-content/50">{{ fmt(admin.created_at) }}</td>
                                     <td class="text-right">
-                                        <button v-if="!isSelf(admin)" class="btn btn-ghost btn-xs text-error"
+                                        <BaseButton v-if="!isSelf(admin)" variant="ghost" size="xs" class="text-error"
                                             :disabled="deleting === admin.id" @click="askDelete(admin)">
                                             <span v-if="deleting === admin.id"
                                                 class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.settings_admin_remove') }}</span>
-                                        </button>
+                                        </BaseButton>
                                     </td>
                                 </tr>
                             </tbody>
@@ -181,39 +182,13 @@ const isSelf = (admin) => admin.id === currentUser.value?.id
                     </div>
 
                     <form class="grid grid-cols-1 sm:grid-cols-2 gap-4" @submit.prevent="addAdmin">
-                        <label class="form-control">
-                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_name')
-                                    }}</span>
-                            </div>
-                            <input v-model="form.name" type="text" required class="input input-bordered input-sm"
-                                :class="fieldError('name') ? 'input-error' : ''">
-                            <div v-if="fieldError('name')" class="label">
-                                <span class="label-text-alt text-error">{{ fieldError('name') }}</span>
-                            </div>
-                        </label>
+                        <BaseInput v-model="form.name" type="text" required :label="t('admin.settings_admin_name')" :error="fieldError('name')" class="input-sm" />
 
-                        <label class="form-control">
-                            <div class="label py-1"><span class="label-text text-sm">{{ t('admin.settings_admin_email')
-                                    }}</span>
-                            </div>
-                            <input v-model="form.email" type="email" required class="input input-bordered input-sm"
-                                :class="fieldError('email') ? 'input-error' : ''">
-                            <div v-if="fieldError('email')" class="label">
-                                <span class="label-text-alt text-error">{{ fieldError('email') }}</span>
-                            </div>
-                        </label>
+                        <BaseInput v-model="form.email" type="email" required :label="t('admin.settings_admin_email')" :error="fieldError('email')" class="input-sm" />
 
-                        <label class="form-control col-span-1 sm:col-span-2">
-                            <div class="label py-1"><span class="label-text text-sm">{{
-                                t('admin.settings_admin_password') }}</span>
-                            </div>
-                            <input v-model="form.password" type="password" required minlength="8"
-                                class="input input-bordered input-sm"
-                                :class="fieldError('password') ? 'input-error' : ''" placeholder="••••••••">
-                            <div v-if="fieldError('password')" class="label">
-                                <span class="label-text-alt text-error">{{ fieldError('password') }}</span>
-                            </div>
-                        </label>
+                        <div class="col-span-1 sm:col-span-2">
+                            <BaseInput v-model="form.password" type="password" required minlength="12" :label="t('admin.settings_admin_password')" :error="fieldError('password')" placeholder="••••••••" class="input-sm" />
+                        </div>
 
                         <div class="col-span-1 sm:col-span-2 flex justify-end">
                             <BaseButton type="submit" size="sm" :loading="saving">

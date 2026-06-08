@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuth } from '../composables/useAuth.js'
 import LangSwitcher from '../components/ui/LangSwitcher.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
+import BaseInput from '../components/ui/BaseInput.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -62,20 +63,16 @@ const submit = async () => {
                 </div>
 
                 <form class="flex flex-col gap-4" @submit.prevent="submit">
-                    <div class="form-control">
-                        <label class="label py-1">
-                            <span class="label-text text-sm font-medium">{{ t('admin.login_email_label') }}</span>
-                        </label>
-                        <input v-model="email" type="email" required autocomplete="email"
-                            class="input input-bordered input-sm" :placeholder="t('admin.login_email_placeholder')" />
-                    </div>
+                    <BaseInput v-model="email" type="email" required autocomplete="email"
+                        :label="t('admin.login_email_label')"
+                        :placeholder="t('admin.login_email_placeholder')"
+                        class="input-sm" />
 
-                    <div class="form-control">
-                        <label class="label py-1">
-                            <span class="label-text text-sm font-medium">{{ t('admin.login_password') }}</span>
-                        </label>
-                        <input v-model="password" type="password" required autocomplete="current-password"
-                            class="input input-bordered input-sm" placeholder="••••••" />
+                    <div class="flex flex-col">
+                        <BaseInput v-model="password" type="password" required autocomplete="current-password"
+                            :label="t('admin.login_password')"
+                            placeholder="••••••"
+                            class="input-sm" />
                         <div class="label pt-1">
                             <span></span>
                             <a href="#" class="label-text-alt text-xs underline text-base-content/60 hover:text-brand">

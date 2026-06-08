@@ -586,7 +586,7 @@
     "settings_admin_email": "Email",
     "settings_admin_since": "Aggiunto il",
     "settings_admin_add": "Aggiungere un/una amministratore/amministratrice",
-    "settings_admin_password": "Password (min. 8 car.)",
+    "settings_admin_password": "Password (min. 12 car.)",
     "settings_admin_add_btn": "Aggiungere",
     "settings_admin_remove": "Rimuovere",
     "settings_remove_confirm": "Rimuovere {name} dagli/dalle amministratori/amministratrici? Questa azione è irreversibile.",

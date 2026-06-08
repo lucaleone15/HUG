@@ -586,7 +586,7 @@
     "settings_admin_email": "E-Mail",
     "settings_admin_since": "Hinzugefügt am",
     "settings_admin_add": "Administrator:in hinzufügen",
-    "settings_admin_password": "Passwort (mind. 8 Zeichen)",
+    "settings_admin_password": "Passwort (mind. 12 Zeichen)",
     "settings_admin_add_btn": "Hinzufügen",
     "settings_admin_remove": "Entfernen",
     "settings_remove_confirm": "Möchten Sie {name} als Administrator:in entfernen? Diese Aktion ist unwiderruflich.",

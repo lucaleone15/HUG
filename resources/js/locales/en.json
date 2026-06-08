@@ -586,7 +586,7 @@
     "settings_admin_email": "Email",
     "settings_admin_since": "Added on",
     "settings_admin_add": "Add an administrator",
-    "settings_admin_password": "Password (min. 8 chars)",
+    "settings_admin_password": "Password (min. 12 chars)",
     "settings_admin_add_btn": "Add",
     "settings_admin_remove": "Remove",
     "settings_remove_confirm": "Remove {name} from administrators? This action is irreversible.",

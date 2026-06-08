@@ -103,15 +103,14 @@ const save = async () => {
 
                         <!-- Flèches pour faciliter la compréhension -->
                         <div class="flex gap-1 shrink-0">
-                            <button class="btn btn-ghost btn-xs px-1.5" :disabled="i === 0" @click="moveUp(i)"
-                                :aria-label="t('admin.trophees_move_up')">▲</button>
-                            <button class="btn btn-ghost btn-xs px-1.5" :disabled="i === ranked.length - 1"
-                                @click="moveDown(i)" :aria-label="t('admin.trophees_move_down')">▼</button>
+                            <BaseButton variant="ghost" size="xs" class="px-1.5" :disabled="i === 0" @click="moveUp(i)"
+                                :aria-label="t('admin.trophees_move_up')">▲</BaseButton>
+                            <BaseButton variant="ghost" size="xs" class="px-1.5" :disabled="i === ranked.length - 1"
+                                @click="moveDown(i)" :aria-label="t('admin.trophees_move_down')">▼</BaseButton>
                         </div>
 
                         <!-- Retirer -->
-                        <button class="btn btn-ghost btn-xs text-error shrink-0"
-                            @click="removeFromRanking(i)">✕</button>
+                        <BaseButton variant="ghost" size="xs" class="text-error shrink-0" @click="removeFromRanking(i)">✕</BaseButton>
                     </div>
                 </div>
             </div>
@@ -139,8 +138,7 @@ const save = async () => {
                         <span class="flex-1 text-sm truncate min-w-0 text-base-content/70">{{ e.name }}</span>
 
                         <!-- Ajouter entreprise-->
-                        <button class="btn btn-ghost btn-xs text-brand shrink-0" @click="addToRanking(i)">+ {{
-                            t('admin.trophees_add') }}</button>
+                        <BaseButton variant="ghost" size="xs" class="text-brand shrink-0" @click="addToRanking(i)">+ {{ t('admin.trophees_add') }}</BaseButton>
                     </div>
                 </div>
             </div>

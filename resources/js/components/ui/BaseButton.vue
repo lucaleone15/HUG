@@ -20,6 +20,7 @@ const variantClasses = {
 };
 
 const sizeClasses = {
+    xs: "btn-xs",
     sm: "btn-sm",
     md: "",
     lg: "btn-lg",
