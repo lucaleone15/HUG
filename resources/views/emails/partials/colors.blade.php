@@ -1,19 +1,15 @@
 @php
-/**
- * Couleurs email centralisées.
- * Les valeurs correspondent aux variables --color-email-* définies dans app.css.
- * Les clients mail ne supportant pas les variables CSS, on utilise des constantes PHP.
- */
+// Couleurs email — inline styles car les clients mail n'acceptent pas les variables CSS
 $EC = [
     // Structure
-    'brand'          => '#E30613',            // --color-email-brand
-    'brand_dark'     => '#C5000E',            // --color-email-brand-dark
-    'brand_border'   => '#A8000C',            // --color-email-brand-border
-    'hero'           => '#0D0D0D',            // --color-email-hero
-    'dark'           => '#111111',            // --color-email-dark
-    'page_bg'        => '#F0EDE8',            // --color-email-bg
-    'recap_bg'       => '#F0EBE0',            // --color-email-recap-bg
-    'recap_border'   => '#C4B080',            // --color-email-recap-border
+    'brand'          => '#E30613',
+    'brand_dark'     => '#C5000E',
+    'brand_border'   => '#A8000C',
+    'hero'           => '#0D0D0D',
+    'dark'           => '#111111',
+    'page_bg'        => '#F0EDE8',
+    'recap_bg'       => '#F0EBE0',
+    'recap_border'   => '#C4B080',
 
     // Typographie
     'white'          => '#ffffff',

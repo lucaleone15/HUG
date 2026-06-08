@@ -15,7 +15,6 @@ use App\Http\Controllers\Api\Admin\CollecteController;
 use App\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-// --- Auth ---
 Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -23,32 +22,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me',      [AuthController::class, 'me']);
 });
 
-// --- Public ---
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->middleware('throttle:60,1');
 Route::get('/stats',       [StatsController::class,      'index'])->middleware('throttle:60,1');
 Route::post('/analytics',  [AnalyticsController::class,  'store'])->middleware('throttle:120,1');
 
-// --- Admin ---
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index']);
 
-    // Entreprises — liaison par ID (pas par slug) pour l'admin
     Route::get('entreprises',         [AdminEntrepriseController::class, 'index']);
     Route::post('entreprises',        [AdminEntrepriseController::class, 'store']);
     Route::get('entreprises/{id}',    [AdminEntrepriseController::class, 'show']);
-    Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);   // POST utilisé pour multipart (logo)
+    Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);
     Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
     Route::post('entreprises/{id}/send-kit',  [AdminEntrepriseController::class, 'sendKit']);
     Route::post('entreprises/{id}/send-link', [AdminEntrepriseController::class, 'sendLink']);
 
-    // Collectes (campagnes OnDoc) par entreprise
     Route::get('entreprises/{id}/collectes',  [CollecteController::class, 'index']);
     Route::post('entreprises/{id}/collectes', [CollecteController::class, 'store']);
     Route::put('collectes/{collecte}',         [CollecteController::class, 'update']);
     Route::delete('collectes/{collecte}',      [CollecteController::class, 'destroy']);
 
-    // Classement Trophée
     Route::get('trophees',  [TropheeController::class, 'index']);
     Route::put('trophees',  [TropheeController::class, 'reorder']);
 

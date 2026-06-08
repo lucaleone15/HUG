@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // ─── Existants ──────────────────────────────────────────
     'generated_at'       => 'Généré le',
     'report_title'       => 'Rapport de participation',
     'report_subtitle'    => 'Campagne Don du Sang 2026',
@@ -20,17 +19,15 @@ return [
     'eligibility_rate'   => "Taux d'éligibilité",
     'conversion_rate'    => 'Taux de conversion',
     'avg_duration'       => 'Durée moyenne du quiz',
-    'abandon_by_question'=> 'Abandons par question',
+    'abandon_by_question' => 'Abandons par question',
     'abandons'           => 'abandons',
 
-    // ─── KPI band ───────────────────────────────────────────
     'kpi_start_point'    => '100% · point de départ',
     'kpi_completion'     => 'de complétion',
-    'kpi_eligibility_sub'=> "d'éligibilité",
+    'kpi_eligibility_sub' => "d'éligibilité",
     'kpi_conversion_sub' => 'de conversion',
     'kpi_e2e'            => 'Bout-en-bout',
 
-    // ─── Badges & performance ────────────────────────────────
     'badge_excellent'    => 'Excellent',
     'badge_bon'          => 'Bon',
     'badge_moyen'        => 'Moyen',
@@ -41,13 +38,11 @@ return [
     'perf_faible'        => 'Faible',
     'performance'        => 'Performance',
 
-    // ─── Durée ──────────────────────────────────────────────
     'dur_very_fast'      => 'Très rapide · réviser la pertinence des questions',
     'dur_concise'        => 'Concis · expérience utilisateur optimale',
     'dur_optimal'        => 'Optimal · participant·e·s très impliqué·e·s dans la démarche',
     'dur_long'           => "Long · risque d'abandon en cours de route",
 
-    // ─── Recommandations taux ────────────────────────────────
     'reco_part_low'      => 'Renforcer la communication interne',
     'reco_part_med'      => 'Bon taux · maintenir la visibilité',
     'reco_part_high'     => 'Excellent engagement des collaborateur·trice·s',
@@ -58,7 +53,6 @@ return [
     'reco_conv_med'      => 'Bonne conversion · optimiser le rappel',
     'reco_conv_high'     => 'Conversion remarquable · modèle à reproduire',
 
-    // ─── Diagnostics ─────────────────────────────────────────
     'section_diagnostics'   => 'Diagnostics',
     'diag_part_low_t'       => 'Participation insuffisante (:pct%)',
     'diag_part_low_x'       => ':started sur :emp collaborateur·trice·s. Une campagne ciblée peut tripler ce taux. Objectif recommandé : 25%.',
@@ -73,7 +67,6 @@ return [
     'diag_score_t'          => 'Score global campagne : :score%',
     'diag_score_x'          => 'Performance :perf · moyenne des trois taux clés. Marge sur la conversion RDV (:conv% vs 70% cible).',
 
-    // ─── Recommandations section ─────────────────────────────
     'section_reco'          => 'Recommandations prioritaires',
     'reco_session_title'    => 'Actions pour la prochaine session',
     'reco_1_low'            => "Lancer une campagne interne : affichage, email ciblé, présentation en réunion (cible 25%).",
@@ -82,7 +75,6 @@ return [
     'reco_2_default'        => 'Revoir la question principale · reformuler ou déplacer en fin de parcours.',
     'reco_3'                => 'Fixer un objectif de :part participant·e·s pour ~:elig éligibles et ~:rdv RDV.',
 
-    // ─── Objectifs ───────────────────────────────────────────
     'section_objectives'    => 'Objectifs campagne 2027',
     'obj_indicator'         => 'Indicateur',
     'obj_current'           => 'Actuel',
@@ -93,13 +85,11 @@ return [
     'obj_rdv'               => 'RDV',
     'obj_note'              => 'Objectifs basés sur 25% de participation et les taux observés. Estimation non contractuelle.',
 
-    // ─── Entonnoir ───────────────────────────────────────────
     'funnel_completion'     => 'Complétion',
     'funnel_eligibility'    => 'Éligibilité',
     'funnel_conversion'     => 'Conversion RDV',
     'funnel_pct_of_total'   => '% du total',
 
-    // ─── Comportement ────────────────────────────────────────
     'section_behavior_dur'  => 'Comportement · durée moyenne',
     'abandon_questions'     => 'questions',
     'abandon_most_blocked'  => 'question la plus bloquante',
@@ -113,40 +103,33 @@ return [
     'behavior_interp_other' => 'Abandons répartis sur :q questions · quiz bien structuré avec quelques frictions.',
     'behavior_interp_hint_other' => 'Simplifier les questions intermédiaires qui concentrent les abandons.',
 
-    // ─── Benchmark ───────────────────────────────────────────
     'section_benchmark'     => 'Benchmark sectoriel',
     'bench_sector_avg'      => 'Moy. secteur',
     'bench_top'             => 'Top performer',
     'bench_note'            => "Données benchmark basées sur la cohorte d'entreprises partenaires SANG-26 (n=24 entreprises genevoises).",
 
-    // ─── Méthodologie ────────────────────────────────────────
     'methodology_title'     => 'Méthodologie',
     'methodology_text'      => "Le quiz d'éligibilité SANG-26 couvre les critères médicaux de la Croix-Rouge suisse : âge, poids, santé générale, voyages récents et traitements en cours.",
     'methodology_note'      => "Les taux sont calculés sur les soumissions complètes (:sub pour :name). Les abandons en cours ne sont pas comptabilisés dans le taux d'éligibilité.",
 
-    // ─── Synthèse (col. sombre) ──────────────────────────────
     'synth_campaign'        => 'Synthèse campagne',
     'synth_soumissions'     => 'Soumissions',
     'synth_rdv_taken'       => 'RDV pris',
 
-    // ─── Simulation ──────────────────────────────────────────
     'sim_title'             => 'Simulation · 25% de participation',
     'sim_participants'      => 'participant·e·s',
     'sim_eligible_lbl'      => 'éligibles',
     'sim_gain'              => '+:gain éligibles · +:rdvGain RDV supplémentaires estimés',
     'sim_note'              => "Estimation basée sur les taux observés (:elig% éligibilité · :conv% conversion)",
 
-    // ─── Impact ──────────────────────────────────────────────
     'impact_title'          => 'Impact don du sang',
     'impact_sub'            => 'vies potentiellement sauvées grâce aux :rdv donneur·euse·s de cette campagne',
     'impact_eq'             => '1 donneur·euse peut sauver jusqu\'à 3 vies · :rdv × 3 = :lives',
 
-    // ─── Ratio ───────────────────────────────────────────────
     'ratio_title'           => "Ratio d'éligibilité",
     'ratio_eligible'        => 'éligibles',
     'ratio_submitted'       => 'soumis',
 
-    // ─── Le saviez-vous & Contact ────────────────────────────
     'didyouknow_title'      => 'Le saviez-vous ?',
     'didyouknow_1'          => "Une poche de sang se conserve 42 jours. Les besoins sont constants toute l'année.",
     'didyouknow_2'          => 'Chaque don peut servir jusqu\'à 3 receveurs selon le fractionnement (plasma, plaquettes, globules rouges).',
@@ -157,7 +140,6 @@ return [
     'contact_email_val'     => 'cts@hug.ch',
     'contact_phone_val'     => '+41 22 372 61 00',
 
-    // ─── Footer ──────────────────────────────────────────────
     'footer_hug'            => 'HUG - Hôpitaux Universitaires de Genève · Centre de Transfusion Sanguine',
     'footer_site'           => 'donnez-votre-sang.ch',
     'vbl_part' => 'Partic.',

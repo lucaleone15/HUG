@@ -21,9 +21,7 @@ class AnalyticsEvent extends Model
     protected $fillable = ['type', 'entreprise_id', 'session_token', 'metadata'];
 
     protected $casts = [
-        'type' => 'string',
         'metadata' => 'array',
-        'created_at' => 'datetime',
     ];
 
     public function entreprise(): BelongsTo

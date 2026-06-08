@@ -24,7 +24,6 @@ class EntrepriseResource extends JsonResource
             'type'            => $this->type,
             'rdv_url'         => $this->rdv_url,
             'rdv_date'        => $this->rdv_date?->format('Y-m-d'),
-            // contact_name / contact_email / wants_trophy volontairement exclus (données internes)
         ];
     }
 }

@@ -6,7 +6,6 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-/* ─── Cooper Hewitt (via jsDelivr / fontsource) ─────────────────────────── */
 @font-face {
     font-family: 'Cooper Hewitt';
     src: url('https://cdn.jsdelivr.net/npm/@fontsource/cooper-hewitt@5.2.5/files/cooper-hewitt-latin-300-normal.woff2') format('woff2');
@@ -49,13 +48,11 @@
     }
 }
 
-/* ─── Custom easing curves ───────────────────────────────────────────────── */
 :root {
     --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* ─── Shared scroll reveal ───────────────────────────────────────────────── */
 .reveal-up {
     opacity: 0;
     transform: translateY(14px);
@@ -70,7 +67,6 @@
     .reveal-up { opacity: 1; transform: none; transition: none; }
 }
 
-/* ─── Page hero entrance (shared) ───────────────────────────────────────── */
 .page-hero-text {
     animation: hero-rise 380ms var(--ease-out) both;
     animation-delay: 40ms;
@@ -87,7 +83,6 @@
     .page-hero-text, .page-hero-visual { animation: none; opacity: 1; }
 }
 
-/* ─── Button press feedback ──────────────────────────────────────────────── */
 .btn {
     box-shadow: none;
     transition: transform 140ms var(--ease-out),
@@ -106,7 +101,6 @@
     transform: scale(0.97);
 }
 
-/* ─── Modal entry animation ──────────────────────────────────────────────── */
 .modal-box {
     animation: modal-pop 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
 }
@@ -122,7 +116,6 @@
     }
 }
 
-/* ─── Stats stagger animation ────────────────────────────────────────────── */
 .stat-stagger {
     animation: stat-appear 260ms var(--ease-out) both;
 }
@@ -143,7 +136,6 @@
     }
 }
 
-/* ─── Mobile menu transition ─────────────────────────────────────────────── */
 .menu-enter-active {
     transition: opacity 180ms var(--ease-out),
                 transform 180ms var(--ease-out);
@@ -163,14 +155,12 @@
     transform: translateY(0) scale(1);
 }
 
-/* ─── Bottom nav spacer — mobile/tablette ────────────────────────────────── */
 @media (max-width: 1023px) {
     body {
         padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
     }
 }
 
-/* ─── Reduced motion ─────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .btn { transition: background-color 150ms ease, border-color 150ms ease; }
     .btn:active:not(:disabled) { transform: none; }
@@ -186,41 +176,36 @@
     --font-sans: 'Cooper Hewitt', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* ─── Palette HUG × CTS ─────────────────────────────────────────────────
-     * Pour adapter la charte graphique, modifier uniquement ce bloc.
-     * Les composants utilisent bg-brand, text-brand, hover:bg-brand-dark, etc.
-     * Les couleurs d'entreprise (primary_color, secondary_color) sont dynamiques.
-     * ──────────────────────────────────────────────────────────────────────── */
+    /* Palette HUG — modifier ce bloc pour adapter la charte */
+    --color-brand:      #D32C37;  /* rouge principal */
+    --color-brand-dark: #A9232C;  /* rouge foncé / hover */
+    --color-site-ink:   #190507;  /* quasi-noir footer */
 
-    --color-brand:      #D32C37;  /* Rouge HUG — couleur principale / Brand MAIN   */
-    --color-brand-dark: #A9232C;  /* Rouge HUG foncé — hover / Brand SECONDARY    */
-    --color-site-ink:   #190507;  /* Quasi-noir — footer / Brand BUTTON           */
+    --color-success:         #027D33;
+    --color-success-content: #016629;
+    --color-error:           #ED0410;
+    --color-error-content:   #C8040E;
+    --color-info:            #0278A0;
+    --color-info-content:    #0497C8;
+    --color-warning:         #B56009;
 
-    --color-success:         #027D33;  /* Vert succès — base         (WCAG AA 5.27:1 sur blanc) */
-    --color-success-content: #016629;  /* Vert succès — foncé / hover (WCAG AA 7.16:1 sur blanc) */
-    --color-error:           #ED0410;  /* Rouge erreur — base         (WCAG AA 4.54:1 sur blanc) */
-    --color-error-content:   #C8040E;  /* Rouge erreur — foncé / hover             */
-    --color-info:            #0278A0;  /* Bleu info — base            (WCAG AA 5.00:1 sur blanc) */
-    --color-info-content:    #0497C8;  /* Bleu info — foncé / hover                */
-    --color-warning:         #B56009;  /* Orange avertissement        (WCAG AA 4.52:1 sur blanc) */
+    /* Emails — inline styles car les clients mail n'acceptent pas les variables CSS */
+    --color-email-brand:        #E30613;
+    --color-email-brand-dark:   #C5000E;
+    --color-email-brand-border: #A8000C;
+    --color-email-hero:         #0D0D0D;
+    --color-email-dark:         #111111;
+    --color-email-bg:           #F0EDE8;
+    --color-email-recap-bg:     #F0EBE0;
+    --color-email-recap-border: #C4B080;
 
-    /* ─── Couleurs emails (inline styles — les clients mail n'acceptent pas les variables CSS) ── */
-    --color-email-brand:        #E30613;   /* Rouge institutionnel HUG — header, CTA         */
-    --color-email-brand-dark:   #C5000E;   /* Rouge foncé — bandeau statut                  */
-    --color-email-brand-border: #A8000C;   /* Rouge bordure — séparateur bandeau statut      */
-    --color-email-hero:         #0D0D0D;   /* Fond hero sombre                               */
-    --color-email-dark:         #111111;   /* Sections sombres (kit, référent)               */
-    --color-email-bg:           #F0EDE8;   /* Fond de page email                             */
-    --color-email-recap-bg:     #F0EBE0;   /* Fond section récapitulatif                     */
-    --color-email-recap-border: #C4B080;   /* Bordure tableau récap                          */
-
-    /* ─── Quiz — fond sombre ─────────────────────────────────────────────────── */
+    /* Quiz — fond sombre */
     --color-quiz-bg:             #0D0D0D;
     --color-quiz-track:          #2A2A2A;
     --color-quiz-control-border: #333333;
     --color-quiz-control-hover:  #666666;
 
-    /* ─── Document / Dossier — système papier parchemin ─────────────────────── */
+    /* Document / dossier parchemin */
     --color-doc-paper:        #EDE4C8;
     --color-doc-paper-light:  #F0E8D0;
     --color-doc-folder:       #C9A96E;
@@ -228,13 +213,13 @@
     --color-doc-border-alt:   #C4A674;
     --color-doc-border-dark:  #9A7A40;
 
-    /* ─── Document — échelle d'encre ────────────────────────────────────────── */
+    /* encre */
     --color-doc-ink:       #1A1A1A;
     --color-doc-ink-deep:  #5A4A30;
-    --color-doc-ink-mid:   #73644B;  /* WCAG AA 4.53:1 sur doc-paper */
-    --color-doc-ink-muted: #71644F;  /* WCAG AA 4.54:1 sur doc-paper */
+    --color-doc-ink-mid:   #73644B;
+    --color-doc-ink-muted: #71644F;
 
-    /* ─── Document — teintes composites (rgba) ──────────────────────────────── */
+    /* teintes composites */
     --color-doc-tape:         rgba(210, 200, 175, 0.55);
     --color-doc-glow-warm:    rgba(200, 165,  90, 0.10);
     --color-doc-glow-cool:    rgba(175, 140,  75, 0.07);

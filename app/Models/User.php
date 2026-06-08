@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -32,11 +31,4 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Récupère les statistiques de campagne mise à jour par cet administrateur.
-     */
-    public function campaignStats(): HasOne
-    {
-        return $this->hasOne(CampaignStats::class, 'updated_by');
-    }
 }

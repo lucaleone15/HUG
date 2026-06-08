@@ -22,7 +22,6 @@ return [
     'contact_message'         => 'Nachricht',
     'contact_reply_cta'       => 'Antworten an :name',
 
-    // E-Mail neue Anmeldung (Admin-Benachrichtigung)
     'registration_badge'           => 'Neue Anmeldung',
     'registration_action_required' => 'Aktion erforderlich',
     'registration_title'           => ':name möchte der Brigade beitreten.',
@@ -36,7 +35,6 @@ return [
     'registration_footer_note'     => 'Automatische Benachrichtigung · HUG Blutspende-Plattform',
     'registration_comms_label'     => 'Interne Benachrichtigung · HUG-Back-Office',
 
-    // Nouvel email co-branding
     'hero_comms_label'  => 'Offizielle Mitteilung des CTS-HUG',
     'hero_stamp'        => 'Dossier akzeptiert',
     'hero_welcome'      => 'Willkommen in der Brigade.',
@@ -44,7 +42,7 @@ return [
     'status_label'      => 'Status',
     'status_confirmed'  => 'Blutspende bestätigt',
     'date_label'        => 'Datum',
-    'activation_section'=> 'Bereich aktivieren',
+    'activation_section' => 'Bereich aktivieren',
     'cta_access_page'   => 'Zur Co-Branding-Seite',
     'admin_link'        => 'Admin-Bereich',
     'kit_section'       => 'Kommunikationskit',
@@ -77,5 +75,5 @@ return [
     'footer_sub_title'  => 'Bluttransfusionszentrum × Universitätsspital Genf',
     'footer_links'      => 'Die Trophäe · Das CTS-Label · Mehr erfahren',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
-    'footer_unsubscribe'=> 'Abmelden',
+    'footer_unsubscribe' => 'Abmelden',
 ];

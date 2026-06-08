@@ -16,15 +16,18 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
+    private int $quizQuestionCount;
+
     public function run(): void
     {
+        $quiz = json_decode(file_get_contents(resource_path('quiz/quiz.json')), true);
+        $this->quizQuestionCount = count($quiz['questions']);
+
         $admin = $this->seedUsers();
         $this->seedCampaignStats($admin->id);
         $entreprises = $this->seedEntreprises();
         $this->seedSubmissionsAndAnalytics($entreprises);
     }
-
-    // -------------------------------------------------------------------------
 
     private function seedUsers(): User
     {
@@ -56,106 +59,202 @@ class DatabaseSeeder extends Seeder
     private function seedEntreprises(): array
     {
         $data = [
-            // Podium trophée
+
             [
-                'name' => 'Banque Cantonale de Genève', 'slug' => 'bcge',
-                'type' => 'banque', 'primary_color' => '#003F7D',
-                'employee_count' => 850, 'trophy_rank' => 1, 'wants_trophy' => true,
-                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-bcge-2026', 'rdv_date' => '2026-06-15',
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Marc Fontaine', 'contact_email' => 'rh@bcge.ch',
+                'name' => 'Banque Cantonale de Genève',
+                'slug' => 'bcge',
+                'type' => 'banque',
+                'primary_color' => '#003F7D',
+                'employee_count' => 850,
+                'trophy_rank' => 1,
+                'wants_trophy' => true,
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-bcge-2026',
+                'rdv_date' => '2026-06-15',
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Marc Fontaine',
+                'contact_email' => 'rh@bcge.ch',
             ],
             [
-                'name' => 'Firmenich', 'slug' => 'firmenich',
-                'type' => 'industrie', 'primary_color' => '#00833E',
-                'employee_count' => 3200, 'trophy_rank' => 2, 'wants_trophy' => true,
-                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-firmenich-2026', 'rdv_date' => '2026-06-22',
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Sophie Müller', 'contact_email' => 'wellbeing@firmenich.com',
+                'name' => 'Firmenich',
+                'slug' => 'firmenich',
+                'type' => 'industrie',
+                'primary_color' => '#00833E',
+                'employee_count' => 3200,
+                'trophy_rank' => 2,
+                'wants_trophy' => true,
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-firmenich-2026',
+                'rdv_date' => '2026-06-22',
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Sophie Müller',
+                'contact_email' => 'wellbeing@firmenich.com',
             ],
             [
-                'name' => 'Groupe Mutuel', 'slug' => 'groupe-mutuel',
-                'type' => 'assurance', 'primary_color' => '#E30613',
-                'employee_count' => 1400, 'trophy_rank' => 3, 'wants_trophy' => true,
-                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-groupe-mutuel-2026', 'rdv_date' => '2026-07-03',
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Alain Pernet', 'contact_email' => 'rh@groupemutuel.ch',
+                'name' => 'Groupe Mutuel',
+                'slug' => 'groupe-mutuel',
+                'type' => 'assurance',
+                'primary_color' => '#E30613',
+                'employee_count' => 1400,
+                'trophy_rank' => 3,
+                'wants_trophy' => true,
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-groupe-mutuel-2026',
+                'rdv_date' => '2026-07-03',
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Alain Pernet',
+                'contact_email' => 'rh@groupemutuel.ch',
             ],
-            // Classés (sans podium)
+
             [
-                'name' => 'SGS', 'slug' => 'sgs',
-                'type' => 'technologie', 'primary_color' => '#009FE3',
-                'employee_count' => 960, 'trophy_rank' => 4, 'wants_trophy' => true,
-                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sgs-2026', 'rdv_date' => '2026-07-10',
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Céline Rochat', 'contact_email' => 'hr@sgs.com',
-            ],
-            [
-                'name' => 'SIG — Services Industriels de Genève', 'slug' => 'sig',
-                'type' => 'service', 'primary_color' => '#F7941D',
-                'employee_count' => 1900, 'trophy_rank' => 5, 'wants_trophy' => true,
-                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sig-2026', 'rdv_date' => '2026-07-17',
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Pierre-Alain Duc', 'contact_email' => 'rh@sig-ge.ch',
-            ],
-            // Labelisés sans rang
-            [
-                'name' => 'CERN', 'slug' => 'cern',
-                'type' => 'technologie', 'primary_color' => '#0053A0',
-                'employee_count' => 2500, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Elena Kovač', 'contact_email' => 'hr@cern.ch',
-            ],
-            [
-                'name' => 'Pictet & Cie', 'slug' => 'pictet',
-                'type' => 'banque', 'primary_color' => '#1B4B8B',
-                'employee_count' => 4700, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Nathalie Clerc', 'contact_email' => 'rh@pictet.com',
+                'name' => 'SGS',
+                'slug' => 'sgs',
+                'type' => 'technologie',
+                'primary_color' => '#009FE3',
+                'employee_count' => 960,
+                'trophy_rank' => 4,
+                'wants_trophy' => true,
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sgs-2026',
+                'rdv_date' => '2026-07-10',
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Céline Rochat',
+                'contact_email' => 'hr@sgs.com',
             ],
             [
-                'name' => 'Richemont', 'slug' => 'richemont',
-                'type' => 'commerce', 'primary_color' => '#1A1A2E',
-                'employee_count' => 6000, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => true, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Thomas Bauer', 'contact_email' => 'hr@richemont.com',
+                'name' => 'SIG — Services Industriels de Genève',
+                'slug' => 'sig',
+                'type' => 'service',
+                'primary_color' => '#F7941D',
+                'employee_count' => 1900,
+                'trophy_rank' => 5,
+                'wants_trophy' => true,
+                'rdv_url' => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sig-2026',
+                'rdv_date' => '2026-07-17',
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Pierre-Alain Duc',
+                'contact_email' => 'rh@sig-ge.ch',
             ],
-            // Participantes validées, pas encore labelisées
+
             [
-                'name' => 'HES-SO Genève', 'slug' => 'hes-so-ge',
-                'type' => 'education', 'primary_color' => '#E30613',
-                'employee_count' => 700, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => false, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Isabelle Favre', 'contact_email' => 'rh@hes-so.ch',
+                'name' => 'CERN',
+                'slug' => 'cern',
+                'type' => 'technologie',
+                'primary_color' => '#0053A0',
+                'employee_count' => 2500,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Elena Kovač',
+                'contact_email' => 'hr@cern.ch',
             ],
             [
-                'name' => 'Clinique des Grangettes', 'slug' => 'grangettes',
-                'type' => 'sante', 'primary_color' => '#00AEEF',
-                'employee_count' => 520, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => false, 'is_validated' => true, 'is_active' => true,
-                'contact_name' => 'Dominique Ayer', 'contact_email' => 'rh@grangettes.ch',
+                'name' => 'Pictet & Cie',
+                'slug' => 'pictet',
+                'type' => 'banque',
+                'primary_color' => '#1B4B8B',
+                'employee_count' => 4700,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Nathalie Clerc',
+                'contact_email' => 'rh@pictet.com',
             ],
-            // En attente de validation (via formulaire inscription)
             [
-                'name' => 'Maus Frères', 'slug' => 'maus-freres',
-                'type' => 'commerce', 'primary_color' => '#333333',
-                'employee_count' => 2100, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => false, 'is_validated' => false, 'is_active' => false,
-                'contact_name' => 'Lucie Bernard', 'contact_email' => 'rh@maus.ch',
+                'name' => 'Richemont',
+                'slug' => 'richemont',
+                'type' => 'commerce',
+                'primary_color' => '#1A1A2E',
+                'employee_count' => 6000,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => true,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Thomas Bauer',
+                'contact_email' => 'hr@richemont.com',
+            ],
+
+            [
+                'name' => 'HES-SO Genève',
+                'slug' => 'hes-so-ge',
+                'type' => 'education',
+                'primary_color' => '#E30613',
+                'employee_count' => 700,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => false,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Isabelle Favre',
+                'contact_email' => 'rh@hes-so.ch',
             ],
             [
-                'name' => 'Lonza', 'slug' => 'lonza',
-                'type' => 'industrie', 'primary_color' => '#0066CC',
-                'employee_count' => 1800, 'trophy_rank' => null, 'wants_trophy' => false,
-                'rdv_url' => null, 'rdv_date' => null,
-                'is_labelled' => false, 'is_validated' => false, 'is_active' => false,
-                'contact_name' => 'Andreas Wolf', 'contact_email' => 'hr@lonza.com',
+                'name' => 'Clinique des Grangettes',
+                'slug' => 'grangettes',
+                'type' => 'sante',
+                'primary_color' => '#00AEEF',
+                'employee_count' => 520,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => false,
+                'is_validated' => true,
+                'is_active' => true,
+                'contact_name' => 'Dominique Ayer',
+                'contact_email' => 'rh@grangettes.ch',
+            ],
+
+            [
+                'name' => 'Maus Frères',
+                'slug' => 'maus-freres',
+                'type' => 'commerce',
+                'primary_color' => '#333333',
+                'employee_count' => 2100,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => false,
+                'is_validated' => false,
+                'is_active' => false,
+                'contact_name' => 'Lucie Bernard',
+                'contact_email' => 'rh@maus.ch',
+            ],
+            [
+                'name' => 'Lonza',
+                'slug' => 'lonza',
+                'type' => 'industrie',
+                'primary_color' => '#0066CC',
+                'employee_count' => 1800,
+                'trophy_rank' => null,
+                'wants_trophy' => false,
+                'rdv_url' => null,
+                'rdv_date' => null,
+                'is_labelled' => false,
+                'is_validated' => false,
+                'is_active' => false,
+                'contact_name' => 'Andreas Wolf',
+                'contact_email' => 'hr@lonza.com',
             ],
         ];
 
@@ -174,7 +273,6 @@ class DatabaseSeeder extends Seeder
 
         $entreprises = Entreprise::whereIn('slug', array_column($data, 'slug'))->get()->keyBy('slug');
 
-        // Crée une collecte active pour chaque entreprise qui a un lien OnDoc
         $collectes = [];
         foreach ($data as $row) {
             if (empty($row['rdv_url'])) continue;
@@ -199,7 +297,6 @@ class DatabaseSeeder extends Seeder
 
     private function seedSubmissionsAndAnalytics(array $entreprises): void
     {
-        // Nombre de quiz complétés par entreprise [eligible, ineligible]
         $quotas = [
             'bcge'          => [52, 18],
             'firmenich'     => [44, 21],
@@ -237,30 +334,42 @@ class DatabaseSeeder extends Seeder
                     'updated_at'    => $completedAt,
                 ];
 
-                // page_viewed
-                $analyticsRows[] = $this->event('page_viewed', $eId, null,
+                $analyticsRows[] = $this->event(
+                    'page_viewed',
+                    $eId,
+                    null,
                     ['referrer' => $this->randomReferrer(), 'device' => $this->randomDevice()],
                     $completedAt->copy()->subMinutes(rand(3, 15))
                 );
-                // quiz_started
-                $analyticsRows[] = $this->event('quiz_started', $eId, $token, [],
+
+                $analyticsRows[] = $this->event(
+                    'quiz_started',
+                    $eId,
+                    $token,
+                    [],
                     $completedAt->copy()->subMinutes(rand(2, 12))
                 );
-                // quiz_completed
+
                 $durationS = rand(120, 480);
-                $analyticsRows[] = $this->event('quiz_completed', $eId, $token,
+                $analyticsRows[] = $this->event(
+                    'quiz_completed',
+                    $eId,
+                    $token,
                     ['is_eligible' => $isEligible, 'duration_s' => $durationS],
                     $completedAt
                 );
-                // rdv_clicked for eligible (70% taux de clic)
+
                 if ($isEligible && rand(1, 10) <= 7) {
-                    $analyticsRows[] = $this->event('rdv_clicked', $eId, $token, [],
+                    $analyticsRows[] = $this->event(
+                        'rdv_clicked',
+                        $eId,
+                        $token,
+                        [],
                         $completedAt->copy()->addSeconds(rand(5, 60))
                     );
                 }
             }
 
-            // Abandons (env. 20% du trafic en plus)
             $abandoned = (int) round($total * 0.2);
             for ($i = 0; $i < $abandoned; $i++) {
                 $token  = (string) Str::uuid();
@@ -268,19 +377,24 @@ class DatabaseSeeder extends Seeder
                 $at     = (clone $base)->addSeconds($offset);
                 $lastQ  = rand(0, 10);
 
-                $analyticsRows[] = $this->event('page_viewed', $eId, null,
+                $analyticsRows[] = $this->event(
+                    'page_viewed',
+                    $eId,
+                    null,
                     ['referrer' => $this->randomReferrer(), 'device' => $this->randomDevice()],
                     $at->copy()->subMinutes(rand(2, 8))
                 );
                 $analyticsRows[] = $this->event('quiz_started', $eId, $token, [], $at);
-                $analyticsRows[] = $this->event('quiz_abandoned', $eId, $token,
-                    ['last_question_index' => $lastQ, 'total_questions' => 20, 'session_duration_s' => rand(15, 200)],
+                $analyticsRows[] = $this->event(
+                    'quiz_abandoned',
+                    $eId,
+                    $token,
+                    ['last_question_index' => $lastQ, 'total_questions' => $this->quizQuestionCount, 'session_duration_s' => rand(15, 200)],
                     $at->copy()->addSeconds(rand(30, 300))
                 );
             }
         }
 
-        // Bulk insert
         foreach (array_chunk($submissions, 100) as $chunk) {
             DB::table('submissions')->insert($chunk);
         }
@@ -288,8 +402,6 @@ class DatabaseSeeder extends Seeder
             DB::table('analytics_events')->insert($chunk);
         }
     }
-
-    // -------------------------------------------------------------------------
 
     private function event(string $type, ?int $entrepriseId, ?string $token, array $metadata, Carbon $at): array
     {
@@ -306,7 +418,12 @@ class DatabaseSeeder extends Seeder
     private function randomReferrer(): string
     {
         return fake()->randomElement([
-            'direct', 'linkedin.com', 'email', 'intranet', 'qrcode', 'google.com',
+            'direct',
+            'linkedin.com',
+            'email',
+            'intranet',
+            'qrcode',
+            'google.com',
         ]);
     }
 

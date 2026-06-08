@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from './composables/useAuth.js'
 
-import AdminLogin          from './admin/AdminLogin.vue'
-import AdminLayout         from './admin/AdminLayout.vue'
-import AdminDashboard      from './admin/AdminDashboard.vue'
-import AdminEntreprises    from './admin/AdminEntreprises.vue'
+import AdminLogin from './admin/AdminLogin.vue'
+import AdminLayout from './admin/AdminLayout.vue'
+import AdminDashboard from './admin/AdminDashboard.vue'
+import AdminEntreprises from './admin/AdminEntreprises.vue'
 import AdminEntrepriseForm from './admin/AdminEntrepriseForm.vue'
-import AdminEntrepriseShow      from './admin/AdminEntrepriseShow.vue'
+import AdminEntrepriseShow from './admin/AdminEntrepriseShow.vue'
 import AdminEntrepriseCollectes from './admin/AdminEntrepriseCollectes.vue'
-import AdminSubmissions    from './admin/AdminSubmissions.vue'
-import AdminAnalytics      from './admin/AdminAnalytics.vue'
-import AdminCampaignStats  from './admin/AdminCampaignStats.vue'
-import AdminReport         from './admin/AdminReport.vue'
-import AdminSettings       from './admin/AdminSettings.vue'
-import AdminTrophees       from './admin/AdminTrophees.vue'
+import AdminSubmissions from './admin/AdminSubmissions.vue'
+import AdminAnalytics from './admin/AdminAnalytics.vue'
+import AdminCampaignStats from './admin/AdminCampaignStats.vue'
+import AdminReport from './admin/AdminReport.vue'
+import AdminSettings from './admin/AdminSettings.vue'
+import AdminTrophees from './admin/AdminTrophees.vue'
 
 const routes = [
     { path: '/admin/login', component: AdminLogin, meta: { public: true } },
@@ -21,22 +21,22 @@ const routes = [
         path: '/admin',
         component: AdminLayout,
         children: [
-            { path: '',                     redirect: '/admin/dashboard' },
-            { path: 'dashboard',            component: AdminDashboard,      name: 'dashboard' },
-            { path: 'entreprises',          component: AdminEntreprises,    name: 'entreprises' },
-            { path: 'entreprises/new',      component: AdminEntrepriseForm, name: 'entreprise-new' },
-            { path: 'entreprises/:id',      component: AdminEntrepriseShow, name: 'entreprise-show' },
-            { path: 'entreprises/:id/edit',      component: AdminEntrepriseForm,       name: 'entreprise-edit' },
-            { path: 'entreprises/:id/collectes', component: AdminEntrepriseCollectes,  name: 'entreprise-collectes' },
-            { path: 'submissions',          component: AdminSubmissions,    name: 'submissions' },
-            { path: 'analytics',            component: AdminAnalytics,      name: 'analytics' },
-            { path: 'campaign-stats',       component: AdminCampaignStats,  name: 'campaign-stats' },
-            { path: 'report',               component: AdminReport,         name: 'report' },
-            { path: 'settings',             component: AdminSettings,       name: 'settings' },
-            { path: 'trophees',             component: AdminTrophees,       name: 'trophees' },
+            { path: '', redirect: '/admin/dashboard' },
+            { path: 'dashboard', component: AdminDashboard, name: 'dashboard' },
+            { path: 'entreprises', component: AdminEntreprises, name: 'entreprises' },
+            { path: 'entreprises/new', component: AdminEntrepriseForm, name: 'entreprise-new' },
+            { path: 'entreprises/:id', component: AdminEntrepriseShow, name: 'entreprise-show' },
+            { path: 'entreprises/:id/edit', component: AdminEntrepriseForm, name: 'entreprise-edit' },
+            { path: 'entreprises/:id/collectes', component: AdminEntrepriseCollectes, name: 'entreprise-collectes' },
+            { path: 'submissions', component: AdminSubmissions, name: 'submissions' },
+            { path: 'analytics', component: AdminAnalytics, name: 'analytics' },
+            { path: 'campaign-stats', component: AdminCampaignStats, name: 'campaign-stats' },
+            { path: 'report', component: AdminReport, name: 'report' },
+            { path: 'settings', component: AdminSettings, name: 'settings' },
+            { path: 'trophees', component: AdminTrophees, name: 'trophees' },
         ],
     },
-    // Catch-all : redirige vers login (pas vers /admin pour éviter une boucle de redirects)
+    // redirige vers login (pas vers /admin pour éviter une boucle de redirects)
     { path: '/:pathMatch(.*)*', redirect: '/admin/login' },
 ]
 

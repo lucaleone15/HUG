@@ -34,8 +34,6 @@ class Entreprise extends Model
     ];
 
     protected $casts = [
-        'primary_color' => 'string',
-        'secondary_color' => 'string',
         'employee_count' => 'integer',
         'is_active' => 'boolean',
         'is_labelled' => 'boolean',
@@ -44,39 +42,7 @@ class Entreprise extends Model
         'trophy_rank' => 'integer',
         'wants_trophy' => 'boolean',
         'rdv_date' => 'date:Y-m-d',
-        'type' => 'string',
     ];
-
-    /**
-     * Vérifie si l'entreprise participe au trophée.
-     * trophy_rank > 0 signifie participante.
-     * trophy_rank <= 0 ou null = ne participe pas.
-     */
-    public function participatesInTrophy(): bool
-    {
-        return $this->trophy_rank !== null && $this->trophy_rank > 0;
-    }
-
-    /**
-     * Vérifie si l'entreprise est un lauréat (top 3).
-     */
-    public function isLauréat(): bool
-    {
-        return in_array($this->trophy_rank, [1, 2, 3]);
-    }
-
-    /**
-     * Récupère le nom du trophée selon le classement.
-     */
-    public function getTrophyNameAttribute(): ?string
-    {
-        return match ($this->trophy_rank) {
-            1 => 'Or',
-            2 => 'Argent',
-            3 => 'Bronze',
-            default => null,
-        };
-    }
 
     public function getRouteKeyName(): string
     {
@@ -98,8 +64,5 @@ class Entreprise extends Model
         return $this->hasMany(Submission::class);
     }
 
-    public function analyticsEvents(): HasMany
-    {
-        return $this->hasMany(AnalyticsEvent::class);
-    }
+
 }

@@ -10,7 +10,6 @@ return [
     'footer_org'              => 'HUG - Hôpitaux Universitaires de Genève',
     'footer_center'           => 'Centre de Transfusion Sanguine · Genève',
 
-    // Nouvel email co-branding
     'hero_comms_label'  => 'Communication officielle CTS-HUG',
     'hero_stamp'        => 'Dossier accepté',
     'hero_welcome'      => 'Bienvenue dans la brigade.',
@@ -18,7 +17,7 @@ return [
     'status_label'      => 'Statut',
     'status_confirmed'  => 'Collecte de sang confirmée',
     'date_label'        => 'Date',
-    'activation_section'=> 'Activation de l\'espace',
+    'activation_section' => 'Activation de l\'espace',
     'cta_access_page'   => 'Accéder à la page co-brandée',
     'admin_link'        => 'Espace admin',
     'kit_section'       => 'Kit de communication',
@@ -51,7 +50,7 @@ return [
     'footer_sub_title'  => 'Centre de Transfusion Sanguine × Hôpitaux Universitaires de Genève',
     'footer_links'      => 'Le Trophée · Le Label CTS · En savoir plus',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
-    'footer_unsubscribe'=> 'Se désabonner',
+    'footer_unsubscribe' => 'Se désabonner',
 
     'type_general'           => 'Question générale',
     'type_partnership'       => 'Partenariat',
@@ -65,7 +64,6 @@ return [
     'contact_message'        => 'Message',
     'contact_reply_cta'      => 'Répondre à :name',
 
-    // Email nouvelle inscription (notification admin)
     'registration_badge'           => 'Nouvelle inscription',
     'registration_action_required' => 'Action requise',
     'registration_title'           => ':name veut rejoindre la brigade.',
