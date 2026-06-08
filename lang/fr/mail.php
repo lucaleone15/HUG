@@ -48,7 +48,7 @@ return [
     'referent_email'    => 'Email',
     'referent_phone'    => 'Direct',
     'footer_sub_title'  => 'Centre de Transfusion Sanguine × Hôpitaux Universitaires de Genève',
-    'footer_links'      => 'Le Trophée · Le Label CTS · En savoir plus',
+    'footer_links'      => 'Le Trophée · Le Label 100 pour Sang · En savoir plus',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
     'footer_unsubscribe' => 'Se désabonner',
 

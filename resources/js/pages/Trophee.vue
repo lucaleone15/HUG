@@ -27,6 +27,8 @@ const rankRef = ref(null);
 const rankVisible = ref(false);
 const palmRef = ref(null);
 const palmVisible = ref(false);
+const downloadRef = ref(null);
+const downloadVisible = ref(false);
 const ctaRef = ref(null);
 const ctaVisible = ref(false);
 
@@ -34,6 +36,7 @@ onMounted(() => {
     makeObserver(criteriaRef, criteriaVisible, 0.1);
     makeObserver(rankRef, rankVisible, 0.1);
     makeObserver(palmRef, palmVisible, 0.1);
+    makeObserver(downloadRef, downloadVisible, 0.15);
     makeObserver(ctaRef, ctaVisible, 0.2);
 });
 
@@ -56,6 +59,7 @@ const previousWinners = [
         eligible: 142,
         rate: "68 %",
         color: "#006039",
+        logo: "/images/palmares-logos/rolex.svg",
         jury: "94 %",
         employees: 5800,
         victories: 5,
@@ -67,6 +71,7 @@ const previousWinners = [
         eligible: 389,
         rate: "78 %",
         color: "#003F87",
+        logo: "/images/palmares-logos/groupe-mutuel.png",
     },
     {
         year: 2023,
@@ -75,6 +80,7 @@ const previousWinners = [
         eligible: 201,
         rate: "82 %",
         color: "#00205B",
+        logo: "/images/palmares-logos/bcge.svg",
     },
     {
         year: 2022,
@@ -83,6 +89,7 @@ const previousWinners = [
         eligible: 310,
         rate: "71 %",
         color: "#00A650",
+        logo: "/images/palmares-logos/sig.svg",
     },
     {
         year: 2021,
@@ -91,14 +98,16 @@ const previousWinners = [
         eligible: 245,
         rate: "68 %",
         color: "#C8001A",
+        logo: "/images/palmares-logos/kudelski.svg",
     },
     {
         year: 2020,
-        name: "Hôpital de la Tour",
-        type: "sante",
+        name: "Givaudan",
+        type: "industrie",
         eligible: 433,
         rate: "74 %",
         color: "#0072CE",
+        logo: "/images/palmares-logos/givaudan.svg",
     },
     {
         year: 2019,
@@ -107,6 +116,7 @@ const previousWinners = [
         eligible: 178,
         rate: "63 %",
         color: "#FF6600",
+        logo: "/images/palmares-logos/swissquote.svg",
     },
 ];
 
@@ -364,11 +374,20 @@ const criteriaIcons = [
                         }}</span>
                     </div>
                     <div
-                        class="flex flex-col sm:flex-row sm:items-end justify-between gap-6"
+                        class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6"
                     >
                         <div class="flex items-center gap-4">
+                            <img
+                                v-if="previousWinners[0].logo"
+                                :src="previousWinners[0].logo"
+                                :alt="previousWinners[0].name"
+                                class="w-12 h-12 sm:w-20 sm:h-20 rounded-xl object-contain bg-white border border-base-300 p-1.5 sm:p-2.5 shrink-0"
+                                loading="lazy"
+                                decoding="async"
+                            />
                             <div
-                                class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0"
+                                v-else
+                                class="w-12 h-12 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center text-white font-bold text-xl sm:text-3xl shrink-0"
                                 :style="`background-color: ${previousWinners[0].color}`"
                             >
                                 {{ previousWinners[0].name[0] }}
@@ -392,34 +411,36 @@ const criteriaIcons = [
                                 </p>
                             </div>
                         </div>
-                        <div class="flex gap-8 shrink-0">
-                            <div class="text-right">
+                        <div
+                            class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 w-full sm:flex sm:flex-row sm:gap-8 sm:w-auto sm:shrink-0"
+                        >
+                            <div class="contents sm:block sm:text-right">
                                 <div class="text-2xl font-bold text-brand">
                                     {{ previousWinners[0].eligible }}
                                 </div>
                                 <div
-                                    class="text-xs text-base-content/40 mt-0.5"
+                                    class="text-xs text-base-content/40 sm:mt-0.5"
                                 >
                                     {{ t("trophee.stat_donations") }}
                                 </div>
                             </div>
-                            <div class="text-right">
+                            <div class="contents sm:block sm:text-right">
                                 <div class="text-2xl font-bold">
                                     {{ previousWinners[0].rate }}
                                 </div>
                                 <div
-                                    class="text-xs text-base-content/40 mt-0.5"
+                                    class="text-xs text-base-content/40 sm:mt-0.5"
                                 >
                                     {{ t("trophee.stat_participation") }}
                                 </div>
                             </div>
-                            <div class="text-right">
+                            <div class="contents sm:block sm:text-right">
                                 <div class="text-2xl font-bold">
                                     {{ previousWinners[0].victories
                                     }}<sup class="text-sm">e</sup>
                                 </div>
                                 <div
-                                    class="text-xs text-base-content/40 mt-0.5"
+                                    class="text-xs text-base-content/40 sm:mt-0.5"
                                 >
                                     {{ t("trophee.stat_consecutive") }}
                                 </div>
@@ -437,20 +458,28 @@ const criteriaIcons = [
                     <div
                         v-for="w in previousWinners.slice(1)"
                         :key="w.year"
-                        class="grid gap-4 px-6 py-4 items-center"
-                        style="grid-template-columns: 3.5rem 1fr auto"
+                        class="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3.5rem_1fr_auto] items-center gap-x-3 sm:gap-x-4 gap-y-2 px-5 sm:px-6 py-4"
                     >
                         <span class="text-xs text-base-content/35">{{
                             w.year
                         }}</span>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <img
+                                v-if="w.logo"
+                                :src="w.logo"
+                                :alt="w.name"
+                                class="w-7 h-7 sm:w-12 sm:h-12 rounded-md object-contain bg-white border border-base-300 p-1 sm:p-1.5 shrink-0"
+                                loading="lazy"
+                                decoding="async"
+                            />
                             <span
+                                v-else
                                 class="w-2.5 h-2.5 rounded-full shrink-0"
                                 :style="`background-color: ${w.color}`"
                             ></span>
-                            <div>
+                            <div class="min-w-0">
                                 <div
-                                    class="font-semibold text-sm leading-tight"
+                                    class="font-semibold text-sm leading-tight truncate"
                                 >
                                     {{ w.name }}
                                 </div>
@@ -459,7 +488,9 @@ const criteriaIcons = [
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-6 text-right">
+                        <div
+                            class="col-span-2 sm:col-span-1 flex gap-6 pl-[5.75rem] sm:pl-0 sm:text-right"
+                        >
                             <div>
                                 <div class="text-sm font-bold text-brand">
                                     {{ w.eligible }}
@@ -482,31 +513,79 @@ const criteriaIcons = [
             </div>
         </section>
 
-        <!-- CTA candidatures -->
-        <section class="py-16 px-6 bg-site-ink text-white" ref="ctaRef">
-            <div class="max-w-5xl mx-auto">
-                <h2
-                    class="font-bold mb-6 leading-tight reveal-up"
-                    :class="{ 'reveal-up--visible': ctaVisible }"
-                    style="font-size: clamp(1.75rem, 4vw, 2.75rem)"
+        <!-- Téléchargement du visuel -->
+        <section class="py-16 px-6 bg-base-200 border-t border-base-300" ref="downloadRef">
+            <div
+                class="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
+            >
+                <div
+                    class="reveal-up"
+                    :class="{ 'reveal-up--visible': downloadVisible }"
                 >
-                    {{ t("trophee.cta_section_title") }}
-                </h2>
-                <p
-                    class="text-white/55 text-sm mb-8 reveal-up"
-                    :class="{ 'reveal-up--visible': ctaVisible }"
-                    style="max-width: 46ch; transition-delay: 90ms"
-                >
-                    {{ t("trophee.cta_section_description") }}
-                </p>
+                    <h2
+                        class="font-bold mb-2 leading-tight"
+                        style="font-size: clamp(1.35rem, 2.5vw, 1.85rem)"
+                    >
+                        {{ t("trophee.download_section_title") }}
+                    </h2>
+                    <p
+                        class="text-base-content/55 text-sm leading-relaxed"
+                        style="max-width: 50ch"
+                    >
+                        {{ t("trophee.download_section_text") }}
+                    </p>
+                </div>
                 <a
-                    href="/inscription"
-                    class="btn bg-white text-black hover:bg-white/90 border-none font-semibold px-8 rounded-sm reveal-up active:scale-[0.97]"
-                    :class="{ 'reveal-up--visible': ctaVisible }"
-                    style="transition-delay: 180ms"
+                    href="/images/trophee-rouge.svg"
+                    download="trophee-sangsationnel.svg"
+                    class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-8 rounded-sm shrink-0 reveal-up active:scale-[0.97]"
+                    :class="{ 'reveal-up--visible': downloadVisible }"
+                    style="transition-delay: 80ms"
                 >
-                    {{ t("trophee.cta_button") }}
+                    {{ t("trophee.download_visual") }}
                 </a>
+            </div>
+        </section>
+
+        <!-- CTA candidatures -->
+        <section class="py-20 px-6 border-t border-base-200" ref="ctaRef">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-end">
+                <div>
+                    <h2
+                        class="font-bold mb-3 leading-tight reveal-up"
+                        :class="{ 'reveal-up--visible': ctaVisible }"
+                        style="font-size: clamp(1.75rem, 4vw, 2.75rem)"
+                    >
+                        {{ t("trophee.cta_section_title") }}
+                    </h2>
+                    <p
+                        class="text-brand font-bold italic mb-6 reveal-up"
+                        :class="{ 'reveal-up--visible': ctaVisible }"
+                        style="
+                            font-size: clamp(1.1rem, 2vw, 1.35rem);
+                            transition-delay: 80ms;
+                        "
+                    >
+                        {{ t("trophee.cta_italic") }}
+                    </p>
+                </div>
+                <div>
+                    <p
+                        class="text-base-content/60 mb-8 leading-relaxed reveal-up"
+                        :class="{ 'reveal-up--visible': ctaVisible }"
+                        style="max-width: 46ch; transition-delay: 160ms"
+                    >
+                        {{ t("trophee.cta_section_description") }}
+                    </p>
+                    <a
+                        href="/inscription"
+                        class="btn bg-black hover:bg-black/80 text-white border-none font-semibold px-8 rounded-sm reveal-up active:scale-[0.97]"
+                        :class="{ 'reveal-up--visible': ctaVisible }"
+                        style="transition-delay: 240ms"
+                    >
+                        {{ t("trophee.cta_button") }}
+                    </a>
+                </div>
             </div>
         </section>
 

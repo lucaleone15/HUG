@@ -73,7 +73,7 @@ return [
     'referent_email'    => 'Email',
     'referent_phone'    => 'Diretto',
     'footer_sub_title'  => 'Centro di Trasfusione Sanguigna × Ospedali Universitari di Ginevra',
-    'footer_links'      => 'Il Trofeo · Il Label CTS · Per saperne di più',
+    'footer_links'      => 'Il Trofeo · Il Label 100 pour Sang · Per saperne di più',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
     'footer_unsubscribe' => 'Disiscriversi',
 ];

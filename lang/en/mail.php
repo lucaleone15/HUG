@@ -73,7 +73,7 @@ return [
     'referent_email'    => 'Email',
     'referent_phone'    => 'Direct',
     'footer_sub_title'  => 'Blood Transfusion Centre × Geneva University Hospitals',
-    'footer_links'      => 'The Trophy · The CTS Label · Learn more',
+    'footer_links'      => 'The Trophy · The Label 100 pour Sang · Learn more',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
     'footer_unsubscribe' => 'Unsubscribe',
 ];

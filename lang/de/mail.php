@@ -73,7 +73,7 @@ return [
     'referent_email'    => 'E-Mail',
     'referent_phone'    => 'Direkt',
     'footer_sub_title'  => 'Bluttransfusionszentrum × Universitätsspital Genf',
-    'footer_links'      => 'Die Trophäe · Das CTS-Label · Mehr erfahren',
+    'footer_links'      => 'Die Trophäe · Das Label 100 pour Sang · Mehr erfahren',
     'footer_copyright'  => '© HUG · :year · www.donnez-votre-sang.ch',
     'footer_unsubscribe' => 'Abmelden',
 ];
