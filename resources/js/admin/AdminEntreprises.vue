@@ -251,23 +251,23 @@ const goPage = (n) => {
                                                 class="loading loading-spinner loading-xs"></span>
                                             <span v-else>{{ t('admin.accept') }}</span>
                                         </button>
-                                        <button class="btn btn-ghost btn-xs" @click="goShow(e.id)"
+                                        <BaseButton variant="ghost" size="xs" @click="goShow(e.id)"
                                             :title="t('admin.show_title')">
                                             {{ t('admin.view_title') }}
-                                        </button>
-                                        <button class="btn btn-ghost btn-xs" @click="goEdit(e.id)"
+                                        </BaseButton>
+                                        <BaseButton variant="ghost" size="xs" @click="goEdit(e.id)"
                                             :title="t('admin.edit_title')">
                                             {{ t('admin.edit_title') }}
-                                        </button>
-                                        <button class="btn btn-ghost btn-xs"
+                                        </BaseButton>
+                                        <BaseButton variant="ghost" size="xs"
                                             :class="kitSent === e.id ? 'text-success' : ''" :disabled="!e.contact_email"
                                             @click="sendKit(e)" :title="t('admin.send_kit_title')">
                                             {{ kitSent === e.id ? t('admin.kit_sent') : 'Kit' }}
-                                        </button>
-                                        <button class="btn btn-ghost btn-xs text-error" :disabled="deleting === e.id"
+                                        </BaseButton>
+                                        <BaseButton variant="ghost" size="xs" class="text-error" :disabled="deleting === e.id"
                                             @click="askDelete(e)" :title="t('admin.delete_title')">
                                             {{ t('admin.delete_title') }}
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                 </td>
                             </tr>
@@ -282,13 +282,13 @@ const goPage = (n) => {
                     {{ t('admin.showing_entries', { from: paginationFrom, to: paginationTo, total }) }}
                 </p>
                 <div class="flex items-center gap-1">
-                    <button class="btn btn-sm btn-ghost btn-square" :disabled="isFirst" @click="prev">‹</button>
-                    <button v-for="n in pageNumbers" :key="n" class="btn btn-sm btn-square"
-                        :class="n === page ? 'bg-brand text-white border-none hover:bg-brand-dark' : 'btn-ghost'"
+                    <BaseButton variant="ghost" size="sm" class="btn-square" :disabled="isFirst" @click="prev">‹</BaseButton>
+                    <BaseButton v-for="n in pageNumbers" :key="n" size="sm" class="btn-square"
+                        :variant="n === page ? 'primary' : 'ghost'"
                         @click="goPage(n)">
                         {{ n }}
-                    </button>
-                    <button class="btn btn-sm btn-ghost btn-square" :disabled="isLast" @click="next">›</button>
+                    </BaseButton>
+                    <BaseButton variant="ghost" size="sm" class="btn-square" :disabled="isLast" @click="next">›</BaseButton>
                 </div>
             </div>
         </template>

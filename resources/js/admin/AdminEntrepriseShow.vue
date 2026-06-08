@@ -49,7 +49,7 @@ function copyLink() {
     <div class="w-full max-w-2xl">
 
         <div class="flex items-center gap-3 mb-6 flex-wrap">
-            <button class="btn btn-ghost btn-sm" @click="router.back()">{{ t('admin.form_back') }}</button>
+            <BaseButton variant="ghost" size="sm" @click="router.back()">{{ t('admin.form_back') }}</BaseButton>
             <h1 class="text-xl sm:text-2xl font-bold flex-1">{{ t('admin.show_title') }}</h1>
             <BaseButton size="sm" @click="goEdit">{{ t('admin.edit_title') }}</BaseButton>
         </div>
@@ -97,9 +97,9 @@ function copyLink() {
                                 class="text-xs text-primary hover:underline truncate font-mono flex-1">
                                 {{ `/c/${e.access_token}` }}
                             </a>
-                            <button class="btn btn-ghost btn-xs shrink-0" @click="copyLink">
+                            <BaseButton variant="ghost" size="xs" class="shrink-0" @click="copyLink">
                                 {{ copied ? t('admin.copied') : t('admin.copy') }}
-                            </button>
+                            </BaseButton>
                         </div>
                     </div>
                 </div>
@@ -195,9 +195,9 @@ function copyLink() {
                                 {{ collecteCount.total }} {{ t('admin.collecte_total') }}
                             </template>
                         </div>
-                        <button class="btn btn-ghost btn-sm" @click="goCollectes">
+                        <BaseButton variant="ghost" size="sm" @click="goCollectes">
                             {{ t('admin.collecte_manage') }}
-                        </button>
+                        </BaseButton>
                     </div>
                 </div>
             </div>

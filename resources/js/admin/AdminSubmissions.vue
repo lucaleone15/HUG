@@ -5,6 +5,7 @@ import { useApi } from '../composables/useApi.js'
 import { usePagination } from '../composables/usePagination.js'
 import { useEntreprisesStore } from '../stores/entreprisesStore.js'
 import CompanySelector from '../components/admin/CompanySelector.vue'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t } = useI18n()
 const api = useApi()
@@ -111,9 +112,9 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleString('fr-CH', { dateStyle: 's
 
             <!-- navigation -->
             <div v-if="lastPage > 1" class="flex justify-center mt-4 gap-2">
-                <button class="btn btn-sm btn-ghost" :disabled="isFirst" @click="prev">←</button>
+                <BaseButton variant="ghost" size="sm" :disabled="isFirst" @click="prev">←</BaseButton>
                 <span class="text-sm self-center">{{ page }} / {{ lastPage }}</span>
-                <button class="btn btn-sm btn-ghost" :disabled="isLast" @click="next">→</button>
+                <BaseButton variant="ghost" size="sm" :disabled="isLast" @click="next">→</BaseButton>
             </div>
         </template>
     </div>

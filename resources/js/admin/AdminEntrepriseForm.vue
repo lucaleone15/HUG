@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
+import BaseInput from '../components/ui/BaseInput.vue'
+import BaseSelect from '../components/ui/BaseSelect.vue'
+import BaseCheckbox from '../components/ui/BaseCheckbox.vue'
 import { useLogoBg } from '../composables/useLogoBg.js'
 
 const route = useRoute()
@@ -122,7 +125,7 @@ const fieldError = (key) => errors.value[key]?.[0]
 <template>
     <div class="w-full max-w-2xl">
         <div class="flex items-center gap-3 mb-6">
-            <button class="btn btn-ghost btn-sm shrink-0" @click="router.back()">{{ t('admin.form_back') }}</button>
+            <BaseButton variant="ghost" size="sm" class="shrink-0" @click="router.back()">{{ t('admin.form_back') }}</BaseButton>
             <h1 class="text-xl sm:text-2xl font-bold truncate">{{ isEdit ? t('admin.form_edit_title') :
                 t('admin.form_new_title') }}</h1>
         </div>
@@ -138,42 +141,18 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_identity') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <label class="form-control col-span-1 sm:col-span-2">
-                        <div class="label"><span class="label-text">{{ t('admin.form_name') }}</span></div>
-                        <input v-model="form.name" type="text" required class="input input-bordered input-sm"
-                            :class="fieldError('name') ? 'input-error' : ''">
-                        <div v-if="fieldError('name')" class="label"><span class="label-text-alt text-error">{{
-                            fieldError('name') }}</span></div>
-                    </label>
+                    <div class="col-span-1 sm:col-span-2">
+                        <BaseInput v-model="form.name" type="text" required :label="t('admin.form_name')" :error="fieldError('name')" class="input-sm" />
+                    </div>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_slug') }}</span></div>
-                        <input v-model="form.slug" type="text" class="input input-bordered input-sm"
-                            :class="fieldError('slug') ? 'input-error' : ''"
-                            :placeholder="t('admin.form_slug_placeholder')">
-                        <div v-if="fieldError('slug')" class="label"><span class="label-text-alt text-error">{{
-                            fieldError('slug') }}</span></div>
-                    </label>
+                    <BaseInput v-model="form.slug" type="text" :label="t('admin.form_slug')" :error="fieldError('slug')" :placeholder="t('admin.form_slug_placeholder')" class="input-sm" />
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_sector') }}</span></div>
-                        <select v-model="form.type" required class="select select-bordered select-sm"
-                            :class="fieldError('type') ? 'select-error' : ''">
-                            <option value="" disabled>-</option>
-                            <option v-for="tp in types" :key="tp" :value="tp">{{ t('inscription.type_' + tp) }}</option>
-                        </select>
-                        <div v-if="fieldError('type')" class="label">
-                            <span class="label-text-alt text-error">{{ fieldError('type') }}</span>
-                        </div>
-                    </label>
+                    <BaseSelect v-model="form.type" required :label="t('admin.form_sector')" :error="fieldError('type')" class="select-sm">
+                        <option value="" disabled>-</option>
+                        <option v-for="tp in types" :key="tp" :value="tp">{{ t('inscription.type_' + tp) }}</option>
+                    </BaseSelect>
 
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_employee_count') }}</span></div>
-                        <input v-model="form.employee_count" type="number" min="1" class="input input-bordered input-sm"
-                            @wheel="$event.preventDefault() || $event.target.blur()">
-                    </label>
-
-
+                    <BaseInput v-model="form.employee_count" type="number" min="1" :label="t('admin.form_employee_count')" class="input-sm" />
                 </div>
 
                 <!-- partie dédiée au logo -->
@@ -186,7 +165,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                     </div>
                     <div class="flex-1 text-sm text-base-content/60 truncate min-w-0">{{ logoFile?.name ?? form.logo_url
                         }}</div>
-                    <button type="button" class="btn btn-ghost btn-xs text-error shrink-0" @click="clearLogo">✕</button>
+                    <BaseButton type="button" variant="ghost" size="xs" class="text-error shrink-0" @click="clearLogo">✕</BaseButton>
                 </div>
 
                 <label class="form-control">
@@ -197,11 +176,7 @@ const fieldError = (key) => errors.value[key]?.[0]
                             }}</span></div>
                 </label>
 
-                <label class="form-control">
-                    <div class="label"><span class="label-text">{{ t('admin.form_logo_url') }}</span></div>
-                    <input v-model="form.logo_url" type="text" class="input input-bordered input-sm"
-                        :disabled="!!logoFile">
-                </label>
+                <BaseInput v-model="form.logo_url" type="text" :label="t('admin.form_logo_url')" class="input-sm" :disabled="!!logoFile" />
 
                 <!-- tout ce qui touche aux couleurs -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_colors') }}</div>
@@ -227,14 +202,11 @@ const fieldError = (key) => errors.value[key]?.[0]
                                 class="w-10 h-9 rounded border border-base-300 cursor-pointer p-1">
                             <span class="badge text-white text-xs px-3 py-3"
                                 :style="`background:${form.secondary_color}`">{{ form.secondary_color }}</span>
-                            <button type="button" class="btn btn-ghost btn-xs text-base-content/40"
-                                @click="form.secondary_color = ''">{{ t('admin.form_color_remove') }}</button>
+                            <BaseButton type="button" variant="ghost" size="xs" class="text-base-content/40" @click="form.secondary_color = ''">{{ t('admin.form_color_remove') }}</BaseButton>
                         </div>
-                        <button v-else type="button"
-                            class="btn btn-ghost btn-xs border border-dashed border-base-300 text-base-content/50"
-                            @click="form.secondary_color = '#CCCCCC'">
+                        <BaseButton v-else type="button" variant="ghost" size="xs" class="border border-dashed border-base-300 text-base-content/50" @click="form.secondary_color = '#CCCCCC'">
                             {{ t('admin.form_color_add') }}
-                        </button>
+                        </BaseButton>
                     </div>
                 </div>
 
@@ -242,46 +214,22 @@ const fieldError = (key) => errors.value[key]?.[0]
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_contact') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_contact_name') }}</span></div>
-                        <input v-model="form.contact_name" type="text" class="input input-bordered input-sm">
-                    </label>
-                    <label class="form-control">
-                        <div class="label"><span class="label-text">{{ t('admin.form_contact_email') }}</span></div>
-                        <input v-model="form.contact_email" type="email" class="input input-bordered input-sm">
-                        <div v-if="fieldError('contact_email')" class="label"><span class="label-text-alt text-error">{{
-                            fieldError('contact_email') }}</span></div>
-                    </label>
+                    <BaseInput v-model="form.contact_name" type="text" :label="t('admin.form_contact_name')" class="input-sm" />
+                    <BaseInput v-model="form.contact_email" type="email" :label="t('admin.form_contact_email')" :error="fieldError('contact_email')" class="input-sm" />
                 </div>
 
                 <!-- statut de l'entreprise en fonction des choix du form -->
                 <div class="divider text-xs text-base-content/40">{{ t('admin.form_section_status') }}</div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label class="label gap-2 cursor-pointer justify-start">
-                        <input type="checkbox" v-model="form.is_active" class="checkbox checkbox-sm">
-                        <span class="label-text">{{ t('admin.form_is_active') }}</span>
-                    </label>
-                    <label class="label gap-2 cursor-pointer justify-start">
-                        <input type="checkbox" v-model="form.is_validated" class="checkbox checkbox-sm">
-                        <span class="label-text">{{ t('admin.form_is_validated') }}</span>
-                    </label>
-                    <label class="label gap-2 cursor-pointer justify-start">
-                        <input type="checkbox" v-model="form.is_labelled" class="checkbox checkbox-sm">
-                        <span class="label-text">{{ t('admin.form_is_labelled') }}</span>
-                    </label>
-                    <label class="label gap-2 cursor-pointer justify-start">
-                        <input type="checkbox" v-model="form.is_public" class="checkbox checkbox-sm">
-                        <span class="label-text">{{ t('admin.form_is_public') }}</span>
-                    </label>
-                    <label class="label gap-2 cursor-pointer justify-start">
-                        <input type="checkbox" v-model="form.wants_trophy" class="checkbox checkbox-sm">
-                        <span class="label-text text-sm">
-                            {{ t('admin.form_wants_trophy') }}
-                            <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint')
-                                }}</span>
-                        </span>
-                    </label>
+                    <BaseCheckbox v-model="form.is_active" :label="t('admin.form_is_active')" />
+                    <BaseCheckbox v-model="form.is_validated" :label="t('admin.form_is_validated')" />
+                    <BaseCheckbox v-model="form.is_labelled" :label="t('admin.form_is_labelled')" />
+                    <BaseCheckbox v-model="form.is_public" :label="t('admin.form_is_public')" />
+                    <BaseCheckbox v-model="form.wants_trophy">
+                        {{ t('admin.form_wants_trophy') }}
+                        <span class="text-base-content/40 text-xs ml-1">{{ t('admin.form_wants_trophy_hint') }}</span>
+                    </BaseCheckbox>
                 </div>
 
                 <!-- Actions -->

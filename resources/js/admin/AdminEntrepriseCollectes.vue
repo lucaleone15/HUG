@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '../components/ui/BaseButton.vue'
+import BaseCheckbox from '../components/ui/BaseCheckbox.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -109,9 +110,9 @@ async function deleteCollecte(c) {
     <div class="w-full max-w-2xl">
 
         <div class="flex items-center gap-3 mb-6 flex-wrap">
-            <button class="btn btn-ghost btn-sm" @click="router.push(`/admin/entreprises/${route.params.id}`)">
+            <BaseButton variant="ghost" size="sm" @click="router.push(`/admin/entreprises/${route.params.id}`)">
                 {{ t('admin.form_back') }}
-            </button>
+            </BaseButton>
             <h1 class="text-xl sm:text-2xl font-bold flex-1">
                 {{ t('admin.form_section_collectes') }}
                 <span v-if="e" class="text-base-content/40 font-normal text-base ml-2">— {{ e.name }}</span>
@@ -129,9 +130,9 @@ async function deleteCollecte(c) {
                     <div class="flex items-center justify-between mb-1">
                         <div class="divider text-xs text-base-content/40 mt-0 flex-1">{{
                             t('admin.form_section_collectes') }}</div>
-                        <button class="btn btn-ghost btn-xs ml-3" @click="showNewForm = !showNewForm">
+                        <BaseButton variant="ghost" size="xs" class="ml-3" @click="showNewForm = !showNewForm">
                             {{ showNewForm ? t('admin.collecte_cancel') : t('admin.collecte_add') }}
-                        </button>
+                        </BaseButton>
                     </div>
 
                     <!-- Formulaire pr ajout -->
@@ -160,11 +161,7 @@ async function deleteCollecte(c) {
                                     :placeholder="t('admin.collecte_label_placeholder')" />
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <input v-model="newCollecte.is_active" type="checkbox"
-                                class="checkbox checkbox-sm checkbox-success" id="new-collecte-active" />
-                            <label for="new-collecte-active" class="text-sm">{{ t('admin.collecte_is_active') }}</label>
-                        </div>
+                        <BaseCheckbox v-model="newCollecte.is_active" color="success" :label="t('admin.collecte_is_active')" />
                         <BaseButton type="submit" size="sm" :loading="savingCollecte">
                             {{ t('admin.collecte_save') }}
                         </BaseButton>
@@ -201,16 +198,15 @@ async function deleteCollecte(c) {
                                     </div>
                                 </div>
                                 <div class="flex gap-1 shrink-0">
-                                    <button class="btn btn-ghost btn-xs" @click="startEdit(c)">
+                                    <BaseButton variant="ghost" size="xs" @click="startEdit(c)">
                                         {{ t('admin.collecte_edit') }}
-                                    </button>
-                                    <button class="btn btn-ghost btn-xs" @click="toggleCollecte(c)">
-                                        {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate')
-                                        }}
-                                    </button>
-                                    <button class="btn btn-ghost btn-xs text-error" @click="deleteCollecte(c)">
+                                    </BaseButton>
+                                    <BaseButton variant="ghost" size="xs" @click="toggleCollecte(c)">
+                                        {{ c.is_active ? t('admin.collecte_deactivate') : t('admin.collecte_activate') }}
+                                    </BaseButton>
+                                    <BaseButton variant="ghost" size="xs" class="text-error" @click="deleteCollecte(c)">
                                         {{ t('admin.delete') }}
-                                    </button>
+                                    </BaseButton>
                                 </div>
                             </div>
 
@@ -240,16 +236,11 @@ async function deleteCollecte(c) {
                                             :placeholder="t('admin.collecte_label_placeholder')" />
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <input v-model="editForm.is_active" type="checkbox"
-                                        class="checkbox checkbox-sm checkbox-success" :id="`edit-active-${c.id}`" />
-                                    <label :for="`edit-active-${c.id}`" class="text-sm">{{ t('admin.collecte_is_active')
-                                    }}</label>
-                                </div>
+                                <BaseCheckbox v-model="editForm.is_active" color="success" :label="t('admin.collecte_is_active')" />
                                 <div class="flex gap-2 justify-end">
-                                    <button type="button" class="btn btn-ghost btn-sm" @click="cancelEdit">
+                                    <BaseButton type="button" variant="ghost" size="sm" @click="cancelEdit">
                                         {{ t('admin.collecte_cancel') }}
-                                    </button>
+                                    </BaseButton>
                                     <BaseButton type="submit" size="sm" :loading="savingEdit">
                                         {{ t('admin.collecte_update') }}
                                     </BaseButton>
