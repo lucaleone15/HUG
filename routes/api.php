@@ -35,7 +35,6 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('entreprises/{id}',    [AdminEntrepriseController::class, 'show']);
     Route::post('entreprises/{id}',   [AdminEntrepriseController::class, 'update']);
     Route::delete('entreprises/{id}', [AdminEntrepriseController::class, 'destroy']);
-    Route::post('entreprises/{id}/send-kit',  [AdminEntrepriseController::class, 'sendKit']);
     Route::post('entreprises/{id}/send-link', [AdminEntrepriseController::class, 'sendLink']);
 
     Route::get('entreprises/{id}/collectes',  [CollecteController::class, 'index']);

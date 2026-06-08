@@ -18,7 +18,7 @@ Architecture hybride :
 ## Flux global
 
 ```
-Page co-brandée (/c/{slug})
+Page co-brandée (/c/{access_token})
         ↓
 Quiz d'éligibilité (anonyme — session_token)
 Quiz chargé depuis resources/quiz/quiz.json
@@ -31,7 +31,7 @@ Message      Prise de RDV (lien externe CTS)
 bienveillant  + date de collecte (rdv_date)
  ↓
 Bloc parrainage :
-  - copier le lien /c/{slug}
+  - copier le lien /c/{access_token}
   - copier le message (email)
   - partager sur WhatsApp
 ```
@@ -52,9 +52,10 @@ Le quiz est **identique pour toutes les entreprises**.
 Pas de table en base de données — stocké dans `resources/quiz/quiz.json`.
 
 ```php
-// QuizController — chargement avec cache permanent
-$quiz = Cache::rememberForever('quiz', fn() =>
-    json_decode(file_get_contents(resource_path('quiz/quiz.json')), true)
+// QuizController — chargement avec cache permanent, par locale
+$quiz = Cache::rememberForever("quiz_{$locale}", fn() =>
+    json_decode(file_get_contents(resource_path("quiz/quiz.{$locale}.json")), true)
+        ?? json_decode(file_get_contents(resource_path('quiz/quiz.json')), true)
 );
 ```
 
@@ -118,16 +119,12 @@ Casts  : is_active → boolean, is_labelled → boolean, is_validated → boolea
          is_public → boolean, wants_trophy → boolean, trophy_rank → integer,
          rdv_date → date:Y-m-d
 Méthode: getRouteKeyName() → 'access_token'   ← route key = access_token, pas slug
-         participatesInTrophy() → bool  (trophy_rank !== null && > 0)
-         isLauréat() → bool             (trophy_rank in [1, 2, 3])
-         getTrophyNameAttribute() → ?string ('Or' | 'Argent' | 'Bronze' | null)
          activeCollecte() → HasOne (Collecte active la plus récente)
 ```
 
 Relations :
 
 - `hasMany` Submission
-- `hasMany` AnalyticsEvent
 
 ---
 
@@ -336,13 +333,13 @@ Relations :
 | Controller                          | Méthodes                          | Description                               |
 | ----------------------------------- | --------------------------------- | ----------------------------------------- |
 | `Api\Admin\DashboardController`     | `index()`                         | KPI globaux + entonnoir                   |
-| `Api\Admin\EntrepriseController`    | `index()` `show()` `store()` `update()` `destroy()` `sendKit()` (TODO) `sendLink()` | Gestion entreprises. Update via `POST` multipart (logo). `sendLink` envoie `CompanyConfirmationLink`. |
+| `Api\Admin\EntrepriseController`    | `index()` `show()` `store()` `update()` `destroy()` `sendLink()` | Gestion entreprises. Update via `POST` multipart (logo). `sendLink` envoie `CompanyConfirmationLink`. |
 | `Api\Admin\CollecteController`      | `index()` `store()` `update()` `destroy()` | Collectes OnDoc par entreprise          |
 | `Api\Admin\TropheeController`       | `index()` `reorder()`             | Classement trophée — liste + réordonnancement |
 | `Api\Admin\SubmissionController`    | `index()` `show()`                | Lecture seule                             |
 | `Api\Admin\AnalyticsController`     | `index()`                         | Dashboard métriques — entonnoir, abandons |
 | `Api\Admin\CampaignStatsController` | `show()` `update()`               | Stats d'impact                            |
-| `Api\Admin\ReportController`        | `show()`                          | Bilan par entreprise — JSON ou PDF (`?format=pdf` via dompdf). Expose `logo_data_uri` (PNG base64 via Imagick). |
+| `Api\Admin\ReportController`        | `show()`                          | Bilan par entreprise — JSON ou PDF (`?format=pdf` via dompdf). Génère un lien de preview temporaire via cache (`report_preview:{token}`). |
 | `Api\Admin\UserController`          | `index()` `store()` `destroy()`   | Gestion des comptes admin. Suppression bloquée pour son propre compte. |
 
 ---
@@ -412,7 +409,6 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('entreprises/{id}',    [Admin\EntrepriseController::class, 'show']);
     Route::post('entreprises/{id}',   [Admin\EntrepriseController::class, 'update']); // POST multipart pour logo
     Route::delete('entreprises/{id}', [Admin\EntrepriseController::class, 'destroy']);
-    Route::post('entreprises/{id}/send-kit',  [Admin\EntrepriseController::class, 'sendKit']);  // TODO
     Route::post('entreprises/{id}/send-link', [Admin\EntrepriseController::class, 'sendLink']); // CompanyConfirmationLink
 
     // Collectes (campagnes OnDoc)
@@ -479,8 +475,9 @@ $token = (string) Str::uuid();
 session(['quiz_token' => $token]);
 
 // QuizController@store — soumission
-$quiz = Cache::rememberForever('quiz', fn() =>
-    json_decode(file_get_contents(resource_path('quiz/quiz.json')), true)
+$quiz = Cache::rememberForever("quiz_{$locale}", fn() =>
+    json_decode(file_get_contents(resource_path("quiz/quiz.{$locale}.json")), true)
+        ?? json_decode(file_get_contents(resource_path('quiz/quiz.json')), true)
 );
 $isEligible = collect($quiz['questions'])->every(function($q) use ($answers) {
     $chosen = $answers[$q['id']] ?? null;
@@ -530,7 +527,7 @@ return response()->json([
 - Utiliser `CampaignStats::getInstance()` — jamais `::first()` directement
 - CORS : l'admin SPA est servi sur la même origine — aucune config CORS nécessaire en production
 - **Emails** : utiliser `->locale($locale)` sur le Mailable (pas `app()->setLocale()`). Locales valides : `fr`, `de`, `it`, `en`. Envoi synchrone (`Mail::send`) car Infomaniak ne supporte pas les workers persistants.
-- `sendKit()` → TODO (non implémenté) ; `sendLink()` → envoie `CompanyConfirmationLink` lors de la validation ou à la demande
+- `sendLink()` → envoie `CompanyConfirmationLink` lors de la validation ou à la demande
 - `InscriptionController@store` → envoie `NewRegistrationNotification` à `info@donnez-votre-sang.ch` à chaque nouvelle inscription
 - **Route key Entreprise** : `getRouteKeyName()` retourne `'access_token'` — la route `/c/{entreprise}` résout par `access_token`, pas par `slug`
 - **Admin update entreprise** : `POST entreprises/{id}` (multipart pour upload logo), pas `PUT` — `apiResource` n'est pas utilisé
