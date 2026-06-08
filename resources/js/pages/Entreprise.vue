@@ -45,6 +45,11 @@ const accentColor = computed(() =>
         : "#E22C1B",
 );
 
+// c1 safe to use as text on a white background (falls back when c1 is too light)
+const c1OnWhite = computed(() =>
+    t1.value === "#ffffff" ? c1.value : accentColor.value,
+);
+
 const { bg: headerLogoBg } = useLogoBg(
     () => props.entreprise.logo_url,
     () => props.entreprise.primary_color,
@@ -61,6 +66,12 @@ const nextCollecte = computed(() => upcomingCollectes.value[0] ?? null);
 const countdown = ref({ days: 0, hours: 0, minutes: 0 });
 let timer = null;
 const hasCountdown = computed(() => !!nextCollecte.value?.rdv_date);
+const countdownActive = computed(
+    () =>
+        countdown.value.days > 0 ||
+        countdown.value.hours > 0 ||
+        countdown.value.minutes > 0,
+);
 const pad = (n) => String(n).padStart(2, "0");
 
 const updateCountdown = () => {
@@ -138,7 +149,7 @@ onBeforeUnmount(() => {
 <template>
     <div
         class="min-h-screen bg-base-100 flex flex-col overflow-x-hidden"
-        :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}`"
+        :style="`--c1: ${c1}; --c2: ${c2}; --t1: ${t1}; --t2: ${t2}; --c1-on-white: ${c1OnWhite}`"
     >
         <!-- Header co-brandé -->
         <header
@@ -324,12 +335,12 @@ onBeforeUnmount(() => {
                     <p class="text-sm font-semibold mb-4 text-base-content/60">
                         {{ t("entreprise.countdown_label") }}
                     </p>
-                    <div class="flex items-end gap-3">
+                    <div v-if="countdownActive" class="flex items-end gap-3">
                         <div class="flex-1 text-center">
                             <div
                                 class="font-extrabold tabular-nums leading-none"
                                 style="
-                                    color: var(--c1);
+                                    color: var(--c1-on-white);
                                     font-size: clamp(2rem, 5vw, 3rem);
                                 "
                             >
@@ -347,7 +358,7 @@ onBeforeUnmount(() => {
                             <div
                                 class="font-extrabold tabular-nums leading-none"
                                 style="
-                                    color: var(--c1);
+                                    color: var(--c1-on-white);
                                     font-size: clamp(2rem, 5vw, 3rem);
                                 "
                             >
@@ -365,7 +376,7 @@ onBeforeUnmount(() => {
                             <div
                                 class="font-extrabold tabular-nums leading-none"
                                 style="
-                                    color: var(--c1);
+                                    color: var(--c1-on-white);
                                     font-size: clamp(2rem, 5vw, 3rem);
                                 "
                             >
@@ -762,7 +773,7 @@ onBeforeUnmount(() => {
 }
 @media (min-width: 768px) {
     .entreprise-hero-img {
-        width: 58%;
+        width: 50%;
         top: 0;
         right: 0;
         bottom: 0;

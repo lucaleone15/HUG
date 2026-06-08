@@ -178,17 +178,6 @@ class EntrepriseController extends Controller
         return response()->noContent();
     }
 
-    public function sendKit(int $id): JsonResponse
-    {
-        $entreprise = Entreprise::findOrFail($id);
-
-        // TODO: Mail::to($entreprise->contact_email)->send(new KitPromoMail($entreprise));
-
-        return response()->json([
-            'message' => "Kit envoyé à {$entreprise->contact_email}",
-        ]);
-    }
-
     public function sendLink(int $id): JsonResponse
     {
         $entreprise = Entreprise::findOrFail($id);

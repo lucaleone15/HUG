@@ -28,7 +28,6 @@ const { data, loading, error, page, lastPage, perPage, total, isFirst, isLast, l
     ))
 
 const deleting = ref(null)
-const kitSent = ref(null)
 const accepting = ref(null)
 const deleteTarget = ref(null)
 const deleteModal = ref(false)
@@ -95,16 +94,6 @@ const accept = async (e) => {
         alert(err.message)
     } finally {
         accepting.value = null
-    }
-}
-
-const sendKit = async (e) => {
-    try {
-        await api.post(`/admin/entreprises/${e.id}/send-kit`)
-        kitSent.value = e.id
-        setTimeout(() => { kitSent.value = null }, 3000)
-    } catch (err) {
-        alert(err.message)
     }
 }
 
@@ -258,11 +247,6 @@ const goPage = (n) => {
                                         <BaseButton variant="ghost" size="xs" @click="goEdit(e.id)"
                                             :title="t('admin.edit_title')">
                                             {{ t('admin.edit_title') }}
-                                        </BaseButton>
-                                        <BaseButton variant="ghost" size="xs"
-                                            :class="kitSent === e.id ? 'text-success' : ''" :disabled="!e.contact_email"
-                                            @click="sendKit(e)" :title="t('admin.send_kit_title')">
-                                            {{ kitSent === e.id ? t('admin.kit_sent') : 'Kit' }}
                                         </BaseButton>
                                         <BaseButton variant="ghost" size="xs" class="text-error" :disabled="deleting === e.id"
                                             @click="askDelete(e)" :title="t('admin.delete_title')">
