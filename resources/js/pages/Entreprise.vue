@@ -73,6 +73,8 @@ const countdownActive = computed(
         countdown.value.minutes > 0,
 );
 const pad = (n) => String(n).padStart(2, "0");
+const isDatePast = (dateStr) =>
+    !!dateStr && new Date(dateStr).getTime() < Date.now();
 
 const updateCountdown = () => {
     const target = new Date(nextCollecte.value.rdv_date).getTime();
@@ -238,8 +240,8 @@ onBeforeUnmount(() => {
             <svg
                 aria-hidden="true"
                 class="absolute inset-0 w-full h-full pointer-events-none entreprise-hero-img"
-                viewBox="0 0 1920 1128"
-                preserveAspectRatio="xMaxYMid slice"
+                viewBox="800 0 1120 1128"
+                preserveAspectRatio="xMaxYMax meet"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <g clip-path="url(#insp-clip)">
@@ -422,65 +424,111 @@ onBeforeUnmount(() => {
                 <!-- Collectes à venir -->
                 <template v-if="upcomingCollectes.length">
                     <div class="flex flex-col gap-3">
-                        <a
+                        <template
                             v-for="c in upcomingCollectes"
                             :key="c.id"
-                            :href="`/c/${entreprise.access_token}/quiz`"
-                            class="flex items-center gap-4 rounded-xl px-4 py-4 collecte-card"
-                            style="background-color: var(--c1)"
                         >
+                            <!-- Collecte dont la date est passée (admin pas encore désactivée) -->
                             <div
-                                class="shrink-0 rounded-lg w-14 text-center py-2"
-                                style="
-                                    background-color: color-mix(
-                                        in srgb,
-                                        var(--t1) 15%,
-                                        transparent
-                                    );
-                                    color: var(--t1);
-                                "
+                                v-if="isDatePast(c.rdv_date)"
+                                class="flex items-center gap-4 rounded-xl border border-base-200 bg-base-100 px-4 py-4 opacity-60"
                             >
                                 <div
-                                    class="text-2xl font-extrabold leading-none tabular-nums"
+                                    class="shrink-0 rounded-lg w-14 text-center py-2 bg-base-300 text-base-content/50"
                                 >
-                                    {{ c.rdv_date ? dayNum(c.rdv_date) : "—" }}
+                                    <div
+                                        class="text-2xl font-extrabold leading-none tabular-nums"
+                                    >
+                                        {{ c.rdv_date ? dayNum(c.rdv_date) : "—" }}
+                                    </div>
+                                    <div
+                                        class="text-[0.6rem] uppercase tracking-wider mt-0.5"
+                                    >
+                                        {{ c.rdv_date ? monthShort(c.rdv_date) : "" }}
+                                    </div>
                                 </div>
-                                <div
-                                    class="text-[0.6rem] uppercase tracking-wider opacity-90 mt-0.5"
-                                >
-                                    {{
-                                        c.rdv_date ? monthShort(c.rdv_date) : ""
-                                    }}
+                                <div class="flex-1 min-w-0">
+                                    <div
+                                        class="font-semibold text-base-content/70 leading-snug truncate"
+                                    >
+                                        {{
+                                            c.label ||
+                                            t("entreprise.collecte_default_label")
+                                        }}
+                                    </div>
+                                    <div
+                                        v-if="c.rdv_date"
+                                        class="text-xs text-base-content/40 mt-0.5"
+                                    >
+                                        {{ fullDate(c.rdv_date) }}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div
-                                    class="font-bold leading-snug truncate"
-                                    style="color: var(--t1)"
-                                >
-                                    {{
-                                        c.label ||
-                                        t("entreprise.collecte_default_label")
-                                    }}
-                                </div>
-                                <div
-                                    v-if="c.rdv_date"
-                                    class="text-xs mt-0.5"
-                                    style="color: var(--t1); opacity: 0.68"
-                                >
-                                    {{ fullDate(c.rdv_date) }}
-                                </div>
-                            </div>
-
-                            <!-- CTA -->
-                            <div class="shrink-0">
                                 <span
-                                    class="btn btn-co btn-sm border-none rounded-sm text-xs font-semibold"
+                                    class="shrink-0 badge badge-ghost badge-sm uppercase tracking-wide font-semibold text-base-content/50"
                                 >
-                                    {{ t("entreprise.collecte_rdv_cta_short") }}
+                                    {{ t("entreprise.collecte_past_badge") }}
                                 </span>
                             </div>
-                        </a>
+
+                            <!-- Collecte à venir (date future ou pas encore fixée) -->
+                            <a
+                                v-else
+                                :href="`/c/${entreprise.access_token}/quiz`"
+                                class="flex items-center gap-4 rounded-xl px-4 py-4 collecte-card"
+                                style="background-color: var(--c1)"
+                            >
+                                <div
+                                    class="shrink-0 rounded-lg w-14 text-center py-2"
+                                    style="
+                                        background-color: color-mix(
+                                            in srgb,
+                                            var(--t1) 15%,
+                                            transparent
+                                        );
+                                        color: var(--t1);
+                                    "
+                                >
+                                    <div
+                                        class="text-2xl font-extrabold leading-none tabular-nums"
+                                    >
+                                        {{ c.rdv_date ? dayNum(c.rdv_date) : "—" }}
+                                    </div>
+                                    <div
+                                        class="text-[0.6rem] uppercase tracking-wider opacity-90 mt-0.5"
+                                    >
+                                        {{
+                                            c.rdv_date ? monthShort(c.rdv_date) : ""
+                                        }}
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div
+                                        class="font-bold leading-snug truncate"
+                                        style="color: var(--t1)"
+                                    >
+                                        {{
+                                            c.label ||
+                                            t("entreprise.collecte_default_label")
+                                        }}
+                                    </div>
+                                    <div
+                                        v-if="c.rdv_date"
+                                        class="text-xs mt-0.5"
+                                        style="color: var(--t1); opacity: 0.68"
+                                    >
+                                        {{ fullDate(c.rdv_date) }}
+                                    </div>
+                                </div>
+                                <!-- CTA -->
+                                <div class="shrink-0">
+                                    <span
+                                        class="btn btn-co btn-sm border-none rounded-sm text-xs font-semibold"
+                                    >
+                                        {{ t("entreprise.collecte_rdv_cta_short") }}
+                                    </span>
+                                </div>
+                            </a>
+                        </template>
                     </div>
                 </template>
             </div>
