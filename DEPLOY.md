@@ -4,17 +4,17 @@
 
 Toutes les occurrences de ces placeholders sont à adapter à ton environnement :
 
-| Placeholder | Ce qu'il faut mettre |
-|---|---|
-| `<CLIENT_ID>` | Identifiant Infomaniak ex. `e5818b3ef3…` (visible dans l'URL SSH du panel) |
-| `<SSH_USER>` | Utilisateur SSH Infomaniak |
-| `<SSH_HOST>` | Hôte SSH Infomaniak ex. `ssh-xxxx.infomaniak.com` |
-| `<DOMAIN>` | Nom de domaine ex. `donnez-votre-sang.ch` |
-| `<DB_DATABASE>` | Nom de la base MySQL créée dans le manager |
-| `<DB_USERNAME>` | Utilisateur MySQL |
-| `<DB_PASSWORD>` | Mot de passe MySQL |
-| `<MAIL_USERNAME>` | Adresse email expéditeur |
-| `<MAIL_PASSWORD>` | Mot de passe du compte mail |
+| Placeholder       | Ce qu'il faut mettre                                                       |
+| ----------------- | -------------------------------------------------------------------------- |
+| `<CLIENT_ID>`     | Identifiant Infomaniak ex. `e5818b3ef3…` (visible dans l'URL SSH du panel) |
+| `<SSH_USER>`      | Utilisateur SSH Infomaniak                                                 |
+| `<SSH_HOST>`      | Hôte SSH Infomaniak ex. `ssh-xxxx.infomaniak.com`                          |
+| `<DOMAIN>`        | Nom de domaine ex. `donnez-votre-sang.ch`                                  |
+| `<DB_DATABASE>`   | Nom de la base MySQL créée dans le manager                                 |
+| `<DB_USERNAME>`   | Utilisateur MySQL                                                          |
+| `<DB_PASSWORD>`   | Mot de passe MySQL                                                         |
+| `<MAIL_USERNAME>` | Adresse email expéditeur                                                   |
+| `<MAIL_PASSWORD>` | Mot de passe du compte mail                                                |
 
 > Chemin de base sur le serveur : `/home/clients/<CLIENT_ID>/sites/<DOMAIN>/`
 
@@ -22,13 +22,13 @@ Toutes les occurrences de ces placeholders sont à adapter à ton environnement 
 
 ## Prérequis serveur
 
-| Composant | Version minimum |
-|---|---|
-| PHP | 8.3 avec extensions : `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`, `gd` |
-| MySQL / MariaDB | 8.0 / 10.6 |
-| Composer | 2.x |
+| Composant       | Version minimum                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------- |
+| PHP             | 8.3 avec extensions : `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`, `gd` |
+| MySQL / MariaDB | 8.0 / 10.6                                                                                                      |
+| Composer        | 2.x                                                                                                             |
 
-> Infomaniak mutualisé : pas de Node.js, pas de Redis, pas de workers persistants. Tout est adapté en conséquence.
+> Infomaniak mutualisé
 
 ---
 
@@ -37,6 +37,7 @@ Toutes les occurrences de ces placeholders sont à adapter à ton environnement 
 Le déploiement se fait par **git push** depuis le poste local. Un hook `post-receive` sur le serveur met à jour les fichiers et rejoue les commandes automatiquement.
 
 Deux entités coexistent sur le serveur :
+
 - **Dépôt bare** — reçoit les pushs (`…/git/`), aucun fichier source visible
 - **Dossier du site** — copie de travail servie au public (`…/web/`)
 
@@ -229,12 +230,12 @@ Compte admin par défaut après `DemoSeeder` : `admin@hug.ch` / `password`
 
 ## Points d'attention
 
-| Point | Détail |
-|---|---|
-| **Build frontend** | `public/build/` doit être commité — le hook ne lance pas `npm`. Builder en local avant chaque push qui touche du JS/CSS/Vue. |
-| **Pas de queue worker** | Les mails sont envoyés en synchrone (`Mail::send`). Ne pas basculer sur `Mail::queue` sans worker. |
-| **Cache quiz** | Après modification d'un `quiz.{locale}.json` : `php artisan cache:forget quiz_fr` (idem `quiz_de`, `quiz_it`, `quiz_en`). |
-| **Logos uploadés** | Stockés dans `storage/app/public/`. Le lien `public/storage` doit exister (`storage:link`). |
-| **`noindex, nofollow`** | Le site est volontairement non indexé. Ne pas retirer sans accord. |
-| **`CampaignStats`** | Une seule ligne en base, initialisée par `ProductionSeeder`. Ne jamais truncate sans réinitialiser. |
-| **Tokens Sanctum** | Expiration via `SANCTUM_TOKEN_EXPIRATION` (défaut : 480 min). |
+| Point                   | Détail                                                                                                                       |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Build frontend**      | `public/build/` doit être commité — le hook ne lance pas `npm`. Builder en local avant chaque push qui touche du JS/CSS/Vue. |
+| **Pas de queue worker** | Les mails sont envoyés en synchrone (`Mail::send`). Ne pas basculer sur `Mail::queue` sans worker.                           |
+| **Cache quiz**          | Après modification d'un `quiz.{locale}.json` : `php artisan cache:forget quiz_fr` (idem `quiz_de`, `quiz_it`, `quiz_en`).    |
+| **Logos uploadés**      | Stockés dans `storage/app/public/`. Le lien `public/storage` doit exister (`storage:link`).                                  |
+| **`noindex, nofollow`** | Le site est volontairement non indexé. Ne pas retirer sans accord.                                                           |
+| **`CampaignStats`**     | Une seule ligne en base, initialisée par `ProductionSeeder`. Ne jamais truncate sans réinitialiser.                          |
+| **Tokens Sanctum**      | Expiration via `SANCTUM_TOKEN_EXPIRATION` (défaut : 480 min).                                                                |

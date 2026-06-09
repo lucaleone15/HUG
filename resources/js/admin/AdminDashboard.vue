@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { useApi } from '../composables/useApi.js'
 import { useAsyncData } from '../composables/useAsyncData.js'
+import BaseButton from '../components/ui/BaseButton.vue'
 
 const { t } = useI18n()
 const api = useApi()
@@ -19,6 +20,8 @@ const { data, loading, error, execute } = useAsyncData(async () => {
 onMounted(execute)
 
 const fmt = (n) => n?.toLocaleString('fr-CH') ?? '-'
+
+const downloadKitCts = () => window.open('/pdfs/Kit_Communication_CTS.pdf', '_blank')
 
 const usageKpis = computed(() => [
     { label: t('admin.funnel_visitors'), value: fmt(data.value?.funnel.page_viewed) },
@@ -182,6 +185,44 @@ const usageKpis = computed(() => [
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ressources CTS -->
+            <section class="mt-8">
+                <h2 class="text-lg font-bold mb-3">{{ t('admin.settings_kit_cts_section') }}</h2>
+                <div class="card bg-base-100 shadow-sm overflow-hidden">
+                    <!-- Mobile : nom + bouton icône -->
+                    <div class="sm:hidden flex items-center gap-3 p-4">
+                        <p class="font-semibold text-sm flex-1 truncate">Kit_Communication_CTS.pdf</p>
+                        <BaseButton variant="ghost" size="sm" class="text-brand shrink-0 btn-square" @click="downloadKitCts">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                        </BaseButton>
+                    </div>
+
+                    <!-- Desktop : aperçu PDF + infos -->
+                    <div class="hidden sm:flex">
+                        <div class="w-36 shrink-0 overflow-hidden border-r border-base-200 cursor-pointer bg-white" style="height: calc(144px * 297 / 210)" @click="downloadKitCts">
+                            <iframe
+                                src="/pdfs/Kit_Communication_CTS.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1"
+                                class="w-full h-full pointer-events-none border-0"
+                            />
+                        </div>
+                        <div class="flex-1 p-4 flex items-center justify-between gap-4 min-w-0">
+                            <div class="min-w-0">
+                                <p class="font-semibold text-sm">Kit_Communication_CTS.pdf</p>
+                                <p class="text-xs text-base-content/40 mt-1 leading-relaxed">{{ t('admin.settings_kit_cts_desc') }}</p>
+                            </div>
+                            <BaseButton variant="ghost" size="sm" class="text-brand shrink-0 gap-2" @click="downloadKitCts">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                                {{ t('admin.settings_kit_cts_download') }}
+                            </BaseButton>
+                        </div>
                     </div>
                 </div>
             </section>

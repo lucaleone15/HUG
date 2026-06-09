@@ -326,7 +326,7 @@ const resourceProps = (key) => {
                             </p>
                         </div>
                         <a
-                            href="/pdfs/Kit_Promotionnel.pdf"
+                            href="/pdfs/Kit_Promotionnel_entreprises.pdf"
                             download
                             class="btn bg-brand hover:bg-brand-dark text-white border-none font-semibold px-6 shrink-0 active:scale-[0.97]"
                         >
@@ -335,7 +335,7 @@ const resourceProps = (key) => {
                     </div>
                     <!-- PDF viewer -->
                     <iframe
-                        src="/pdfs/Kit_Promotionnel.pdf"
+                        src="/pdfs/Kit_Promotionnel_entreprises.pdf"
                         class="w-full block border-0"
                         style="height: 580px"
                         :title="t('kit.brochure_title')"

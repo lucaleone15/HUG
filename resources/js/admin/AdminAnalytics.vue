@@ -66,17 +66,19 @@ const deviceKey = {
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.funnel_title') }}</h2>
                         <div class="space-y-2">
-                            <div v-for="(val, key) in data.funnel" v-if="!funnelHidden.has(key)" :key="key" class="flex items-center gap-3">
-                                <span class="text-xs w-36 text-base-content/50">{{ t(funnelKey[key] ??
-                                    'admin.funnel_visitors') }}</span>
-                                <div class="flex-1 bg-base-200 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-brand h-2 rounded-full transition-all"
-                                        :style="`width:${(Math.min(val, maxVal(data.funnel)) / maxVal(data.funnel) * 100).toFixed(1)}%`">
+                            <template v-for="(val, key) in data.funnel" :key="key">
+                                <div v-if="!funnelHidden.has(key)" class="flex items-center gap-3">
+                                    <span class="text-xs w-36 text-base-content/50">{{ t(funnelKey[key] ??
+                                        'admin.funnel_visitors') }}</span>
+                                    <div class="flex-1 bg-base-200 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-brand h-2 rounded-full transition-all"
+                                            :style="`width:${(Math.min(val, maxVal(data.funnel)) / maxVal(data.funnel) * 100).toFixed(1)}%`">
+                                        </div>
                                     </div>
+                                    <span class="text-sm font-medium w-12 text-right">{{ val?.toLocaleString('fr-CH')
+                                    }}</span>
                                 </div>
-                                <span class="text-sm font-medium w-12 text-right">{{ val?.toLocaleString('fr-CH')
-                                }}</span>
-                            </div>
+                            </template>
                         </div>
                         <div class="mt-3 text-sm text-base-content/50">
                             {{ t('admin.avg_duration') }} : <strong>{{ data.avg_duration_s ? data.avg_duration_s + 's' :
