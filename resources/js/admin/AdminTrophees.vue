@@ -94,10 +94,6 @@ const save = async () => {
                         <LogoContainer :logo-url="e.logo_url" :primary-color="e.primary_color" :name="e.name"
                             size="w-8 h-8" rounded="rounded" init-rounded="rounded" class="text-xs" />
 
-                        <!-- Couleur primaire -->
-                        <div v-if="e.primary_color" class="h-4 w-4 rounded-full shrink-0 border border-base-200"
-                            :style="`background:${e.primary_color}`" :title="e.primary_color"></div>
-
                         <!-- Nom -->
                         <span class="flex-1 font-medium text-sm truncate min-w-0">{{ e.name }}</span>
 
@@ -129,10 +125,6 @@ const save = async () => {
                         <!-- gestion logo -->
                         <LogoContainer :logo-url="e.logo_url" :primary-color="e.primary_color" :name="e.name"
                             size="w-8 h-8" rounded="rounded" init-rounded="rounded" class="text-xs" />
-
-                        <!-- Couleur primaire -->
-                        <div v-if="e.primary_color" class="h-4 w-4 rounded-full shrink-0 border border-base-200"
-                            :style="`background:${e.primary_color}`" :title="e.primary_color"></div>
 
                         <!-- Nom -->
                         <span class="flex-1 text-sm truncate min-w-0 text-base-content/70">{{ e.name }}</span>

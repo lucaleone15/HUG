@@ -468,7 +468,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'education',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#1A1A1A',
-                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/e/e5/HEIG-VD_Logo_83x25_CMJN_ROUGE.svg',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/2/2c/HEIG-VD_logotype-baseline_rouge-rvb.png',
                 'employee_count'  => 100,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
