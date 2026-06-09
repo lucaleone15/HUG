@@ -231,7 +231,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'service',
                 'primary_color'   => '#F7941D',
                 'secondary_color' => '#004A97',
-                'logo_url'        => null,
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=sig-ge.ch&sz=128',
                 'employee_count'  => 1900,
                 'trophy_rank'     => 5,
                 'wants_trophy'    => true,
@@ -468,7 +468,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'education',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#1A1A1A',
-                'logo_url'        => null,
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=heig-vd.ch&sz=128',
                 'employee_count'  => 100,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -488,7 +488,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'education',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#003366',
-                'logo_url'        => null,
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=hes-so.ch&sz=128',
                 'employee_count'  => 700,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -508,7 +508,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'sante',
                 'primary_color'   => '#00AEEF',
                 'secondary_color' => '#004B7F',
-                'logo_url'        => null,
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=grangettes.ch&sz=128',
                 'employee_count'  => 520,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -553,7 +553,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'commerce',
                 'primary_color'   => '#333333',
                 'secondary_color' => '#1A1A1A',
-                'logo_url'        => null,
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=maus.ch&sz=128',
                 'employee_count'  => 2100,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -652,6 +652,15 @@ class DemoSeeder extends Seeder
                     'quiz_started', $eId, $token, [],
                     $completedAt->copy()->subMinutes(rand(2, 12))
                 );
+                // Une réponse par question du quiz
+                for ($q = 0; $q < $this->quizQuestionCount; $q++) {
+                    $analyticsRows[] = $this->event(
+                        'question_answered', $eId, $token,
+                        ['question_index' => $q],
+                        $completedAt->copy()->subSeconds(rand(10, 30) * ($this->quizQuestionCount - $q))
+                    );
+                }
+
                 $analyticsRows[] = $this->event(
                     'quiz_completed', $eId, $token,
                     ['is_eligible' => $isEligible, 'duration_s' => rand(120, 480)],
@@ -662,6 +671,14 @@ class DemoSeeder extends Seeder
                     $analyticsRows[] = $this->event(
                         'rdv_clicked', $eId, $token, [],
                         $completedAt->copy()->addSeconds(rand(5, 60))
+                    );
+                }
+
+                // ~20 % des éligibles téléchargent le kit
+                if ($isEligible && rand(1, 10) <= 2) {
+                    $analyticsRows[] = $this->event(
+                        'kit_downloaded', $eId, $token, [],
+                        $completedAt->copy()->addSeconds(rand(30, 120))
                     );
                 }
             }

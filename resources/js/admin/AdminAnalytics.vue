@@ -28,11 +28,14 @@ const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '-'
 const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
 
 const funnelKey = {
-    page_viewed: 'admin.funnel_visitors',
-    quiz_started: 'admin.funnel_started',
-    quiz_completed: 'admin.funnel_completed',
-    eligible: 'admin.funnel_eligible',
-    rdv_clicked: 'admin.funnel_rdv',
+    page_viewed:        'admin.funnel_visitors',
+    quiz_started:       'admin.funnel_started',
+    question_answered:  'admin.funnel_answered',
+    quiz_abandoned:     'admin.funnel_abandoned',
+    quiz_completed:     'admin.funnel_completed',
+    eligible:           'admin.funnel_eligible',
+    rdv_clicked:        'admin.funnel_rdv',
+    kit_downloaded:     'admin.funnel_kit',
 }
 const deviceKey = {
     mobile: 'admin.device_mobile',
