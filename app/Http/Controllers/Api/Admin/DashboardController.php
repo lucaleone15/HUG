@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnalyticsEvent;
+use App\Models\Collecte;
 use App\Models\Entreprise;
 use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
@@ -45,6 +46,9 @@ class DashboardController extends Controller
             ->pluck('total', 'device');
 
       
+        $collectes2026 = Collecte::whereYear('rdv_date', now()->year)->count();
+        $wantsTrophy   = Entreprise::where('is_active', true)->where('wants_trophy', true)->count();
+
         $perEntreprise = Entreprise::where('is_active', true)
             ->withCount([
                 'submissions as submission_count',
@@ -87,7 +91,9 @@ class DashboardController extends Controller
                 'by_referrer'           => $byReferrer,
                 'by_device'             => $byDevice,
             ],
-            'by_entreprise' => $perEntreprise,
+            'by_entreprise'  => $perEntreprise,
+            'collectes_year' => $collectes2026,
+            'wants_trophy'   => $wantsTrophy,
         ]);
     }
 }

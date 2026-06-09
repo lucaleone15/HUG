@@ -53,7 +53,7 @@ const usageKpis = computed(() => [
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
                             t('admin.kpi_collections_year') }}</div>
-                        <div class="text-3xl font-bold text-brand tabular-nums">-</div>
+                        <div class="text-3xl font-bold text-brand tabular-nums">{{ fmt(data.collectes_year) }}</div>
                     </div>
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
@@ -67,7 +67,7 @@ const usageKpis = computed(() => [
                     <div class="bg-base-100 rounded-xl shadow-sm p-5">
                         <div class="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">{{
                             t('admin.kpi_trophy_applications') }}</div>
-                        <div class="text-3xl font-bold text-brand tabular-nums">-</div>
+                        <div class="text-3xl font-bold text-brand tabular-nums">{{ fmt(data.wants_trophy) }}</div>
                     </div>
                 </div>
             </section>
