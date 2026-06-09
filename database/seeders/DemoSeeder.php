@@ -151,7 +151,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'banque',
                 'primary_color'   => '#003F7D',
                 'secondary_color' => '#C8A876',
-                'logo_url'        => 'https://logo.clearbit.com/bcge.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=bcge.ch&sz=128',
                 'employee_count'  => 850,
                 'trophy_rank'     => 1,
                 'wants_trophy'    => true,
@@ -171,7 +171,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#00833E',
                 'secondary_color' => '#C8A700',
-                'logo_url'        => 'https://logo.clearbit.com/firmenich.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=firmenich.com&sz=128',
                 'employee_count'  => 3200,
                 'trophy_rank'     => 2,
                 'wants_trophy'    => true,
@@ -191,7 +191,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'assurance',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#9B0000',
-                'logo_url'        => 'https://logo.clearbit.com/groupemutuel.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=groupemutuel.ch&sz=128',
                 'employee_count'  => 1400,
                 'trophy_rank'     => 3,
                 'wants_trophy'    => true,
@@ -211,7 +211,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'technologie',
                 'primary_color'   => '#009FE3',
                 'secondary_color' => '#003865',
-                'logo_url'        => 'https://logo.clearbit.com/sgs.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=sgs.com&sz=128',
                 'employee_count'  => 960,
                 'trophy_rank'     => 4,
                 'wants_trophy'    => true,
@@ -257,7 +257,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'banque',
                 'primary_color'   => '#836B28',
                 'secondary_color' => '#2C2C2C',
-                'logo_url'        => 'https://logo.clearbit.com/juliusbaer.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=juliusbaer.com&sz=128',
                 'employee_count'  => 7000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => true,
@@ -277,7 +277,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'assurance',
                 'primary_color'   => '#00008F',
                 'secondary_color' => '#FF1721',
-                'logo_url'        => 'https://logo.clearbit.com/axa.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=axa.ch&sz=128',
                 'employee_count'  => 8000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => true,
@@ -297,7 +297,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'technologie',
                 'primary_color'   => '#004A97',
                 'secondary_color' => '#00B0F0',
-                'logo_url'        => 'https://logo.clearbit.com/logitech.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=logitech.com&sz=128',
                 'employee_count'  => 9000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => true,
@@ -322,7 +322,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'technologie',
                 'primary_color'   => '#0053A0',
                 'secondary_color' => '#9B1A1A',
-                'logo_url'        => 'https://logo.clearbit.com/cern.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=cern.ch&sz=128',
                 'employee_count'  => 2500,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -342,7 +342,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'banque',
                 'primary_color'   => '#1B4B8B',
                 'secondary_color' => '#B8975A',
-                'logo_url'        => 'https://logo.clearbit.com/pictet.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=pictet.com&sz=128',
                 'employee_count'  => 5000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -362,7 +362,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#1A1A2E',
                 'secondary_color' => '#C5A028',
-                'logo_url'        => 'https://logo.clearbit.com/richemont.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=richemont.com&sz=128',
                 'employee_count'  => 35000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -382,7 +382,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'sante',
                 'primary_color'   => '#009FE3',
                 'secondary_color' => '#00456A',
-                'logo_url'        => 'https://logo.clearbit.com/roche.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=roche.com&sz=128',
                 'employee_count'  => 100000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -402,7 +402,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'service',
                 'primary_color'   => '#FFCC00',
                 'secondary_color' => '#CC0000',
-                'logo_url'        => 'https://logo.clearbit.com/post.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=post.ch&sz=128',
                 'employee_count'  => 50000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -423,7 +423,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#1B4332',
                 'secondary_color' => '#A07850',
-                'logo_url'        => 'https://logo.clearbit.com/rolex.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=rolex.com&sz=128',
                 'employee_count'  => 9000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -443,7 +443,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'commerce',
                 'primary_color'   => '#FF6600',
                 'secondary_color' => '#231F20',
-                'logo_url'        => 'https://logo.clearbit.com/migros.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=migros.ch&sz=128',
                 'employee_count'  => 5000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -528,7 +528,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'commerce',
                 'primary_color'   => '#E10000',
                 'secondary_color' => '#000000',
-                'logo_url'        => 'https://logo.clearbit.com/manor.ch',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=manor.ch&sz=128',
                 'employee_count'  => 10000,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -573,7 +573,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#0066CC',
                 'secondary_color' => '#003366',
-                'logo_url'        => 'https://logo.clearbit.com/lonza.com',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=lonza.com&sz=128',
                 'employee_count'  => 1800,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -712,11 +712,13 @@ class DemoSeeder extends Seeder
 
     private function randomReferrer(): string
     {
-        return fake()->randomElement(['direct', 'linkedin.com', 'email', 'intranet', 'qrcode', 'google.com']);
+        $values = ['direct', 'linkedin.com', 'email', 'intranet', 'qrcode', 'google.com'];
+        return $values[array_rand($values)];
     }
 
     private function randomDevice(): string
     {
-        return fake()->randomElement(['mobile', 'mobile', 'desktop', 'desktop', 'tablet']);
+        $values = ['mobile', 'mobile', 'desktop', 'desktop', 'tablet'];
+        return $values[array_rand($values)];
     }
 }
