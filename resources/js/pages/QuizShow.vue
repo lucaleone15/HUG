@@ -2,10 +2,10 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 import { sendAnalytics } from "../composables/useAnalytics.js";
-import { useLogoBg } from "../composables/useLogoBg.js";
 import { countries } from "../data/countries.js";
 import { COUNTRY_REGION_MAP } from "../data/countryRegions.js";
 import BaseButton from "../components/ui/BaseButton.vue";
+import LogoContainer from "../components/ui/LogoContainer.vue";
 
 const { t } = useI18n();
 
@@ -14,11 +14,6 @@ const props = defineProps({
     questions: Array,
     session_token: { type: String, default: null },
 });
-
-const { bg: logoBg } = useLogoBg(
-    () => props.entreprise?.logo_url,
-    () => props.entreprise?.primary_color,
-);
 
 // phase
 const phase = ref("intro"); // 'intro' | 'quiz'
@@ -228,15 +223,13 @@ const goBack = () => {
                             class="topbar-hug-logo"
                         />
                         <span class="topbar-brand-sep">×</span>
-                        <img
-                            v-if="entreprise.logo_url"
-                            :src="entreprise.logo_url"
-                            :alt="entreprise.name"
-                            class="topbar-ent-logo"
+                        <LogoContainer
+                            :logo-url="entreprise.logo_url"
+                            :primary-color="entreprise.primary_color"
+                            :name="entreprise.name"
+                            size="w-8 h-8"
+                            rounded="rounded-lg"
                         />
-                        <span v-else class="topbar-ent-name">{{
-                            entreprise.name
-                        }}</span>
                     </div>
                     <button
                         class="intro-close-btn"
@@ -387,15 +380,13 @@ const goBack = () => {
                                 class="topbar-hug-logo"
                             />
                             <span class="topbar-brand-sep">×</span>
-                            <img
-                                v-if="entreprise.logo_url"
-                                :src="entreprise.logo_url"
-                                :alt="entreprise.name"
-                                class="topbar-ent-logo"
+                            <LogoContainer
+                                :logo-url="entreprise.logo_url"
+                                :primary-color="entreprise.primary_color"
+                                :name="entreprise.name"
+                                size="w-8 h-8"
+                                rounded="rounded-lg"
                             />
-                            <span v-else class="topbar-ent-name">{{
-                                entreprise.name
-                            }}</span>
                         </div>
                     </div>
                     <!-- Droite : progression -->
@@ -1499,13 +1490,6 @@ const goBack = () => {
     font-size: 18px;
     color: rgba(255, 255, 255, 0.3);
     font-weight: 300;
-}
-.topbar-ent-logo {
-    height: 28px;
-    max-width: 120px;
-    object-fit: contain;
-    opacity: 0.75;
-    filter: brightness(0) invert(1);
 }
 .topbar-ent-name {
     font-size: 15px;

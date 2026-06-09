@@ -25,12 +25,13 @@ onMounted(async () => {
 watch(filterEntreprise, execute)
 
 const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '-'
-const maxVal = (obj) => Math.max(...Object.values(obj).map(Number), 1)
+// question_answered est exclu : unité différente (1 event/question, pas 1 event/utilisateur)
+const funnelHidden = new Set(['question_answered'])
+const maxVal = (obj) => Math.max(...Object.entries(obj).filter(([k]) => !funnelHidden.has(k)).map(([, v]) => Number(v)), 1)
 
 const funnelKey = {
     page_viewed:        'admin.funnel_visitors',
     quiz_started:       'admin.funnel_started',
-    question_answered:  'admin.funnel_answered',
     quiz_abandoned:     'admin.funnel_abandoned',
     quiz_completed:     'admin.funnel_completed',
     eligible:           'admin.funnel_eligible',
@@ -65,7 +66,7 @@ const deviceKey = {
                     <div class="card-body">
                         <h2 class="font-semibold mb-3">{{ t('admin.funnel_title') }}</h2>
                         <div class="space-y-2">
-                            <div v-for="(val, key) in data.funnel" :key="key" class="flex items-center gap-3">
+                            <div v-for="(val, key) in data.funnel" v-if="!funnelHidden.has(key)" :key="key" class="flex items-center gap-3">
                                 <span class="text-xs w-36 text-base-content/50">{{ t(funnelKey[key] ??
                                     'admin.funnel_visitors') }}</span>
                                 <div class="flex-1 bg-base-200 rounded-full h-2 overflow-hidden">
@@ -128,7 +129,7 @@ const deviceKey = {
                             <div v-for="(count, ref) in data.by_referrer" :key="ref" class="flex items-center gap-3">
                                 <span class="text-xs w-24 truncate text-base-content/60">{{ ref }}</span>
                                 <div class="flex-1 bg-base-200 rounded-full h-2">
-                                    <div class="bg-[--color-info] h-2 rounded-full"
+                                    <div class="bg-info h-2 rounded-full"
                                         :style="`width:${(count / maxVal(data.by_referrer) * 100).toFixed(1)}%`"></div>
                                 </div>
                                 <span class="text-xs w-8 text-right">{{ count }}</span>

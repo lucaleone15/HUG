@@ -171,7 +171,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#00833E',
                 'secondary_color' => '#C8A700',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=firmenich.com&sz=128',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/3/33/DSM-Firmenich_Logo_2023.svg',
                 'employee_count'  => 3200,
                 'trophy_rank'     => 2,
                 'wants_trophy'    => true,
@@ -226,12 +226,12 @@ class DemoSeeder extends Seeder
                 'rdv_date'        => '2026-10-10',
             ],
             [
-                'name'            => 'SIG — Services Industriels de Genève',
+                'name'            => 'Services Industriels de Genève',
                 'slug'            => 'sig',
                 'type'            => 'service',
                 'primary_color'   => '#F7941D',
                 'secondary_color' => '#004A97',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=sig-ge.ch&sz=128',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/0/05/SIG_Gen%C3%A8ve_logo.svg',
                 'employee_count'  => 1900,
                 'trophy_rank'     => 5,
                 'wants_trophy'    => true,
@@ -468,7 +468,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'education',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#1A1A1A',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=heig-vd.ch&sz=128',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/e/e5/HEIG-VD_Logo_83x25_CMJN_ROUGE.svg',
                 'employee_count'  => 100,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -488,7 +488,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'education',
                 'primary_color'   => '#E30613',
                 'secondary_color' => '#003366',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=hes-so.ch&sz=128',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/4/49/HES-SO_logo_CMJN.jpg',
                 'employee_count'  => 700,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -508,7 +508,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'sante',
                 'primary_color'   => '#00AEEF',
                 'secondary_color' => '#004B7F',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=grangettes.ch&sz=128',
+                'logo_url'        => 'https://www.google.com/s2/favicons?domain=hirslanden.ch&sz=128',
                 'employee_count'  => 520,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -573,7 +573,7 @@ class DemoSeeder extends Seeder
                 'type'            => 'industrie',
                 'primary_color'   => '#0066CC',
                 'secondary_color' => '#003366',
-                'logo_url'        => 'https://www.google.com/s2/favicons?domain=lonza.com&sz=128',
+                'logo_url'        => 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Lonza_Logo.svg',
                 'employee_count'  => 1800,
                 'trophy_rank'     => null,
                 'wants_trophy'    => false,
@@ -729,13 +729,20 @@ class DemoSeeder extends Seeder
 
     private function randomReferrer(): string
     {
-        $values = ['direct', 'linkedin.com', 'email', 'intranet', 'qrcode', 'google.com'];
+        $values = [
+            'direct',       'direct',       'direct',       'direct',
+            'email',        'email',        'email',
+            'intranet',     'intranet',
+            'linkedin.com', 'linkedin.com',
+            'qrcode',
+            'google.com',
+        ];
         return $values[array_rand($values)];
     }
 
     private function randomDevice(): string
     {
-        $values = ['mobile', 'mobile', 'desktop', 'desktop', 'tablet'];
+        $values = ['mobile', 'mobile', 'mobile', 'desktop', 'desktop', 'tablet'];
         return $values[array_rand($values)];
     }
 }
