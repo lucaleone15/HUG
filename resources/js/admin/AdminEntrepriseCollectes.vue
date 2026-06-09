@@ -179,22 +179,24 @@ async function deleteCollecte(c) {
                             class="rounded-lg border border-base-200 text-sm overflow-hidden">
 
                             <!-- affichage -->
-                            <div v-if="editingId !== c.id" class="flex items-start gap-3 p-3">
-                                <span :class="c.is_active
-                                    ? 'badge badge-success badge-sm mt-0.5 shrink-0'
-                                    : 'badge badge-ghost badge-sm mt-0.5 shrink-0'">
-                                    {{ c.is_active ? t('admin.collecte_status_active') :
-                                        t('admin.collecte_status_inactive') }}
-                                </span>
-                                <div class="flex-1 min-w-0">
-                                    <a :href="c.ondoc_url" target="_blank" rel="noopener"
-                                        class="link link-hover text-primary text-xs font-mono break-all block">
-                                        {{ c.ondoc_url }}
-                                    </a>
-                                    <div v-if="c.label || c.rdv_date" class="text-xs text-base-content/50 mt-0.5">
-                                        <span v-if="c.label">{{ c.label }}</span>
-                                        <span v-if="c.label && c.rdv_date"> · </span>
-                                        <span v-if="c.rdv_date">{{ c.rdv_date }}</span>
+                            <div v-if="editingId !== c.id" class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3 p-3">
+                                <div class="flex items-start gap-3 flex-1 min-w-0">
+                                    <span :class="c.is_active
+                                        ? 'badge badge-success badge-sm mt-0.5 shrink-0'
+                                        : 'badge badge-ghost badge-sm mt-0.5 shrink-0'">
+                                        {{ c.is_active ? t('admin.collecte_status_active') :
+                                            t('admin.collecte_status_inactive') }}
+                                    </span>
+                                    <div class="flex-1 min-w-0">
+                                        <a :href="c.ondoc_url" target="_blank" rel="noopener"
+                                            class="link link-hover text-primary text-xs font-mono break-all block">
+                                            {{ c.ondoc_url }}
+                                        </a>
+                                        <div v-if="c.label || c.rdv_date" class="text-xs text-base-content/50 mt-0.5">
+                                            <span v-if="c.label">{{ c.label }}</span>
+                                            <span v-if="c.label && c.rdv_date"> · </span>
+                                            <span v-if="c.rdv_date">{{ c.rdv_date }}</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="flex gap-1 shrink-0">

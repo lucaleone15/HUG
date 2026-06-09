@@ -59,6 +59,7 @@ class ReportController extends Controller
             'contact_name'   => $entreprise->contact_name,
             'contact_email'  => $entreprise->contact_email,
             'logo_url'       => $entreprise->logo_url,
+            'primary_color'  => $entreprise->primary_color,
         ];
 
         $participationData = [
