@@ -690,7 +690,7 @@ onBeforeUnmount(() => {
                             {{ t("entreprise.cta_section_line3") }}
                         </p>
                         <a
-                            href="https://www.hug.ch/don-du-sang"
+                            href="/"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="btn border-2 bg-transparent font-semibold px-6 rounded-sm active:scale-[0.97] w-full md:w-auto mt-4"
