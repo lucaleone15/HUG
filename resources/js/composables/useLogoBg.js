@@ -43,7 +43,6 @@ async function detect(url, primaryColor) {
 async function detectRaster(url, primaryColor) {
     return new Promise((resolve) => {
         const img = new Image()
-        img.crossOrigin = 'anonymous'
         img.onload = () => {
             try {
                 const size = 32
