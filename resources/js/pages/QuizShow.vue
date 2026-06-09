@@ -844,7 +844,6 @@ const goBack = () => {
                                                     v-if="trip.region"
                                                     class="trip-region-tag"
                                                 >
-                                                    <span>📍</span>
                                                     {{ trip.region }}
                                                 </div>
                                                 <div
@@ -1838,8 +1837,9 @@ const goBack = () => {
 }
 .trip-warning {
     font-size: 11px;
-    color: var(--color-warning);
-    background: color-mix(in srgb, var(--color-warning) 8%, transparent);
+    color: var(--color-doc-ink);
+    background: color-mix(in srgb, var(--color-warning) 10%, transparent);
+    border-left: 2px solid var(--color-warning);
     padding: 6px 10px;
     border-radius: 2px;
 }
