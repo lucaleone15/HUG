@@ -502,7 +502,8 @@ const steps = computed(() => [
 }
 
 .marquee-track {
-    animation: marquee 30s linear infinite;
+    width: max-content;
+    animation: marquee 16s linear infinite;
     will-change: transform;
 }
 .marquee-container:hover .marquee-track {
@@ -562,9 +563,9 @@ const steps = computed(() => [
     font-size: clamp(1.1rem, 2vw, 1.4rem);
 }
 .how-step-desc {
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     line-height: 1.75;
-    color: oklch(58% 0.008 24);
+    color: oklch(72% 0.008 24);
 }
 @media (max-width: 680px) {
     .how-steps-grid {
