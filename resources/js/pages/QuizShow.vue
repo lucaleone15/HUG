@@ -1786,6 +1786,7 @@ const goBack = () => {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-width: 0;
 }
 .travel-trip {
     border: 1.5px solid var(--color-doc-border);
@@ -1794,6 +1795,8 @@ const goBack = () => {
     flex-direction: column;
     gap: 6px;
     border-radius: 2px;
+    min-width: 0;
+    box-sizing: border-box;
 }
 .trip-header {
     display: flex;
@@ -1836,7 +1839,9 @@ const goBack = () => {
 .quiz-select,
 .quiz-input {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.4);
     border: 1.5px solid var(--color-doc-border);
     border-radius: 2px;
