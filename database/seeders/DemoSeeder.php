@@ -6,6 +6,7 @@ use App\Models\CampaignStats;
 use App\Models\Entreprise;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -100,11 +101,14 @@ class DemoSeeder extends Seeder
 
         $rows = [];
         foreach ($data as $row) {
-            $rows[] = array_merge($row, [
-                'access_token' => Str::random(48),
-                'created_at'   => $now,
-                'updated_at'   => $now,
-            ]);
+            $rows[] = array_merge(
+                Arr::except($row, ['rdv_url', 'rdv_date']),
+                [
+                    'access_token' => Str::random(48),
+                    'created_at'   => $now,
+                    'updated_at'   => $now,
+                ]
+            );
         }
 
         DB::table('entreprises')->insert($rows);
@@ -162,7 +166,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Marc Fontaine',
                 'contact_email'   => 'rh@bcge.ch',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-bcge-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-09-15',
             ],
             [
@@ -182,7 +186,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Sophie Müller',
                 'contact_email'   => 'wellbeing@firmenich.com',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-firmenich-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-09-22',
             ],
             [
@@ -202,7 +206,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Alain Pernet',
                 'contact_email'   => 'rh@groupemutuel.ch',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-groupe-mutuel-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-10-03',
             ],
             [
@@ -222,7 +226,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Céline Rochat',
                 'contact_email'   => 'hr@sgs.com',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sgs-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-10-10',
             ],
             [
@@ -242,7 +246,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Pierre-Alain Duc',
                 'contact_email'   => 'rh@sig-ge.ch',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-sig-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-10-17',
             ],
 
@@ -268,7 +272,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'de',
                 'contact_name'    => 'Katharina Meier',
                 'contact_email'   => 'hr@juliusbaer.com',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-julius-baer-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-11-05',
             ],
             [
@@ -288,7 +292,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Christine Vogel',
                 'contact_email'   => 'rh@axa.ch',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-axa-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-11-12',
             ],
             [
@@ -353,7 +357,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Nathalie Clerc',
                 'contact_email'   => 'rh@pictet.com',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-pictet-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-11-20',
             ],
             [
@@ -393,7 +397,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Isabelle Favre',
                 'contact_email'   => 'hr@roche.com',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-roche-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-12-01',
             ],
             [
@@ -413,7 +417,7 @@ class DemoSeeder extends Seeder
                 'locale'          => 'fr',
                 'contact_name'    => 'Martine Dupont',
                 'contact_email'   => 'rh@post.ch',
-                'rdv_url'         => 'https://www.onedoc.ch/fr/don-de-sang/geneve/collecte-la-poste-2026',
+                'rdv_url'         => 'https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug',
                 'rdv_date'        => '2026-12-08',
             ],
             [

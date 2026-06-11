@@ -85,6 +85,10 @@
 
 .btn {
     box-shadow: none;
+    height: auto;
+    min-height: var(--size);
+    padding-block: 0.5rem;
+    white-space: normal;
     transition: transform 140ms var(--ease-out),
                 background-color 150ms ease,
                 box-shadow 150ms ease,

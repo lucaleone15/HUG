@@ -109,15 +109,12 @@ Champs :
 - is_public        boolean default true   → visible dans trophée/leaderboard public
 - trophy_rank      unsignedTinyInt nullable → 1/2/3 = podium, null = non classée
 - wants_trophy     boolean default false  → participation volontaire au trophée
-- rdv_url          string nullable        → lien de réservation CTS (legacy, voir Collecte)
-- rdv_date         date nullable          → date collecte (legacy, voir Collecte)
 - type             enum nullable → banque | assurance | industrie | commerce | service | technologie | sante | education | autre
 - locale           string nullable        → locale email (fr | de | it | en)
 - timestamps
 
 Casts  : is_active → boolean, is_labelled → boolean, is_validated → boolean,
-         is_public → boolean, wants_trophy → boolean, trophy_rank → integer,
-         rdv_date → date:Y-m-d
+         is_public → boolean, wants_trophy → boolean, trophy_rank → integer
 Méthode: getRouteKeyName() → 'access_token'   ← route key = access_token, pas slug
          activeCollecte() → HasOne (Collecte active la plus récente)
 ```
@@ -253,6 +250,7 @@ Relations :
 10. add_is_public_to_entreprises_table        ✅  (is_public : boolean default true)
 11. add_access_token_to_entreprises_table     ✅  (access_token : string unique, 48 chars)
 12. create_collectes_table                    ✅  (ondoc_url, rdv_date, label, is_active)
+13. drop_rdv_url_and_rdv_date_from_entreprises_table ✅  (rdv_url/rdv_date déplacés vers Collecte)
 ```
 
 ---
@@ -308,6 +306,7 @@ Relations :
 | `ContactController`       | `index()` `store()`           | Formulaire multi-type → envoie `ContactFormMail`             |
 | `InscriptionController`   | `index()` `store()`           | Formulaire d'inscription → envoie `NewRegistrationNotification` à `info@donnez-votre-sang.ch` |
 | `ReportPreviewController` | `show(string $token)`         | Preview rapport PDF via cache temporaire (`report_preview:{token}`) |
+| `PrivacyController`       | `index()`                     | Page statique "Confidentialité & cookies"                    |
 
 ---
 
@@ -350,7 +349,7 @@ Relations :
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `UserResource`            | `id`, `name`, `email`                                                                                                                        |
 | `EntrepriseResource`      | `id`, `name`, `slug`, `logo_url`, `primary_color`, `secondary_color`, `employee_count`, `is_labelled`, `is_validated`, `trophy_rank`, `type` |
-| `AdminEntrepriseResource` | Hérite de `EntrepriseResource` + `contact_name`, `contact_email`, `is_public`, `access_token`, `wants_trophy`, `rdv_url`, `rdv_date`, `eligible_count`, `submission_count` |
+| `AdminEntrepriseResource` | Hérite de `EntrepriseResource` + `contact_name`, `contact_email`, `is_public`, `access_token`, `wants_trophy`, `eligible_count`, `submission_count` |
 | `SubmissionResource`      | `id`, `is_eligible`, `completed_at`, entreprise résumée                                                                                      |
 | `LeaderboardResource`     | classement avec nb éligibles + taux de participation                                                                                         |
 | `CampaignStatsResource`   | `donations_count`, `lives_saved`, `hug_hospitals_count` + stats calculées                                                                    |
@@ -371,6 +370,8 @@ Route::post('/contact',                  [ContactController::class, 'store']);
 
 Route::get('/inscription',               [InscriptionController::class, 'index']);
 Route::post('/inscription',              [InscriptionController::class, 'store']);
+
+Route::get('/confidentialite',           [PrivacyController::class, 'index']);
 
 // Résolution par access_token (getRouteKeyName = 'access_token')
 Route::get('/c/{entreprise}',            [EntrepriseController::class, 'show']);

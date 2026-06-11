@@ -1836,6 +1836,7 @@ const goBack = () => {
 .quiz-select,
 .quiz-input {
     width: 100%;
+    min-width: 0;
     background: rgba(255, 255, 255, 0.4);
     border: 1.5px solid var(--color-doc-border);
     border-radius: 2px;

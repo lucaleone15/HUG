@@ -33,7 +33,7 @@ const formattedDate = computed(() => {
 const onRdvClick = () => {
     sendAnalytics("rdv_clicked", props.entreprise.id, null, {});
     window.open(
-        props.entreprise.rdv_url || "https://www.onedoc.ch",
+        props.entreprise.rdv_url || "https://www.onedoc.ch/fr/hopital/geneve/e1jf/don-du-sang-hug",
         "_blank",
         "noopener,noreferrer",
     );
@@ -260,40 +260,42 @@ const goToContact = () => {
                         }}
                     </div>
 
-                    <!-- Boutons de partage intégrés dans le dossier -->
-                    <div class="dossier-rule"></div>
-                    <div class="dossier-share-section">
-                        <h3 class="share-section-title">
-                            {{ t("result.referral_section_title") }}
-                        </h3>
-                        <div class="dossier-share">
-                            <BaseButton
-                                variant="primary"
-                                class="!rounded-sm flex-1"
-                                @click="copyLink"
-                            >
-                                {{
-                                    copied
-                                        ? t("result.referral_copied")
-                                        : t("result.referral_copy")
-                                }}
-                            </BaseButton>
-                            <BaseButton
-                                variant="primary"
-                                class="!rounded-sm flex-1"
-                                @click="openMail"
-                            >
-                                {{ t("result.share_mail") }}
-                            </BaseButton>
-                            <BaseButton
-                                variant="primary"
-                                class="!rounded-sm flex-1"
-                                @click="openWhatsapp"
-                            >
-                                {{ t("result.referral_whatsapp") }}
-                            </BaseButton>
+                    <!-- Boutons de partage intégrés dans le dossier (uniquement si non éligible) -->
+                    <template v-if="!eligible">
+                        <div class="dossier-rule"></div>
+                        <div class="dossier-share-section">
+                            <h3 class="share-section-title">
+                                {{ t("result.referral_section_title") }}
+                            </h3>
+                            <div class="dossier-share">
+                                <BaseButton
+                                    variant="primary"
+                                    class="!rounded-sm flex-1"
+                                    @click="copyLink"
+                                >
+                                    {{
+                                        copied
+                                            ? t("result.referral_copied")
+                                            : t("result.referral_copy")
+                                    }}
+                                </BaseButton>
+                                <BaseButton
+                                    variant="primary"
+                                    class="!rounded-sm flex-1"
+                                    @click="openMail"
+                                >
+                                    {{ t("result.share_mail") }}
+                                </BaseButton>
+                                <BaseButton
+                                    variant="primary"
+                                    class="!rounded-sm flex-1"
+                                    @click="openWhatsapp"
+                                >
+                                    {{ t("result.referral_whatsapp") }}
+                                </BaseButton>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </main>
@@ -668,11 +670,12 @@ const goToContact = () => {
 .dossier-share {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
 }
 @media (min-width: 640px) {
     .dossier-share {
         flex-direction: row;
+        gap: 16px;
     }
 }
 

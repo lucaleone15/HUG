@@ -40,7 +40,7 @@
     "campaign_badge": "Donazione del sangue"
   },
   "trophee": {
-    "title": "Trophée SangSationnel",
+    "title": "Trophée Sangsationnel",
     "subtitle": "Le aziende premiate per il loro straordinario impegno nella campagna di donazione del sangue.",
     "no_winners": "Nessun vincitore per il momento.",
     "gold": "Oro",
@@ -55,7 +55,7 @@
     "rank_title": "Classifica",
     "rank_subtitle": "Le aziende in lizza per il Trofeo di questa edizione.",
     "palmares_title": "Palmares delle edizioni precedenti",
-    "palmares_subtitle": "Le aziende che hanno vinto il Trophée SangSationnel dalla creazione della campagna.",
+    "palmares_subtitle": "Le aziende che hanno vinto il Trophée Sangsationnel dalla creazione della campagna.",
     "winner_label": "Vincitore/Vincitrice",
     "stat_donations": "donazioni",
     "stat_participation": "collaboratori mobilitati",
@@ -71,10 +71,10 @@
     "criteria_3_desc": "Mezzi messi in campo: comunicazione, tempo liberato, ambasciatori/trici",
     "visual_badge": "Donazione del sangue",
     "visual_line1": "Trophée",
-    "visual_line2": "SangSationnel",
+    "visual_line2": "Sangsationnel",
     "download_visual": "Scarica il visual",
     "download_section_title": "Scarica il visual del Trofeo",
-    "download_section_text": "Utilizzate il visual ufficiale del Trophée SangSationnel nelle vostre comunicazioni interne o esterne."
+    "download_section_text": "Utilizzate il visual ufficiale del Trophée Sangsationnel nelle vostre comunicazioni interne o esterne."
   },
   "label": {
     "title": "Label 100 pour Sang",
@@ -478,7 +478,41 @@
     "contact_title": "Contatto",
     "disclaimer_label": "Progetto studentesco",
     "disclaimer_text": "Questo sito è stato realizzato nell'ambito di un progetto accademico alla HEIG-VD e non è il sito ufficiale delle organizzazioni menzionate.",
-    "official_link": "Sito ufficiale HUG: Donazione del sangue"
+    "official_link": "Sito ufficiale HUG: Donazione del sangue",
+    "privacy_link": "Riservatezza e cookie",
+    "legal_title": "Legale"
+  },
+  "privacy": {
+    "title": "Riservatezza e cookie",
+    "subtitle": "Come vengono trattati i tuoi dati su questo sito",
+    "updated": "Ultimo aggiornamento: giugno 2026",
+    "intro_title": "Presentazione",
+    "intro_text": "Questa pagina spiega quali dati vengono raccolti su questo sito, per quale scopo e quali cookie vengono utilizzati. Questo sito è un progetto accademico realizzato nell'ambito della HEIG-VD per conto del Centro Trasfusionale degli Ospedali Universitari di Ginevra (HUG).",
+    "controller_title": "Responsabile del trattamento",
+    "controller_text": "Per qualsiasi domanda relativa ai tuoi dati, puoi contattare il team del progetto all'indirizzo info{'@'}donnez-votre-sang.ch.",
+    "quiz_title": "Quiz di idoneità alla donazione di sangue",
+    "quiz_text": "Il quiz è rigorosamente anonimo: le tue risposte non vengono mai registrate in un database e non sono associate a nessuna identità. Il risultato (idoneo o meno) serve solo a essere mostrato e viene conservato solo per la durata della sessione.",
+    "inscription_title": "Modulo di iscrizione aziendale",
+    "inscription_text": "Quando un'azienda si iscrive alla campagna, registriamo il nome dell'azienda, il settore di attività, il numero di collaboratori, il nome e l'email della persona di contatto, così come gli elementi visivi forniti (logo, colori). Queste informazioni servono esclusivamente a gestire la partecipazione dell'azienda alla campagna e a contattarla in merito.",
+    "contact_title": "Modulo di contatto",
+    "contact_text": "Le informazioni inserite nel modulo di contatto (nome, email, messaggio) vengono trasmesse via email al team del progetto e non sono conservate nel database del sito.",
+    "analytics_title": "Statistiche di utilizzo",
+    "analytics_text": "Registriamo statistiche anonime sull'utilizzo del sito (pagine visitate, fasi del quiz, clic sui link di appuntamento) tramite un identificatore di sessione anonimo e temporaneo. Questi dati non permettono di identificarti.",
+    "cookies_title": "Cookie utilizzati",
+    "cookies_intro": "Questo sito utilizza esclusivamente cookie strettamente necessari al suo funzionamento. Non viene depositato alcun cookie pubblicitario o di tracciamento di terze parti.",
+    "cookies_table_name": "Cookie",
+    "cookies_table_purpose": "Finalità",
+    "cookies_table_duration": "Durata",
+    "cookies_0_name": "locale",
+    "cookies_0_purpose": "Memorizza la lingua scelta per il sito",
+    "cookies_0_duration": "1 anno",
+    "cookies_1_name": "laravel_session",
+    "cookies_1_purpose": "Mantiene la tua sessione e protegge il sito da attacchi (sicurezza, CSRF)",
+    "cookies_1_duration": "Sessione (eliminato alla chiusura del browser)",
+    "rights_title": "I tuoi diritti",
+    "rights_text": "Conformemente alla legislazione applicabile in materia di protezione dei dati, puoi richiedere l'accesso, la rettifica o la cancellazione dei dati che ti riguardano scrivendo a info{'@'}donnez-votre-sang.ch.",
+    "academic_title": "Nota accademica",
+    "academic_text": "Questo sito è realizzato nell'ambito di un progetto studentesco presso la HEIG-VD e non è il sito ufficiale delle organizzazioni menzionate. Ha una finalità dimostrativa."
   },
   "admin": {
     "status_pending": "In attesa",
