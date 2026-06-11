@@ -61,7 +61,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-B-Fv4x7s.js",
+    "file": "assets/app-CKUfGzv5.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -72,7 +72,7 @@
       "resources/js/locales/it.json"
     ],
     "css": [
-      "assets/app-Bww0mld5.css"
+      "assets/app-wPk4u3py.css"
     ]
   },
   "resources/js/locales/de.json": {

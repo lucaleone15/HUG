@@ -1856,6 +1856,10 @@ const goBack = () => {
 .quiz-input:focus {
     border-color: var(--color-doc-ink-muted);
 }
+input[type="date"].quiz-input {
+    -webkit-appearance: none;
+    appearance: none;
+}
 .quiz-input::-webkit-date-and-time-value {
     min-width: 0;
     text-align: left;
