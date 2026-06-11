@@ -1855,6 +1855,10 @@ const goBack = () => {
 .quiz-input:focus {
     border-color: var(--color-doc-ink-muted);
 }
+.quiz-input::-webkit-date-and-time-value {
+    min-width: 0;
+    text-align: left;
+}
 
 .mobile-card-header {
     display: flex;
