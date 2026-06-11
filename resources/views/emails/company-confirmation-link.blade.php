@@ -2,8 +2,8 @@
     $dossierCode = 'SANG-' . date('y');
     $pageUrl = route('entreprise.show', $entreprise);
     $adminUrl = config('app.url') . '/admin';
-    $dateFormatted = $entreprise->rdv_date
-        ? \Carbon\Carbon::parse($entreprise->rdv_date)
+    $dateFormatted = $entreprise->activeCollecte?->rdv_date
+        ? \Carbon\Carbon::parse($entreprise->activeCollecte->rdv_date)
             ->locale(app()->getLocale())
             ->translatedFormat('j F Y')
         : null;

@@ -27,8 +27,6 @@ class Entreprise extends Model
         'is_public',
         'trophy_rank',
         'wants_trophy',
-        'rdv_url',
-        'rdv_date',
         'type',
         'locale'
     ];
@@ -41,7 +39,6 @@ class Entreprise extends Model
         'is_public' => 'boolean',
         'trophy_rank' => 'integer',
         'wants_trophy' => 'boolean',
-        'rdv_date' => 'date:Y-m-d',
     ];
 
     public function getRouteKeyName(): string

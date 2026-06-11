@@ -85,8 +85,6 @@ class EntrepriseController extends Controller
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
             'wants_trophy'    => 'boolean',
             'is_public'       => 'boolean',
-            'rdv_url'         => 'nullable|url|max:2048',
-            'rdv_date'        => 'nullable|date',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -134,8 +132,6 @@ class EntrepriseController extends Controller
             'trophy_rank'     => 'nullable|integer|min:1|max:255',
             'wants_trophy'    => 'boolean',
             'is_public'       => 'boolean',
-            'rdv_url'         => 'nullable|url|max:2048',
-            'rdv_date'        => 'nullable|date',
         ]);
 
         if ($request->hasFile('logo')) {

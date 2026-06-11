@@ -14,8 +14,6 @@ class AdminEntrepriseResource extends EntrepriseResource
             'is_public'        => $this->is_public,
             'access_token'     => $this->access_token,
             'wants_trophy'     => $this->wants_trophy,
-            'rdv_url'          => $this->rdv_url,
-            'rdv_date'         => $this->rdv_date?->format('Y-m-d'),
             'eligible_count'   => $this->eligible_count   ?? null,
             'submission_count' => $this->submission_count ?? null,
         ]);

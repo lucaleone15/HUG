@@ -29,6 +29,11 @@ const logoError = ref(false)
                         <li><a href="/label"        class="text-sm text-white/60 hover:text-white transition-colors">{{ t('nav.label') }}</a></li>
                         <li><a href="/inscription"  class="text-sm text-white/60 hover:text-white transition-colors">{{ t('nav.inscription') }}</a></li>
                     </ul>
+
+                    <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mt-8 mb-4">Admin</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/admin" class="text-sm text-white/60 hover:text-white transition-colors">Admin</a></li>
+                    </ul>
                 </div>
 
                 <!-- Contact -->
@@ -40,6 +45,11 @@ const logoError = ref(false)
                                 info@donnez-votre-sang.ch
                             </a>
                         </li>
+                    </ul>
+
+                    <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mt-8 mb-4">{{ t('footer.legal_title') }}</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/confidentialite" class="text-sm text-white/60 hover:text-white transition-colors">{{ t('footer.privacy_link') }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -62,9 +72,8 @@ const logoError = ref(false)
 
         <!-- Bottom bar -->
         <div class="border-t border-white/10 px-6 py-4">
-            <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="max-w-5xl mx-auto">
                 <span class="text-xs text-white/30">© {{ year }} HUG</span>
-                <a href="/admin" class="text-xs text-white/15 hover:text-white/40 transition-colors">Admin</a>
             </div>
         </div>
 

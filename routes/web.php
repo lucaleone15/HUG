@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ReportPreviewController;
 use App\Http\Controllers\TropheeController;
@@ -19,6 +20,8 @@ Route::get('/kit-promo', [KitController::class, 'index'])->name('kit-promo');
 Route::get('/generateur-email', [EmailGeneratorController::class, 'index'])->name('email-generator');
 Route::get('/contact',     [ContactController::class, 'index'])->name('contact');
 Route::post('/contact',    [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+
+Route::get('/confidentialite', [PrivacyController::class, 'index'])->name('confidentialite');
 
 Route::get('/inscription', [InscriptionController::class, 'index'])->name('inscription');
 Route::post('/inscription',[InscriptionController::class, 'store'])->middleware('throttle:3,1')->name('inscription.store');

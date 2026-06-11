@@ -40,7 +40,7 @@
     "campaign_badge": "Blood Donation"
   },
   "trophee": {
-    "title": "Trophée SangSationnel",
+    "title": "Trophée Sangsationnel",
     "subtitle": "Companies recognised for their exceptional commitment to the Blood Donation campaign.",
     "no_winners": "No winners yet.",
     "gold": "Gold",
@@ -55,7 +55,7 @@
     "rank_title": "Rankings",
     "rank_subtitle": "The companies competing for this edition's Trophy.",
     "palmares_title": "Hall of Fame: Previous editions",
-    "palmares_subtitle": "The companies that have won the Trophée SangSationnel since the campaign was founded.",
+    "palmares_subtitle": "The companies that have won the Trophée Sangsationnel since the campaign was founded.",
     "winner_label": "Winner",
     "stat_donations": "donations",
     "stat_participation": "employees mobilised",
@@ -71,10 +71,10 @@
     "criteria_3_desc": "Means deployed: communication, time off, ambassadors",
     "visual_badge": "Blood Donation",
     "visual_line1": "Trophée",
-    "visual_line2": "SangSationnel",
+    "visual_line2": "Sangsationnel",
     "download_visual": "Download the visual",
     "download_section_title": "Download the Trophy visual",
-    "download_section_text": "Use the official Trophée SangSationnel visual in your internal or external communications."
+    "download_section_text": "Use the official Trophée Sangsationnel visual in your internal or external communications."
   },
   "label": {
     "title": "Label 100 pour Sang",
@@ -478,7 +478,41 @@
     "contact_title": "Contact",
     "disclaimer_label": "Student project",
     "disclaimer_text": "This website was created as part of an academic project at HEIG-VD and is not the official website of the organisations mentioned.",
-    "official_link": "HUG official website: Blood Donation"
+    "official_link": "HUG official website: Blood Donation",
+    "privacy_link": "Privacy & cookies",
+    "legal_title": "Legal"
+  },
+  "privacy": {
+    "title": "Privacy & cookies",
+    "subtitle": "How your data is handled on this site",
+    "updated": "Last updated: June 2026",
+    "intro_title": "Overview",
+    "intro_text": "This page explains what data is collected on this site, for what purpose, and which cookies are used. This site is an academic project carried out at HEIG-VD on behalf of the Blood Transfusion Centre of the Geneva University Hospitals (HUG).",
+    "controller_title": "Data controller",
+    "controller_text": "For any question regarding your data, you can contact the project team at info{'@'}donnez-votre-sang.ch.",
+    "quiz_title": "Blood donation eligibility quiz",
+    "quiz_text": "The quiz is strictly anonymous: your answers are never stored in a database and are not linked to any identity. The result (eligible or not) is only used to display it to you and is kept only for the duration of the session.",
+    "inscription_title": "Company registration form",
+    "inscription_text": "When a company registers for the campaign, we store the company name, its sector of activity, the number of employees, the name and email of the contact person, as well as the visual elements provided (logo, colours). This information is used solely to manage the company's participation in the campaign and to contact it about it.",
+    "contact_title": "Contact form",
+    "contact_text": "The information entered in the contact form (name, email, message) is sent by email to the project team and is not stored in the site's database.",
+    "analytics_title": "Usage statistics",
+    "analytics_text": "We record anonymous statistics on the use of the site (pages viewed, quiz steps, clicks on appointment links) using an anonymous, temporary session identifier. This data does not allow you to be identified.",
+    "cookies_title": "Cookies used",
+    "cookies_intro": "This site only uses cookies that are strictly necessary for it to function. No advertising or third-party tracking cookies are set.",
+    "cookies_table_name": "Cookie",
+    "cookies_table_purpose": "Purpose",
+    "cookies_table_duration": "Duration",
+    "cookies_0_name": "locale",
+    "cookies_0_purpose": "Remembers the language chosen for the site",
+    "cookies_0_duration": "1 year",
+    "cookies_1_name": "laravel_session",
+    "cookies_1_purpose": "Maintains your session and protects the site against attacks (security, CSRF)",
+    "cookies_1_duration": "Session (deleted when the browser is closed)",
+    "rights_title": "Your rights",
+    "rights_text": "In accordance with applicable data protection legislation, you can request access to, correction of, or deletion of your data by writing to info{'@'}donnez-votre-sang.ch.",
+    "academic_title": "Academic note",
+    "academic_text": "This site was created as part of a student project at HEIG-VD and is not the official website of the organisations mentioned. It is intended for demonstration purposes."
   },
   "admin": {
     "status_pending": "Pending",
