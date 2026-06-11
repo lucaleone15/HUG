@@ -1797,6 +1797,7 @@ const goBack = () => {
     border-radius: 2px;
     min-width: 0;
     box-sizing: border-box;
+    overflow: hidden;
 }
 .trip-header {
     display: flex;
